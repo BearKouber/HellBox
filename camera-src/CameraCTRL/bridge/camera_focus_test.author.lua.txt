@@ -1,0 +1,78 @@
+local factory=assert(loadfile(arg[1]))()
+local function close(actual,expected,tolerance)
+    assert(math.abs(actual-expected)<(tolerance or 0.000001),tostring(actual).." ~= "..tostring(expected))
+end
+local function position(height,horizontal) return {x=horizontal or 0,y=5,z=height} end
+local focus=factory()
+close(focus.follow("player",position(10),0).z,10)
+for _,now in ipairs({0.1,0.3,0.59}) do
+    local center=focus.follow("player",position(11,now),now)
+    close(center.z,10);close(center.x,now);close(center.y,5)
+end
+close(focus.follow("player",position(10),0.6).z,10)
+close(focus.follow("player",position(10),1.2).z,10)
+close(focus.follow("player",position(9),1.3).z,10)
+close(focus.follow("player",position(10),1.7).z,10)
+close(focus.follow("player",position(10),2).z,10)
+
+focus=factory()
+focus.follow("player",position(0),0)
+focus.follow("player",position(1),0.1)
+focus.follow("player",position(2),0.4)
+close(focus.follow("player",position(3),0.6).z,0)
+close(focus.follow("player",position(4),0.75).z,4*(1-math.exp(-1)))
+for index=1,60 do focus.follow("player",position(4),0.75+index/60) end
+close(focus.follow("player",position(4),2).z,4)
+close(focus.follow("player",position(5),2.1).z,4)
+close(focus.follow("player",position(4),2.4).z,4)
+focus.follow("player",position(2),2.5)
+close(focus.follow("player",position(2),3).z,4)
+local descending=focus.follow("player",position(2),3.15).z
+assert(descending>2 and descending<4)
+
+focus=factory()
+focus.follow("player",position(0),0)
+focus.follow("player",position(1),0.1)
+close(focus.follow("player",position(-1),0.5).z,0)
+close(focus.follow("player",position(-1),0.9).z,0)
+close(focus.follow("player",position(0),1).z,0)
+for index=1,100 do
+    close(focus.follow("player",position(index%2==0 and 0.02 or -0.02),1+index/60).z,0)
+end
+
+focus=factory()
+focus.follow("player",position(0),0)
+focus.follow("player",position(1),0.1)
+close(focus.follow("vehicle",position(3,10),0.2).z,0)
+local boarding=focus.follow("vehicle",position(3,10),0.45)
+close(boarding.z,1.5);close(boarding.x,5)
+close(focus.follow("vehicle",position(3,10),0.71).z,3)
+close(focus.follow("vehicle",position(4,11),0.8).z,3)
+close(focus.follow("vehicle",position(3,12),1.1).z,3)
+focus.die(1.2)
+close(focus.look(nil).z,3)
+close(focus.look(position(8)).z,8)
+close(focus.follow("respawn",position(2),3).z,8)
+close(focus.follow("respawn",position(2),3.51).z,2)
+
+local function sample(rate)
+    local current=factory()
+    current.follow("player",position(0),0)
+    current.follow("player",position(2),1)
+    current.follow("player",position(2),1.5)
+    local result
+    for index=1,rate/2 do result=current.follow("player",position(2),1.5+index/rate) end
+    return result.z
+end
+close(sample(30),sample(60));close(sample(60),sample(144))
+focus=factory()
+focus.follow("player",position(0),0)
+local slope
+for index=1,180 do slope=focus.follow("player",position(index/60),index/60) end
+assert(slope.z>2.8 and slope.z<3)
+focus=factory()
+focus.follow("player",position(0),10)
+focus.follow("player",position(1),10.1)
+close(focus.follow("player",position(1),2).z,0)
+close(focus.follow("player",position(0),2.2).z,0)
+print("PASS height filter: transient steps, current target, sustained descent, direction reversal, jitter, vehicles, death, frame rates, clock reset")

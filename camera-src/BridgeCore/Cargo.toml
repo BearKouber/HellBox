@@ -1,0 +1,9 @@
+[package]
+name = "helldivers-bridge-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+flate2 = "1.1.10"
+sha2 = "0.10.9"
+windows-sys = { version = "0.61.2", features = ["Win32_System_Registry", "Win32_UI_Controls_Dialogs"] }

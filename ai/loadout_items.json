@@ -1,0 +1,448 @@
+{
+ "perk": [
+  [
+   "perk_lasersight",
+   "激光瞄准模块",
+   "Laser Aim Module"
+  ],
+  [
+   "perk_adrenaline",
+   "MD99自动注射器",
+   "MD-99 Autoinjector"
+  ],
+  [
+   "perk_cardio",
+   "心肺加速器",
+   "Cardio Accelerator"
+  ],
+  [
+   "perk_heavy_armor",
+   "重型护甲",
+   "Heavy Armor"
+  ],
+  [
+   "perk_grenade_incendiary",
+   "燃烧弹",
+   "Incendiary Grenades"
+  ],
+  [
+   "perk_grenade_stun",
+   "晕眩弹",
+   "Stun Grenades"
+  ],
+  [
+   "perk_grenade_smoke",
+   "烟雾弹",
+   "Smoke Grenades"
+  ],
+  [
+   "perk_stratagem_expert",
+   "战略配备优先权",
+   "Stratagem Priority"
+  ],
+  [
+   "perk_teleport_shield",
+   "置换力场",
+   "Displacement Field"
+  ],
+  [
+   "perk_strong_arm",
+   "有力的臂膀",
+   "Strong Arm"
+  ],
+  [
+   "perk_revolver_sidearm",
+   "P6“神枪手”",
+   "P-6 'Gunslinger'"
+  ],
+  [
+   "perk_flamepistol_sidearm",
+   "FLAM24“烈焰”",
+   "FLAM-24 'Pyro'"
+  ],
+  [
+   "perk_plasmapistol_sidearm",
+   "PLAS3“焦痕”",
+   "PLAS-3 'Singe'"
+  ],
+  [
+   "perk_all_terrain_boots",
+   "全地形军靴",
+   "All Terrain Boots"
+  ],
+  [
+   "perk_precision_call_in",
+   "精准呼叫",
+   "Precision Call-in"
+  ]
+ ],
+ "primary": [
+  [
+   "weapon_assaultrifle",
+   "AR19“解放者”",
+   "AR-19 'Liberator'"
+  ],
+  [
+   "weapon_combatrifle",
+   "AR20L“正义”",
+   "AR-20L 'Justice'"
+  ],
+  [
+   "weapon_carbine",
+   "AR22C“爱国者”",
+   "AR-22C 'Patriot'"
+  ],
+  [
+   "weapon_machinegun_light",
+   "MG105“盟友”",
+   "MG-105 'Stalwart'"
+  ],
+  [
+   "weapon_shotgun",
+   "SG225“破裂者”",
+   "SG-225 'Breaker'"
+  ],
+  [
+   "weapon_shotgunpump",
+   "SG8“制裁者”",
+   "SG-8 'Punisher'"
+  ],
+  [
+   "weapon_shotgundouble",
+   "DBS2“双重解放”",
+   "DBS-2 'Double Freedom'"
+  ],
+  [
+   "weapon_submachinegun",
+   "SMG45“防卫者”",
+   "SMG-45 'Defender'"
+  ],
+  [
+   "weapon_machinepistol",
+   "MP98“骑士”冲锋枪",
+   "MP-98 'Knight' SMG"
+  ],
+  [
+   "weapon_submachinegun_silenced",
+   "SMG34“忍者”",
+   "SMG-34 'Ninja'"
+  ],
+  [
+   "weapon_marksmanrifle",
+   "LHO63“野营者”",
+   "LHO-63 'Camper'"
+  ],
+  [
+   "weapon_railgun",
+   "RX1轨道枪",
+   "RX-1 Rail Gun"
+  ],
+  [
+   "weapon_nailgun",
+   "AR14D“典范”",
+   "AR-14D 'Paragon'"
+  ],
+  [
+   "weapon_bolt_action",
+   "M2016“建构”",
+   "M2016 'Constitution'"
+  ],
+  [
+   "weapon_canisterrifle",
+   "CR9“抑制者”",
+   "CR-9 'Suppressor'"
+  ],
+  [
+   "weapon_plasmarifle",
+   "PLAS1“焦土”",
+   "PLAS-1 'Scorcher'"
+  ],
+  [
+   "weapon_laserrifle",
+   "LAS5“长柄镰”",
+   "LAS-5 'Scythe'"
+  ],
+  [
+   "weapon_pulselaserrifle",
+   "LAS16“镰刀”",
+   "LAS-16 'Sickle'"
+  ],
+  [
+   "weapon_lasersmg",
+   "LAS12“短刀”",
+   "LAS-12 'Tanto'"
+  ],
+  [
+   "weapon_lasershotgun",
+   "LAS13「三叉戟」",
+   "LAS-13 'Trident'"
+  ],
+  [
+   "weapon_arcrifle",
+   "AC3电弧发射器",
+   "AC-3 Arc Thrower"
+  ],
+  [
+   "weapon_arcshotgun",
+   "AC5电弧霰弹枪",
+   "AC-5 Arc Shotgun"
+  ]
+ ],
+ "strat": [
+  [
+   "stratagem_resupply",
+   "补给",
+   "Resupply"
+  ],
+  [
+   "stratagem_machinegun",
+   "MG94机枪",
+   "MG-94 Machine Gun"
+  ],
+  [
+   "stratagem_machinegun_oneuse",
+   "MGX42机枪",
+   "MGX-42 Machine Gun"
+  ],
+  [
+   "stratagem_lasercannon",
+   "LAS98 激光大炮",
+   "LAS-98 Laser Cannon"
+  ],
+  [
+   "stratagem_20mm_cannon",
+   "AC22“达姆”",
+   "AC-22 'Dum-Dum'"
+  ],
+  [
+   "stratagem_grenadelauncher",
+   "“消灭者”榴弹发射器",
+   "'Obliterator' Grenade Launcher"
+  ],
+  [
+   "stratagem_mortar",
+   "M25“雷鸣者”",
+   "M-25 'Rumbler'"
+  ],
+  [
+   "stratagem_flamethrower",
+   "FLAM40“焚化炉”",
+   "FLAM-40 'Incinerator'"
+  ],
+  [
+   "stratagem_chemthrower",
+   "TOX13“复仇者”",
+   "TOX-13 'Avenger'"
+  ],
+  [
+   "stratagem_recoilless",
+   "RL112 无后座力步枪",
+   "RL-112 Recoilless Rifle"
+  ],
+  [
+   "stratagem_law",
+   "EAT17 抛弃式反战车火箭",
+   "EAT-17"
+  ],
+  [
+   "stratagem_missile_launcher",
+   "MLS4X“突击队”",
+   "MLS-4X 'Commando'"
+  ],
+  [
+   "stratagem_drone_defensive_backpack",
+   "AD334“护卫犬”",
+   "AD-334 'Guard Dog'"
+  ],
+  [
+   "stratagem_drone_heal_backpack",
+   "AD289“天使”",
+   "AD-289 'Angel'"
+  ],
+  [
+   "stratagem_ammo_backpack",
+   "补给背包",
+   "Resupply Pack"
+  ],
+  [
+   "stratagem_jumppack",
+   "LIFT850 喷射背包",
+   "LIFT-850 Jump Pack"
+  ],
+  [
+   "stratagem_projected_shield",
+   "SH32定向动能护盾",
+   "SH-32 Directional Kinetic Shield"
+  ],
+  [
+   "stratagem_shield_generator_pack",
+   "SH20防护罩生成包",
+   "SH-20 Shield Generator Pack"
+  ],
+  [
+   "stratagem_repairtool",
+   "REP80维修工具",
+   "REP-80"
+  ],
+  [
+   "stratagem_satchelcharge",
+   "REC6“爆破者”",
+   "REC-6 'Demolisher'"
+  ],
+  [
+   "stratagem_exosuit",
+   "EXO44“步行者”外骨骼装甲",
+   "EXO-44 'Walker' Exosuit"
+  ],
+  [
+   "stratagem_exosuit_2",
+   "EXO48“黑曜石”",
+   "EXO-48 'Obsidian'"
+  ],
+  [
+   "stratagem_exosuit_3",
+   "EXO51“重步者”",
+   "EXO-51 'Lumberer'"
+  ],
+  [
+   "stratagem_bike",
+   "MC109“神锤”摩托车",
+   "MC-109 'Hammer' Motorcycle"
+  ],
+  [
+   "stratagem_tankdestroyer",
+   "TD110“堡垒”",
+   "TD-110 'Bastion'"
+  ],
+  [
+   "stratagem_apc",
+   "M5 APC",
+   "M5 APC"
+  ],
+  [
+   "stratagem_apc_cannon",
+   "M532 HAV",
+   "M5-32 HAV"
+  ],
+  [
+   "stratagem_uav_drone",
+   "“蜜蜂型”无人机",
+   "'Humblebee' UAV drone"
+  ],
+  [
+   "stratagem_distractor",
+   "干扰者信标",
+   "Distractor Beacon"
+  ],
+  [
+   "stratagem_mannable_turret",
+   "AT47反坦克炮台",
+   "AT-47 Anti-Tank Emplacement"
+  ],
+  [
+   "stratagem_turret",
+   "A/MG11 转管机枪炮炮台",
+   "A/MG-11 Minigun Turret"
+  ],
+  [
+   "stratagem_turret_railcannon",
+   "A/RX34 轨道炮炮台",
+   "A/RX-34 Railcannon Turret"
+  ],
+  [
+   "stratagem_turret_grenadelauncher",
+   "A/GL-8发射器炮台",
+   "A/GL-8 Launcher Turret"
+  ],
+  [
+   "stratagem_tesla_tower",
+   "A/AC6 特斯拉塔",
+   "A/AC-6 Tesla Tower"
+  ],
+  [
+   "stratagem_minedrop",
+   "空投人员伤害地雷",
+   "Airdropped Anti-Personnel Mines"
+  ],
+  [
+   "stratagem_artillery_smoke",
+   "“轰鸣者”烟雾炮击",
+   "'Thunderer' Smoke Round"
+  ],
+  [
+   "stratagem_barricade",
+   "反步兵屏障",
+   "Anti-Personnel Barrier"
+  ],
+  [
+   "stratagem_minedrop_stun",
+   "空投晕眩地雷",
+   "Airdropped Stun Mines"
+  ],
+  [
+   "stratagem_staticfield",
+   "静电防护导体",
+   "Static Field Conductors"
+  ],
+  [
+   "stratagem_airstrike",
+   "空袭",
+   "Airstrike"
+  ],
+  [
+   "stratagem_dive_bomb",
+   "“辩护者”空投炸弹",
+   "'Vindicator' Dive Bomb"
+  ],
+  [
+   "stratagem_strafingrun",
+   "机枪扫射",
+   "Strafing Run"
+  ],
+  [
+   "stratagem_napalmstrike",
+   "燃烧炸弹",
+   "Incendiary Bombs"
+  ],
+  [
+   "stratagem_strafingrun_heavy",
+   "重机枪扫射",
+   "Heavy Strafing Run"
+  ],
+  [
+   "stratagem_close_air_support",
+   "近距离空中支援",
+   "Close Air Support"
+  ],
+  [
+   "stratagem_missile_barrage",
+   "导弹弹幕",
+   "Missile Barrage"
+  ],
+  [
+   "stratagem_artillery",
+   "“轰鸣者”火力网",
+   "'Thunderer' Barrage"
+  ],
+  [
+   "stratagem_precision_artillery",
+   "“大锤”精准火炮",
+   "'Sledge' Precision Artillery"
+  ],
+  [
+   "stratagem_orbital_strike",
+   "外层空间轨道激光炮攻击",
+   "Orbital Laser Strike"
+  ],
+  [
+   "stratagem_missile_strike",
+   "“撕裂者”导弹攻击",
+   "'Shredder' Missile Strike"
+  ],
+  [
+   "stratagem_railcannon_strike",
+   "轨道炮攻击",
+   "Railcannon Strike"
+  ]
+ ]
+}

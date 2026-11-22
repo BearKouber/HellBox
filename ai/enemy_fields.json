@@ -1,0 +1,7810 @@
+{
+ "source": "make_list.py（HD1-033 怪物属性清单，用户 2026-11-14 认可）",
+ "units": {
+  "bug_boss": {
+   "zh": "霸王虫",
+   "en": "Hive Lord",
+   "boss": true,
+   "race": "虫族",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 250000,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 175,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 30,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 3,
+       "key": "health_info.constitution_decay"
+      },
+      {
+       "path": "damage_zones.4.armor_max",
+       "label": "背面护甲",
+       "kind": "mult",
+       "value": 400,
+       "key": "damage_zones.4.armor_max"
+      },
+      {
+       "path": "damage_zones.4.armor_min",
+       "label": "背面最低护甲",
+       "kind": "mult",
+       "value": 300,
+       "key": "damage_zones.4.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 0,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.7,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.01,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.melee_attack_animation_delay",
+       "label": "近战动作延迟",
+       "kind": "time",
+       "value": 0,
+       "key": "melee_attack_animation_delay"
+      },
+      {
+       "path": "enemy_info.melee_attack_delay",
+       "label": "近战前摇",
+       "kind": "time",
+       "value": 1,
+       "key": "melee_attack_delay"
+      },
+      {
+       "path": "enemy_info.melee_attack_duration",
+       "label": "近战持续时间",
+       "kind": "time",
+       "value": 2,
+       "key": "melee_attack_duration"
+      },
+      {
+       "path": "enemy_info.melee_turn_speed",
+       "label": "近战转向速度",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_turn_speed"
+      },
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 45,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.2,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.2,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "冲锋",
+     "rows": [
+      {
+       "path": "enemy_info.rush_attack_animation_delay",
+       "label": "冲锋动作延迟",
+       "kind": "time",
+       "value": 0,
+       "key": "rush_attack_animation_delay"
+      },
+      {
+       "path": "enemy_info.rush_attack_delay",
+       "label": "冲锋前摇",
+       "kind": "time",
+       "value": 1,
+       "key": "rush_attack_delay"
+      },
+      {
+       "path": "enemy_info.rush_attack_duration",
+       "label": "冲锋攻击持续时间",
+       "kind": "time",
+       "value": 3,
+       "key": "rush_attack_duration"
+      },
+      {
+       "path": "enemy_info.rush_melee_interval",
+       "label": "冲撞判定间隔",
+       "kind": "time",
+       "value": 0.5,
+       "key": "rush_melee_interval"
+      },
+      {
+       "path": "enemy_info.rush_movement_speed",
+       "label": "冲锋速度（米/秒）",
+       "kind": "mult",
+       "value": 8,
+       "key": "rush_movement_speed"
+      },
+      {
+       "path": "enemy_info.rush_turn_speed",
+       "label": "冲锋转向速度",
+       "kind": "mult",
+       "value": 1,
+       "key": "rush_turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "投放 / 召唤",
+     "rows": [
+      {
+       "path": "enemy_info.spawn_adds_attack_animation_delay",
+       "label": "召唤援军动作延迟",
+       "kind": "time",
+       "value": 0,
+       "key": "spawn_adds_attack_animation_delay"
+      },
+      {
+       "path": "enemy_info.spawn_adds_attack_delay",
+       "label": "召唤援军前摇",
+       "kind": "time",
+       "value": 0,
+       "key": "spawn_adds_attack_delay"
+      },
+      {
+       "path": "enemy_info.spawn_adds_attack_duration",
+       "label": "召唤援军持续时间",
+       "kind": "time",
+       "value": 0,
+       "key": "spawn_adds_attack_duration"
+      },
+      {
+       "path": "enemy_info.spawn_adds_cooldown",
+       "label": "召唤援军冷却",
+       "kind": "time",
+       "value": 10,
+       "key": "spawn_adds_cooldown"
+      },
+      {
+       "path": "enemy_info.spawn_adds_groups.1.group.1",
+       "label": "援军编组",
+       "kind": "text",
+       "value": "characters/bug_warrior/bug_warrior_elite",
+       "key": "spawn_adds_groups"
+      }
+     ]
+    },
+    {
+     "title": "钻地",
+     "rows": [
+      {
+       "path": "enemy_info.burrowed_spawn_distance_max",
+       "label": "钻地出现最远距离（米）",
+       "kind": "mult",
+       "value": 6,
+       "key": "burrowed_spawn_distance_max"
+      },
+      {
+       "path": "enemy_info.burrowed_spawn_distance_min",
+       "label": "钻地出现最近距离（米）",
+       "kind": "mult",
+       "value": 0,
+       "key": "burrowed_spawn_distance_min"
+      },
+      {
+       "path": "enemy_info.burrowed_wait_time_max",
+       "label": "地下等待时间上限",
+       "kind": "time",
+       "value": 4,
+       "key": "burrowed_wait_time_max"
+      },
+      {
+       "path": "enemy_info.burrowed_wait_time_min",
+       "label": "地下等待时间下限",
+       "kind": "time",
+       "value": 2,
+       "key": "burrowed_wait_time_min"
+      },
+      {
+       "path": "enemy_info.unburrow_delay",
+       "label": "出土延迟",
+       "kind": "time",
+       "value": 1,
+       "key": "unburrow_delay"
+      }
+     ]
+    },
+    {
+     "title": "毒雾",
+     "rows": [
+      {
+       "path": "enemy_info.poison_area_attack_animation_delay",
+       "label": "毒雾动作延迟",
+       "kind": "time",
+       "value": 2,
+       "key": "poison_area_attack_animation_delay"
+      },
+      {
+       "path": "enemy_info.poison_area_attack_delay",
+       "label": "毒雾前摇",
+       "kind": "time",
+       "value": 1,
+       "key": "poison_area_attack_delay"
+      },
+      {
+       "path": "enemy_info.poison_area_attack_duration",
+       "label": "毒雾持续时间",
+       "kind": "time",
+       "value": 3,
+       "key": "poison_area_attack_duration"
+      },
+      {
+       "path": "enemy_info.poison_area_range",
+       "label": "毒雾范围（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "poison_area_range"
+      },
+      {
+       "path": "enemy_info.poison_area_status",
+       "label": "毒雾附加状态",
+       "kind": "status",
+       "value": "poison_heavy_slow",
+       "key": "poison_area_status"
+      },
+      {
+       "path": "enemy_info.poison_area_status_2",
+       "label": "毒雾附加状态 2",
+       "kind": "status",
+       "value": "poison_medium_damage",
+       "key": "poison_area_status_2"
+      }
+     ]
+    },
+    {
+     "title": "喷吐毒液",
+     "rows": [
+      {
+       "path": "enemy_info.poison_spit_angle_spread",
+       "label": "喷吐散布",
+       "kind": "angle",
+       "value": 1.0471975511965976,
+       "key": "poison_spit_angle_spread",
+       "unit": "rad"
+      },
+      {
+       "path": "enemy_info.poison_spit_attack_animation_delay",
+       "label": "喷吐动作延迟",
+       "kind": "time",
+       "value": 0,
+       "key": "poison_spit_attack_animation_delay"
+      },
+      {
+       "path": "enemy_info.poison_spit_attack_delay",
+       "label": "喷吐前摇",
+       "kind": "time",
+       "value": 2,
+       "key": "poison_spit_attack_delay"
+      },
+      {
+       "path": "enemy_info.poison_spit_attack_duration",
+       "label": "喷吐持续时间",
+       "kind": "time",
+       "value": 2.5,
+       "key": "poison_spit_attack_duration"
+      },
+      {
+       "path": "enemy_info.poison_spit_booger_unit_path",
+       "label": "喷吐物",
+       "kind": "unit",
+       "value": "characters/bug_boss/poison_booger",
+       "key": "poison_spit_booger_unit_path"
+      },
+      {
+       "path": "enemy_info.poison_spit_max_range",
+       "label": "喷吐最远距离（米）",
+       "kind": "mult",
+       "value": 20,
+       "key": "poison_spit_max_range"
+      },
+      {
+       "path": "enemy_info.poison_spit_min_range",
+       "label": "喷吐最近距离（米）",
+       "kind": "mult",
+       "value": 0,
+       "key": "poison_spit_min_range"
+      },
+      {
+       "path": "enemy_info.poison_spit_num_boogers",
+       "label": "每次喷吐数量",
+       "kind": "count",
+       "value": 3,
+       "key": "poison_spit_num_boogers"
+      },
+      {
+       "path": "enemy_info.poison_spit_z_direction",
+       "label": "喷吐仰角",
+       "kind": "elev",
+       "value": 0.5235987755982988,
+       "key": "poison_spit_z_direction"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "bug_hls": {
+   "zh": "黑暗影者",
+   "en": "Shadow",
+   "boss": false,
+   "race": "虫族",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 100,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 60,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 0,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution",
+       "label": "重伤阈值",
+       "kind": "mult",
+       "value": 750,
+       "key": "health_info.constitution"
+      },
+      {
+       "path": "health_info.health_decay",
+       "label": "生命流失（每秒）",
+       "kind": "mult",
+       "value": -20,
+       "key": "health_info.health_decay"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": -25,
+       "key": "health_info.constitution_decay"
+      },
+      {
+       "path": "damage_zones.4.armor_max",
+       "label": "背面护甲",
+       "kind": "mult",
+       "value": 130,
+       "key": "damage_zones.4.armor_max"
+      },
+      {
+       "path": "damage_zones.4.armor_min",
+       "label": "背面最低护甲",
+       "kind": "mult",
+       "value": 60,
+       "key": "damage_zones.4.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 7,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.movement_speed_flee",
+       "label": "撤退速度（米/秒）",
+       "kind": "mult",
+       "value": 9,
+       "key": "movement_speed_flee"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 13,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 3.5,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.recovery_flee_distance",
+       "label": "撤退距离（米）",
+       "kind": "mult",
+       "value": 15,
+       "key": "recovery_flee_distance"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.2,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "警报",
+     "rows": [
+      {
+       "path": "enemy_info.encounter_countdown_time",
+       "label": "呼叫增援倒计时",
+       "kind": "time",
+       "value": 1.33,
+       "key": "encounter_countdown_time"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 16,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.5,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 2.7,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": true,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "跳跃",
+     "rows": [
+      {
+       "path": "enemy_info.jump_charge_time",
+       "label": "跳跃蓄力时间",
+       "kind": "time",
+       "value": 0.5,
+       "key": "jump_charge_time"
+      },
+      {
+       "path": "enemy_info.jump_duration",
+       "label": "跳跃滞空时间",
+       "kind": "time",
+       "value": 1.2,
+       "key": "jump_duration"
+      },
+      {
+       "path": "enemy_info.jump_range_max",
+       "label": "跳跃最远距离（米）",
+       "kind": "mult",
+       "value": 16,
+       "key": "jump_range_max"
+      },
+      {
+       "path": "enemy_info.jump_range_min",
+       "label": "跳跃最近距离（米）",
+       "kind": "mult",
+       "value": 7,
+       "key": "jump_range_min"
+      },
+      {
+       "path": "enemy_info.jump_recovery",
+       "label": "落地硬直",
+       "kind": "time",
+       "value": 0.5,
+       "key": "jump_recovery"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "bug_impaler": {
+   "zh": "刺钉虫",
+   "en": "Impaler",
+   "boss": false,
+   "race": "虫族",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 2200,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 1500,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 1000,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "damage_zones.2.armor_max",
+       "label": "正面护甲",
+       "kind": "mult",
+       "value": 45,
+       "key": "damage_zones.2.armor_max"
+      },
+      {
+       "path": "damage_zones.2.armor_min",
+       "label": "正面最低护甲",
+       "kind": "mult",
+       "value": 45,
+       "key": "damage_zones.2.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.follow_range",
+       "label": "跟随距离（米）",
+       "kind": "mult",
+       "value": 14,
+       "key": "follow_range"
+      },
+      {
+       "path": "enemy_info.follow_range_deviation",
+       "label": "跟随距离浮动（米）",
+       "kind": "mult",
+       "value": 6,
+       "key": "follow_range_deviation"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 3.5,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 2,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.3,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.attack_target_distance",
+       "label": "攻击站位距离（米）",
+       "kind": "mult",
+       "value": 8,
+       "key": "attack_target_distance"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.explosive_info.center_power",
+       "label": "判定中心伤害",
+       "kind": "mult",
+       "value": 350,
+       "key": "melee_info.explosive_info.center_power"
+      },
+      {
+       "path": "melee_info.explosive_info.center_radius",
+       "label": "判定中心半径（米）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "melee_info.explosive_info.center_radius"
+      },
+      {
+       "path": "melee_info.explosive_info.blast_power",
+       "label": "判定外圈伤害",
+       "kind": "mult",
+       "value": 350,
+       "key": "melee_info.explosive_info.blast_power"
+      },
+      {
+       "path": "melee_info.explosive_info.blast_radius",
+       "label": "判定外圈半径（米）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "melee_info.explosive_info.blast_radius"
+      },
+      {
+       "path": "melee_info.explosive_info.force",
+       "label": "击退力度",
+       "kind": "mult",
+       "value": 10,
+       "key": "melee_info.explosive_info.force"
+      }
+     ]
+    },
+    {
+     "title": "钻地",
+     "rows": [
+      {
+       "path": "enemy_info.burrow_cooldown",
+       "label": "钻地冷却",
+       "kind": "time",
+       "value": 1,
+       "key": "burrow_cooldown"
+      },
+      {
+       "path": "enemy_info.burrow_exit_criteria_damage_taken",
+       "label": "受伤出土阈值",
+       "kind": "mult",
+       "value": 600,
+       "key": "burrow_exit_criteria_damage_taken"
+      },
+      {
+       "path": "enemy_info.burrow_exit_criteria_self_to_target_max_distance",
+       "label": "出土条件·最远距离（米）",
+       "kind": "mult",
+       "value": 40,
+       "key": "burrow_exit_criteria_self_to_target_max_distance"
+      },
+      {
+       "path": "enemy_info.burrow_exit_criteria_self_to_target_min_distance",
+       "label": "出土条件·最近距离（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "burrow_exit_criteria_self_to_target_min_distance"
+      },
+      {
+       "path": "enemy_info.burrow_exit_criteria_tentacle_to_target_max_distance",
+       "label": "出土条件·触手距离（米）",
+       "kind": "mult",
+       "value": 20,
+       "key": "burrow_exit_criteria_tentacle_to_target_max_distance"
+      },
+      {
+       "path": "enemy_info.burrow_exit_time",
+       "label": "出土时间",
+       "kind": "time",
+       "value": 2,
+       "key": "burrow_exit_time"
+      },
+      {
+       "path": "enemy_info.burrow_max_time",
+       "label": "钻地最长时间",
+       "kind": "time",
+       "value": 22,
+       "key": "burrow_max_time"
+      },
+      {
+       "path": "enemy_info.burrow_num_tentacles",
+       "label": "触手数量",
+       "kind": "count",
+       "value": 3,
+       "key": "burrow_num_tentacles"
+      },
+      {
+       "path": "enemy_info.burrow_tentacle_angle_to_target_requirement",
+       "label": "触手瞄准角度",
+       "kind": "angle",
+       "value": 0.3490658503988659,
+       "key": "burrow_tentacle_angle_to_target_requirement",
+       "unit": "rad"
+      },
+      {
+       "path": "enemy_info.burrow_tentacle_max_retries",
+       "label": "触手重试次数",
+       "kind": "count",
+       "value": 10,
+       "key": "burrow_tentacle_max_retries"
+      },
+      {
+       "path": "enemy_info.burrow_tentacle_random_offset",
+       "label": "触手随机偏移（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "burrow_tentacle_random_offset"
+      },
+      {
+       "path": "enemy_info.burrow_tentacle_spacing_angle",
+       "label": "触手间隔角度",
+       "kind": "angle",
+       "value": 0.3490658503988659,
+       "key": "burrow_tentacle_spacing_angle",
+       "unit": "rad"
+      },
+      {
+       "path": "enemy_info.burrow_tentacle_spawn_close_range",
+       "label": "近距触手范围（米）",
+       "kind": "mult",
+       "value": 14,
+       "key": "burrow_tentacle_spawn_close_range"
+      },
+      {
+       "path": "enemy_info.burrow_tentacle_spawn_delay",
+       "label": "触手间隔",
+       "kind": "time",
+       "value": 1.5,
+       "key": "burrow_tentacle_spawn_delay"
+      },
+      {
+       "path": "enemy_info.burrow_tentacle_spawn_distance_from_target_close",
+       "label": "近距触手离目标（米）",
+       "kind": "mult",
+       "value": -2,
+       "key": "burrow_tentacle_spawn_distance_from_target_close"
+      },
+      {
+       "path": "enemy_info.burrow_tentacle_spawn_distance_from_target_far",
+       "label": "远距触手离目标（米）",
+       "kind": "mult",
+       "value": 4,
+       "key": "burrow_tentacle_spawn_distance_from_target_far"
+      },
+      {
+       "path": "enemy_info.burrow_tentacle_unit_path",
+       "label": "触手单位",
+       "kind": "unit",
+       "value": "characters/bug_impaler/bug_impaler_tentacle",
+       "key": "burrow_tentacle_unit_path"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "bug_scout": {
+   "zh": "侦查虫",
+   "en": "Scout",
+   "boss": false,
+   "race": "虫族",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 30,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 25,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 15,
+       "key": "health_info.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 4.25,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 13,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 4.25,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 16,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 0.9,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 0.9,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "bug_scout_jumping": {
+   "zh": "先驱虫",
+   "en": "Vanguard",
+   "boss": false,
+   "race": "虫族",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 30,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 35,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 15,
+       "key": "health_info.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 4.25,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 13,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "警报",
+     "rows": [
+      {
+       "path": "enemy_info.encounter_countdown_time",
+       "label": "呼叫增援倒计时",
+       "kind": "time",
+       "value": 1.33,
+       "key": "encounter_countdown_time"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 19,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 0.9,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 0.9,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "跳跃",
+     "rows": [
+      {
+       "path": "enemy_info.jump_charge_time",
+       "label": "跳跃蓄力时间",
+       "kind": "time",
+       "value": 0.5,
+       "key": "jump_charge_time"
+      },
+      {
+       "path": "enemy_info.jump_duration",
+       "label": "跳跃滞空时间",
+       "kind": "time",
+       "value": 0.9,
+       "key": "jump_duration"
+      },
+      {
+       "path": "enemy_info.jump_range_max",
+       "label": "跳跃最远距离（米）",
+       "kind": "mult",
+       "value": 16,
+       "key": "jump_range_max"
+      },
+      {
+       "path": "enemy_info.jump_range_min",
+       "label": "跳跃最近距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "jump_range_min"
+      },
+      {
+       "path": "enemy_info.jump_recovery",
+       "label": "落地硬直",
+       "kind": "time",
+       "value": 0.3,
+       "key": "jump_recovery"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "bug_stalker": {
+   "zh": "追踪虫",
+   "en": "Stalker",
+   "boss": false,
+   "race": "虫族",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 50,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 60,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 0,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution",
+       "label": "重伤阈值",
+       "kind": "mult",
+       "value": 450,
+       "key": "health_info.constitution"
+      },
+      {
+       "path": "health_info.health_decay",
+       "label": "生命流失（每秒）",
+       "kind": "mult",
+       "value": -20,
+       "key": "health_info.health_decay"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": -18,
+       "key": "health_info.constitution_decay"
+      },
+      {
+       "path": "damage_zones.4.armor_max",
+       "label": "背面护甲",
+       "kind": "mult",
+       "value": 130,
+       "key": "damage_zones.4.armor_max"
+      },
+      {
+       "path": "damage_zones.4.armor_min",
+       "label": "背面最低护甲",
+       "kind": "mult",
+       "value": 60,
+       "key": "damage_zones.4.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 7,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.movement_speed_flee",
+       "label": "撤退速度（米/秒）",
+       "kind": "mult",
+       "value": 9,
+       "key": "movement_speed_flee"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 3.5,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.recovery_flee_distance",
+       "label": "撤退距离（米）",
+       "kind": "mult",
+       "value": 15,
+       "key": "recovery_flee_distance"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.2,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 16,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.5,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 2.7,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": true,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "跳跃",
+     "rows": [
+      {
+       "path": "enemy_info.jump_charge_time",
+       "label": "跳跃蓄力时间",
+       "kind": "time",
+       "value": 0.5,
+       "key": "jump_charge_time"
+      },
+      {
+       "path": "enemy_info.jump_duration",
+       "label": "跳跃滞空时间",
+       "kind": "time",
+       "value": 1.2,
+       "key": "jump_duration"
+      },
+      {
+       "path": "enemy_info.jump_range_max",
+       "label": "跳跃最远距离（米）",
+       "kind": "mult",
+       "value": 16,
+       "key": "jump_range_max"
+      },
+      {
+       "path": "enemy_info.jump_range_min",
+       "label": "跳跃最近距离（米）",
+       "kind": "mult",
+       "value": 7,
+       "key": "jump_range_min"
+      },
+      {
+       "path": "enemy_info.jump_recovery",
+       "label": "落地硬直",
+       "kind": "time",
+       "value": 0.5,
+       "key": "jump_recovery"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "bug_tank": {
+   "zh": "坦克虫",
+   "en": "Tank",
+   "boss": false,
+   "race": "虫族",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 2100,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 1500,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 1000,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "damage_zones.4.armor_max",
+       "label": "背面护甲",
+       "kind": "mult",
+       "value": 45,
+       "key": "damage_zones.4.armor_max"
+      },
+      {
+       "path": "damage_zones.4.armor_min",
+       "label": "背面最低护甲",
+       "kind": "mult",
+       "value": 45,
+       "key": "damage_zones.4.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 2,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 2,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.4,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.attack_angle",
+       "label": "攻击角度",
+       "kind": "angle",
+       "value": 20,
+       "key": "attack_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.explosive_info.center_power",
+       "label": "判定中心伤害",
+       "kind": "mult",
+       "value": 350,
+       "key": "melee_info.explosive_info.center_power"
+      },
+      {
+       "path": "melee_info.explosive_info.center_radius",
+       "label": "判定中心半径（米）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "melee_info.explosive_info.center_radius"
+      },
+      {
+       "path": "melee_info.explosive_info.blast_power",
+       "label": "判定外圈伤害",
+       "kind": "mult",
+       "value": 350,
+       "key": "melee_info.explosive_info.blast_power"
+      },
+      {
+       "path": "melee_info.explosive_info.blast_radius",
+       "label": "判定外圈半径（米）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "melee_info.explosive_info.blast_radius"
+      },
+      {
+       "path": "melee_info.explosive_info.force",
+       "label": "击退力度",
+       "kind": "mult",
+       "value": 10,
+       "key": "melee_info.explosive_info.force"
+      }
+     ]
+    },
+    {
+     "title": "冲锋",
+     "rows": [
+      {
+       "path": "enemy_info.aoe_cooldown",
+       "label": "范围攻击冷却",
+       "kind": "time",
+       "value": 5,
+       "key": "aoe_cooldown"
+      },
+      {
+       "path": "enemy_info.aoe_trigger_distance",
+       "label": "范围攻击触发距离（米）",
+       "kind": "mult",
+       "value": 3,
+       "key": "aoe_trigger_distance"
+      },
+      {
+       "path": "enemy_info.rush_cooldown",
+       "label": "冲锋冷却",
+       "kind": "time",
+       "value": 6,
+       "key": "rush_cooldown"
+      },
+      {
+       "path": "enemy_info.rush_distance_max",
+       "label": "冲锋最远距离（米）",
+       "kind": "mult",
+       "value": 30,
+       "key": "rush_distance_max"
+      },
+      {
+       "path": "enemy_info.rush_distance_min",
+       "label": "冲锋最近距离（米）",
+       "kind": "mult",
+       "value": 6,
+       "key": "rush_distance_min"
+      },
+      {
+       "path": "enemy_info.rush_hit_obstacle_range",
+       "label": "撞墙判定距离（米）",
+       "kind": "mult",
+       "value": 5,
+       "key": "rush_hit_obstacle_range"
+      },
+      {
+       "path": "enemy_info.rush_hit_obstacle_side_range",
+       "label": "侧向撞墙判定距离（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "rush_hit_obstacle_side_range"
+      },
+      {
+       "path": "enemy_info.rush_hit_obstacle_time",
+       "label": "撞墙硬直时间",
+       "kind": "time",
+       "value": 1.5,
+       "key": "rush_hit_obstacle_time"
+      },
+      {
+       "path": "enemy_info.rush_leave_time",
+       "label": "冲锋减速时间",
+       "kind": "time",
+       "value": 1.5,
+       "key": "rush_leave_time"
+      },
+      {
+       "path": "enemy_info.rush_melee_interval",
+       "label": "冲撞判定间隔",
+       "kind": "time",
+       "value": 0.5,
+       "key": "rush_melee_interval"
+      },
+      {
+       "path": "enemy_info.rush_movement_speed",
+       "label": "冲锋速度（米/秒）",
+       "kind": "mult",
+       "value": 8,
+       "key": "rush_movement_speed"
+      },
+      {
+       "path": "enemy_info.rush_startup_time",
+       "label": "冲锋蓄力时间",
+       "kind": "time",
+       "value": 0.2,
+       "key": "rush_startup_time"
+      },
+      {
+       "path": "enemy_info.rush_target_angle",
+       "label": "冲锋锁定角度",
+       "kind": "angle",
+       "value": 120,
+       "key": "rush_target_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "enemy_info.rush_time",
+       "label": "冲锋持续时间",
+       "kind": "time",
+       "value": 6,
+       "key": "rush_time"
+      },
+      {
+       "path": "enemy_info.rush_turn_speed",
+       "label": "冲锋转向速度",
+       "kind": "mult",
+       "value": 0.4,
+       "key": "rush_turn_speed"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "bug_tank_heavy": {
+   "zh": "巨兽",
+   "en": "Behemoth",
+   "boss": false,
+   "race": "虫族",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 3200,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 1500,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 1000,
+       "key": "health_info.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 2,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 2,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.4,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.attack_angle",
+       "label": "攻击角度",
+       "kind": "angle",
+       "value": 20,
+       "key": "attack_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.5,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.explosive_info.center_power",
+       "label": "判定中心伤害",
+       "kind": "mult",
+       "value": 350,
+       "key": "melee_info.explosive_info.center_power"
+      },
+      {
+       "path": "melee_info.explosive_info.center_radius",
+       "label": "判定中心半径（米）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "melee_info.explosive_info.center_radius"
+      },
+      {
+       "path": "melee_info.explosive_info.blast_power",
+       "label": "判定外圈伤害",
+       "kind": "mult",
+       "value": 350,
+       "key": "melee_info.explosive_info.blast_power"
+      },
+      {
+       "path": "melee_info.explosive_info.blast_radius",
+       "label": "判定外圈半径（米）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "melee_info.explosive_info.blast_radius"
+      },
+      {
+       "path": "melee_info.explosive_info.force",
+       "label": "击退力度",
+       "kind": "mult",
+       "value": 10,
+       "key": "melee_info.explosive_info.force"
+      }
+     ]
+    },
+    {
+     "title": "冲锋",
+     "rows": [
+      {
+       "path": "enemy_info.aoe_cooldown",
+       "label": "范围攻击冷却",
+       "kind": "time",
+       "value": 2,
+       "key": "aoe_cooldown"
+      },
+      {
+       "path": "enemy_info.aoe_trigger_distance",
+       "label": "范围攻击触发距离（米）",
+       "kind": "mult",
+       "value": 3,
+       "key": "aoe_trigger_distance"
+      },
+      {
+       "path": "enemy_info.rush_cooldown",
+       "label": "冲锋冷却",
+       "kind": "time",
+       "value": 6,
+       "key": "rush_cooldown"
+      },
+      {
+       "path": "enemy_info.rush_distance_max",
+       "label": "冲锋最远距离（米）",
+       "kind": "mult",
+       "value": 30,
+       "key": "rush_distance_max"
+      },
+      {
+       "path": "enemy_info.rush_distance_min",
+       "label": "冲锋最近距离（米）",
+       "kind": "mult",
+       "value": 6,
+       "key": "rush_distance_min"
+      },
+      {
+       "path": "enemy_info.rush_hit_obstacle_range",
+       "label": "撞墙判定距离（米）",
+       "kind": "mult",
+       "value": 5,
+       "key": "rush_hit_obstacle_range"
+      },
+      {
+       "path": "enemy_info.rush_hit_obstacle_side_range",
+       "label": "侧向撞墙判定距离（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "rush_hit_obstacle_side_range"
+      },
+      {
+       "path": "enemy_info.rush_hit_obstacle_time",
+       "label": "撞墙硬直时间",
+       "kind": "time",
+       "value": 1.5,
+       "key": "rush_hit_obstacle_time"
+      },
+      {
+       "path": "enemy_info.rush_leave_time",
+       "label": "冲锋减速时间",
+       "kind": "time",
+       "value": 1.5,
+       "key": "rush_leave_time"
+      },
+      {
+       "path": "enemy_info.rush_melee_interval",
+       "label": "冲撞判定间隔",
+       "kind": "time",
+       "value": 0.5,
+       "key": "rush_melee_interval"
+      },
+      {
+       "path": "enemy_info.rush_movement_speed",
+       "label": "冲锋速度（米/秒）",
+       "kind": "mult",
+       "value": 8,
+       "key": "rush_movement_speed"
+      },
+      {
+       "path": "enemy_info.rush_startup_time",
+       "label": "冲锋蓄力时间",
+       "kind": "time",
+       "value": 0.2,
+       "key": "rush_startup_time"
+      },
+      {
+       "path": "enemy_info.rush_target_angle",
+       "label": "冲锋锁定角度",
+       "kind": "angle",
+       "value": 120,
+       "key": "rush_target_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "enemy_info.rush_time",
+       "label": "冲锋持续时间",
+       "kind": "time",
+       "value": 6,
+       "key": "rush_time"
+      },
+      {
+       "path": "enemy_info.rush_turn_speed",
+       "label": "冲锋转向速度",
+       "kind": "mult",
+       "value": 0.4,
+       "key": "rush_turn_speed"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "bug_warrior": {
+   "zh": "武斗虫",
+   "en": "Warrior",
+   "boss": false,
+   "race": "虫族",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 270,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 150,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 25,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution",
+       "label": "重伤阈值",
+       "kind": "mult",
+       "value": 50,
+       "key": "health_info.constitution"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 3,
+       "key": "health_info.constitution_decay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 2.75,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 2.75,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 0.7,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.005,
+       "key": "turn_speed"
+      },
+      {
+       "path": "enemy_info.wounded_movement_speed",
+       "label": "负伤移动速度（米/秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "wounded_movement_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 45,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.2,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.2,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "bug_warrior_commander": {
+   "zh": "虫族指挥官",
+   "en": "Brood Commander",
+   "boss": false,
+   "race": "虫族",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 1600,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 300,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 45,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution",
+       "label": "重伤阈值",
+       "kind": "mult",
+       "value": 1000,
+       "key": "health_info.constitution"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 0.7,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.05,
+       "key": "turn_speed"
+      },
+      {
+       "path": "enemy_info.wounded_movement_speed",
+       "label": "负伤移动速度（米/秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "wounded_movement_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 65,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.4,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.3,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "bug_warrior_elite": {
+   "zh": "精英部队",
+   "en": "Elite",
+   "boss": false,
+   "race": "虫族",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 400,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 250,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 35,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution",
+       "label": "重伤阈值",
+       "kind": "mult",
+       "value": 100,
+       "key": "health_info.constitution"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 6,
+       "key": "health_info.constitution_decay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 2.75,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 2.75,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 0.7,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.005,
+       "key": "turn_speed"
+      },
+      {
+       "path": "enemy_info.wounded_movement_speed",
+       "label": "负伤移动速度（米/秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "wounded_movement_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 55,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.2,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.2,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "cyborg_berserker": {
+   "zh": "狂暴者",
+   "en": "Berserker",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 300,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 200,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 15,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution",
+       "label": "重伤阈值",
+       "kind": "mult",
+       "value": 500,
+       "key": "health_info.constitution"
+      },
+      {
+       "path": "damage_zones.1.armor_max",
+       "label": "正面护甲",
+       "kind": "mult",
+       "value": 0,
+       "key": "damage_zones.1.armor_max"
+      },
+      {
+       "path": "damage_zones.1.armor_min",
+       "label": "正面最低护甲",
+       "kind": "mult",
+       "value": 0,
+       "key": "damage_zones.1.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 4.25,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 3,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.65,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "turn_speed"
+      },
+      {
+       "path": "enemy_info.wounded_movement_speed",
+       "label": "负伤移动速度（米/秒）",
+       "kind": "mult",
+       "value": 1.25,
+       "key": "wounded_movement_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.attack_angle",
+       "label": "攻击角度",
+       "kind": "angle",
+       "value": 40,
+       "key": "attack_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 50,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.3,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.3,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": true,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "cyborg_berserker_elite": {
+   "zh": "屠夫",
+   "en": "Butcher",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 3500,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 25,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 25,
+       "key": "health_info.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 3,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 3,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.65,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.attack_angle",
+       "label": "攻击角度",
+       "kind": "angle",
+       "value": 40,
+       "key": "attack_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 50,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.3,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.3,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": true,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "cyborg_boss": {
+   "zh": "攻城机甲",
+   "en": "SiegeMech",
+   "boss": true,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 300000,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 1500,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 170,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 2500,
+       "key": "health_info.constitution_decay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 90,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 3.25,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 0,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 4,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.8,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.continuous_melee_interval",
+       "label": "连续近战间隔",
+       "kind": "time",
+       "value": 0.2,
+       "key": "continuous_melee_interval"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.explosive_info.center_power",
+       "label": "判定中心伤害",
+       "kind": "mult",
+       "value": 350,
+       "key": "melee_info.explosive_info.center_power"
+      },
+      {
+       "path": "melee_info.explosive_info.center_radius",
+       "label": "判定中心半径（米）",
+       "kind": "mult",
+       "value": 3.4,
+       "key": "melee_info.explosive_info.center_radius"
+      },
+      {
+       "path": "melee_info.explosive_info.blast_power",
+       "label": "判定外圈伤害",
+       "kind": "mult",
+       "value": 0,
+       "key": "melee_info.explosive_info.blast_power"
+      },
+      {
+       "path": "melee_info.explosive_info.blast_radius",
+       "label": "判定外圈半径（米）",
+       "kind": "mult",
+       "value": 3.4,
+       "key": "melee_info.explosive_info.blast_radius"
+      },
+      {
+       "path": "melee_info.explosive_info.force",
+       "label": "击退力度",
+       "kind": "mult",
+       "value": 10,
+       "key": "melee_info.explosive_info.force"
+      }
+     ]
+    },
+    {
+     "title": "冲锋",
+     "rows": [
+      {
+       "path": "enemy_info.rush_angle_requirement",
+       "label": "冲锋角度条件",
+       "kind": "angle",
+       "value": 45,
+       "key": "rush_angle_requirement",
+       "unit": "deg"
+      },
+      {
+       "path": "enemy_info.rush_cooldown",
+       "label": "冲锋冷却",
+       "kind": "time",
+       "value": 3,
+       "key": "rush_cooldown"
+      },
+      {
+       "path": "enemy_info.rush_distance_requirement.1",
+       "label": "冲锋距离条件（米）",
+       "kind": "mult",
+       "value": 0,
+       "key": "rush_distance_requirement"
+      },
+      {
+       "path": "enemy_info.rush_melee_interval",
+       "label": "冲撞判定间隔",
+       "kind": "time",
+       "value": 0.2,
+       "key": "rush_melee_interval"
+      },
+      {
+       "path": "enemy_info.rush_movement_speed",
+       "label": "冲锋速度（米/秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "rush_movement_speed"
+      },
+      {
+       "path": "enemy_info.rush_stop_obstacle_distance",
+       "label": "遇障停止距离（米）",
+       "kind": "mult",
+       "value": 8,
+       "key": "rush_stop_obstacle_distance"
+      },
+      {
+       "path": "enemy_info.rush_time",
+       "label": "冲锋持续时间",
+       "kind": "time",
+       "value": 5,
+       "key": "rush_time"
+      }
+     ]
+    },
+    {
+     "title": "闪避",
+     "rows": [
+      {
+       "path": "enemy_info.avoid_distance_max",
+       "label": "闪避最远位移（米）",
+       "kind": "mult",
+       "value": 16,
+       "key": "avoid_distance_max"
+      },
+      {
+       "path": "enemy_info.avoid_distance_min",
+       "label": "闪避最近位移（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "avoid_distance_min"
+      },
+      {
+       "path": "enemy_info.avoid_hp_diff",
+       "label": "闪避触发失血量",
+       "kind": "mult",
+       "value": 2500,
+       "key": "avoid_hp_diff"
+      },
+      {
+       "path": "enemy_info.avoid_leave_distance",
+       "label": "闪避脱离距离（米）",
+       "kind": "mult",
+       "value": 5,
+       "key": "avoid_leave_distance"
+      },
+      {
+       "path": "enemy_info.avoid_time",
+       "label": "闪避持续时间",
+       "kind": "time",
+       "value": 4,
+       "key": "avoid_time"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "cyborg_dog": {
+   "zh": "猎犬",
+   "en": "Hound",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 200,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 30,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 0,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "health_info.constitution_decay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 3,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 13,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.06,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.attack_angle",
+       "label": "攻击角度",
+       "kind": "angle",
+       "value": 50,
+       "key": "attack_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "enemy_info.attack_range",
+       "label": "攻击距离（米）",
+       "kind": "mult",
+       "value": 0.5,
+       "key": "attack_range"
+      },
+      {
+       "path": "enemy_info.attack_speed",
+       "label": "攻击接近速度（米/秒）",
+       "kind": "mult",
+       "value": 4,
+       "key": "attack_speed"
+      },
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 10,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 0.75,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "冲锋",
+     "rows": [
+      {
+       "path": "enemy_info.rush_attack_duration",
+       "label": "冲锋攻击持续时间",
+       "kind": "time",
+       "value": 0.4,
+       "key": "rush_attack_duration"
+      },
+      {
+       "path": "enemy_info.rush_cooldown",
+       "label": "冲锋冷却",
+       "kind": "time",
+       "value": 1,
+       "key": "rush_cooldown"
+      },
+      {
+       "path": "enemy_info.rush_distance_max",
+       "label": "冲锋最远距离（米）",
+       "kind": "mult",
+       "value": 30,
+       "key": "rush_distance_max"
+      },
+      {
+       "path": "enemy_info.rush_distance_min",
+       "label": "冲锋最近距离（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "rush_distance_min"
+      },
+      {
+       "path": "enemy_info.rush_hit_obstacle_range",
+       "label": "撞墙判定距离（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "rush_hit_obstacle_range"
+      },
+      {
+       "path": "enemy_info.rush_hit_obstacle_side_range",
+       "label": "侧向撞墙判定距离（米）",
+       "kind": "mult",
+       "value": 0.8,
+       "key": "rush_hit_obstacle_side_range"
+      },
+      {
+       "path": "enemy_info.rush_hit_obstacle_stun_effect",
+       "label": "撞墙眩晕",
+       "kind": "bool",
+       "value": "dog_hit_obstacle_stun",
+       "key": "rush_hit_obstacle_stun_effect"
+      },
+      {
+       "path": "enemy_info.rush_leave_time",
+       "label": "冲锋减速时间",
+       "kind": "time",
+       "value": 0.5,
+       "key": "rush_leave_time"
+      },
+      {
+       "path": "enemy_info.rush_movement_speed",
+       "label": "冲锋速度（米/秒）",
+       "kind": "mult",
+       "value": 8,
+       "key": "rush_movement_speed"
+      },
+      {
+       "path": "enemy_info.rush_start_cooldown",
+       "label": "首次冲锋冷却",
+       "kind": "time",
+       "value": 0,
+       "key": "rush_start_cooldown"
+      },
+      {
+       "path": "enemy_info.rush_startup_time",
+       "label": "冲锋蓄力时间",
+       "kind": "time",
+       "value": 0.2,
+       "key": "rush_startup_time"
+      },
+      {
+       "path": "enemy_info.rush_target_angle",
+       "label": "冲锋锁定角度",
+       "kind": "angle",
+       "value": 120,
+       "key": "rush_target_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "enemy_info.rush_time",
+       "label": "冲锋持续时间",
+       "kind": "time",
+       "value": 6,
+       "key": "rush_time"
+      },
+      {
+       "path": "enemy_info.rush_turn_speed",
+       "label": "冲锋转向速度",
+       "kind": "mult",
+       "value": 0.05,
+       "key": "rush_turn_speed"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "cyborg_hulk": {
+   "zh": "巨型者",
+   "en": "Hulk",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 2000,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 600,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 200,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution",
+       "label": "重伤阈值",
+       "kind": "mult",
+       "value": 400,
+       "key": "health_info.constitution"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 100,
+       "key": "health_info.constitution_decay"
+      },
+      {
+       "path": "damage_zones.1.armor_max",
+       "label": "盾护甲",
+       "kind": "mult",
+       "value": 5000,
+       "key": "damage_zones.1.armor_max"
+      },
+      {
+       "path": "damage_zones.1.armor_min",
+       "label": "盾最低护甲",
+       "kind": "mult",
+       "value": 5000,
+       "key": "damage_zones.1.armor_min"
+      },
+      {
+       "path": "damage_zones.2.armor_max",
+       "label": "手里的盾护甲",
+       "kind": "mult",
+       "value": 5000,
+       "key": "damage_zones.2.armor_max"
+      },
+      {
+       "path": "damage_zones.2.armor_min",
+       "label": "手里的盾最低护甲",
+       "kind": "mult",
+       "value": 5000,
+       "key": "damage_zones.2.armor_min"
+      },
+      {
+       "path": "damage_zones.3.armor_max",
+       "label": "手里的盾（第3块）护甲",
+       "kind": "mult",
+       "value": 45,
+       "key": "damage_zones.3.armor_max"
+      },
+      {
+       "path": "damage_zones.3.armor_min",
+       "label": "手里的盾（第3块）最低护甲",
+       "kind": "mult",
+       "value": 45,
+       "key": "damage_zones.3.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 90,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 3,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.66,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.2,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 100,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.25,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.25,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "射击",
+     "rows": [
+      {
+       "path": "enemy_info.aim_turn_speed",
+       "label": "瞄准转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "aim_turn_speed"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_max",
+       "label": "开火最远距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "attack_range_shoot_max"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_min",
+       "label": "开火最近距离（米）",
+       "kind": "mult",
+       "value": 4,
+       "key": "attack_range_shoot_min"
+      },
+      {
+       "path": "enemy_info.enter_shoot_time",
+       "label": "进入开火时间",
+       "kind": "time",
+       "value": 0.5,
+       "key": "enter_shoot_time"
+      },
+      {
+       "path": "enemy_info.player_within_angle_threshold",
+       "label": "开火角度",
+       "kind": "angle",
+       "value": 120,
+       "key": "player_within_angle_threshold",
+       "unit": "deg"
+      },
+      {
+       "path": "enemy_info.shoot_cooldown",
+       "label": "开火间隔",
+       "kind": "time",
+       "value": 1,
+       "key": "shoot_cooldown"
+      },
+      {
+       "path": "enemy_info.stop_shoot_time",
+       "label": "停火时间",
+       "kind": "time",
+       "value": 0.5,
+       "key": "stop_shoot_time"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 50,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "value": 1800,
+       "key": "weapon_info.firerate"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0.06981317007977318,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "weapon_info.attributes.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "举盾",
+     "rows": [
+      {
+       "path": "enemy_info.shield_players_within_angle",
+       "label": "举盾角度",
+       "kind": "angle",
+       "value": 60,
+       "key": "shield_players_within_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "enemy_info.shield_time",
+       "label": "举盾时间",
+       "kind": "time",
+       "value": 1,
+       "key": "shield_time"
+      },
+      {
+       "path": "enemy_info.unshield_damage_taken",
+       "label": "破盾伤害",
+       "kind": "mult",
+       "value": 50,
+       "key": "unshield_damage_taken"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "cyborg_hulk_assassinate": {
+   "zh": "首领",
+   "en": "Warlord",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 3000,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 600,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 300,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution",
+       "label": "重伤阈值",
+       "kind": "mult",
+       "value": 1000,
+       "key": "health_info.constitution"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 250,
+       "key": "health_info.constitution_decay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 90,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 3.25,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 3.25,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.66,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.2,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 250,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.25,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.25,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "射击",
+     "rows": [
+      {
+       "path": "enemy_info.aim_turn_speed",
+       "label": "瞄准转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "aim_turn_speed"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_max",
+       "label": "开火最远距离（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "attack_range_shoot_max"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_min",
+       "label": "开火最近距离（米）",
+       "kind": "mult",
+       "value": 4,
+       "key": "attack_range_shoot_min"
+      },
+      {
+       "path": "enemy_info.enter_shoot_time",
+       "label": "进入开火时间",
+       "kind": "time",
+       "value": 1,
+       "key": "enter_shoot_time"
+      },
+      {
+       "path": "enemy_info.player_within_angle_threshold",
+       "label": "开火角度",
+       "kind": "angle",
+       "value": 10,
+       "key": "player_within_angle_threshold",
+       "unit": "deg"
+      },
+      {
+       "path": "enemy_info.shoot_cooldown",
+       "label": "开火间隔",
+       "kind": "time",
+       "value": 1.5,
+       "key": "shoot_cooldown"
+      },
+      {
+       "path": "enemy_info.stop_shoot_time",
+       "label": "停火时间",
+       "kind": "time",
+       "value": 0.25,
+       "key": "stop_shoot_time"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 0,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "value": 200,
+       "key": "weapon_info.firerate"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0.08726646259971647,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "weapon_info.attributes.armorpiercing"
+      },
+      {
+       "path": "weapon_info.attributes.explosive",
+       "label": "爆炸弹药",
+       "kind": "bool",
+       "value": true,
+       "key": "weapon_info.attributes.explosive"
+      },
+      {
+       "path": "explosive_info.center_power",
+       "label": "爆炸中心伤害",
+       "kind": "mult",
+       "value": 50,
+       "key": "explosive_info.center_power"
+      },
+      {
+       "path": "explosive_info.center_radius",
+       "label": "爆炸中心半径（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "explosive_info.center_radius"
+      },
+      {
+       "path": "explosive_info.blast_power",
+       "label": "爆炸外圈伤害",
+       "kind": "mult",
+       "value": 50,
+       "key": "explosive_info.blast_power"
+      },
+      {
+       "path": "explosive_info.blast_radius",
+       "label": "爆炸外圈半径（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "explosive_info.blast_radius"
+      },
+      {
+       "path": "explosive_info.force",
+       "label": "爆炸冲击力",
+       "kind": "mult",
+       "value": 100,
+       "key": "explosive_info.force"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "cyborg_ifv": {
+   "zh": "步兵战车",
+   "en": "Infantry Fighting Vehicle",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 160,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 2250,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 2000,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution",
+       "label": "重伤阈值",
+       "kind": "mult",
+       "value": 1000,
+       "key": "health_info.constitution"
+      },
+      {
+       "path": "damage_zones.2.armor_max",
+       "label": "右侧护甲",
+       "kind": "mult",
+       "value": 2250,
+       "key": "damage_zones.2.armor_max"
+      },
+      {
+       "path": "damage_zones.2.armor_min",
+       "label": "右侧最低护甲",
+       "kind": "mult",
+       "value": 2000,
+       "key": "damage_zones.2.armor_min"
+      },
+      {
+       "path": "damage_zones.3.armor_max",
+       "label": "左侧护甲",
+       "kind": "mult",
+       "value": 2250,
+       "key": "damage_zones.3.armor_max"
+      },
+      {
+       "path": "damage_zones.3.armor_min",
+       "label": "左侧最低护甲",
+       "kind": "mult",
+       "value": 2000,
+       "key": "damage_zones.3.armor_min"
+      },
+      {
+       "path": "damage_zones.4.armor_max",
+       "label": "背面护甲",
+       "kind": "mult",
+       "value": 1250,
+       "key": "damage_zones.4.armor_max"
+      },
+      {
+       "path": "damage_zones.4.armor_min",
+       "label": "背面最低护甲",
+       "kind": "mult",
+       "value": 1000,
+       "key": "damage_zones.4.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 15,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 4,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.3,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.5,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "警报",
+     "rows": [
+      {
+       "path": "enemy_info.encounter_countdown_time",
+       "label": "呼叫增援倒计时",
+       "kind": "time",
+       "value": 0.1,
+       "key": "encounter_countdown_time"
+      }
+     ]
+    },
+    {
+     "title": "碾压",
+     "rows": [
+      {
+       "path": "enemy_info.back_distance",
+       "label": "倒车距离（米）",
+       "kind": "mult",
+       "value": 8,
+       "key": "back_distance"
+      },
+      {
+       "path": "enemy_info.rush_distance",
+       "label": "碾压触发距离（米）",
+       "kind": "mult",
+       "value": 7,
+       "key": "rush_distance"
+      },
+      {
+       "path": "enemy_info.rush_max_angle_to_target",
+       "label": "碾压触发角度",
+       "kind": "angle",
+       "value": 0.7853981633974483,
+       "key": "rush_max_angle_to_target",
+       "unit": "rad"
+      },
+      {
+       "path": "enemy_info.rush_melee_interval",
+       "label": "冲撞判定间隔",
+       "kind": "time",
+       "value": 0.2,
+       "key": "rush_melee_interval"
+      },
+      {
+       "path": "enemy_info.rush_movement_speed",
+       "label": "碾压速度（米/秒）",
+       "kind": "mult",
+       "value": 4.5,
+       "key": "rush_movement_speed"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "碾压判定前移（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.explosive_info.center_power",
+       "label": "判定中心伤害",
+       "kind": "mult",
+       "value": 350,
+       "key": "melee_info.explosive_info.center_power"
+      },
+      {
+       "path": "melee_info.explosive_info.center_radius",
+       "label": "判定中心半径（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "melee_info.explosive_info.center_radius"
+      },
+      {
+       "path": "melee_info.explosive_info.blast_power",
+       "label": "判定外圈伤害",
+       "kind": "mult",
+       "value": 0,
+       "key": "melee_info.explosive_info.blast_power"
+      },
+      {
+       "path": "melee_info.explosive_info.blast_radius",
+       "label": "判定外圈半径（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "melee_info.explosive_info.blast_radius"
+      },
+      {
+       "path": "melee_info.explosive_info.force",
+       "label": "击退力度",
+       "kind": "mult",
+       "value": 10,
+       "key": "melee_info.explosive_info.force"
+      }
+     ]
+    },
+    {
+     "title": "射击",
+     "rows": [
+      {
+       "path": "enemy_info.attack_range_shoot_max",
+       "label": "开火最远距离（米）",
+       "kind": "mult",
+       "value": 16,
+       "key": "attack_range_shoot_max"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_min",
+       "label": "开火最近距离（米）",
+       "kind": "mult",
+       "value": 6,
+       "key": "attack_range_shoot_min"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_preferred",
+       "label": "理想交战距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "attack_range_shoot_preferred"
+      },
+      {
+       "path": "enemy_info.shoot_cooldown_time",
+       "label": "开火间隔",
+       "kind": "time",
+       "value": 8,
+       "key": "shoot_cooldown_time"
+      },
+      {
+       "path": "enemy_info.turret_turn_cooldown",
+       "label": "炮塔转向间隔",
+       "kind": "time",
+       "value": 1,
+       "key": "turret_turn_cooldown"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 300,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.power_crit",
+       "label": "武器要害伤害",
+       "kind": "mult",
+       "value": 350,
+       "key": "weapon_info.power_crit"
+      },
+      {
+       "path": "weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "value": 450,
+       "key": "weapon_info.firerate"
+      },
+      {
+       "path": "weapon_info.range",
+       "label": "武器射程（米）",
+       "kind": "mult",
+       "value": 150,
+       "key": "weapon_info.range"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "weapon_info.attributes.armorpiercing"
+      },
+      {
+       "path": "weapon_info.attributes.explosive",
+       "label": "爆炸弹药",
+       "kind": "bool",
+       "value": true,
+       "key": "weapon_info.attributes.explosive"
+      },
+      {
+       "path": "explosive_info.center_power",
+       "label": "爆炸中心伤害",
+       "kind": "mult",
+       "value": 50,
+       "key": "explosive_info.center_power"
+      },
+      {
+       "path": "explosive_info.center_radius",
+       "label": "爆炸中心半径（米）",
+       "kind": "mult",
+       "value": 0.5,
+       "key": "explosive_info.center_radius"
+      },
+      {
+       "path": "explosive_info.blast_power",
+       "label": "爆炸外圈伤害",
+       "kind": "mult",
+       "value": 100,
+       "key": "explosive_info.blast_power"
+      },
+      {
+       "path": "explosive_info.blast_radius",
+       "label": "爆炸外圈半径（米）",
+       "kind": "mult",
+       "value": 4.5,
+       "key": "explosive_info.blast_radius"
+      },
+      {
+       "path": "explosive_info.force",
+       "label": "爆炸冲击力",
+       "kind": "mult",
+       "value": 600,
+       "key": "explosive_info.force"
+      }
+     ]
+    },
+    {
+     "title": "投放 / 召唤",
+     "rows": [
+      {
+       "path": "enemy_info.spawn_amount",
+       "label": "每次投放数量",
+       "kind": "count",
+       "value": 3,
+       "key": "spawn_amount"
+      },
+      {
+       "path": "enemy_info.spawn_group_cooldown",
+       "label": "投放冷却",
+       "kind": "time",
+       "value": 15,
+       "key": "spawn_group_cooldown"
+      },
+      {
+       "path": "enemy_info.spawn_interval",
+       "label": "投放间隔",
+       "kind": "time",
+       "value": 1,
+       "key": "spawn_interval"
+      },
+      {
+       "path": "enemy_info.spawn_unit_path",
+       "label": "投放单位",
+       "kind": "unit",
+       "value": "characters/cyborg_initiate/cyborg_initiate_elite",
+       "key": "spawn_unit_path"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    "碾压：目标进入「碾压触发距离」且在车头「碾压触发角度」内时开始碾压，以「碾压速度」前冲；每隔「冲撞判定间隔」在车体前方（「碾压判定前移」处）做一次判定；目标拉开超过「开火最近距离」或前方 4 米有障碍即停止。",
+    "碾压伤害由「判定中心伤害 / 半径」「判定外圈伤害 / 半径」决定；设置里的「近战伤害」220 不被读取，不列。",
+    "设置里的冲锋蓄力时间（1 秒）、冲锋持续时间（2 秒）会读进来，但碾压过程不检查它们，改了没有效果，不列。",
+    "分区装甲：两侧 2250 / 2000、车尾 1250 / 1000，车头用「正面 / 背面装甲」。可以放出来（车头 / 侧面 / 车尾装甲）。"
+   ]
+  },
+  "cyborg_initiate": {
+   "zh": "初始者",
+   "en": "Initiate",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 75,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 45,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 0,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "health_info.constitution_decay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.downed_get_up_time",
+       "label": "倒地起身时间",
+       "kind": "time",
+       "value": 1.5,
+       "key": "downed_get_up_time"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 4,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 3.25,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 10,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "射击",
+     "rows": [
+      {
+       "path": "enemy_info.aim_turn_speed",
+       "label": "瞄准转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "aim_turn_speed"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_max",
+       "label": "开火最远距离（米）",
+       "kind": "mult",
+       "value": 9,
+       "key": "attack_range_shoot_max"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_min",
+       "label": "开火最近距离（米）",
+       "kind": "mult",
+       "value": 4,
+       "key": "attack_range_shoot_min"
+      },
+      {
+       "path": "enemy_info.shoot_cooldown",
+       "label": "开火间隔",
+       "kind": "time",
+       "value": 1.5,
+       "key": "shoot_cooldown"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 20,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "value": 450,
+       "key": "weapon_info.firerate"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0.12217304763960307,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "weapon_info.attributes.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "cyborg_initiate_elite": {
+   "zh": "畸形人",
+   "en": "Grotesque",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 450,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 40,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 25,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "health_info.constitution_decay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 4,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 4,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 30,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.2,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.2,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "cyborg_soldier": {
+   "zh": "生化兵",
+   "en": "Immolator",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 250,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 150,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 15,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 1,
+       "key": "health_info.constitution_decay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.downed_get_up_time",
+       "label": "倒地起身时间",
+       "kind": "time",
+       "value": 1.5,
+       "key": "downed_get_up_time"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 4,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 3.5,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 10,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "射击",
+     "rows": [
+      {
+       "path": "enemy_info.aim_turn_speed",
+       "label": "瞄准转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "aim_turn_speed"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_max",
+       "label": "开火最远距离（米）",
+       "kind": "mult",
+       "value": 4,
+       "key": "attack_range_shoot_max"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_min",
+       "label": "开火最近距离（米）",
+       "kind": "mult",
+       "value": 0.5,
+       "key": "attack_range_shoot_min"
+      },
+      {
+       "path": "enemy_info.shoot_cooldown",
+       "label": "开火间隔",
+       "kind": "time",
+       "value": 0.6,
+       "key": "shoot_cooldown"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 50,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "weapon_info.attributes.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "cyborg_soldier_cannon": {
+   "zh": "复合人",
+   "en": "Comrade",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 250,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 150,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 15,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 1,
+       "key": "health_info.constitution_decay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.downed_get_up_time",
+       "label": "倒地起身时间",
+       "kind": "time",
+       "value": 1.5,
+       "key": "downed_get_up_time"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 3.5,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 3,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 10,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "射击",
+     "rows": [
+      {
+       "path": "enemy_info.aim_time",
+       "label": "瞄准时间",
+       "kind": "time",
+       "value": 1,
+       "key": "aim_time"
+      },
+      {
+       "path": "enemy_info.aim_turn_speed",
+       "label": "瞄准转向速度",
+       "kind": "mult",
+       "value": 0.3,
+       "key": "aim_turn_speed"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_max",
+       "label": "开火最远距离（米）",
+       "kind": "mult",
+       "value": 8,
+       "key": "attack_range_shoot_max"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_min",
+       "label": "开火最近距离（米）",
+       "kind": "mult",
+       "value": 4,
+       "key": "attack_range_shoot_min"
+      },
+      {
+       "path": "enemy_info.shoot_cooldown",
+       "label": "开火间隔",
+       "kind": "time",
+       "value": 3,
+       "key": "shoot_cooldown"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 0,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "value": 30,
+       "key": "weapon_info.firerate"
+      },
+      {
+       "path": "weapon_info.range",
+       "label": "武器射程（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "weapon_info.range"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "weapon_info.attributes.armorpiercing"
+      },
+      {
+       "path": "weapon_info.attributes.explosive",
+       "label": "爆炸弹药",
+       "kind": "bool",
+       "value": true,
+       "key": "weapon_info.attributes.explosive"
+      },
+      {
+       "path": "explosive_info.center_power",
+       "label": "爆炸中心伤害",
+       "kind": "mult",
+       "value": 50,
+       "key": "explosive_info.center_power"
+      },
+      {
+       "path": "explosive_info.center_radius",
+       "label": "爆炸中心半径（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "explosive_info.center_radius"
+      },
+      {
+       "path": "explosive_info.blast_power",
+       "label": "爆炸外圈伤害",
+       "kind": "mult",
+       "value": 50,
+       "key": "explosive_info.blast_power"
+      },
+      {
+       "path": "explosive_info.blast_radius",
+       "label": "爆炸外圈半径（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "explosive_info.blast_radius"
+      },
+      {
+       "path": "explosive_info.force",
+       "label": "爆炸冲击力",
+       "kind": "mult",
+       "value": 150,
+       "key": "explosive_info.force"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "cyborg_soldier_grenadelauncher": {
+   "zh": "“班长”战士",
+   "en": "'Squadleader' Soldier",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 250,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 150,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 15,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 1,
+       "key": "health_info.constitution_decay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.downed_get_up_time",
+       "label": "倒地起身时间",
+       "kind": "time",
+       "value": 1.5,
+       "key": "downed_get_up_time"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 3.5,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 3.25,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.attack_angle",
+       "label": "攻击角度",
+       "kind": "angle",
+       "value": 10,
+       "key": "attack_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 10,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "投掷",
+     "rows": [
+      {
+       "path": "enemy_info.aim_time",
+       "label": "瞄准时间",
+       "kind": "time",
+       "value": 1.3,
+       "key": "aim_time"
+      },
+      {
+       "path": "enemy_info.aim_turn_speed",
+       "label": "瞄准转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "aim_turn_speed"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_max",
+       "label": "开火最远距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "attack_range_shoot_max"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_min",
+       "label": "开火最近距离（米）",
+       "kind": "mult",
+       "value": 6,
+       "key": "attack_range_shoot_min"
+      },
+      {
+       "path": "enemy_info.power",
+       "label": "投掷力度",
+       "kind": "mult",
+       "value": 1,
+       "key": "power"
+      },
+      {
+       "path": "enemy_info.projectile",
+       "label": "投掷物",
+       "kind": "unit",
+       "value": "characters/cyborg_soldier/cyborg_soldier_grenade",
+       "key": "projectile"
+      },
+      {
+       "path": "enemy_info.shoot_cooldown",
+       "label": "开火间隔",
+       "kind": "time",
+       "value": 4,
+       "key": "shoot_cooldown"
+      },
+      {
+       "path": "enemy_info.z_direction",
+       "label": "投掷仰角",
+       "kind": "elev",
+       "value": 0.8726646259971648,
+       "key": "z_direction"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 40,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "value": 30,
+       "key": "weapon_info.firerate"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "weapon_info.attributes.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    "投掷规则同军团士兵。"
+   ]
+  },
+  "cyborg_soldier_shield": {
+   "zh": "军团士兵",
+   "en": "Legionnaire",
+   "boss": false,
+   "race": "生化人",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 350,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 45,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 20,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 1,
+       "key": "health_info.constitution_decay"
+      },
+      {
+       "path": "damage_zones.1.armor_max",
+       "label": "盾护甲",
+       "kind": "mult",
+       "value": 4000,
+       "key": "damage_zones.1.armor_max"
+      },
+      {
+       "path": "damage_zones.1.armor_min",
+       "label": "盾最低护甲",
+       "kind": "mult",
+       "value": 1000,
+       "key": "damage_zones.1.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.downed_get_up_time",
+       "label": "倒地起身时间",
+       "kind": "time",
+       "value": 1.5,
+       "key": "downed_get_up_time"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 4.5,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 4.25,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.attack_angle",
+       "label": "攻击角度",
+       "kind": "angle",
+       "value": 10,
+       "key": "attack_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 10,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "投掷",
+     "rows": [
+      {
+       "path": "enemy_info.aim_time",
+       "label": "瞄准时间",
+       "kind": "time",
+       "value": 1.3,
+       "key": "aim_time"
+      },
+      {
+       "path": "enemy_info.aim_turn_speed",
+       "label": "瞄准转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "aim_turn_speed"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_max",
+       "label": "开火最远距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "attack_range_shoot_max"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_min",
+       "label": "开火最近距离（米）",
+       "kind": "mult",
+       "value": 6,
+       "key": "attack_range_shoot_min"
+      },
+      {
+       "path": "enemy_info.power",
+       "label": "投掷力度",
+       "kind": "mult",
+       "value": 1,
+       "key": "power"
+      },
+      {
+       "path": "enemy_info.projectile",
+       "label": "投掷物",
+       "kind": "unit",
+       "value": "characters/cyborg_soldier/cyborg_soldier_grenade",
+       "key": "projectile"
+      },
+      {
+       "path": "enemy_info.shoot_cooldown",
+       "label": "开火间隔",
+       "kind": "time",
+       "value": 4,
+       "key": "shoot_cooldown"
+      },
+      {
+       "path": "enemy_info.z_direction",
+       "label": "投掷仰角",
+       "kind": "elev",
+       "value": 0.8726646259971648,
+       "key": "z_direction"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 40,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "value": 30,
+       "key": "weapon_info.firerate"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "weapon_info.attributes.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": [
+    "投掷：只在目标处于「开火最近 ~ 最远距离」（6～10 米）时投掷；投掷距离 = 投掷力度 × 目标距离 × 0.08，再换算到榴弹自身的最近 / 最远抛距。想让它远距离把雷扔到人身边：调大「开火最远距离」，再调「投掷力度」。"
+   ]
+  },
+  "illuminate_apprentice": {
+   "zh": "光能学徒",
+   "en": "Apprentice",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 300,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 50,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 15,
+       "key": "health_info.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 3.5,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.attack_angle",
+       "label": "攻击角度",
+       "kind": "angle",
+       "value": 10,
+       "key": "attack_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 22,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.5,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.5,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": true,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "射击",
+     "rows": [
+      {
+       "path": "enemy_info.attack_range_shoot_max",
+       "label": "开火最远距离（米）",
+       "kind": "mult",
+       "value": 6,
+       "key": "attack_range_shoot_max"
+      },
+      {
+       "path": "enemy_info.attack_range_shoot_min",
+       "label": "开火最近距离（米）",
+       "kind": "mult",
+       "value": 3,
+       "key": "attack_range_shoot_min"
+      },
+      {
+       "path": "enemy_info.shoot_cooldown",
+       "label": "开火间隔",
+       "kind": "time",
+       "value": 10,
+       "key": "shoot_cooldown"
+      },
+      {
+       "path": "enemy_info.shoot_startup",
+       "label": "开火前摇",
+       "kind": "time",
+       "value": 1,
+       "key": "shoot_startup"
+      },
+      {
+       "path": "enemy_info.shoot_time",
+       "label": "持续开火时间",
+       "kind": "time",
+       "value": 1.67,
+       "key": "shoot_time"
+      },
+      {
+       "path": "enemy_info.shoot_unit",
+       "label": "发射物",
+       "kind": "unit",
+       "value": "characters/illuminate_apprentice/illuminate_apprentice_bomb",
+       "key": "shoot_unit"
+      }
+     ]
+    },
+    {
+     "title": "跳跃",
+     "rows": [
+      {
+       "path": "enemy_info.jump_charge_time",
+       "label": "跳跃蓄力时间",
+       "kind": "time",
+       "value": 0.25,
+       "key": "jump_charge_time"
+      },
+      {
+       "path": "enemy_info.jump_cooldown",
+       "label": "跳跃冷却",
+       "kind": "time",
+       "value": 2,
+       "key": "jump_cooldown"
+      },
+      {
+       "path": "enemy_info.jump_duration",
+       "label": "跳跃滞空时间",
+       "kind": "time",
+       "value": 0.4,
+       "key": "jump_duration"
+      },
+      {
+       "path": "enemy_info.jump_range_max",
+       "label": "跳跃最远距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "jump_range_max"
+      },
+      {
+       "path": "enemy_info.jump_range_min",
+       "label": "跳跃最近距离（米）",
+       "kind": "mult",
+       "value": 6,
+       "key": "jump_range_min"
+      },
+      {
+       "path": "enemy_info.jump_recovery",
+       "label": "落地硬直",
+       "kind": "time",
+       "value": 0.1,
+       "key": "jump_recovery"
+      }
+     ]
+    },
+    {
+     "title": "闪避",
+     "rows": [
+      {
+       "path": "enemy_info.avoid_charge_time",
+       "label": "闪避蓄力时间",
+       "kind": "time",
+       "value": 0.25,
+       "key": "avoid_charge_time"
+      },
+      {
+       "path": "enemy_info.avoid_cooldown",
+       "label": "闪避冷却",
+       "kind": "time",
+       "value": 2,
+       "key": "avoid_cooldown"
+      },
+      {
+       "path": "enemy_info.avoid_range_max",
+       "label": "闪避触发最远距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "avoid_range_max"
+      },
+      {
+       "path": "enemy_info.avoid_recovery",
+       "label": "闪避硬直",
+       "kind": "time",
+       "value": 0.1,
+       "key": "avoid_recovery"
+      },
+      {
+       "path": "enemy_info.avoid_speed",
+       "label": "闪避速度（米/秒）",
+       "kind": "mult",
+       "value": 20,
+       "key": "avoid_speed"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_boss": {
+   "zh": "巨眼",
+   "en": "Great Eye",
+   "boss": true,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 250000,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 250,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 45,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "health_info.constitution_decay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.idle_wait_time_max",
+       "label": "待机时间上限",
+       "kind": "time",
+       "value": 1,
+       "key": "idle_wait_time_max"
+      },
+      {
+       "path": "enemy_info.idle_wait_time_min",
+       "label": "待机时间下限",
+       "kind": "time",
+       "value": 0.5,
+       "key": "idle_wait_time_min"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 2,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.movement_speed_close_to_target",
+       "label": "近距移动速度（米/秒）",
+       "kind": "mult",
+       "value": 0.25,
+       "key": "movement_speed_close_to_target"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 13,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 2,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "turn_speed"
+      },
+      {
+       "path": "enemy_info.wanted_distance_to_target",
+       "label": "保持距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "wanted_distance_to_target"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 3500,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.power_crit",
+       "label": "武器要害伤害",
+       "kind": "mult",
+       "value": 3500,
+       "key": "weapon_info.power_crit"
+      },
+      {
+       "path": "weapon_info.range",
+       "label": "武器射程（米）",
+       "kind": "mult",
+       "value": 50,
+       "key": "weapon_info.range"
+      },
+      {
+       "path": "weapon_info.magazines",
+       "label": "弹匣数",
+       "kind": "count",
+       "value": 1,
+       "key": "weapon_info.magazines"
+      },
+      {
+       "path": "weapon_info.reload_duration",
+       "label": "装填时间",
+       "kind": "time",
+       "value": 6,
+       "key": "weapon_info.reload_duration"
+      },
+      {
+       "path": "weapon_info.heat_increase",
+       "label": "每发热量",
+       "kind": "mult",
+       "value": 0,
+       "key": "weapon_info.heat_increase"
+      },
+      {
+       "path": "weapon_info.heat_dissipation_per_second",
+       "label": "散热速度（每秒）",
+       "kind": "mult",
+       "value": 1,
+       "key": "weapon_info.heat_dissipation_per_second"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "weapon_info.attributes.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "闪避",
+     "rows": [
+      {
+       "path": "enemy_info.avoid_charge_time",
+       "label": "闪避蓄力时间",
+       "kind": "time",
+       "value": 0.25,
+       "key": "avoid_charge_time"
+      },
+      {
+       "path": "enemy_info.avoid_cooldown",
+       "label": "闪避冷却",
+       "kind": "time",
+       "value": 3,
+       "key": "avoid_cooldown"
+      },
+      {
+       "path": "enemy_info.avoid_hp_diff",
+       "label": "闪避触发失血量",
+       "kind": "mult",
+       "value": 500,
+       "key": "avoid_hp_diff"
+      },
+      {
+       "path": "enemy_info.avoid_range_max",
+       "label": "闪避触发最远距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "avoid_range_max"
+      },
+      {
+       "path": "enemy_info.avoid_recovery",
+       "label": "闪避硬直",
+       "kind": "time",
+       "value": 0.1,
+       "key": "avoid_recovery"
+      },
+      {
+       "path": "enemy_info.avoid_speed",
+       "label": "闪避速度（米/秒）",
+       "kind": "mult",
+       "value": 20,
+       "key": "avoid_speed"
+      }
+     ]
+    },
+    {
+     "title": "投放 / 召唤",
+     "rows": [
+      {
+       "path": "enemy_info.add_spawns_attack_animation_delay",
+       "label": "召唤援军动作延迟",
+       "kind": "time",
+       "value": 0,
+       "key": "add_spawns_attack_animation_delay"
+      },
+      {
+       "path": "enemy_info.add_spawns_attack_delay",
+       "label": "召唤援军前摇",
+       "kind": "time",
+       "value": 0,
+       "key": "add_spawns_attack_delay"
+      },
+      {
+       "path": "enemy_info.add_spawns_attack_duration",
+       "label": "召唤援军持续时间",
+       "kind": "time",
+       "value": 0,
+       "key": "add_spawns_attack_duration"
+      },
+      {
+       "path": "enemy_info.add_spawns_cooldown",
+       "label": "召唤援军冷却",
+       "kind": "time",
+       "value": 10,
+       "key": "add_spawns_cooldown"
+      },
+      {
+       "path": "enemy_info.add_spawns_groups.1.group.1",
+       "label": "援军编组",
+       "kind": "text",
+       "value": "characters/illuminate_tripod/illuminate_tripod_elite",
+       "key": "add_spawns_groups"
+      }
+     ]
+    },
+    {
+     "title": "远程技能",
+     "rows": [
+      {
+       "path": "enemy_info.confuse_bombs_angle_spread",
+       "label": "干扰弹散布",
+       "kind": "angle",
+       "value": 2.0943951023931953,
+       "key": "confuse_bombs_angle_spread",
+       "unit": "rad"
+      },
+      {
+       "path": "enemy_info.confuse_bombs_attack_delay",
+       "label": "干扰弹前摇",
+       "kind": "time",
+       "value": 1,
+       "key": "confuse_bombs_attack_delay"
+      },
+      {
+       "path": "enemy_info.confuse_bombs_num_waves",
+       "label": "干扰弹波数",
+       "kind": "count",
+       "value": 2,
+       "key": "confuse_bombs_num_waves"
+      },
+      {
+       "path": "enemy_info.confuse_bombs_per_wave",
+       "label": "干扰弹每波数量",
+       "kind": "count",
+       "value": 3,
+       "key": "confuse_bombs_per_wave"
+      },
+      {
+       "path": "enemy_info.confuse_bombs_time_between_waves",
+       "label": "干扰弹波间隔",
+       "kind": "time",
+       "value": 2,
+       "key": "confuse_bombs_time_between_waves"
+      },
+      {
+       "path": "enemy_info.death_bombs_angle_spread",
+       "label": "湮灭弹散布",
+       "kind": "angle",
+       "value": 2.0943951023931953,
+       "key": "death_bombs_angle_spread",
+       "unit": "rad"
+      },
+      {
+       "path": "enemy_info.death_bombs_num_waves",
+       "label": "湮灭弹波数",
+       "kind": "count",
+       "value": 2,
+       "key": "death_bombs_num_waves"
+      },
+      {
+       "path": "enemy_info.death_bombs_per_wave",
+       "label": "湮灭弹每波数量",
+       "kind": "count",
+       "value": 3,
+       "key": "death_bombs_per_wave"
+      },
+      {
+       "path": "enemy_info.death_bombs_time_between_waves",
+       "label": "湮灭弹波间隔",
+       "kind": "time",
+       "value": 2,
+       "key": "death_bombs_time_between_waves"
+      },
+      {
+       "path": "enemy_info.laser_attack_delay",
+       "label": "激光前摇",
+       "kind": "time",
+       "value": 0.5,
+       "key": "laser_attack_delay"
+      },
+      {
+       "path": "enemy_info.laser_attack_duration",
+       "label": "激光持续时间",
+       "kind": "time",
+       "value": 3,
+       "key": "laser_attack_duration"
+      },
+      {
+       "path": "enemy_info.laser_initial_turn_diff_max",
+       "label": "激光起始偏角上限",
+       "kind": "angle",
+       "value": 0.3,
+       "key": "laser_initial_turn_diff_max",
+       "unit": "rad"
+      },
+      {
+       "path": "enemy_info.laser_initial_turn_diff_min",
+       "label": "激光起始偏角下限",
+       "kind": "angle",
+       "value": 0.2,
+       "key": "laser_initial_turn_diff_min",
+       "unit": "rad"
+      },
+      {
+       "path": "enemy_info.laser_move_speed",
+       "label": "激光移动速度",
+       "kind": "mult",
+       "value": 1,
+       "key": "laser_move_speed"
+      },
+      {
+       "path": "enemy_info.laser_turn_speed",
+       "label": "激光转向速度",
+       "kind": "mult",
+       "value": 0.95,
+       "key": "laser_turn_speed"
+      },
+      {
+       "path": "enemy_info.stun_bombs_angle_spread",
+       "label": "眩晕弹散布",
+       "kind": "angle",
+       "value": 6.283185307179586,
+       "key": "stun_bombs_angle_spread",
+       "unit": "rad"
+      },
+      {
+       "path": "enemy_info.stun_bombs_attack_animation_delay",
+       "label": "眩晕弹动作延迟",
+       "kind": "time",
+       "value": 0,
+       "key": "stun_bombs_attack_animation_delay"
+      },
+      {
+       "path": "enemy_info.stun_bombs_attack_delay",
+       "label": "眩晕弹前摇",
+       "kind": "time",
+       "value": 1,
+       "key": "stun_bombs_attack_delay"
+      },
+      {
+       "path": "enemy_info.stun_bombs_attack_duration",
+       "label": "眩晕弹持续时间",
+       "kind": "time",
+       "value": 3,
+       "key": "stun_bombs_attack_duration"
+      },
+      {
+       "path": "enemy_info.stun_bombs_num_bombs",
+       "label": "眩晕弹数量",
+       "kind": "count",
+       "value": 12,
+       "key": "stun_bombs_num_bombs"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_hunter": {
+   "zh": "光猎者",
+   "en": "Hunter",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 400,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 0,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 0,
+       "key": "health_info.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.follow_range",
+       "label": "跟随距离（米）",
+       "kind": "mult",
+       "value": 16,
+       "key": "follow_range"
+      },
+      {
+       "path": "enemy_info.follow_range_deviation",
+       "label": "跟随距离浮动（米）",
+       "kind": "mult",
+       "value": 4,
+       "key": "follow_range_deviation"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "射击",
+     "rows": [
+      {
+       "path": "enemy_info.shoot_charge",
+       "label": "蓄能时间",
+       "kind": "time",
+       "value": 1,
+       "key": "shoot_charge"
+      },
+      {
+       "path": "enemy_info.stop_shoot_time",
+       "label": "停火时间",
+       "kind": "time",
+       "value": 0,
+       "key": "stop_shoot_time"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 300,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "value": 450,
+       "key": "weapon_info.firerate"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": true,
+       "key": "weapon_info.attributes.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_hunter_elite": {
+   "zh": "光猎者（护盾型）",
+   "en": "Hunter (Shielded)",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 400,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 0,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 0,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "shield_info.shield",
+       "label": "护盾值",
+       "kind": "mult",
+       "value": 200,
+       "key": "shield_info.shield"
+      },
+      {
+       "path": "shield_info.shield_regen",
+       "label": "护盾回复速度（每秒）",
+       "kind": "mult",
+       "value": 666,
+       "key": "shield_info.shield_regen"
+      },
+      {
+       "path": "shield_info.shield_regen_delay",
+       "label": "护盾回复延迟",
+       "kind": "time",
+       "value": 4,
+       "key": "shield_info.shield_regen_delay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.follow_range",
+       "label": "跟随距离（米）",
+       "kind": "mult",
+       "value": 16,
+       "key": "follow_range"
+      },
+      {
+       "path": "enemy_info.follow_range_deviation",
+       "label": "跟随距离浮动（米）",
+       "kind": "mult",
+       "value": 4,
+       "key": "follow_range_deviation"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "射击",
+     "rows": [
+      {
+       "path": "enemy_info.shoot_charge",
+       "label": "蓄能时间",
+       "kind": "time",
+       "value": 1,
+       "key": "shoot_charge"
+      },
+      {
+       "path": "enemy_info.stop_shoot_time",
+       "label": "停火时间",
+       "kind": "time",
+       "value": 0,
+       "key": "stop_shoot_time"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 300,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "value": 450,
+       "key": "weapon_info.firerate"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": true,
+       "key": "weapon_info.attributes.armorpiercing"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_illusionist": {
+   "zh": "幻光大师",
+   "en": "Illusionist",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 1500,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 250,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 40,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "shield_info.shield",
+       "label": "护盾值",
+       "kind": "mult",
+       "value": 450,
+       "key": "shield_info.shield"
+      },
+      {
+       "path": "shield_info.shield_regen",
+       "label": "护盾回复速度（每秒）",
+       "kind": "mult",
+       "value": 666,
+       "key": "shield_info.shield_regen"
+      },
+      {
+       "path": "shield_info.shield_regen_delay",
+       "label": "护盾回复延迟",
+       "kind": "time",
+       "value": 1.5,
+       "key": "shield_info.shield_regen_delay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.follow_range",
+       "label": "跟随距离（米）",
+       "kind": "mult",
+       "value": 8,
+       "key": "follow_range"
+      },
+      {
+       "path": "enemy_info.follow_range_deviation",
+       "label": "跟随距离浮动（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "follow_range_deviation"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 4,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "射击",
+     "rows": [
+      {
+       "path": "enemy_info.aim_turn_speed",
+       "label": "瞄准转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "aim_turn_speed"
+      },
+      {
+       "path": "enemy_info.shoot_startup",
+       "label": "开火前摇",
+       "kind": "time",
+       "value": 2.5,
+       "key": "shoot_startup"
+      },
+      {
+       "path": "enemy_info.shoot_unit",
+       "label": "发射物",
+       "kind": "unit",
+       "value": "characters/illuminate_illusionist/illuminate_illusionist_bomb",
+       "key": "shoot_unit"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 30,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "value": 450,
+       "key": "weapon_info.firerate"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0.08726646259971647,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "weapon_info.attributes.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "传送",
+     "rows": [
+      {
+       "path": "enemy_info.emergency_teleport_cooldown",
+       "label": "紧急传送冷却",
+       "kind": "time",
+       "value": 1,
+       "key": "emergency_teleport_cooldown"
+      },
+      {
+       "path": "enemy_info.emergency_teleport_max_range",
+       "label": "紧急传送距离（米）",
+       "kind": "mult",
+       "value": 3.5,
+       "key": "emergency_teleport_max_range"
+      },
+      {
+       "path": "enemy_info.teleport_charge_dodge_time",
+       "label": "受击传送蓄力时间",
+       "kind": "time",
+       "value": 0.1,
+       "key": "teleport_charge_dodge_time"
+      },
+      {
+       "path": "enemy_info.teleport_charge_time",
+       "label": "传送蓄力时间",
+       "kind": "time",
+       "value": 0.2,
+       "key": "teleport_charge_time"
+      },
+      {
+       "path": "enemy_info.teleport_cooldown",
+       "label": "传送冷却",
+       "kind": "time",
+       "value": 2,
+       "key": "teleport_cooldown"
+      },
+      {
+       "path": "enemy_info.teleport_duration",
+       "label": "传送持续时间",
+       "kind": "time",
+       "value": 0.05,
+       "key": "teleport_duration"
+      },
+      {
+       "path": "enemy_info.teleport_recovery",
+       "label": "传送硬直",
+       "kind": "time",
+       "value": 0.2,
+       "key": "teleport_recovery"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_illusionist_assassinate": {
+   "zh": "光能决策者",
+   "en": "Council Member",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 2500,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 250,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 40,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "shield_info.shield",
+       "label": "护盾值",
+       "kind": "mult",
+       "value": 666,
+       "key": "shield_info.shield"
+      },
+      {
+       "path": "shield_info.shield_regen",
+       "label": "护盾回复速度（每秒）",
+       "kind": "mult",
+       "value": 666,
+       "key": "shield_info.shield_regen"
+      },
+      {
+       "path": "shield_info.shield_regen_delay",
+       "label": "护盾回复延迟",
+       "kind": "time",
+       "value": 1.5,
+       "key": "shield_info.shield_regen_delay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.follow_range",
+       "label": "跟随距离（米）",
+       "kind": "mult",
+       "value": 8,
+       "key": "follow_range"
+      },
+      {
+       "path": "enemy_info.follow_range_deviation",
+       "label": "跟随距离浮动（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "follow_range_deviation"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 3,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "射击",
+     "rows": [
+      {
+       "path": "enemy_info.aim_turn_speed",
+       "label": "瞄准转向速度",
+       "kind": "mult",
+       "value": 0.1,
+       "key": "aim_turn_speed"
+      },
+      {
+       "path": "enemy_info.shoot_startup",
+       "label": "开火前摇",
+       "kind": "time",
+       "value": 1.5,
+       "key": "shoot_startup"
+      },
+      {
+       "path": "enemy_info.shoot_unit",
+       "label": "发射物",
+       "kind": "unit",
+       "value": "characters/illuminate_illusionist/illuminate_councilmember_bomb",
+       "key": "shoot_unit"
+      }
+     ]
+    },
+    {
+     "title": "武器",
+     "rows": [
+      {
+       "path": "weapon_info.power",
+       "label": "武器伤害",
+       "kind": "mult",
+       "value": 30,
+       "key": "weapon_info.power"
+      },
+      {
+       "path": "weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "value": 450,
+       "key": "weapon_info.firerate"
+      },
+      {
+       "path": "weapon_info.spread",
+       "label": "散布",
+       "kind": "angle",
+       "value": 0.08726646259971647,
+       "key": "weapon_info.spread",
+       "unit": "rad"
+      },
+      {
+       "path": "weapon_info.attributes.armorpiercing",
+       "label": "武器穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "weapon_info.attributes.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "传送",
+     "rows": [
+      {
+       "path": "enemy_info.emergency_teleport_cooldown",
+       "label": "紧急传送冷却",
+       "kind": "time",
+       "value": 1,
+       "key": "emergency_teleport_cooldown"
+      },
+      {
+       "path": "enemy_info.emergency_teleport_max_range",
+       "label": "紧急传送距离（米）",
+       "kind": "mult",
+       "value": 3.5,
+       "key": "emergency_teleport_max_range"
+      },
+      {
+       "path": "enemy_info.teleport_charge_dodge_time",
+       "label": "受击传送蓄力时间",
+       "kind": "time",
+       "value": 0.1,
+       "key": "teleport_charge_dodge_time"
+      },
+      {
+       "path": "enemy_info.teleport_charge_time",
+       "label": "传送蓄力时间",
+       "kind": "time",
+       "value": 0.2,
+       "key": "teleport_charge_time"
+      },
+      {
+       "path": "enemy_info.teleport_cooldown",
+       "label": "传送冷却",
+       "kind": "time",
+       "value": 2,
+       "key": "teleport_cooldown"
+      },
+      {
+       "path": "enemy_info.teleport_duration",
+       "label": "传送持续时间",
+       "kind": "time",
+       "value": 0.05,
+       "key": "teleport_duration"
+      },
+      {
+       "path": "enemy_info.teleport_recovery",
+       "label": "传送硬直",
+       "kind": "time",
+       "value": 0.2,
+       "key": "teleport_recovery"
+      }
+     ]
+    },
+    {
+     "title": "干扰",
+     "rows": [
+      {
+       "path": "enemy_info.confuse_cooldown",
+       "label": "干扰冷却",
+       "kind": "time",
+       "value": 20,
+       "key": "confuse_cooldown"
+      },
+      {
+       "path": "enemy_info.confuse_range",
+       "label": "干扰距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "confuse_range"
+      },
+      {
+       "path": "enemy_info.confuse_recovery",
+       "label": "干扰硬直",
+       "kind": "time",
+       "value": 1,
+       "key": "confuse_recovery"
+      },
+      {
+       "path": "enemy_info.confuse_start_cooldown",
+       "label": "首次干扰冷却",
+       "kind": "time",
+       "value": 4,
+       "key": "confuse_start_cooldown"
+      },
+      {
+       "path": "enemy_info.confuse_startup",
+       "label": "干扰前摇",
+       "kind": "time",
+       "value": 2,
+       "key": "confuse_startup"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_obelisk": {
+   "zh": "奥贝利斯",
+   "en": "Obelisk",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 450,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 100,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 45,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "health_info.constitution_decay",
+       "label": "重伤后生命流失（每秒）",
+       "kind": "mult",
+       "value": 5,
+       "key": "health_info.constitution_decay"
+      },
+      {
+       "path": "shield_info.shield",
+       "label": "护盾值",
+       "kind": "mult",
+       "value": 1200,
+       "key": "shield_info.shield"
+      },
+      {
+       "path": "shield_info.shield_regen",
+       "label": "护盾回复速度（每秒）",
+       "kind": "mult",
+       "value": 1200,
+       "key": "shield_info.shield_regen"
+      },
+      {
+       "path": "shield_info.shield_regen_delay",
+       "label": "护盾回复延迟",
+       "kind": "time",
+       "value": 4,
+       "key": "shield_info.shield_regen_delay"
+      },
+      {
+       "path": "damage_zones.4.armor_max",
+       "label": "护甲层护甲",
+       "kind": "mult",
+       "value": 8000,
+       "key": "damage_zones.4.armor_max"
+      },
+      {
+       "path": "damage_zones.4.armor_min",
+       "label": "护甲层最低护甲",
+       "kind": "mult",
+       "value": 8000,
+       "key": "damage_zones.4.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.follow_range",
+       "label": "跟随距离（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "follow_range"
+      },
+      {
+       "path": "enemy_info.follow_range_deviation",
+       "label": "跟随距离浮动（米）",
+       "kind": "mult",
+       "value": 4,
+       "key": "follow_range_deviation"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 4,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 13,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.2,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 1,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "传送",
+     "rows": [
+      {
+       "path": "enemy_info.teleport_charge_dodge_time",
+       "label": "受击传送蓄力时间",
+       "kind": "time",
+       "value": 1,
+       "key": "teleport_charge_dodge_time"
+      },
+      {
+       "path": "enemy_info.teleport_charge_time",
+       "label": "传送蓄力时间",
+       "kind": "time",
+       "value": 1,
+       "key": "teleport_charge_time"
+      },
+      {
+       "path": "enemy_info.teleport_cooldown_on_fail",
+       "label": "传送失败后冷却",
+       "kind": "time",
+       "value": 0.2,
+       "key": "teleport_cooldown_on_fail"
+      },
+      {
+       "path": "enemy_info.teleport_cooldown_on_success",
+       "label": "传送成功后冷却",
+       "kind": "time",
+       "value": 2,
+       "key": "teleport_cooldown_on_success"
+      },
+      {
+       "path": "enemy_info.teleport_criteria_distance_to_target",
+       "label": "传送触发距离（米）",
+       "kind": "mult",
+       "value": 8,
+       "key": "teleport_criteria_distance_to_target"
+      },
+      {
+       "path": "enemy_info.teleport_distance",
+       "label": "传送距离（米）",
+       "kind": "mult",
+       "value": 20,
+       "key": "teleport_distance"
+      },
+      {
+       "path": "enemy_info.teleport_duration",
+       "label": "传送持续时间",
+       "kind": "time",
+       "value": 1,
+       "key": "teleport_duration"
+      },
+      {
+       "path": "enemy_info.teleport_recovery",
+       "label": "传送硬直",
+       "kind": "time",
+       "value": 1,
+       "key": "teleport_recovery"
+      }
+     ]
+    },
+    {
+     "title": "护盾墙",
+     "rows": [
+      {
+       "path": "enemy_info.shield_wall_cooldown",
+       "label": "护盾墙冷却",
+       "kind": "time",
+       "value": 4,
+       "key": "shield_wall_cooldown"
+      },
+      {
+       "path": "enemy_info.shield_wall_distance_from_unit",
+       "label": "护盾墙距本体（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "shield_wall_distance_from_unit"
+      },
+      {
+       "path": "enemy_info.shield_wall_exit_time",
+       "label": "护盾墙收回时间",
+       "kind": "time",
+       "value": 1.8,
+       "key": "shield_wall_exit_time"
+      },
+      {
+       "path": "enemy_info.shield_wall_max_length",
+       "label": "护盾墙最长长度（米）",
+       "kind": "mult",
+       "value": 40,
+       "key": "shield_wall_max_length"
+      },
+      {
+       "path": "enemy_info.shield_wall_min_length",
+       "label": "护盾墙最短长度（米）",
+       "kind": "mult",
+       "value": 6,
+       "key": "shield_wall_min_length"
+      },
+      {
+       "path": "enemy_info.shield_wall_time",
+       "label": "护盾墙持续时间",
+       "kind": "time",
+       "value": 10,
+       "key": "shield_wall_time"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_observer": {
+   "zh": "光能观测者",
+   "en": "Observer",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 50,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 25,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 15,
+       "key": "health_info.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.follow_range",
+       "label": "跟随距离（米）",
+       "kind": "mult",
+       "value": 8,
+       "key": "follow_range"
+      },
+      {
+       "path": "enemy_info.follow_range_deviation",
+       "label": "跟随距离浮动（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "follow_range_deviation"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 7,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 7,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 0,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.2,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "警报",
+     "rows": [
+      {
+       "path": "enemy_info.encounter_countdown_time",
+       "label": "呼叫增援倒计时",
+       "kind": "time",
+       "value": 1.33,
+       "key": "encounter_countdown_time"
+      },
+      {
+       "path": "enemy_info.realarm_range",
+       "label": "再次报警距离（米）",
+       "kind": "mult",
+       "value": 20,
+       "key": "realarm_range"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_observer_elite": {
+   "zh": "看守者",
+   "en": "Watcher",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 50,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 50,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 25,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "shield_info.shield",
+       "label": "护盾值",
+       "kind": "mult",
+       "value": 100,
+       "key": "shield_info.shield"
+      },
+      {
+       "path": "shield_info.shield_regen",
+       "label": "护盾回复速度（每秒）",
+       "kind": "mult",
+       "value": 666,
+       "key": "shield_info.shield_regen"
+      },
+      {
+       "path": "shield_info.shield_regen_delay",
+       "label": "护盾回复延迟",
+       "kind": "time",
+       "value": 4,
+       "key": "shield_info.shield_regen_delay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.follow_range",
+       "label": "跟随距离（米）",
+       "kind": "mult",
+       "value": 8,
+       "key": "follow_range"
+      },
+      {
+       "path": "enemy_info.follow_range_deviation",
+       "label": "跟随距离浮动（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "follow_range_deviation"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 7,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 7,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 0,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.2,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "警报",
+     "rows": [
+      {
+       "path": "enemy_info.encounter_countdown_time",
+       "label": "呼叫增援倒计时",
+       "kind": "time",
+       "value": 1.33,
+       "key": "encounter_countdown_time"
+      },
+      {
+       "path": "enemy_info.realarm_range",
+       "label": "再次报警距离（米）",
+       "kind": "mult",
+       "value": 20,
+       "key": "realarm_range"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_observer_obsidian": {
+   "zh": "黑曜石观测者",
+   "en": "Obsidian Observer",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 50,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 50,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 25,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "shield_info.shield",
+       "label": "护盾值",
+       "kind": "mult",
+       "value": 100,
+       "key": "shield_info.shield"
+      },
+      {
+       "path": "shield_info.shield_regen",
+       "label": "护盾回复速度（每秒）",
+       "kind": "mult",
+       "value": 666,
+       "key": "shield_info.shield_regen"
+      },
+      {
+       "path": "shield_info.shield_regen_delay",
+       "label": "护盾回复延迟",
+       "kind": "time",
+       "value": 4,
+       "key": "shield_info.shield_regen_delay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.follow_range",
+       "label": "跟随距离（米）",
+       "kind": "mult",
+       "value": 8,
+       "key": "follow_range"
+      },
+      {
+       "path": "enemy_info.follow_range_deviation",
+       "label": "跟随距离浮动（米）",
+       "kind": "mult",
+       "value": 2,
+       "key": "follow_range_deviation"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 7,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 7,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 0,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.2,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "警报",
+     "rows": [
+      {
+       "path": "enemy_info.encounter_countdown_time",
+       "label": "呼叫增援倒计时",
+       "kind": "time",
+       "value": 1.33,
+       "key": "encounter_countdown_time"
+      },
+      {
+       "path": "enemy_info.realarm_range",
+       "label": "再次报警距离（米）",
+       "kind": "mult",
+       "value": 20,
+       "key": "realarm_range"
+      }
+     ]
+    },
+    {
+     "title": "干扰",
+     "rows": [
+      {
+       "path": "enemy_info.confuse_range",
+       "label": "干扰距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "confuse_range"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_trickster": {
+   "zh": "光弃者",
+   "en": "Outcast",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 350,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 70,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 30,
+       "key": "health_info.armor_min"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 6,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1.33,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.03,
+       "key": "turn_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "enemy_info.attack_angle",
+       "label": "攻击角度",
+       "kind": "angle",
+       "value": 10,
+       "key": "attack_angle",
+       "unit": "deg"
+      },
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 25,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 1.5,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 1.5,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": true,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "跳跃",
+     "rows": [
+      {
+       "path": "enemy_info.jump_cooldown",
+       "label": "跳跃冷却",
+       "kind": "time",
+       "value": 2,
+       "key": "jump_cooldown"
+      },
+      {
+       "path": "enemy_info.jump_start_cooldown",
+       "label": "首次跳跃冷却",
+       "kind": "time",
+       "value": 0.5,
+       "key": "jump_start_cooldown"
+      }
+     ]
+    },
+    {
+     "title": "闪避",
+     "rows": [
+      {
+       "path": "enemy_info.avoid_charge_time",
+       "label": "闪避蓄力时间",
+       "kind": "time",
+       "value": 0.25,
+       "key": "avoid_charge_time"
+      },
+      {
+       "path": "enemy_info.avoid_cooldown",
+       "label": "闪避冷却",
+       "kind": "time",
+       "value": 2,
+       "key": "avoid_cooldown"
+      },
+      {
+       "path": "enemy_info.avoid_range_max",
+       "label": "闪避触发最远距离（米）",
+       "kind": "mult",
+       "value": 10,
+       "key": "avoid_range_max"
+      },
+      {
+       "path": "enemy_info.avoid_recovery",
+       "label": "闪避硬直",
+       "kind": "time",
+       "value": 0.1,
+       "key": "avoid_recovery"
+      },
+      {
+       "path": "enemy_info.avoid_speed",
+       "label": "闪避速度（米/秒）",
+       "kind": "mult",
+       "value": 20,
+       "key": "avoid_speed"
+      },
+      {
+       "path": "enemy_info.avoid_start_cooldown",
+       "label": "首次闪避冷却",
+       "kind": "time",
+       "value": 0.5,
+       "key": "avoid_start_cooldown"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_tripod": {
+   "zh": "三脚电械",
+   "en": "Tripod",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 300,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 200,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 20,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "shield_info.shield",
+       "label": "护盾值",
+       "kind": "mult",
+       "value": 100,
+       "key": "shield_info.shield"
+      },
+      {
+       "path": "shield_info.shield_regen",
+       "label": "护盾回复速度（每秒）",
+       "kind": "mult",
+       "value": 666,
+       "key": "shield_info.shield_regen"
+      },
+      {
+       "path": "shield_info.shield_regen_delay",
+       "label": "护盾回复延迟",
+       "kind": "time",
+       "value": 4,
+       "key": "shield_info.shield_regen_delay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 2,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.01,
+       "key": "turn_speed"
+      },
+      {
+       "path": "enemy_info.wounded_movement_speed",
+       "label": "负伤移动速度（米/秒）",
+       "kind": "mult",
+       "value": 2,
+       "key": "wounded_movement_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 34,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "传送",
+     "rows": [
+      {
+       "path": "enemy_info.can_teleport",
+       "label": "可传送",
+       "kind": "bool",
+       "value": false,
+       "key": "can_teleport"
+      },
+      {
+       "path": "enemy_info.teleport_charge_dodge_time",
+       "label": "受击传送蓄力时间",
+       "kind": "time",
+       "value": 0.6,
+       "key": "teleport_charge_dodge_time"
+      },
+      {
+       "path": "enemy_info.teleport_charge_time",
+       "label": "传送蓄力时间",
+       "kind": "time",
+       "value": 1.2,
+       "key": "teleport_charge_time"
+      },
+      {
+       "path": "enemy_info.teleport_cooldown",
+       "label": "传送冷却",
+       "kind": "time",
+       "value": 4,
+       "key": "teleport_cooldown"
+      },
+      {
+       "path": "enemy_info.teleport_duration",
+       "label": "传送持续时间",
+       "kind": "time",
+       "value": 0.05,
+       "key": "teleport_duration"
+      },
+      {
+       "path": "enemy_info.teleport_recovery",
+       "label": "传送硬直",
+       "kind": "time",
+       "value": 1,
+       "key": "teleport_recovery"
+      },
+      {
+       "path": "enemy_info.teleport_target_distance_multiplier",
+       "label": "传送落点距离系数",
+       "kind": "mult",
+       "value": 1.5,
+       "key": "teleport_target_distance_multiplier"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  },
+  "illuminate_tripod_elite": {
+   "zh": "步行者",
+   "en": "Strider",
+   "boss": false,
+   "race": "光能者",
+   "blocks": [
+    {
+     "title": "生存",
+     "rows": [
+      {
+       "path": "health_info.health",
+       "label": "生命值",
+       "kind": "mult",
+       "value": 350,
+       "key": "health_info.health"
+      },
+      {
+       "path": "health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "value": 250,
+       "key": "health_info.armor_max"
+      },
+      {
+       "path": "health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "value": 40,
+       "key": "health_info.armor_min"
+      },
+      {
+       "path": "shield_info.shield",
+       "label": "护盾值",
+       "kind": "mult",
+       "value": 200,
+       "key": "shield_info.shield"
+      },
+      {
+       "path": "shield_info.shield_regen",
+       "label": "护盾回复速度（每秒）",
+       "kind": "mult",
+       "value": 666,
+       "key": "shield_info.shield_regen"
+      },
+      {
+       "path": "shield_info.shield_regen_delay",
+       "label": "护盾回复延迟",
+       "kind": "time",
+       "value": 4,
+       "key": "shield_info.shield_regen_delay"
+      }
+     ]
+    },
+    {
+     "title": "移动与索敌",
+     "rows": [
+      {
+       "path": "enemy_info.aggro_range",
+       "label": "索敌距离（米）",
+       "kind": "mult",
+       "value": 80,
+       "key": "aggro_range"
+      },
+      {
+       "path": "enemy_info.movement_speed",
+       "label": "移动速度（米/秒）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "movement_speed"
+      },
+      {
+       "path": "enemy_info.patrol_range",
+       "label": "巡逻半径（米）",
+       "kind": "mult",
+       "value": 12,
+       "key": "patrol_range"
+      },
+      {
+       "path": "enemy_info.patrol_speed",
+       "label": "巡逻速度（米/秒）",
+       "kind": "mult",
+       "value": 2,
+       "key": "patrol_speed"
+      },
+      {
+       "path": "enemy_info.spawn_duration",
+       "label": "登场时间",
+       "kind": "time",
+       "value": 1,
+       "key": "spawn_duration"
+      },
+      {
+       "path": "enemy_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "value": 0.01,
+       "key": "turn_speed"
+      },
+      {
+       "path": "enemy_info.wounded_movement_speed",
+       "label": "负伤移动速度（米/秒）",
+       "kind": "mult",
+       "value": 2,
+       "key": "wounded_movement_speed"
+      }
+     ]
+    },
+    {
+     "title": "近战",
+     "rows": [
+      {
+       "path": "melee_info.power",
+       "label": "近战伤害",
+       "kind": "mult",
+       "value": 34,
+       "key": "melee_info.power"
+      },
+      {
+       "path": "melee_info.radius",
+       "label": "近战判定半径（米）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "melee_info.radius"
+      },
+      {
+       "path": "melee_info.center_distance",
+       "label": "近战判定前移（米）",
+       "kind": "mult",
+       "value": 2.5,
+       "key": "melee_info.center_distance"
+      },
+      {
+       "path": "melee_info.armorpiercing",
+       "label": "近战穿甲",
+       "kind": "bool",
+       "value": false,
+       "key": "melee_info.armorpiercing"
+      }
+     ]
+    },
+    {
+     "title": "传送",
+     "rows": [
+      {
+       "path": "enemy_info.can_teleport",
+       "label": "可传送",
+       "kind": "bool",
+       "value": false,
+       "key": "can_teleport"
+      },
+      {
+       "path": "enemy_info.teleport_charge_dodge_time",
+       "label": "受击传送蓄力时间",
+       "kind": "time",
+       "value": 0.6,
+       "key": "teleport_charge_dodge_time"
+      },
+      {
+       "path": "enemy_info.teleport_charge_time",
+       "label": "传送蓄力时间",
+       "kind": "time",
+       "value": 1.2,
+       "key": "teleport_charge_time"
+      },
+      {
+       "path": "enemy_info.teleport_cooldown",
+       "label": "传送冷却",
+       "kind": "time",
+       "value": 4,
+       "key": "teleport_cooldown"
+      },
+      {
+       "path": "enemy_info.teleport_duration",
+       "label": "传送持续时间",
+       "kind": "time",
+       "value": 0.05,
+       "key": "teleport_duration"
+      },
+      {
+       "path": "enemy_info.teleport_recovery",
+       "label": "传送硬直",
+       "kind": "time",
+       "value": 1,
+       "key": "teleport_recovery"
+      },
+      {
+       "path": "enemy_info.teleport_target_distance_multiplier",
+       "label": "传送落点距离系数",
+       "kind": "mult",
+       "value": 1.5,
+       "key": "teleport_target_distance_multiplier"
+      }
+     ]
+    }
+   ],
+   "notes": []
+  }
+ }
+}

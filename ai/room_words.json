@@ -1,0 +1,66 @@
+{
+ "pg": [
+  "试验场",
+  "Proving Grounds"
+ ],
+ "ghost_town": [
+  "鬼城",
+  "Ghost Town"
+ ],
+ "emp": [
+  "电磁脉冲",
+  "EMP"
+ ],
+ "reload": [
+  "填弹惊喜",
+  "Reload Surprise"
+ ],
+ "modifier": [
+  "修正参数",
+  "Modifier"
+ ],
+ "condition": [
+  "条件",
+  "Condition"
+ ],
+ "loadout": [
+  "武装配置",
+  "Loadout"
+ ],
+ "ammo": [
+  "伤害击中可提供弹药",
+  "Damaging Hits Give Ammo"
+ ],
+ "marksman": [
+  "只在击中弱点时造成双倍伤害",
+  "Double Damage Weak Spots Only"
+ ],
+ "boots": [
+  "侦察装甲",
+  "Recon Armor"
+ ],
+ "retaliate": [
+  "误伤友军已反击",
+  "Friendly Fire Is Returned"
+ ],
+ "orbital_bombardments": [
+  "外层空间轨道轰炸",
+  "Orbital Bombardments"
+ ],
+ "orbital_support": [
+  "外层空间轨道支援",
+  "Orbital Support"
+ ],
+ "helldivers": [
+  "绝地潜兵",
+  "Helldivers"
+ ],
+ "stratagems": [
+  "战略配备",
+  "Stratagems"
+ ],
+ "emergency_beacon": [
+  "求救信标",
+  "Emergency Beacon"
+ ]
+}

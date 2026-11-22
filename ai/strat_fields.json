@@ -1,0 +1,5160 @@
+{
+ "source": "mod/lua_src：loadout_settings.lua 的 LoadoutSettings.stratagems + unknown_*.lua 单位设置（murmur64 对路径）；中文名来自游戏文字资源（简体中文）",
+ "cats": {
+  "blue": {
+   "zh": "战备 · 蓝",
+   "desc": "补给类（supply）：补给、支援武器、背包",
+   "strats": [
+    "stratagem_resupply",
+    "stratagem_machinegun",
+    "stratagem_machinegun_oneuse",
+    "stratagem_lasercannon",
+    "stratagem_20mm_cannon",
+    "stratagem_grenadelauncher",
+    "stratagem_mortar",
+    "stratagem_flamethrower",
+    "stratagem_chemthrower",
+    "stratagem_recoilless",
+    "stratagem_law",
+    "stratagem_missile_launcher",
+    "stratagem_drone_defensive_backpack",
+    "stratagem_drone_heal_backpack",
+    "stratagem_ammo_backpack",
+    "stratagem_jumppack",
+    "stratagem_projected_shield",
+    "stratagem_shield_generator_pack",
+    "stratagem_repairtool",
+    "stratagem_satchelcharge"
+   ]
+  },
+  "red": {
+   "zh": "战备 · 红",
+   "desc": "进攻类（offensive）：空袭、炮击、轨道打击",
+   "strats": [
+    "stratagem_staticfield",
+    "stratagem_airstrike",
+    "stratagem_dive_bomb",
+    "stratagem_strafingrun",
+    "stratagem_napalmstrike",
+    "stratagem_strafingrun_heavy",
+    "stratagem_close_air_support",
+    "stratagem_missile_barrage",
+    "stratagem_artillery",
+    "stratagem_precision_artillery",
+    "stratagem_orbital_strike",
+    "stratagem_missile_strike",
+    "stratagem_railcannon_strike"
+   ]
+  },
+  "green": {
+   "zh": "战备 · 绿",
+   "desc": "防御类（defensive）：炮台、地雷、屏障、无人机",
+   "strats": [
+    "stratagem_uav_drone",
+    "stratagem_distractor",
+    "stratagem_mannable_turret",
+    "stratagem_turret",
+    "stratagem_turret_railcannon",
+    "stratagem_turret_grenadelauncher",
+    "stratagem_tesla_tower",
+    "stratagem_minedrop",
+    "stratagem_artillery_smoke",
+    "stratagem_barricade",
+    "stratagem_minedrop_stun"
+   ]
+  },
+  "vehicle": {
+   "zh": "战备 · 车辆",
+   "desc": "载具：外骨骼、摩托、坦克歼击车、装甲车（游戏里是蓝色，单独分出来）",
+   "strats": [
+    "stratagem_exosuit",
+    "stratagem_exosuit_2",
+    "stratagem_exosuit_3",
+    "stratagem_bike",
+    "stratagem_tankdestroyer",
+    "stratagem_apc",
+    "stratagem_apc_cannon"
+   ]
+  },
+  "yellow": {
+   "zh": "战备 · 黄",
+   "desc": "特殊类（special）：增援、地狱火炸弹、金属探测器、求救信标",
+   "strats": [
+    "stratagem_reinforce",
+    "stratagem_hellbomb",
+    "stratagem_metaldetector",
+    "stratagem_emergency_beacon"
+   ]
+  }
+ },
+ "common": [
+  {
+   "path": "cooldown_time",
+   "label": "冷却时间",
+   "kind": "mult",
+   "tip": "扔出信标后要等多久才能再叫（inventory_component.lua:624）。原版为 0 的（一次性战备）不受影响。"
+  },
+  {
+   "path": "activation_time",
+   "label": "呼叫时间",
+   "kind": "mult",
+   "tip": "信标落地到东西降下来的时间（stratagem_component.lua:79）。游戏最少 0.1 秒。"
+  },
+  {
+   "path": "num_uses",
+   "label": "使用次数",
+   "kind": "mult",
+   "tip": "有次数限制的战备每局能叫几次（inventory_component.lua:1163），乘完四舍五入。没有次数限制的不受影响。"
+  }
+ ],
+ "strats": {
+  "stratagem_reinforce": {
+   "zh": "增援",
+   "en": "Reinforce",
+   "name_from": "game",
+   "cat": "yellow",
+   "type": "special",
+   "combo": "↑↓→←↑",
+   "notes": [
+    "单人时不能用（can_use）。冷却升级：45 / 30 秒。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↑↓→←↑",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 60,
+       "ups": [
+        45,
+        30
+       ]
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_hellbomb": {
+   "zh": "NUX223 地狱火炸弹",
+   "en": "NUX-223 Hellbomb",
+   "name_from": "game",
+   "cat": "yellow",
+   "type": "special",
+   "combo": "↑←→↓↑↓",
+   "notes": [
+    "只在有「摧毁目标」任务时能叫。爆炸本身的伤害不在设置表里（由单位动画触发），改不了。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↑←→↓↑↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 35
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 25,
+       "ups": [
+        25,
+        15
+       ]
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 160
+      }
+     ]
+    },
+    {
+     "title": "炸弹本体",
+     "unit": "gameobjects/gameobject_hellpod_hellbomb",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_hellpod_hellbomb@hellbomb_info.time_until_explosion",
+       "label": "启动到爆炸（秒）",
+       "kind": "time",
+       "tip": "读取：hellbomb_component.lua:32、:217。",
+       "value": 5
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_hellbomb@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:135。",
+       "value": 100,
+       "ups": [
+        200,
+        200
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_metaldetector": {
+   "zh": "ME1“侦查犬”金属探测器",
+   "en": "ME-1 'Sniffer' Metal Detector",
+   "name_from": "game",
+   "cat": "yellow",
+   "type": "special",
+   "combo": "↓↓→↑",
+   "notes": [
+    "只在有「扫雷寻物」任务时能叫。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓↓→↑",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 35
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 10
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_emergency_beacon": {
+   "zh": "求救信标",
+   "en": "Emergency Beacon",
+   "name_from": "game",
+   "cat": "yellow",
+   "type": "special",
+   "combo": "↑↓→↑",
+   "notes": [
+    "只在联机、队伍不满 4 人时能叫。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↑↓→↑",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 2
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_resupply": {
+   "zh": "补给",
+   "en": "Resupply",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓↓↑→",
+   "notes": [
+    "补给箱里装的东西是一张单位清单（两箱弹药），不是数字，这里不开放。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓↓↑→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 180
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 15,
+       "ups": [
+        10,
+        5
+       ]
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_machinegun": {
+   "zh": "MG94机枪",
+   "en": "MG-94 Machine Gun",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←↓↑→",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←↓↑→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_machinegun_oneuse": {
+   "zh": "MGX42机枪",
+   "en": "MGX-42 Machine Gun",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←↓↑↑←",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←↓↑↑←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 120
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_lasercannon": {
+   "zh": "LAS98 激光大炮",
+   "en": "LAS-98 Laser Cannon",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←↓↑←",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←↓↑←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_20mm_cannon": {
+   "zh": "AC22“达姆”",
+   "en": "AC-22 'Dum-Dum'",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←↓↑↑→",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←↓↑↑→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_grenadelauncher": {
+   "zh": "“消灭者”榴弹发射器",
+   "en": "'Obliterator' Grenade Launcher",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←↑←↓",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←↑←↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_mortar": {
+   "zh": "M25“雷鸣者”",
+   "en": "M-25 'Rumbler'",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←↑←←",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←↑←←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_flamethrower": {
+   "zh": "FLAM40“焚化炉”",
+   "en": "FLAM-40 'Incinerator'",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←↓→←",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←↓→←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_chemthrower": {
+   "zh": "TOX13“复仇者”",
+   "en": "TOX-13 'Avenger'",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←↓→→",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←↓→→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_recoilless": {
+   "zh": "RL112 无后座力步枪",
+   "en": "RL-112 Recoilless Rifle",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←→→←",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←→→←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_law": {
+   "zh": "EAT17 抛弃式反战车火箭",
+   "en": "EAT-17",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←→↑↓",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←→↑↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 120
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_missile_launcher": {
+   "zh": "MLS4X“突击队”",
+   "en": "MLS-4X 'Commando'",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←↑↓→",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←↑↓→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_drone_defensive_backpack": {
+   "zh": "AD334“护卫犬”",
+   "en": "AD-334 'Guard Dog'",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓↑←↑→↓",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓↑←↑→↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_drone_heal_backpack": {
+   "zh": "AD289“天使”",
+   "en": "AD-289 'Angel'",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓↑←←→↓",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓↑←←→↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_ammo_backpack": {
+   "zh": "补给背包",
+   "en": "Resupply Pack",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓↑↓↓→",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓↑↓↓→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1,
+       "ups": [
+        1,
+        2
+       ]
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_jumppack": {
+   "zh": "LIFT850 喷射背包",
+   "en": "LIFT-850 Jump Pack",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓↑↑↓↑",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓↑↑↓↑",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_projected_shield": {
+   "zh": "SH32定向动能护盾",
+   "en": "SH-32 Directional Kinetic Shield",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓↑←→←↓",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓↑←→←↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1,
+       "ups": [
+        1,
+        2
+       ]
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_shield_generator_pack": {
+   "zh": "SH20防护罩生成包",
+   "en": "SH-20 Shield Generator Pack",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓↑←→←→",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓↑←→←→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_repairtool": {
+   "zh": "REP80维修工具",
+   "en": "REP-80",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓↓←→↓",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓↓←→↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_satchelcharge": {
+   "zh": "REC6“爆破者”",
+   "en": "REC-6 'Demolisher'",
+   "name_from": "game",
+   "cat": "blue",
+   "type": "supply",
+   "combo": "↓←→↑↑",
+   "notes": [
+    "投下来的武器 / 背包自己的数值在「武器属性」里改，这里只管叫的冷却、次数和时间。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓←→↑↑",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 180
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_exosuit": {
+   "zh": "EXO44“步行者”外骨骼装甲",
+   "en": "EXO-44 'Walker' Exosuit",
+   "name_from": "game",
+   "cat": "vehicle",
+   "type": "supply",
+   "combo": "↓→↑←↓↓",
+   "notes": [
+    "追踪导弹、反坦克追踪导弹三台机甲共用一份（改一处三台都变）。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓→↑←↓↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "机甲",
+     "unit": "gameobjects/gameobject_mechsuit_01",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_mechsuit_01@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 1000
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_01@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 1000
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_01@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_01@vehicle_info.move_speed",
+       "label": "移动速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:175（每次开始驾驶时读）。",
+       "value": 4
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_01@vehicle_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:176（每次开始驾驶时读）。",
+       "value": 0.5
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_01@vehicle_info.acceleration",
+       "label": "加速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_component.lua:146。",
+       "value": 9
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_01@weapon_info.power",
+       "label": "转管机枪单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262。",
+       "value": 75
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_01@weapon_info.firerate",
+       "label": "转管机枪射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39。",
+       "value": 1500
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_01@weapon_info.magazine_capacity",
+       "label": "转管机枪弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 1000,
+       "ups": [
+        2000,
+        2000
+       ]
+      }
+     ]
+    },
+    {
+     "title": "追踪导弹",
+     "unit": "gameobjects/gameobject_homing_missile_mech",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.center_power",
+       "label": "导弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：homing_component.lua:388。",
+       "value": 600
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.center_radius",
+       "label": "导弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：homing_component.lua:388。",
+       "value": 1.5
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.blast_power",
+       "label": "导弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：homing_component.lua:388。",
+       "value": 250
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.blast_radius",
+       "label": "导弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 2.5
+      }
+     ]
+    },
+    {
+     "title": "反坦克追踪导弹（升级 2 起换成这个）",
+     "unit": "gameobjects/gameobject_homing_missile_anti_tank",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.center_power",
+       "label": "导弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：homing_component.lua:388。",
+       "value": 2500
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.center_radius",
+       "label": "导弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：homing_component.lua:388。",
+       "value": 1.5
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.blast_power",
+       "label": "导弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：homing_component.lua:388。",
+       "value": 250
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.blast_radius",
+       "label": "导弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_exosuit_2": {
+   "zh": "EXO48“黑曜石”",
+   "en": "EXO-48 'Obsidian'",
+   "name_from": "game",
+   "cat": "vehicle",
+   "type": "supply",
+   "combo": "↓→↑←↓←",
+   "notes": [
+    "追踪导弹、反坦克追踪导弹三台机甲共用一份（改一处三台都变）。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓→↑←↓←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "机甲",
+     "unit": "gameobjects/gameobject_mechsuit_02",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 1000
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 1000
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02@vehicle_info.move_speed",
+       "label": "移动速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:175（每次开始驾驶时读）。",
+       "value": 4
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02@vehicle_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:176（每次开始驾驶时读）。",
+       "value": 0.5
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02@vehicle_info.acceleration",
+       "label": "加速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_component.lua:146。",
+       "value": 9
+      }
+     ]
+    },
+    {
+     "title": "左臂机炮",
+     "unit": "gameobjects/gameobject_mechsuit_02_autocannon_arm",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02_autocannon_arm@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 180,
+       "ups": [
+        180,
+        250
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02_autocannon_arm@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39（拿到时读）。",
+       "value": 300
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02_autocannon_arm@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 250
+      }
+     ]
+    },
+    {
+     "title": "右臂机炮",
+     "unit": "gameobjects/gameobject_mechsuit_02_autocannon_arm_right",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02_autocannon_arm_right@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 180,
+       "ups": [
+        180,
+        250
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02_autocannon_arm_right@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39（拿到时读）。",
+       "value": 300
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_02_autocannon_arm_right@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 250
+      }
+     ]
+    },
+    {
+     "title": "追踪导弹",
+     "unit": "gameobjects/gameobject_homing_missile_mech",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.center_power",
+       "label": "导弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：homing_component.lua:388。",
+       "value": 600
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.center_radius",
+       "label": "导弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：homing_component.lua:388。",
+       "value": 1.5
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.blast_power",
+       "label": "导弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：homing_component.lua:388。",
+       "value": 250
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.blast_radius",
+       "label": "导弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 2.5
+      }
+     ]
+    },
+    {
+     "title": "反坦克追踪导弹（升级 2 起换成这个）",
+     "unit": "gameobjects/gameobject_homing_missile_anti_tank",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.center_power",
+       "label": "导弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：homing_component.lua:388。",
+       "value": 2500
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.center_radius",
+       "label": "导弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：homing_component.lua:388。",
+       "value": 1.5
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.blast_power",
+       "label": "导弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：homing_component.lua:388。",
+       "value": 250
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.blast_radius",
+       "label": "导弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_exosuit_3": {
+   "zh": "EXO51“重步者”",
+   "en": "EXO-51 'Lumberer'",
+   "name_from": "game",
+   "cat": "vehicle",
+   "type": "supply",
+   "combo": "↓→↑←↓→",
+   "notes": [
+    "追踪导弹、反坦克追踪导弹三台机甲共用一份（改一处三台都变）。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓→↑←↓→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "机甲",
+     "unit": "gameobjects/gameobject_mechsuit_03",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 1000
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 1000
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03@vehicle_info.move_speed",
+       "label": "移动速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:175（每次开始驾驶时读）。",
+       "value": 4
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03@vehicle_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:176（每次开始驾驶时读）。",
+       "value": 0.5
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03@vehicle_info.acceleration",
+       "label": "加速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_component.lua:146。",
+       "value": 9
+      }
+     ]
+    },
+    {
+     "title": "90 毫米炮",
+     "unit": "gameobjects/gameobject_mechsuit_03_cannon",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03_cannon@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 3500
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03_cannon@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39（拿到时读）。",
+       "value": 30
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03_cannon@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 10,
+       "ups": [
+        15,
+        15
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03_cannon@explosive_info.center_power",
+       "label": "炮弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：weapon_utility.lua:347。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03_cannon@explosive_info.center_radius",
+       "label": "炮弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:347。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03_cannon@explosive_info.blast_power",
+       "label": "炮弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：weapon_utility.lua:347。",
+       "value": 350
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03_cannon@explosive_info.blast_radius",
+       "label": "炮弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 3.5
+      }
+     ]
+    },
+    {
+     "title": "喷火器",
+     "unit": "gameobjects/gameobject_mechsuit_03_flamethrower",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03_flamethrower@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 250
+      },
+      {
+       "path": "@gameobjects/gameobject_mechsuit_03_flamethrower@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 200,
+       "ups": [
+        200,
+        300
+       ]
+      }
+     ]
+    },
+    {
+     "title": "追踪导弹",
+     "unit": "gameobjects/gameobject_homing_missile_mech",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.center_power",
+       "label": "导弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：homing_component.lua:388。",
+       "value": 600
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.center_radius",
+       "label": "导弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：homing_component.lua:388。",
+       "value": 1.5
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.blast_power",
+       "label": "导弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：homing_component.lua:388。",
+       "value": 250
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_mech@explosive_info.blast_radius",
+       "label": "导弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 2.5
+      }
+     ]
+    },
+    {
+     "title": "反坦克追踪导弹（升级 2 起换成这个）",
+     "unit": "gameobjects/gameobject_homing_missile_anti_tank",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.center_power",
+       "label": "导弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：homing_component.lua:388。",
+       "value": 2500
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.center_radius",
+       "label": "导弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：homing_component.lua:388。",
+       "value": 1.5
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.blast_power",
+       "label": "导弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：homing_component.lua:388。",
+       "value": 250
+      },
+      {
+       "path": "@gameobjects/gameobject_homing_missile_anti_tank@explosive_info.blast_radius",
+       "label": "导弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_bike": {
+   "zh": "MC109“神锤”摩托车",
+   "en": "MC-109 'Hammer' Motorcycle",
+   "name_from": "game",
+   "cat": "vehicle",
+   "type": "supply",
+   "combo": "↓→↓←←↑",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓→↓←←↑",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "摩托车",
+     "unit": "gameobjects/gameobject_bike_01",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_bike_01@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 600
+      },
+      {
+       "path": "@gameobjects/gameobject_bike_01@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 80
+      },
+      {
+       "path": "@gameobjects/gameobject_bike_01@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_bike_01@vehicle_info.move_speed",
+       "label": "移动速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:175（每次开始驾驶时读）。",
+       "value": 9
+      },
+      {
+       "path": "@gameobjects/gameobject_bike_01@vehicle_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:176（每次开始驾驶时读）。",
+       "value": 100
+      },
+      {
+       "path": "@gameobjects/gameobject_bike_01@vehicle_info.acceleration",
+       "label": "加速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_component.lua:146。",
+       "value": 6.5
+      },
+      {
+       "path": "@gameobjects/gameobject_bike_01@vehicle_info.explosive_info.center_power",
+       "label": "撞击中心伤害",
+       "kind": "mult",
+       "tip": "车速超过一定值时撞到敌人造成的伤害。读取：vehicle_component.lua:952-965。",
+       "value": 100
+      },
+      {
+       "path": "@gameobjects/gameobject_bike_01@vehicle_info.explosive_info.blast_power",
+       "label": "撞击外圈伤害",
+       "kind": "mult",
+       "tip": "读取：vehicle_component.lua:965。",
+       "value": 100
+      }
+     ]
+    },
+    {
+     "title": "边车机枪（升级 1 起）",
+     "unit": "gameobjects/gameobject_bike_minigun_turret",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_bike_minigun_turret@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 65
+      },
+      {
+       "path": "@gameobjects/gameobject_bike_minigun_turret@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39（拿到时读）。",
+       "value": 1500
+      },
+      {
+       "path": "@gameobjects/gameobject_bike_minigun_turret@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 750,
+       "ups": [
+        750,
+        1500
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_tankdestroyer": {
+   "zh": "TD110“堡垒”",
+   "en": "TD-110 'Bastion'",
+   "name_from": "game",
+   "cat": "vehicle",
+   "type": "supply",
+   "combo": "↓→↓←↑→",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓→↓←↑→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "车体",
+     "unit": "gameobjects/gameobject_tankdestroyer_01",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_01@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 1200
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_01@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 3000
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_01@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 30
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_01@vehicle_info.move_speed",
+       "label": "移动速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:175（每次开始驾驶时读）。",
+       "value": 5
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_01@vehicle_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:176（每次开始驾驶时读）。",
+       "value": 55
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_01@vehicle_info.acceleration",
+       "label": "加速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_component.lua:146。",
+       "value": 4
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_01@vehicle_info.explosive_info.center_power",
+       "label": "撞击中心伤害",
+       "kind": "mult",
+       "tip": "车速超过一定值时撞到敌人造成的伤害。读取：vehicle_component.lua:952-965。",
+       "value": 100
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_01@vehicle_info.explosive_info.blast_power",
+       "label": "撞击外圈伤害",
+       "kind": "mult",
+       "tip": "读取：vehicle_component.lua:965。",
+       "value": 100
+      }
+     ]
+    },
+    {
+     "title": "主炮",
+     "unit": "gameobjects/gameobject_tankdestroyer_turret",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_turret@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 3500
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_turret@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39（拿到时读）。",
+       "value": 30
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_turret@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 25,
+       "ups": [
+        25,
+        35
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_turret@explosive_info.center_power",
+       "label": "炮弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：weapon_utility.lua:347。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_turret@explosive_info.center_radius",
+       "label": "炮弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:347。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_turret@explosive_info.blast_power",
+       "label": "炮弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：weapon_utility.lua:347。",
+       "value": 650
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_turret@explosive_info.blast_radius",
+       "label": "炮弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 3.5
+      }
+     ]
+    },
+    {
+     "title": "同轴机枪（升级 1 起）",
+     "unit": "gameobjects/gameobject_tankdestroyer_machinegun",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_machinegun@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 65
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_machinegun@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39（拿到时读）。",
+       "value": 1500
+      },
+      {
+       "path": "@gameobjects/gameobject_tankdestroyer_machinegun@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 750,
+       "ups": [
+        1500,
+        1500
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_apc": {
+   "zh": "M5 APC",
+   "en": "M5 APC",
+   "name_from": "game",
+   "cat": "vehicle",
+   "type": "supply",
+   "combo": "↓→↓←←→",
+   "notes": [
+    "侧面机枪两种装甲车共用一份。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓→↓←←→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "车体",
+     "unit": "gameobjects/gameobject_infantryvehicle",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 1000
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 2000
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 20
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle@vehicle_info.move_speed",
+       "label": "移动速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:175（每次开始驾驶时读）。",
+       "value": 5,
+       "ups": [
+        5,
+        7
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle@vehicle_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:176（每次开始驾驶时读）。",
+       "value": 55,
+       "ups": [
+        55,
+        70
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle@vehicle_info.acceleration",
+       "label": "加速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_component.lua:146。",
+       "value": 4,
+       "ups": [
+        4,
+        5
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle@vehicle_info.explosive_info.center_power",
+       "label": "撞击中心伤害",
+       "kind": "mult",
+       "tip": "车速超过一定值时撞到敌人造成的伤害。读取：vehicle_component.lua:952-965。",
+       "value": 100
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle@vehicle_info.explosive_info.blast_power",
+       "label": "撞击外圈伤害",
+       "kind": "mult",
+       "tip": "读取：vehicle_component.lua:965。",
+       "value": 100
+      }
+     ]
+    },
+    {
+     "title": "主炮塔（双联机炮）",
+     "unit": "gameobjects/gameobject_infantryvehicle_main_turret",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_main_turret@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 180
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_main_turret@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39（拿到时读）。",
+       "value": 300
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_main_turret@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 150,
+       "ups": [
+        300,
+        300
+       ]
+      }
+     ]
+    },
+    {
+     "title": "侧面机枪（两挺共用）",
+     "unit": "gameobjects/gameobject_infantryvehicle_minigun_turret",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_minigun_turret@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 65
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_minigun_turret@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39（拿到时读）。",
+       "value": 1500
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_minigun_turret@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 750,
+       "ups": [
+        1000,
+        1000
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_apc_cannon": {
+   "zh": "M532 HAV",
+   "en": "M5-32 HAV",
+   "name_from": "game",
+   "cat": "vehicle",
+   "type": "supply",
+   "combo": "↓→↓←↑↓",
+   "notes": [
+    "侧面机枪两种装甲车共用一份。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "↓→↓←↑↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。原版为 0：这是按次数限制的战备，冷却不起作用。",
+       "value": 0
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "车体",
+     "unit": "gameobjects/gameobject_infantryvehicle_cannon",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 1000
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 2000
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 20
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon@vehicle_info.move_speed",
+       "label": "移动速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:175（每次开始驾驶时读）。",
+       "value": 5
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon@vehicle_info.turn_speed",
+       "label": "转向速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_states/*_states.lua:176（每次开始驾驶时读）。",
+       "value": 55
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon@vehicle_info.acceleration",
+       "label": "加速度",
+       "kind": "mult",
+       "tip": "读取：vehicle_component.lua:146。",
+       "value": 4
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon@vehicle_info.explosive_info.center_power",
+       "label": "撞击中心伤害",
+       "kind": "mult",
+       "tip": "车速超过一定值时撞到敌人造成的伤害。读取：vehicle_component.lua:952-965。",
+       "value": 100
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon@vehicle_info.explosive_info.blast_power",
+       "label": "撞击外圈伤害",
+       "kind": "mult",
+       "tip": "读取：vehicle_component.lua:965。",
+       "value": 100
+      }
+     ]
+    },
+    {
+     "title": "90 毫米主炮",
+     "unit": "gameobjects/gameobject_infantryvehicle_cannon_turret",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon_turret@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 3500
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon_turret@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39（拿到时读）。",
+       "value": 30
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon_turret@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 25,
+       "ups": [
+        50,
+        50
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon_turret@explosive_info.center_power",
+       "label": "炮弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：weapon_utility.lua:347。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon_turret@explosive_info.center_radius",
+       "label": "炮弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:347。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon_turret@explosive_info.blast_power",
+       "label": "炮弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：weapon_utility.lua:347。",
+       "value": 350
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_cannon_turret@explosive_info.blast_radius",
+       "label": "炮弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 3.5
+      }
+     ]
+    },
+    {
+     "title": "侧面机枪（两挺共用）",
+     "unit": "gameobjects/gameobject_infantryvehicle_minigun_turret",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_minigun_turret@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 65
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_minigun_turret@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39（拿到时读）。",
+       "value": 1500
+      },
+      {
+       "path": "@gameobjects/gameobject_infantryvehicle_minigun_turret@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 750,
+       "ups": [
+        1000,
+        1000
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_uav_drone": {
+   "zh": "“蜜蜂型”无人机",
+   "en": "'Humblebee' UAV drone",
+   "name_from": "game",
+   "cat": "green",
+   "type": "defensive",
+   "combo": "←↑→",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "←↑→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 90
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "title": "无人机",
+     "unit": "gameobjects/gameobject_uav_drone",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_uav_drone@uav_drone_info.active.time",
+       "label": "工作时间",
+       "kind": "time",
+       "tip": "读取：uav_drone_component.lua:42。",
+       "value": 55
+      },
+      {
+       "path": "@gameobjects/gameobject_uav_drone@uav_drone_info.scan_size_increase",
+       "label": "侦测范围加大",
+       "kind": "mult",
+       "tip": "读取：uav_drone_component.lua:29。",
+       "value": 200
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_distractor": {
+   "zh": "干扰者信标",
+   "en": "Distractor Beacon",
+   "name_from": "game",
+   "cat": "green",
+   "type": "defensive",
+   "combo": "←↓→",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "←↓→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 120
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 3,
+       "ups": [
+        3,
+        5
+       ]
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "信标",
+     "unit": "gameobjects/gameobject_hellpod_distractor_01",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_hellpod_distractor_01@distractor_info.patrol_alert_radius",
+       "label": "吸引范围（米）",
+       "kind": "mult",
+       "tip": "读取：distractor_component.lua:118（每次吸引时读）。",
+       "value": 125
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_distractor_01@distractor_info.patrol_alert_frequency",
+       "label": "吸引间隔（秒）",
+       "kind": "time",
+       "tip": "读取：distractor_component.lua:115。",
+       "value": 0.5
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_distractor_01@ttl_info.time_until_dead",
+       "label": "持续时间",
+       "kind": "time",
+       "tip": "放下后多久自己报废。读取：time_to_live_component.lua:24。",
+       "value": 30,
+       "ups": [
+        60,
+        60
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_distractor_01@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 300
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_mannable_turret": {
+   "zh": "AT47反坦克炮台",
+   "en": "AT-47 Anti-Tank Emplacement",
+   "name_from": "game",
+   "cat": "green",
+   "type": "defensive",
+   "combo": "←←↑↑→←",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "←←↑↑→←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 180
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 7
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 3
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "炮台",
+     "unit": "gameobjects/gameobject_mannable_turret_01",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_mannable_turret_01@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读）。",
+       "value": 3500
+      },
+      {
+       "path": "@gameobjects/gameobject_mannable_turret_01@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：firearm_component.lua:39（拿到时读）。",
+       "value": 45
+      },
+      {
+       "path": "@gameobjects/gameobject_mannable_turret_01@weapon_info.magazine_capacity",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "读取：firearm_component.lua:51。",
+       "value": 25,
+       "ups": [
+        25,
+        35
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_mannable_turret_01@explosive_info.center_power",
+       "label": "炮弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_mannable_turret_01@explosive_info.center_radius",
+       "label": "炮弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:144-147。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_mannable_turret_01@explosive_info.blast_power",
+       "label": "炮弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 350
+      },
+      {
+       "path": "@gameobjects/gameobject_mannable_turret_01@explosive_info.blast_radius",
+       "label": "炮弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 3.5
+      },
+      {
+       "path": "@gameobjects/gameobject_mannable_turret_01@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 1000
+      },
+      {
+       "path": "@gameobjects/gameobject_mannable_turret_01@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 140
+      },
+      {
+       "path": "@gameobjects/gameobject_mannable_turret_01@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 20
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_turret": {
+   "zh": "A/MG11 转管机枪炮炮台",
+   "en": "A/MG-11 Minigun Turret",
+   "name_from": "game",
+   "cat": "green",
+   "type": "defensive",
+   "combo": "←↓↑→←",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "←↓↑→←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 180
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 7
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 3
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "炮台",
+     "unit": "gameobjects/gameobject_hellpod_minigun_turret",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读，已放下的也马上生效）。",
+       "value": 75
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：turret_component.lua:56（放下时读）。",
+       "value": 1300
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@weapon_info.range",
+       "label": "射程（米）",
+       "kind": "mult",
+       "tip": "读取：turret_component.lua:588。",
+       "value": 25
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@weapon_info.spread",
+       "label": "散布（度）",
+       "kind": "mult",
+       "tip": "读取：turret_component.lua:588。越小越准。",
+       "value": 6,
+       "ups": [
+        3,
+        3
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@turret_info.check_for_enemies_radius",
+       "label": "索敌半径（米）",
+       "kind": "mult",
+       "tip": "读取：turret_component.lua:339、:449。",
+       "value": 16
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@turret_info.turn_speed_target",
+       "label": "转向速度",
+       "kind": "mult",
+       "tip": "读取：turret_component.lua:391。",
+       "value": 0.19,
+       "ups": [
+        0.19,
+        0.3
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@turret_info.fire_cooldown",
+       "label": "丢失目标后续射（秒）",
+       "kind": "time",
+       "tip": "瞄准过目标后，目标离开准星还继续打的时间。读取：turret_component.lua:470。",
+       "value": 0.5
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@turret_info.infinite_ammo",
+       "label": "无限弹药",
+       "kind": "bool",
+       "tip": "原版是：弹量打完会自动补满（turret_component.lua:286），所以炮台只会因持续时间到或被打坏而报废。",
+       "value": true
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@turret_info.rounds",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "只有「无限弹药」为否时才有意义。读取：turret_component.lua:35（放下时读）。",
+       "value": 600
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@ttl_info.time_until_dead",
+       "label": "持续时间",
+       "kind": "time",
+       "tip": "放下后多久自己报废。读取：time_to_live_component.lua:24。",
+       "value": 120
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 400
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 150
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_minigun_turret@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 0
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_turret_railcannon": {
+   "zh": "A/RX34 轨道炮炮台",
+   "en": "A/RX-34 Railcannon Turret",
+   "name_from": "game",
+   "cat": "green",
+   "type": "defensive",
+   "combo": "←↓↑←→",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "←↓↑←→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 180,
+       "ups": [
+        180,
+        120
+       ]
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 7
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 3
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "炮台",
+     "unit": "gameobjects/gameobject_hellpod_railcannon_turret",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262（每次命中时读，已放下的也马上生效）。",
+       "value": 1500
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：turret_component.lua:56（放下时读）。",
+       "value": 15,
+       "ups": [
+        30,
+        30
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@weapon_info.range",
+       "label": "射程（米）",
+       "kind": "mult",
+       "tip": "读取：turret_component.lua:588。",
+       "value": 50
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@weapon_info.spread",
+       "label": "散布（度）",
+       "kind": "mult",
+       "tip": "读取：turret_component.lua:588。越小越准。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@turret_info.check_for_enemies_radius",
+       "label": "索敌半径（米）",
+       "kind": "mult",
+       "tip": "读取：turret_component.lua:339、:449。",
+       "value": 16
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@turret_info.turn_speed_target",
+       "label": "转向速度",
+       "kind": "mult",
+       "tip": "读取：turret_component.lua:391。",
+       "value": 0.23,
+       "ups": [
+        0.23,
+        0.3
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@turret_info.fire_cooldown",
+       "label": "丢失目标后续射（秒）",
+       "kind": "time",
+       "tip": "瞄准过目标后，目标离开准星还继续打的时间。读取：turret_component.lua:470。",
+       "value": 0
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@turret_info.infinite_ammo",
+       "label": "无限弹药",
+       "kind": "bool",
+       "tip": "原版是：弹量打完会自动补满（turret_component.lua:286），所以炮台只会因持续时间到或被打坏而报废。",
+       "value": true
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@turret_info.rounds",
+       "label": "弹量",
+       "kind": "count",
+       "tip": "只有「无限弹药」为否时才有意义。读取：turret_component.lua:35（放下时读）。",
+       "value": 50
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@ttl_info.time_until_dead",
+       "label": "持续时间",
+       "kind": "time",
+       "tip": "放下后多久自己报废。读取：time_to_live_component.lua:24。",
+       "value": 120
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 400
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 150
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_railcannon_turret@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 0
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_turret_grenadelauncher": {
+   "zh": "A/GL-8发射器炮台",
+   "en": "A/GL-8 Launcher Turret",
+   "name_from": "game",
+   "cat": "green",
+   "type": "defensive",
+   "combo": "←↓↑→→↓",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "←↓↑→→↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 180,
+       "ups": [
+        180,
+        120
+       ]
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 7
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 3
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "炮台",
+     "unit": "gameobjects/gameobject_hellpod_grenade_turret",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_hellpod_grenade_turret@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：launcher_turret_component.lua:57（放下时读）。",
+       "value": 90
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_grenade_turret@turret_info.check_for_enemies_radius",
+       "label": "索敌半径（米）",
+       "kind": "mult",
+       "tip": "读取：launcher_turret_component.lua:423、:531。",
+       "value": 14
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_grenade_turret@turret_info.target_min_distance",
+       "label": "最近射击距离（米）",
+       "kind": "mult",
+       "tip": "比这还近的敌人不打。读取：launcher_turret_component.lua:423。",
+       "value": 8
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_grenade_turret@turret_info.turn_speed_target",
+       "label": "转向速度",
+       "kind": "mult",
+       "tip": "读取：launcher_turret_component.lua:391。",
+       "value": 0.23,
+       "ups": [
+        0.35,
+        0.35
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_grenade_turret@ttl_info.time_until_dead",
+       "label": "持续时间",
+       "kind": "time",
+       "tip": "放下后多久自己报废。读取：time_to_live_component.lua:24。",
+       "value": 120
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_grenade_turret@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 400
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_grenade_turret@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 150
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_grenade_turret@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 0
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_tesla_tower": {
+   "zh": "A/AC6 特斯拉塔",
+   "en": "A/AC-6 Tesla Tower",
+   "name_from": "game",
+   "cat": "green",
+   "type": "defensive",
+   "combo": "←↓↓↑→←",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "←↓↓↑→←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 180
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 7
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 3
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "电塔",
+     "unit": "gameobjects/gameobject_hellpod_tesla_01",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_hellpod_tesla_01@tesla_info.power",
+       "label": "电击伤害",
+       "kind": "mult",
+       "tip": "读取：tesla_component.lua:379（每次放电时读）。",
+       "value": 1200
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_tesla_01@tesla_info.range",
+       "label": "电击范围（米）",
+       "kind": "mult",
+       "tip": "读取：tesla_component.lua:262。",
+       "value": 8
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_tesla_01@tesla_info.charge_time",
+       "label": "充能时间（秒）",
+       "kind": "time",
+       "tip": "敌人进入范围到放电的时间。读取：tesla_component.lua:273。",
+       "value": 1.5
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_tesla_01@tesla_info.cooldown",
+       "label": "放电间隔（秒）",
+       "kind": "time",
+       "tip": "读取：tesla_component.lua:276。",
+       "value": 0.1
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_tesla_01@tesla_info.num_bolts",
+       "label": "同时电击目标数",
+       "kind": "count",
+       "tip": "读取：tesla_component.lua:156。",
+       "value": 1,
+       "ups": [
+        2,
+        3
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_tesla_01@ttl_info.time_until_dead",
+       "label": "持续时间",
+       "kind": "time",
+       "tip": "放下后多久自己报废。读取：time_to_live_component.lua:24。",
+       "value": 150
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_tesla_01@health_info.health",
+       "label": "耐久（生命值）",
+       "kind": "mult",
+       "tip": "被打掉这么多就坏。读取：health_component.lua:135（放下时读）。",
+       "value": 800
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_tesla_01@health_info.armor_max",
+       "label": "正面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:140。",
+       "value": 150
+      },
+      {
+       "path": "@gameobjects/gameobject_hellpod_tesla_01@health_info.armor_min",
+       "label": "背面装甲",
+       "kind": "mult",
+       "tip": "读取：health_component.lua:141。",
+       "value": 5
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_minedrop": {
+   "zh": "空投人员伤害地雷",
+   "en": "Airdropped Anti-Personnel Mines",
+   "name_from": "game",
+   "cat": "green",
+   "type": "defensive",
+   "combo": "←→↓↑",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "←→↓↑",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 45
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 5
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 5,
+       "ups": [
+        10,
+        10
+       ]
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "布雷",
+     "unit": "gameobjects/minedrop_01",
+     "rows": [
+      {
+       "path": "@gameobjects/minedrop_01@minedrop_info.num_mines",
+       "label": "数量",
+       "kind": "count",
+       "tip": "读取：minedrop_component.lua:146、:187。",
+       "value": 10
+      },
+      {
+       "path": "@gameobjects/minedrop_01@minedrop_info.mine_area_length",
+       "label": "铺设长度（米）",
+       "kind": "mult",
+       "tip": "读取：minedrop_component.lua:79。",
+       "value": 16
+      }
+     ]
+    },
+    {
+     "title": "地雷",
+     "unit": "gameobjects/mine_01",
+     "rows": [
+      {
+       "path": "@gameobjects/mine_01@explosive_info.center_power",
+       "label": "爆炸中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 600,
+       "ups": [
+        600,
+        2500
+       ]
+      },
+      {
+       "path": "@gameobjects/mine_01@explosive_info.center_radius",
+       "label": "爆炸中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:144-147。",
+       "value": 2
+      },
+      {
+       "path": "@gameobjects/mine_01@explosive_info.blast_power",
+       "label": "爆炸外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 250
+      },
+      {
+       "path": "@gameobjects/mine_01@explosive_info.blast_radius",
+       "label": "爆炸半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 5
+      },
+      {
+       "path": "@gameobjects/mine_01@mine_info.time_until_explosion",
+       "label": "踩中后引爆延时（秒）",
+       "kind": "time",
+       "tip": "读取：mine_component.lua:29、:125。",
+       "value": 0.4
+      },
+      {
+       "path": "@gameobjects/mine_01@ttl_info.time_until_dead",
+       "label": "地雷存在时间",
+       "kind": "time",
+       "tip": "读取：time_to_live_component.lua:24。",
+       "value": 180
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_artillery_smoke": {
+   "zh": "“轰鸣者”烟雾炮击",
+   "en": "'Thunderer' Smoke Round",
+   "name_from": "game",
+   "cat": "green",
+   "type": "defensive",
+   "combo": "→↓↑↑↓",
+   "notes": [
+    "烟雾范围和持续时间在烟雾单位里，设置文件不在已解出的脚本里。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→↓↑↑↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 100
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 5,
+       "ups": [
+        3,
+        1
+       ]
+      }
+     ]
+    },
+    {
+     "title": "烟雾炮击",
+     "unit": "gameobjects/artillery_02",
+     "rows": [
+      {
+       "path": "@gameobjects/artillery_02@artillery_info.salvo_rounds",
+       "label": "烟雾弹数",
+       "kind": "count",
+       "tip": "读取：artillery_component.lua:27、:102。",
+       "value": 1
+      },
+      {
+       "path": "@gameobjects/artillery_02@artillery_info.diameter",
+       "label": "落点范围直径（米）",
+       "kind": "mult",
+       "tip": "读取：artillery_component.lua:92。",
+       "value": 2
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_barricade": {
+   "zh": "反步兵屏障",
+   "en": "Anti-Personnel Barrier",
+   "name_from": "game",
+   "cat": "green",
+   "type": "defensive",
+   "combo": "←→↓↓→",
+   "notes": [
+    "铁丝网本身的设置文件是空的，耐久、减速改不了。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "←→↓↓→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 60,
+       "ups": [
+        60,
+        40
+       ]
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 5
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 5
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "铁丝网",
+     "unit": "gameobjects/barricade_drop",
+     "rows": [
+      {
+       "path": "@gameobjects/barricade_drop@minedrop_info.num_mines",
+       "label": "段数",
+       "kind": "count",
+       "tip": "读取：minedrop_component.lua:146、:187。",
+       "value": 4,
+       "ups": [
+        6,
+        6
+       ]
+      },
+      {
+       "path": "@gameobjects/barricade_drop@minedrop_info.mine_area_length",
+       "label": "铺设长度（米）",
+       "kind": "mult",
+       "tip": "读取：minedrop_component.lua:79。",
+       "value": 8,
+       "ups": [
+        12,
+        12
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_minedrop_stun": {
+   "zh": "空投晕眩地雷",
+   "en": "Airdropped Stun Mines",
+   "name_from": "game",
+   "cat": "green",
+   "type": "defensive",
+   "combo": "←→↑↓",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "←→↑↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 45,
+       "ups": [
+        45,
+        30
+       ]
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 5
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 5,
+       "ups": [
+        10,
+        10
+       ]
+      },
+      {
+       "path": "patrol_alert_radius",
+       "label": "惊动巡逻范围（米）",
+       "kind": "mult",
+       "tip": "信标亮起时把这么远内的巡逻队引过来。读取：stratagem_component.lua:246、:424（房主）。",
+       "value": 80
+      }
+     ]
+    },
+    {
+     "title": "布雷",
+     "unit": "gameobjects/minedrop_stun",
+     "rows": [
+      {
+       "path": "@gameobjects/minedrop_stun@minedrop_info.num_mines",
+       "label": "数量",
+       "kind": "count",
+       "tip": "读取：minedrop_component.lua:146、:187。",
+       "value": 10
+      },
+      {
+       "path": "@gameobjects/minedrop_stun@minedrop_info.mine_area_length",
+       "label": "铺设长度（米）",
+       "kind": "mult",
+       "tip": "读取：minedrop_component.lua:79。",
+       "value": 16
+      }
+     ]
+    },
+    {
+     "title": "地雷",
+     "unit": "gameobjects/mine_stun",
+     "rows": [
+      {
+       "path": "@gameobjects/mine_stun@explosive_info.blast_radius",
+       "label": "眩晕半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 5
+      },
+      {
+       "path": "@gameobjects/mine_stun@mine_info.time_until_explosion",
+       "label": "踩中后引爆延时（秒）",
+       "kind": "time",
+       "tip": "读取：mine_component.lua:29、:125。",
+       "value": 0.4
+      },
+      {
+       "path": "@gameobjects/mine_stun@ttl_info.time_until_dead",
+       "label": "地雷存在时间",
+       "kind": "time",
+       "tip": "读取：time_to_live_component.lua:24。",
+       "value": 180
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_staticfield": {
+   "zh": "静电防护导体",
+   "en": "Static Field Conductors",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→↑←↓",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→↑←↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 45
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3,
+       "ups": [
+        3,
+        0.5
+       ]
+      }
+     ]
+    },
+    {
+     "title": "静电场",
+     "unit": "gameobjects/gameobject_static_field",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_static_field@field_info.time_until_end",
+       "label": "持续时间",
+       "kind": "time",
+       "tip": "读取：spawn_area_effect_component.lua:27。",
+       "value": 15,
+       "ups": [
+        30,
+        30
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_static_field@field_info.time_between_pulses",
+       "label": "伤害间隔（秒）",
+       "kind": "time",
+       "tip": "每隔多久判定一次。读取：spawn_area_effect_component.lua:49。",
+       "value": 0.9
+      },
+      {
+       "path": "@gameobjects/gameobject_static_field@explosive_info.blast_radius",
+       "label": "作用半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207、spawn_area_effect_component.lua:111。",
+       "value": 6
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_airstrike": {
+   "zh": "空袭",
+   "en": "Airstrike",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→↑↓→←",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→↑↓→←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 90
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 2
+      }
+     ]
+    },
+    {
+     "title": "空袭",
+     "unit": "gameobjects/airstrike_01",
+     "rows": [
+      {
+       "path": "@gameobjects/airstrike_01@airstrike_info.num_bombs",
+       "label": "炸弹数量",
+       "kind": "count",
+       "tip": "读取：airstrike_component.lua:44。",
+       "value": 4,
+       "ups": [
+        8,
+        8
+       ]
+      },
+      {
+       "path": "@gameobjects/airstrike_01@airstrike_info.bomb_area_length",
+       "label": "轰炸长度（米）",
+       "kind": "mult",
+       "tip": "炸弹沿飞行方向铺开的长度。读取：airstrike_component.lua:45。",
+       "value": 15
+      },
+      {
+       "path": "@gameobjects/airstrike_01@airstrike_info.time_until_bombs",
+       "label": "投弹延迟（秒）",
+       "kind": "time",
+       "tip": "飞机到场后多久开始落弹。读取：airstrike_component.lua:46。",
+       "value": 0.75
+      },
+      {
+       "path": "@gameobjects/airstrike_01@explosive_info.center_power",
+       "label": "爆炸中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 2200
+      },
+      {
+       "path": "@gameobjects/airstrike_01@explosive_info.center_radius",
+       "label": "爆炸中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:144-147。",
+       "value": 2
+      },
+      {
+       "path": "@gameobjects/airstrike_01@explosive_info.blast_power",
+       "label": "爆炸外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 350
+      },
+      {
+       "path": "@gameobjects/airstrike_01@explosive_info.blast_radius",
+       "label": "爆炸半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 3,
+       "ups": [
+        3,
+        4
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_dive_bomb": {
+   "zh": "“辩护者”空投炸弹",
+   "en": "'Vindicator' Dive Bomb",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→→→",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→→→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 10
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 0.5
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 10,
+       "ups": [
+        15,
+        15
+       ]
+      }
+     ]
+    },
+    {
+     "title": "俯冲轰炸",
+     "unit": "gameobjects/dive_bomb_01",
+     "rows": [
+      {
+       "path": "@gameobjects/dive_bomb_01@airstrike_info.time_until_bombs",
+       "label": "投弹延迟（秒）",
+       "kind": "time",
+       "tip": "飞机到场后多久开始落弹。读取：airstrike_component.lua:46。",
+       "value": 0.8
+      },
+      {
+       "path": "@gameobjects/dive_bomb_01@explosive_info.center_power",
+       "label": "爆炸中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 600,
+       "ups": [
+        600,
+        2500
+       ]
+      },
+      {
+       "path": "@gameobjects/dive_bomb_01@explosive_info.center_radius",
+       "label": "爆炸中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:144-147。",
+       "value": 1.5
+      },
+      {
+       "path": "@gameobjects/dive_bomb_01@explosive_info.blast_power",
+       "label": "爆炸外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 450
+      },
+      {
+       "path": "@gameobjects/dive_bomb_01@explosive_info.blast_radius",
+       "label": "爆炸半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 5
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_strafingrun": {
+   "zh": "机枪扫射",
+   "en": "Strafing Run",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→→↑",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→→↑",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 15,
+       "ups": [
+        10,
+        10
+       ]
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 0.1
+      }
+     ]
+    },
+    {
+     "title": "扫射",
+     "unit": "gameobjects/strafingrun_01",
+     "rows": [
+      {
+       "path": "@gameobjects/strafingrun_01@strafingrun_info.duration",
+       "label": "扫射时长（秒）",
+       "kind": "time",
+       "tip": "读取：strafingrun_component.lua:143。",
+       "value": 1.8,
+       "ups": [
+        1.8,
+        2.2
+       ]
+      },
+      {
+       "path": "@gameobjects/strafingrun_01@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262。",
+       "value": 120
+      },
+      {
+       "path": "@gameobjects/strafingrun_01@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：strafingrun_component.lua:34。",
+       "value": 2000
+      },
+      {
+       "path": "@gameobjects/strafingrun_01@weapon_info.spread",
+       "label": "散布（度）",
+       "kind": "mult",
+       "tip": "读取：strafingrun_component.lua:35。",
+       "value": 1.5
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_napalmstrike": {
+   "zh": "燃烧炸弹",
+   "en": "Incendiary Bombs",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→↑←→",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→↑←→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 60,
+       "ups": [
+        60,
+        45
+       ]
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "title": "燃烧炸弹",
+     "unit": "gameobjects/napalmstrike_01",
+     "rows": [
+      {
+       "path": "@gameobjects/napalmstrike_01@airstrike_info.num_bombs",
+       "label": "炸弹数量",
+       "kind": "count",
+       "tip": "读取：napalmstrike_component.lua:117。",
+       "value": 4,
+       "ups": [
+        4,
+        6
+       ]
+      },
+      {
+       "path": "@gameobjects/napalmstrike_01@airstrike_info.bomb_area_length",
+       "label": "轰炸长度（米）",
+       "kind": "mult",
+       "tip": "读取：napalmstrike_component.lua:117。",
+       "value": 15,
+       "ups": [
+        15,
+        20
+       ]
+      },
+      {
+       "path": "@gameobjects/napalmstrike_01@airstrike_info.time_until_bombs",
+       "label": "投弹延迟（秒）",
+       "kind": "time",
+       "tip": "读取：napalmstrike_component.lua:140。",
+       "value": 0.5
+      },
+      {
+       "path": "@gameobjects/napalmstrike_01@explosive_info.center_power",
+       "label": "落弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 100
+      },
+      {
+       "path": "@gameobjects/napalmstrike_01@explosive_info.center_radius",
+       "label": "落弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:144-147。",
+       "value": 3
+      },
+      {
+       "path": "@gameobjects/napalmstrike_01@explosive_info.blast_power",
+       "label": "落弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 100
+      },
+      {
+       "path": "@gameobjects/napalmstrike_01@explosive_info.blast_radius",
+       "label": "落弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "title": "地面火焰",
+     "unit": "gameobjects/gameobject_napalm_area",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_napalm_area@field_info.time_until_end",
+       "label": "持续时间",
+       "kind": "time",
+       "tip": "读取：spawn_area_effect_component.lua:27。",
+       "value": 14,
+       "ups": [
+        20,
+        20
+       ]
+      },
+      {
+       "path": "@gameobjects/gameobject_napalm_area@field_info.time_between_pulses",
+       "label": "伤害间隔（秒）",
+       "kind": "time",
+       "tip": "每隔多久判定一次。读取：spawn_area_effect_component.lua:49。",
+       "value": 0.5
+      },
+      {
+       "path": "@gameobjects/gameobject_napalm_area@explosive_info.center_power",
+       "label": "每次灼烧伤害",
+       "kind": "mult",
+       "tip": "读取：spawn_area_effect_component.lua:100 → explosion_manager.lua:145。",
+       "value": 32
+      },
+      {
+       "path": "@gameobjects/gameobject_napalm_area@explosive_info.blast_radius",
+       "label": "火焰半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 3
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_strafingrun_heavy": {
+   "zh": "重机枪扫射",
+   "en": "Heavy Strafing Run",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→→↓↑",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→→↓↑",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 50,
+       "ups": [
+        35,
+        35
+       ]
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 0.5
+      }
+     ]
+    },
+    {
+     "title": "重机枪扫射",
+     "unit": "gameobjects/strafingrun_02",
+     "rows": [
+      {
+       "path": "@gameobjects/strafingrun_02@strafingrun_info.duration",
+       "label": "扫射时长（秒）",
+       "kind": "time",
+       "tip": "读取：strafingrun_component.lua:143。",
+       "value": 1.8,
+       "ups": [
+        1.8,
+        2.2
+       ]
+      },
+      {
+       "path": "@gameobjects/strafingrun_02@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262。",
+       "value": 350
+      },
+      {
+       "path": "@gameobjects/strafingrun_02@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：strafingrun_component.lua:34。",
+       "value": 850
+      },
+      {
+       "path": "@gameobjects/strafingrun_02@weapon_info.spread",
+       "label": "散布（度）",
+       "kind": "mult",
+       "tip": "读取：strafingrun_component.lua:35。",
+       "value": 2.6
+      },
+      {
+       "path": "@gameobjects/strafingrun_02@explosive_info.blast_power",
+       "label": "弹头爆炸伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:347 → explosion_manager.lua:147。",
+       "value": 200
+      },
+      {
+       "path": "@gameobjects/strafingrun_02@explosive_info.blast_radius",
+       "label": "弹头爆炸半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 2
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_close_air_support": {
+   "zh": "近距离空中支援",
+   "en": "Close Air Support",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→→↓←",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→→↓←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 75
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 0.1
+      }
+     ]
+    },
+    {
+     "title": "机炮扫射",
+     "unit": "gameobjects/close_air_support_01",
+     "rows": [
+      {
+       "path": "@gameobjects/close_air_support_01@strafingrun_info.duration",
+       "label": "扫射时长（秒）",
+       "kind": "time",
+       "tip": "读取：strafingrun_component.lua:143。",
+       "value": 2.4
+      },
+      {
+       "path": "@gameobjects/close_air_support_01@weapon_info.power",
+       "label": "单发伤害",
+       "kind": "mult",
+       "tip": "读取：weapon_utility.lua:262。",
+       "value": 220,
+       "ups": [
+        320,
+        320
+       ]
+      },
+      {
+       "path": "@gameobjects/close_air_support_01@weapon_info.firerate",
+       "label": "射速（发/分）",
+       "kind": "mult",
+       "tip": "读取：strafingrun_component.lua:34。",
+       "value": 1800
+      },
+      {
+       "path": "@gameobjects/close_air_support_01@weapon_info.spread",
+       "label": "散布（度）",
+       "kind": "mult",
+       "tip": "读取：strafingrun_component.lua:35。",
+       "value": 1.8,
+       "ups": [
+        1.6,
+        1.6
+       ]
+      }
+     ]
+    },
+    {
+     "title": "导弹",
+     "unit": "gameobjects/gameobject_airsupport_missile",
+     "rows": [
+      {
+       "path": "@gameobjects/gameobject_airsupport_missile@explosive_info.center_power",
+       "label": "导弹中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：homing_component.lua:388。",
+       "value": 1500
+      },
+      {
+       "path": "@gameobjects/gameobject_airsupport_missile@explosive_info.center_radius",
+       "label": "导弹中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：homing_component.lua:388。",
+       "value": 1.5
+      },
+      {
+       "path": "@gameobjects/gameobject_airsupport_missile@explosive_info.blast_power",
+       "label": "导弹外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：homing_component.lua:388。",
+       "value": 550
+      },
+      {
+       "path": "@gameobjects/gameobject_airsupport_missile@explosive_info.blast_radius",
+       "label": "导弹半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_missile_barrage": {
+   "zh": "导弹弹幕",
+   "en": "Missile Barrage",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→↓↓↓←↓",
+   "notes": [
+    "导弹本体的设置文件不在已解出的脚本里，伤害改不了。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→↓↓↓←↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 180
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3,
+       "ups": [
+        2,
+        2
+       ]
+      }
+     ]
+    },
+    {
+     "title": "导弹齐射",
+     "unit": "gameobjects/missile_barrage_01",
+     "rows": [
+      {
+       "path": "@gameobjects/missile_barrage_01@artillery_info.duration",
+       "label": "炮击总时长（秒）",
+       "kind": "time",
+       "tip": "读取：artillery_component.lua:26。",
+       "value": 5
+      },
+      {
+       "path": "@gameobjects/missile_barrage_01@artillery_info.salvo_rounds",
+       "label": "每轮发数",
+       "kind": "count",
+       "tip": "读取：artillery_component.lua:27、:102。",
+       "value": 6
+      },
+      {
+       "path": "@gameobjects/missile_barrage_01@artillery_info.salvo_interval",
+       "label": "轮间隔（秒）",
+       "kind": "time",
+       "tip": "读取：artillery_component.lua:101。",
+       "value": 15
+      },
+      {
+       "path": "@gameobjects/missile_barrage_01@artillery_info.bomb_interval",
+       "label": "同一轮每发间隔（秒）",
+       "kind": "time",
+       "tip": "读取：artillery_component.lua:89。",
+       "value": 0.3
+      },
+      {
+       "path": "@gameobjects/missile_barrage_01@artillery_info.diameter",
+       "label": "落点范围直径（米）",
+       "kind": "mult",
+       "tip": "读取：artillery_component.lua:92。",
+       "value": 10
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_artillery": {
+   "zh": "“轰鸣者”火力网",
+   "en": "'Thunderer' Barrage",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→↓↑↑←↓",
+   "notes": [
+    "炮弹本体的设置文件不在已解出的脚本里，伤害改不了。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→↓↑↑←↓",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 180
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 4
+      }
+     ]
+    },
+    {
+     "title": "火力网",
+     "unit": "gameobjects/artillery_01",
+     "rows": [
+      {
+       "path": "@gameobjects/artillery_01@artillery_info.duration",
+       "label": "炮击总时长（秒）",
+       "kind": "time",
+       "tip": "读取：artillery_component.lua:26。",
+       "value": 5,
+       "ups": [
+        11,
+        18
+       ]
+      },
+      {
+       "path": "@gameobjects/artillery_01@artillery_info.salvo_rounds",
+       "label": "每轮发数",
+       "kind": "count",
+       "tip": "读取：artillery_component.lua:27、:102。",
+       "value": 3
+      },
+      {
+       "path": "@gameobjects/artillery_01@artillery_info.salvo_interval",
+       "label": "轮间隔（秒）",
+       "kind": "time",
+       "tip": "读取：artillery_component.lua:101。",
+       "value": 2
+      },
+      {
+       "path": "@gameobjects/artillery_01@artillery_info.bomb_interval",
+       "label": "同一轮每发间隔（秒）",
+       "kind": "time",
+       "tip": "读取：artillery_component.lua:89。",
+       "value": 0.2
+      },
+      {
+       "path": "@gameobjects/artillery_01@artillery_info.diameter",
+       "label": "落点范围直径（米）",
+       "kind": "mult",
+       "tip": "读取：artillery_component.lua:92。",
+       "value": 8
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_precision_artillery": {
+   "zh": "“大锤”精准火炮",
+   "en": "'Sledge' Precision Artillery",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→↑←↑↓→",
+   "notes": [
+    "炮弹本体的设置文件不在已解出的脚本里，伤害改不了。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→↑←↑↓→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 120
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "title": "精准炮击",
+     "unit": "gameobjects/precision_artillery_strike",
+     "rows": [
+      {
+       "path": "@gameobjects/precision_artillery_strike@targeted_strike_info.target_radius",
+       "label": "找目标范围（米）",
+       "kind": "mult",
+       "tip": "在信标这么远内找最大的敌人打。读取：targeted_strike_component.lua:143。",
+       "value": 10,
+       "ups": [
+        12,
+        15
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_orbital_strike": {
+   "zh": "外层空间轨道激光炮攻击",
+   "en": "Orbital Laser Strike",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→↑←↑→←",
+   "notes": [],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→↑←↑→←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 180
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 2
+      }
+     ]
+    },
+    {
+     "title": "轨道激光",
+     "unit": "gameobjects/orbital_strike",
+     "rows": [
+      {
+       "path": "@gameobjects/orbital_strike@explosive_info.center_power",
+       "label": "每次灼烧中心伤害",
+       "kind": "mult",
+       "tip": "中心范围内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 350
+      },
+      {
+       "path": "@gameobjects/orbital_strike@explosive_info.center_radius",
+       "label": "每次灼烧中心范围（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:144-147。",
+       "value": 1.5
+      },
+      {
+       "path": "@gameobjects/orbital_strike@explosive_info.blast_power",
+       "label": "每次灼烧外圈伤害",
+       "kind": "mult",
+       "tip": "中心范围外、爆炸半径内的伤害。读取：explosion_manager.lua:144-147。",
+       "value": 90
+      },
+      {
+       "path": "@gameobjects/orbital_strike@explosive_info.blast_radius",
+       "label": "每次灼烧半径（米）",
+       "kind": "mult",
+       "tip": "读取：explosion_manager.lua:207。",
+       "value": 1.5
+      },
+      {
+       "path": "@gameobjects/orbital_strike@homing_info.alive_time",
+       "label": "持续时间",
+       "kind": "time",
+       "tip": "读取：homing_component.lua:15。",
+       "value": 5,
+       "ups": [
+        10,
+        10
+       ]
+      },
+      {
+       "path": "@gameobjects/orbital_strike@homing_info.explosion_interval",
+       "label": "灼烧间隔（秒）",
+       "kind": "time",
+       "tip": "读取：homing_component.lua:382。",
+       "value": 0.2
+      },
+      {
+       "path": "@gameobjects/orbital_strike@homing_info.max_velocity",
+       "label": "追踪速度",
+       "kind": "mult",
+       "tip": "读取：homing_component.lua:306。",
+       "value": 3,
+       "ups": [
+        4,
+        6
+       ]
+      },
+      {
+       "path": "@gameobjects/orbital_strike@homing_info.check_for_targets_radius",
+       "label": "找目标范围（米）",
+       "kind": "mult",
+       "tip": "读取：homing_component.lua:284。",
+       "value": 15
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_missile_strike": {
+   "zh": "“撕裂者”导弹攻击",
+   "en": "'Shredder' Missile Strike",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→←→←↓↓→",
+   "notes": [
+    "导弹本体的设置文件不在已解出的脚本里，伤害改不了。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→←→←↓↓→",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 210
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 6
+      },
+      {
+       "path": "num_uses",
+       "label": "使用次数",
+       "kind": "count",
+       "tip": "每局能叫几次。读取：inventory_component.lua:1163（出生时）、:627（扔一次减一）。",
+       "value": 1,
+       "ups": [
+        5,
+        5
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "stratagem_railcannon_strike": {
+   "zh": "轨道炮攻击",
+   "en": "Railcannon Strike",
+   "name_from": "game",
+   "cat": "red",
+   "type": "offensive",
+   "combo": "→↓↑↓←",
+   "notes": [
+    "炮弹本体的设置文件不在已解出的脚本里，伤害改不了。"
+   ],
+   "blocks": [
+    {
+     "title": "呼叫",
+     "rows": [
+      {
+       "path": "combo",
+       "label": "按键序列",
+       "kind": "text",
+       "value": "→↓↑↓←",
+       "tip": "呼叫时要按的方向键。游戏按这串找战备（loadout_settings.lua:4231 find_stratagem），改了容易和别的战备撞车，暂不开放。"
+      },
+      {
+       "path": "cooldown_time",
+       "label": "冷却时间",
+       "kind": "time",
+       "tip": "扔出信标后要等多久才能再叫。读取：inventory_component.lua:624（扔的时候读）。",
+       "value": 120,
+       "ups": [
+        120,
+        60
+       ]
+      },
+      {
+       "path": "activation_time",
+       "label": "呼叫时间",
+       "kind": "time",
+       "tip": "信标落地到东西降下来的时间。读取：stratagem_component.lua:79、:217。游戏最少 0.1 秒。",
+       "value": 2
+      }
+     ]
+    },
+    {
+     "title": "轨道炮",
+     "unit": "gameobjects/railcannon_strike",
+     "rows": [
+      {
+       "path": "@gameobjects/railcannon_strike@targeted_strike_info.target_radius",
+       "label": "找目标范围（米）",
+       "kind": "mult",
+       "tip": "在信标这么远内找最大的敌人打。读取：targeted_strike_component.lua:143。",
+       "value": 3,
+       "ups": [
+        6,
+        6
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

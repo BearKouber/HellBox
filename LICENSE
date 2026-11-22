@@ -1,0 +1,56 @@
+MIT License
+
+Copyright (c) 2026 07
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+-------------------------------------------------------------------------------
+
+Third-party parts. They belong to their authors and keep their own licenses or
+terms; the MIT license above covers HellBox's own code only.
+
+- Split screen (CameraCTRL, with BridgeCore) by HalfSugar: mod/camera/,
+  mod/camera_stack.py (a Python port of BridgeCore's install step) and
+  camera-src/ in the source repository. Included and published with the
+  author's permission.
+- HelldiversOptimization modules by HalfSugar: mod/hop/ and the generated
+  mod/src/hellbox_hop.lua. Included and published with the author's permission.
+- Dive Harder Patch by Oct0pu5
+  (https://github.com/Octopus058/Helldivers-Dive-Harder-Patch): HUD ping, hidden
+  objectives, friends list refresh and the two QoL Mod fixes, adapted from its
+  lua/dive_harder.lua and lua/ping_hud.lua into mod/src/hellbox_dh.lua.
+  MIT license, Copyright (c) 2026 Dive Harder Patch contributors; the full
+  license notice is kept at the top of mod/src/hellbox_dh.lua. Included with the
+  author's permission.
+- Silkscreen font: SIL Open Font License 1.1 (hellbox/fonts/OFL.txt).
+- LuaJIT 2.0 (release builds, tools/luajit-2.0/): MIT license,
+  Copyright (C) 2005-2026 Mike Pall (see tools/luajit-2.0/COPYRIGHT).
+- Python 3.14 runtime (release builds: HellBox.exe is the official pythonw.exe
+  renamed, plus python*.dll, vcruntime*.dll, runtime/lib/, runtime/dlls/):
+  Python Software Foundation License (runtime/PYTHON-LICENSE.txt).
+- PySide6, Shiboken6 and Qt 6 (release builds, runtime/site-packages/): used
+  unmodified under the GNU LGPL v3 (runtime/licenses/LGPL-3.0.txt and
+  GPL-3.0.txt). You may replace these libraries with your own build of the same
+  version; source code: https://code.qt.io/ and https://download.qt.io/.
+- pymem (release builds, runtime/site-packages/pymem/): MIT license
+  (runtime/site-packages/pymem-1.14.0.dist-info/LICENSE).
+
+HellBox is an unofficial fan mod and is not affiliated with Arrowhead Game
+Studios or Sony Interactive Entertainment. HELLDIVERS is a trademark of Sony
+Interactive Entertainment.

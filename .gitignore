@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+
+# 编出来的东西、打包产物
+mod/out/
+mod/backup/
+.work/
+bin/
+
+# LuaJIT 自己放（见 README）
+tools/luajit-2.0/
+
+# 个人设置（HellBox 运行时写在 mod 目录里）
+mod/*.txt
+mod/cursor_settings.json

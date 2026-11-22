@@ -1,0 +1,22 @@
+[package]
+name = "camera-ctrl"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+helldivers-bridge-core = { path = "../BridgeCore" }
+eframe = { version = "0.31", default-features = false, features = ["wgpu", "default_fonts"] }
+egui = "0.31"
+
+[[bin]]
+name = "CameraCTRL"
+path = "src/main.rs"
+
+[[bin]]
+name = "CameraCTRL-bridge"
+path = "src/cli.rs"
+
+[profile.release]
+lto = false
+codegen-units = 16
+opt-level = 2

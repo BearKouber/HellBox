@@ -1,0 +1,5595 @@
+{
+ "races": {
+  "bugs": {
+   "encounter": [
+    {
+     "cost": 0.5,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_scout_x3",
+       "units": [
+        [
+         "characters/bug_scout/bug_scout",
+         3
+        ]
+       ]
+      }
+     ],
+     "max": 3,
+     "min": 1,
+     "name": "bug_wave_scouts_3",
+     "units": [
+      [
+       "characters/bug_scout/bug_scout",
+       3,
+       "侦查虫"
+      ]
+     ]
+    },
+    {
+     "cost": 1.5,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_warrior_x1",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 4,
+     "min": 2,
+     "name": "bug_wave_warrior_1",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior",
+       1,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 2.5,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_warrior_x2",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 6,
+     "min": 3,
+     "name": "bug_wave_warriors",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior",
+       2,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 3.5,
+     "duration": 5,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_warrior_x3",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         3
+        ]
+       ]
+      }
+     ],
+     "max": 6,
+     "min": 3,
+     "name": "bug_wave_warriors_3",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior",
+       3,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 3.5,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_scout_x8",
+       "units": [
+        [
+         "characters/bug_scout/bug_scout",
+         8
+        ]
+       ]
+      },
+      {
+       "delay": 0.5,
+       "group": "bug_warrior_x2",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 5,
+     "min": 4,
+     "name": "bug_wave_scouts_8",
+     "units": [
+      [
+       "characters/bug_scout/bug_scout",
+       8,
+       "侦查虫"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior",
+       2,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 7,
+     "duration": 5,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_impaler_x1",
+       "units": [
+        [
+         "characters/bug_impaler/bug_impaler",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0.5,
+       "group": "bug_warrior_x2",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 4,
+     "name": "bug_wave_impaler",
+     "units": [
+      [
+       "characters/bug_impaler/bug_impaler",
+       1,
+       "刺钉虫"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior",
+       2,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 8,
+     "duration": 5,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_tank_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 7,
+     "min": 5,
+     "name": "bug_wave_tank",
+     "units": [
+      [
+       "characters/bug_tank/bug_tank",
+       1,
+       "坦克虫"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 2,
+       "group": "bug_warrior_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         5
+        ]
+       ]
+      }
+     ],
+     "max": 7,
+     "min": 6,
+     "name": "bug_wave_warrior_onslaught",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior",
+       5,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 4,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_warrior_elite_x2",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 6,
+     "name": "bug_wave_warrior_elites",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       2,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 14,
+     "duration": 5,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_tank_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 2,
+       "group": "bug_tank_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 8,
+     "min": 7,
+     "name": "bug_wave_double_tank",
+     "units": [
+      [
+       "characters/bug_tank/bug_tank",
+       1,
+       "坦克虫"
+      ],
+      [
+       "characters/bug_tank/bug_tank",
+       1,
+       "坦克虫"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 10,
+     "min": 8,
+     "name": "bug_wave_heavy_tank",
+     "units": [
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ]
+     ]
+    },
+    {
+     "cost": 6,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_warrior_elite_x3",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         3
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 7,
+     "name": "bug_wave_warrior_elites_3",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       3,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 8,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_warrior_elite_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         5
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 7,
+     "name": "bug_wave_warrior_elites",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       5,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_commander_and_warriors",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         1
+        ],
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 10,
+     "name": "bug_wave_commander",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       1,
+       "虫族指挥官"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       2,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 11,
+     "name": "bug_wave_tank_heavy",
+     "units": [
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ]
+     ]
+    },
+    {
+     "cost": 18,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_warrior_elite_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         5
+        ]
+       ]
+      },
+      {
+       "delay": 1,
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 3,
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 12,
+     "name": "bug_wave_warrior_heavy_tank",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       5,
+       "精英部队"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ]
+     ]
+    },
+    {
+     "cost": 22,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         3
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "bug_commander_group_small",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 13,
+     "min": 11,
+     "name": "bug_wave_commandersx5",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       3,
+       "虫族指挥官"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       2,
+       "虫族指挥官"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_warrior_elite_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         5
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "bug_wave_warrior_elites_cheap",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       5,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 7,
+     "duration": 3,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_impaler_x1",
+       "units": [
+        [
+         "characters/bug_impaler/bug_impaler",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "bug_warrior_elite_x2",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "bug_wave_impaler_elite",
+     "units": [
+      [
+       "characters/bug_impaler/bug_impaler",
+       1,
+       "刺钉虫"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       2,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         3
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         3
+        ]
+       ]
+      }
+     ],
+     "max": 13,
+     "min": 12,
+     "name": "bug_wave_commandersx10",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       3,
+       "虫族指挥官"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       3,
+       "虫族指挥官"
+      ]
+     ]
+    },
+    {
+     "cost": 6,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         3
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         3
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "bug_wave_commandersx5_cheap",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       3,
+       "虫族指挥官"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       3,
+       "虫族指挥官"
+      ]
+     ]
+    },
+    {
+     "cost": 13,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "bug_warrior_elite_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         5
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "bug_wave_tank_heavyx4",
+     "units": [
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       5,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 17,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         3
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "bug_warrior_elite_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         5
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "bug_wave_heavy_murder",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       3,
+       "虫族指挥官"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       5,
+       "精英部队"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ]
+     ]
+    }
+   ],
+   "genocide": [
+    {
+     "cost": 0.5,
+     "groups": [
+      {
+       "group": "bug_scout_x3",
+       "units": [
+        [
+         "characters/bug_scout/bug_scout",
+         3,
+         "侦查虫"
+        ]
+       ]
+      }
+     ],
+     "max": 3,
+     "min": 1,
+     "name": "bug_wave_scouts_3",
+     "units": [
+      [
+       "characters/bug_scout/bug_scout",
+       3,
+       "侦查虫"
+      ]
+     ]
+    },
+    {
+     "cost": 1.5,
+     "groups": [
+      {
+       "group": "bug_warrior_x1",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         1,
+         "武斗虫"
+        ]
+       ]
+      }
+     ],
+     "max": 4,
+     "min": 1,
+     "name": "bug_wave_warrior_1",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior",
+       1,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "groups": [
+      {
+       "group": "bug_warrior_x2",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         2,
+         "武斗虫"
+        ]
+       ]
+      }
+     ],
+     "max": 6,
+     "min": 3,
+     "name": "bug_wave_warriors",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior",
+       2,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "groups": [
+      {
+       "group": "bug_stalker_x1",
+       "units": [
+        [
+         "characters/bug_stalker/bug_stalker",
+         1,
+         "追踪虫"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 3,
+     "name": "bug_wave_stalker",
+     "units": [
+      [
+       "characters/bug_stalker/bug_stalker",
+       1,
+       "追踪虫"
+      ]
+     ]
+    },
+    {
+     "cost": 4,
+     "groups": [
+      {
+       "group": "bug_warrior_x3",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         3,
+         "武斗虫"
+        ]
+       ]
+      }
+     ],
+     "max": 6,
+     "min": 3,
+     "name": "bug_wave_warriors_3",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior",
+       3,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 3.5,
+     "groups": [
+      {
+       "group": "bug_scout_x8",
+       "units": [
+        [
+         "characters/bug_scout/bug_scout",
+         8,
+         "侦查虫"
+        ]
+       ]
+      },
+      {
+       "group": "bug_warrior_x2",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         2,
+         "武斗虫"
+        ]
+       ]
+      }
+     ],
+     "max": 5,
+     "min": 4,
+     "name": "bug_wave_scouts_8",
+     "units": [
+      [
+       "characters/bug_scout/bug_scout",
+       8,
+       "侦查虫"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior",
+       2,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 12,
+     "groups": [
+      {
+       "group": "bug_impaler_x1",
+       "units": [
+        [
+         "characters/bug_impaler/bug_impaler",
+         1,
+         "刺钉虫"
+        ]
+       ]
+      },
+      {
+       "group": "bug_warrior_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         5,
+         "武斗虫"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 5,
+     "name": "bug_wave_impaler",
+     "units": [
+      [
+       "characters/bug_impaler/bug_impaler",
+       1,
+       "刺钉虫"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior",
+       5,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 12,
+     "groups": [
+      {
+       "group": "bug_tank_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank",
+         1,
+         "坦克虫"
+        ]
+       ]
+      },
+      {
+       "group": "bug_warrior_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         5,
+         "武斗虫"
+        ]
+       ]
+      }
+     ],
+     "max": 7,
+     "min": 5,
+     "name": "bug_wave_tank",
+     "units": [
+      [
+       "characters/bug_tank/bug_tank",
+       1,
+       "坦克虫"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior",
+       5,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 6,
+     "groups": [
+      {
+       "group": "bug_warrior_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior",
+         5,
+         "武斗虫"
+        ]
+       ]
+      }
+     ],
+     "max": 7,
+     "min": 4,
+     "name": "bug_wave_warrior_onslaught",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior",
+       5,
+       "武斗虫"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "groups": [
+      {
+       "group": "bug_warrior_elite_x2",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         2,
+         "精英部队"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 6,
+     "name": "bug_wave_warrior_elites",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       2,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 20,
+     "groups": [
+      {
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1,
+         "巨兽"
+        ]
+       ]
+      },
+      {
+       "group": "bug_warrior_elite_x3",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         3,
+         "精英部队"
+        ]
+       ]
+      }
+     ],
+     "max": 10,
+     "min": 8,
+     "name": "bug_wave_heavy_tank",
+     "units": [
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       3,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 6,
+     "groups": [
+      {
+       "group": "bug_warrior_elite_x3",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         3,
+         "精英部队"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 7,
+     "name": "bug_wave_warrior_elites_3",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       3,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 8,
+     "groups": [
+      {
+       "group": "bug_warrior_elite_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         5,
+         "精英部队"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 7,
+     "name": "bug_wave_warrior_elites",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       5,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 13,
+     "groups": [
+      {
+       "group": "bug_commander_and_warriors",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         1,
+         "虫族指挥官"
+        ],
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         2,
+         "精英部队"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 8,
+     "name": "bug_wave_commander",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       1,
+       "虫族指挥官"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       2,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 25,
+     "groups": [
+      {
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1,
+         "巨兽"
+        ]
+       ]
+      },
+      {
+       "group": "bug_warrior_elite_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         5,
+         "精英部队"
+        ]
+       ]
+      },
+      {
+       "group": "bug_warrior_elite_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         5,
+         "精英部队"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 11,
+     "name": "bug_wave_tank_heavy",
+     "units": [
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       5,
+       "精英部队"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       5,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 18,
+     "groups": [
+      {
+       "group": "bug_warrior_elite_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         5,
+         "精英部队"
+        ]
+       ]
+      },
+      {
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1,
+         "巨兽"
+        ]
+       ]
+      },
+      {
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1,
+         "巨兽"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 9,
+     "name": "bug_wave_warrior_heavy_tank",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       5,
+       "精英部队"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ]
+     ]
+    },
+    {
+     "cost": 30,
+     "groups": [
+      {
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         5,
+         "虫族指挥官"
+        ]
+       ]
+      }
+     ],
+     "max": 13,
+     "min": 9,
+     "name": "bug_wave_commandersx5",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       5,
+       "虫族指挥官"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "groups": [
+      {
+       "group": "bug_hls_x1",
+       "units": [
+        [
+         "characters/bug_hls/bug_hls",
+         1,
+         "黑暗影者"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "bug_wave_hls",
+     "units": [
+      [
+       "characters/bug_hls/bug_hls",
+       1,
+       "黑暗影者"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "groups": [
+      {
+       "group": "bug_warrior_elite_x5",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         5,
+         "精英部队"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "bug_wave_warrior_elites_cheap",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       5,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 7,
+     "groups": [
+      {
+       "group": "bug_impaler_x1",
+       "units": [
+        [
+         "characters/bug_impaler/bug_impaler",
+         1,
+         "刺钉虫"
+        ]
+       ]
+      },
+      {
+       "group": "bug_warrior_elite_x2",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_elite",
+         2,
+         "精英部队"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "bug_wave_impaler_elite",
+     "units": [
+      [
+       "characters/bug_impaler/bug_impaler",
+       1,
+       "刺钉虫"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_elite",
+       2,
+       "精英部队"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "groups": [
+      {
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         5,
+         "虫族指挥官"
+        ]
+       ]
+      },
+      {
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         5,
+         "虫族指挥官"
+        ]
+       ]
+      }
+     ],
+     "max": 13,
+     "min": 12,
+     "name": "bug_wave_commandersx10",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       5,
+       "虫族指挥官"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       5,
+       "虫族指挥官"
+      ]
+     ]
+    },
+    {
+     "cost": 6,
+     "groups": [
+      {
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         5,
+         "虫族指挥官"
+        ]
+       ]
+      },
+      {
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         5,
+         "虫族指挥官"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "bug_wave_commandersx5_cheap",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       5,
+       "虫族指挥官"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       5,
+       "虫族指挥官"
+      ]
+     ]
+    },
+    {
+     "cost": 13,
+     "groups": [
+      {
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1,
+         "巨兽"
+        ]
+       ]
+      },
+      {
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1,
+         "巨兽"
+        ]
+       ]
+      },
+      {
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1,
+         "巨兽"
+        ]
+       ]
+      },
+      {
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1,
+         "巨兽"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "bug_wave_tank_heavyx4",
+     "units": [
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ]
+     ]
+    },
+    {
+     "cost": 17,
+     "groups": [
+      {
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         5,
+         "虫族指挥官"
+        ]
+       ]
+      },
+      {
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1,
+         "巨兽"
+        ]
+       ]
+      },
+      {
+       "group": "bug_commander_group",
+       "units": [
+        [
+         "characters/bug_warrior/bug_warrior_commander",
+         5,
+         "虫族指挥官"
+        ]
+       ]
+      },
+      {
+       "group": "bug_tank_heavy_x1",
+       "units": [
+        [
+         "characters/bug_tank/bug_tank_heavy",
+         1,
+         "巨兽"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "bug_wave_heavy_murder",
+     "units": [
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       5,
+       "虫族指挥官"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ],
+      [
+       "characters/bug_warrior/bug_warrior_commander",
+       5,
+       "虫族指挥官"
+      ],
+      [
+       "characters/bug_tank/bug_tank_heavy",
+       1,
+       "巨兽"
+      ]
+     ]
+    }
+   ],
+   "patrol": [
+    {
+     "group": "bug_scout_x2",
+     "max": 2,
+     "min": 0,
+     "speed_chase": 2.5,
+     "speed_wander": 2,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/bug_scout/bug_scout",
+       2,
+       "侦查虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_scout_x3",
+     "max": 5,
+     "min": 2,
+     "speed_chase": 4,
+     "speed_wander": 2,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/bug_scout/bug_scout",
+       3,
+       "侦查虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_scout_x3",
+     "max": 6,
+     "min": 2,
+     "speed_chase": 4,
+     "speed_wander": 2,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/bug_scout/bug_scout",
+       3,
+       "侦查虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_scout_x3",
+     "max": 8,
+     "min": 3,
+     "speed_chase": 5,
+     "speed_wander": 2,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/bug_scout/bug_scout",
+       3,
+       "侦查虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_scout_x3",
+     "max": 8,
+     "min": 3,
+     "speed_chase": 5,
+     "speed_wander": 2,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/bug_scout/bug_scout",
+       3,
+       "侦查虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_scout_x3",
+     "max": 9,
+     "min": 5,
+     "speed_chase": 5,
+     "speed_wander": 2,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/bug_scout/bug_scout",
+       3,
+       "侦查虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_scout_jumping_x3",
+     "max": 12,
+     "min": 7,
+     "speed_chase": 12,
+     "speed_wander": 2,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/bug_scout_jumping/bug_scout_jumping",
+       3,
+       "先驱虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_scout_jumping_x3",
+     "max": 12,
+     "min": 8,
+     "speed_chase": 12,
+     "speed_wander": 2,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/bug_scout_jumping/bug_scout_jumping",
+       3,
+       "先驱虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_scout_jumping_x3",
+     "max": 12,
+     "min": 8,
+     "speed_chase": 12,
+     "speed_wander": 4,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/bug_scout_jumping/bug_scout_jumping",
+       3,
+       "先驱虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_scout_jumping_x3",
+     "max": 12,
+     "min": 9,
+     "speed_chase": 12,
+     "speed_wander": 4,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/bug_scout_jumping/bug_scout_jumping",
+       3,
+       "先驱虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_stalker_x1",
+     "max": 7,
+     "min": 5,
+     "speed_chase": 12,
+     "speed_wander": 6,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/bug_stalker/bug_stalker",
+       1,
+       "追踪虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_stalker_x1",
+     "max": 10,
+     "min": 8,
+     "speed_chase": 12,
+     "speed_wander": 6,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/bug_stalker/bug_stalker",
+       1,
+       "追踪虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_stalker_x1",
+     "max": 12,
+     "min": 11,
+     "speed_chase": 12,
+     "speed_wander": 6,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/bug_stalker/bug_stalker",
+       1,
+       "追踪虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_scout_jumping_x3",
+     "max": 15,
+     "min": 13,
+     "speed_chase": 12,
+     "speed_wander": 8,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/bug_scout_jumping/bug_scout_jumping",
+       3,
+       "先驱虫"
+      ]
+     ]
+    },
+    {
+     "group": "bug_hls_x1",
+     "max": 15,
+     "min": 13,
+     "speed_chase": 15,
+     "speed_wander": 8,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/bug_hls/bug_hls",
+       1,
+       "黑暗影者"
+      ]
+     ]
+    },
+    {
+     "group": "bug_hls_x3",
+     "max": 15,
+     "min": 14,
+     "speed_chase": 15,
+     "speed_wander": 8,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/bug_hls/bug_hls",
+       3,
+       "黑暗影者"
+      ]
+     ]
+    }
+   ],
+   "patrol_cap": {
+    "default": 9,
+    "per_difficulty": [
+     4,
+     4,
+     6,
+     7
+    ]
+   },
+   "zh": "虫族"
+  },
+  "cyborgs": {
+   "encounter": [
+    {
+     "cost": 0.4,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_initiates_x4",
+       "units": [
+        [
+         "characters/cyborg_initiate/cyborg_initiate",
+         4
+        ]
+       ]
+      }
+     ],
+     "max": 3,
+     "min": 0,
+     "name": "cyborg_wave_initiates",
+     "units": [
+      [
+       "characters/cyborg_initiate/cyborg_initiate",
+       4,
+       "初始者"
+      ]
+     ]
+    },
+    {
+     "cost": 0.9,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_soldiers_x2",
+       "units": [
+        [
+         "characters/cyborg_soldier/cyborg_soldier",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 4,
+     "min": 2,
+     "name": "cyborg_wave_soldiers",
+     "units": [
+      [
+       "characters/cyborg_soldier/cyborg_soldier",
+       2,
+       "生化兵"
+      ]
+     ]
+    },
+    {
+     "cost": 1,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_soldiers_cannon_x1",
+       "units": [
+        [
+         "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 4,
+     "min": 3,
+     "name": "cyborg_wave_soldiers_cannon",
+     "units": [
+      [
+       "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+       1,
+       "复合人"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "duration": 3,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_x1",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 4,
+     "min": 4,
+     "name": "cyborg_wave_berserker",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker",
+       1,
+       "狂暴者"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_soldiers_cannon_x2",
+       "units": [
+        [
+         "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 8,
+     "min": 5,
+     "name": "cyborg_wave_soldiers_cannon",
+     "units": [
+      [
+       "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+       2,
+       "复合人"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 8,
+     "min": 5,
+     "name": "cyborg_wave_berserkers",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker",
+       2,
+       "狂暴者"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 1,
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 8,
+     "min": 5,
+     "name": "cybogrg_wave_hulk",
+     "units": [
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ]
+     ]
+    },
+    {
+     "cost": 8,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0.5,
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 6,
+     "name": "cybogrg_wave_hulks",
+     "units": [
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ],
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_initiates_elite_x5",
+       "units": [
+        [
+         "characters/cyborg_initiate/cyborg_initiate_elite",
+         5
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 8,
+     "name": "cyborg_wave_grotesques",
+     "units": [
+      [
+       "characters/cyborg_initiate/cyborg_initiate_elite",
+       5,
+       "畸形人"
+      ]
+     ]
+    },
+    {
+     "cost": 4,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0.5,
+       "group": "cyborg_soldiers_cannon_x2",
+       "units": [
+        [
+         "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 9,
+     "name": "cyborg_wave_soldiers_squad",
+     "units": [
+      [
+       "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+       2,
+       "复合人"
+      ]
+     ]
+    },
+    {
+     "cost": 8,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 10,
+     "min": 9,
+     "name": "cyborg_wave_berserker_elite",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 10,
+     "name": "cybogrg_wave_hulk_commander",
+     "units": [
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ]
+     ]
+    },
+    {
+     "cost": 13,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 13,
+     "min": 11,
+     "name": "cyborg_wave_berserker_elites",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ]
+     ]
+    },
+    {
+     "cost": 20,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker",
+         2
+        ]
+       ]
+      },
+      {
+       "delay": 0.5,
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 1,
+       "group": "cyborg_berserkers_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker",
+         2
+        ]
+       ]
+      },
+      {
+       "delay": 1.5,
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 13,
+     "min": 12,
+     "name": "cybogrg_wave_hulk_commander_squad",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker",
+       2,
+       "狂暴者"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker",
+       2,
+       "狂暴者"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ]
+     ]
+    },
+    {
+     "cost": 2,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_soldiers_x2",
+       "units": [
+        [
+         "characters/cyborg_soldier/cyborg_soldier",
+         2
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_soldiers_x2",
+       "units": [
+        [
+         "characters/cyborg_soldier/cyborg_soldier",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "cyborg_wave_soldiers",
+     "units": [
+      [
+       "characters/cyborg_soldier/cyborg_soldier",
+       2,
+       "生化兵"
+      ],
+      [
+       "characters/cyborg_soldier/cyborg_soldier",
+       2,
+       "生化兵"
+      ]
+     ]
+    },
+    {
+     "cost": 9,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker",
+         2
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker",
+         2
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "cybogrg_wave_hulk_w_berserker_squad",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker",
+       2,
+       "狂暴者"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker",
+       2,
+       "狂暴者"
+      ],
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ],
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ]
+     ]
+    },
+    {
+     "cost": 7,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "cybogrg_wave_hulk_monster_squad",
+     "units": [
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ],
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "cybogrg_wave_hulk_mega_squad",
+     "units": [
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "cyborg_wave_berserker_elites",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ]
+     ]
+    }
+   ],
+   "genocide": [
+    {
+     "cost": 1,
+     "groups": [
+      {
+       "group": "cyborg_initiates_x4",
+       "units": [
+        [
+         "characters/cyborg_initiate/cyborg_initiate",
+         4,
+         "初始者"
+        ]
+       ]
+      }
+     ],
+     "max": 7,
+     "min": 0,
+     "name": "cyborg_wave_initiates",
+     "units": [
+      [
+       "characters/cyborg_initiate/cyborg_initiate",
+       4,
+       "初始者"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "groups": [
+      {
+       "group": "cyborg_soldiers_x2",
+       "units": [
+        [
+         "characters/cyborg_soldier/cyborg_soldier",
+         2,
+         "生化兵"
+        ]
+       ]
+      }
+     ],
+     "max": 5,
+     "min": 0,
+     "name": "cyborg_wave_soldiers",
+     "units": [
+      [
+       "characters/cyborg_soldier/cyborg_soldier",
+       2,
+       "生化兵"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "groups": [
+      {
+       "group": "cyborg_soldiers_cannon_x1",
+       "units": [
+        [
+         "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+         1,
+         "复合人"
+        ]
+       ]
+      }
+     ],
+     "max": 5,
+     "min": 1,
+     "name": "cyborg_wave_soldiers_cannon",
+     "units": [
+      [
+       "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+       1,
+       "复合人"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "groups": [
+      {
+       "group": "cyborg_soldiers_cannon_x2",
+       "units": [
+        [
+         "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+         2,
+         "复合人"
+        ]
+       ]
+      }
+     ],
+     "max": 8,
+     "min": 1,
+     "name": "cyborg_wave_soldiers_cannon",
+     "units": [
+      [
+       "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+       2,
+       "复合人"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "groups": [
+      {
+       "group": "cyborg_berserkers_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker",
+         2,
+         "狂暴者"
+        ]
+       ]
+      }
+     ],
+     "max": 8,
+     "min": 4,
+     "name": "cyborg_wave_berserkers",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker",
+       2,
+       "狂暴者"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "groups": [
+      {
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1,
+         "巨型者"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_initiates_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_initiate/cyborg_initiate_elite",
+         2,
+         "畸形人"
+        ]
+       ]
+      }
+     ],
+     "max": 8,
+     "min": 5,
+     "name": "cybogrg_wave_hulk",
+     "units": [
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ],
+      [
+       "characters/cyborg_initiate/cyborg_initiate_elite",
+       2,
+       "畸形人"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "groups": [
+      {
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1,
+         "巨型者"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1,
+         "巨型者"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_initiates_elite_x5",
+       "units": [
+        [
+         "characters/cyborg_initiate/cyborg_initiate_elite",
+         5,
+         "畸形人"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 6,
+     "name": "cybogrg_wave_hulks",
+     "units": [
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ],
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ],
+      [
+       "characters/cyborg_initiate/cyborg_initiate_elite",
+       5,
+       "畸形人"
+      ]
+     ]
+    },
+    {
+     "cost": 6,
+     "groups": [
+      {
+       "group": "cyborg_initiates_elite_x5",
+       "units": [
+        [
+         "characters/cyborg_initiate/cyborg_initiate_elite",
+         5,
+         "畸形人"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 4,
+     "name": "cyborg_wave_grotesques",
+     "units": [
+      [
+       "characters/cyborg_initiate/cyborg_initiate_elite",
+       5,
+       "畸形人"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "groups": [
+      {
+       "group": "cyborg_soldiers_cannon_x2",
+       "units": [
+        [
+         "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+         2,
+         "复合人"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 9,
+     "name": "cyborg_wave_soldiers_squad",
+     "units": [
+      [
+       "characters/cyborg_soldier_cannon/cyborg_soldier_cannon",
+       2,
+       "复合人"
+      ]
+     ]
+    },
+    {
+     "cost": 8,
+     "groups": [
+      {
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2,
+         "屠夫"
+        ]
+       ]
+      }
+     ],
+     "max": 10,
+     "min": 8,
+     "name": "cyborg_wave_berserker_elite",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ]
+     ]
+    },
+    {
+     "cost": 12,
+     "groups": [
+      {
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1,
+         "首领"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 10,
+     "name": "cybogrg_wave_hulk_commander",
+     "units": [
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ]
+     ]
+    },
+    {
+     "cost": 20,
+     "groups": [
+      {
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2,
+         "屠夫"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2,
+         "屠夫"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 8,
+     "name": "cyborg_wave_berserker_elites",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ]
+     ]
+    },
+    {
+     "cost": 25,
+     "groups": [
+      {
+       "group": "cyborg_berserkers_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker",
+         2,
+         "狂暴者"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1,
+         "首领"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_berserkers_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker",
+         2,
+         "狂暴者"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1,
+         "首领"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 8,
+     "name": "cybogrg_wave_hulk_commander_squad",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker",
+       2,
+       "狂暴者"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker",
+       2,
+       "狂暴者"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ]
+     ]
+    },
+    {
+     "cost": 25,
+     "groups": [
+      {
+       "group": "cyborg_ifv_scoutgroup",
+       "units": [
+        [
+         "characters/cyborg_ifv/cyborg_ifv",
+         1,
+         "步兵战车"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 6,
+     "name": "cyborg_ifv_wave",
+     "units": [
+      [
+       "characters/cyborg_ifv/cyborg_ifv",
+       1,
+       "步兵战车"
+      ]
+     ]
+    },
+    {
+     "cost": 25,
+     "groups": [
+      {
+       "group": "cyborg_ifv_scoutgroup",
+       "units": [
+        [
+         "characters/cyborg_ifv/cyborg_ifv",
+         1,
+         "步兵战车"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 9,
+     "name": "cyborg_ifv_wave_2",
+     "units": [
+      [
+       "characters/cyborg_ifv/cyborg_ifv",
+       1,
+       "步兵战车"
+      ]
+     ]
+    },
+    {
+     "cost": 6,
+     "groups": [
+      {
+       "group": "cyborg_dog_x3",
+       "units": [
+        [
+         "characters/cyborg_dog/cyborg_dog_01",
+         3,
+         "猎犬"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 3,
+     "name": "cyborg_dog_wave",
+     "units": [
+      [
+       "characters/cyborg_dog/cyborg_dog_01",
+       3,
+       "猎犬"
+      ]
+     ]
+    },
+    {
+     "cost": 6,
+     "groups": [
+      {
+       "group": "cyborg_dog_x3",
+       "units": [
+        [
+         "characters/cyborg_dog/cyborg_dog_01",
+         3,
+         "猎犬"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_dog_x3",
+       "units": [
+        [
+         "characters/cyborg_dog/cyborg_dog_01",
+         3,
+         "猎犬"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "cyborg_dog_wave2",
+     "units": [
+      [
+       "characters/cyborg_dog/cyborg_dog_01",
+       3,
+       "猎犬"
+      ],
+      [
+       "characters/cyborg_dog/cyborg_dog_01",
+       3,
+       "猎犬"
+      ]
+     ]
+    },
+    {
+     "cost": 2,
+     "groups": [
+      {
+       "group": "cyborg_soldiers_x2",
+       "units": [
+        [
+         "characters/cyborg_soldier/cyborg_soldier",
+         2,
+         "生化兵"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_soldiers_x2",
+       "units": [
+        [
+         "characters/cyborg_soldier/cyborg_soldier",
+         2,
+         "生化兵"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "cyborg_wave_soldiers",
+     "units": [
+      [
+       "characters/cyborg_soldier/cyborg_soldier",
+       2,
+       "生化兵"
+      ],
+      [
+       "characters/cyborg_soldier/cyborg_soldier",
+       2,
+       "生化兵"
+      ]
+     ]
+    },
+    {
+     "cost": 9,
+     "groups": [
+      {
+       "group": "cyborg_berserkers_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker",
+         2,
+         "狂暴者"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_berserkers_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker",
+         2,
+         "狂暴者"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1,
+         "巨型者"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1,
+         "巨型者"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1,
+         "首领"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "cybogrg_wave_hulk_w_berserker_squad",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker",
+       2,
+       "狂暴者"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker",
+       2,
+       "狂暴者"
+      ],
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ],
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ]
+     ]
+    },
+    {
+     "cost": 7,
+     "groups": [
+      {
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1,
+         "首领"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1,
+         "首领"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1,
+         "首领"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1,
+         "巨型者"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_x1",
+       "units": [
+        [
+         "characters/cyborg_hulk/cyborg_hulk",
+         1,
+         "巨型者"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "cybogrg_wave_hulk_monster_squad",
+     "units": [
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ],
+      [
+       "characters/cyborg_hulk/cyborg_hulk",
+       1,
+       "巨型者"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "groups": [
+      {
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1,
+         "首领"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1,
+         "首领"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1,
+         "首领"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_hulk_commander",
+       "units": [
+        [
+         "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+         1,
+         "首领"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "cybogrg_wave_hulk_mega_squad",
+     "units": [
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ],
+      [
+       "characters/cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+       1,
+       "首领"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "groups": [
+      {
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2,
+         "屠夫"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2,
+         "屠夫"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2,
+         "屠夫"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2,
+         "屠夫"
+        ]
+       ]
+      },
+      {
+       "group": "cyborg_berserkers_elite_x2",
+       "units": [
+        [
+         "characters/cyborg_berserker/cyborg_berserker_elite",
+         2,
+         "屠夫"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "cyborg_wave_berserker_elites",
+     "units": [
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ],
+      [
+       "characters/cyborg_berserker/cyborg_berserker_elite",
+       2,
+       "屠夫"
+      ]
+     ]
+    }
+   ],
+   "patrol": [
+    {
+     "group": "cyborg_scoutgroup_easy",
+     "max": 3,
+     "min": 1,
+     "speed_chase": 2.5,
+     "speed_wander": 2,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/cyborg_soldier_grenadelauncher/cyborg_soldier_grenadelauncher",
+       1,
+       "“班长”战士"
+      ],
+      [
+       "characters/cyborg_initiate/cyborg_initiate",
+       3,
+       "初始者"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_scoutgroup_easy",
+     "max": 4,
+     "min": 3,
+     "speed_chase": 3,
+     "speed_wander": 2.5,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/cyborg_soldier_grenadelauncher/cyborg_soldier_grenadelauncher",
+       1,
+       "“班长”战士"
+      ],
+      [
+       "characters/cyborg_initiate/cyborg_initiate",
+       3,
+       "初始者"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_scoutgroup_easy",
+     "max": 5,
+     "min": 4,
+     "speed_chase": 4,
+     "speed_wander": 3,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/cyborg_soldier_grenadelauncher/cyborg_soldier_grenadelauncher",
+       1,
+       "“班长”战士"
+      ],
+      [
+       "characters/cyborg_initiate/cyborg_initiate",
+       3,
+       "初始者"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_scoutgroup_medium",
+     "max": 7,
+     "min": 5,
+     "speed_chase": 4,
+     "speed_wander": 3,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/cyborg_soldier_grenadelauncher/cyborg_soldier_grenadelauncher",
+       2,
+       "“班长”战士"
+      ],
+      [
+       "characters/cyborg_initiate/cyborg_initiate",
+       2,
+       "初始者"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_scoutgroup_medium",
+     "max": 8,
+     "min": 6,
+     "speed_chase": 4,
+     "speed_wander": 3,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/cyborg_soldier_grenadelauncher/cyborg_soldier_grenadelauncher",
+       2,
+       "“班长”战士"
+      ],
+      [
+       "characters/cyborg_initiate/cyborg_initiate",
+       2,
+       "初始者"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_scoutgroup_hard",
+     "max": 8,
+     "min": 7,
+     "speed_chase": 4,
+     "speed_wander": 3,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/cyborg_soldier_grenadelauncher/cyborg_soldier_grenadelauncher",
+       4,
+       "“班长”战士"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_scoutgroup_hard",
+     "max": 9,
+     "min": 8,
+     "speed_chase": 4,
+     "speed_wander": 3,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/cyborg_soldier_grenadelauncher/cyborg_soldier_grenadelauncher",
+       4,
+       "“班长”战士"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_scoutgroup_hard",
+     "max": 12,
+     "min": 9,
+     "speed_chase": 4,
+     "speed_wander": 3,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/cyborg_soldier_grenadelauncher/cyborg_soldier_grenadelauncher",
+       4,
+       "“班长”战士"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_scoutgroup_hard",
+     "max": 12,
+     "min": 9,
+     "speed_chase": 4,
+     "speed_wander": 3,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/cyborg_soldier_grenadelauncher/cyborg_soldier_grenadelauncher",
+       4,
+       "“班长”战士"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_ifv_scoutgroup",
+     "max": 9,
+     "min": 7,
+     "speed_chase": 4,
+     "speed_wander": 2,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/cyborg_ifv/cyborg_ifv",
+       1,
+       "步兵战车"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_ifv_scoutgroup",
+     "max": 15,
+     "min": 10,
+     "speed_chase": 4,
+     "speed_wander": 2,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/cyborg_ifv/cyborg_ifv",
+       1,
+       "步兵战车"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_dog_x3",
+     "max": 12,
+     "min": 3,
+     "speed_chase": 6,
+     "speed_wander": 3,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/cyborg_dog/cyborg_dog_01",
+       3,
+       "猎犬"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_dog_x3",
+     "max": 12,
+     "min": 7,
+     "speed_chase": 6,
+     "speed_wander": 3,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/cyborg_dog/cyborg_dog_01",
+       3,
+       "猎犬"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_dog_x6",
+     "max": 15,
+     "min": 13,
+     "speed_chase": 10,
+     "speed_wander": 3,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/cyborg_dog/cyborg_dog_01",
+       6,
+       "猎犬"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_soldiers_shield_x2",
+     "max": 15,
+     "min": 13,
+     "speed_chase": 6,
+     "speed_wander": 2,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/cyborg_soldier_shield/cyborg_soldier_shield",
+       2,
+       "军团士兵"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_soldiers_shield_x4",
+     "max": 15,
+     "min": 13,
+     "speed_chase": 6,
+     "speed_wander": 2,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/cyborg_soldier_shield/cyborg_soldier_shield",
+       4,
+       "军团士兵"
+      ]
+     ]
+    },
+    {
+     "group": "cyborg_ifv_scoutgroup",
+     "max": 15,
+     "min": 13,
+     "speed_chase": 10,
+     "speed_wander": 6,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/cyborg_ifv/cyborg_ifv",
+       1,
+       "步兵战车"
+      ]
+     ]
+    }
+   ],
+   "patrol_cap": {
+    "default": 8,
+    "per_difficulty": [
+     5,
+     6,
+     7
+    ]
+   },
+   "zh": "生化人"
+  },
+  "illuminates": {
+   "encounter": [
+    {
+     "cost": 0.7,
+     "duration": 12,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_tripod_x1",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 3,
+     "min": 1,
+     "name": "tripod x1",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod",
+       1,
+       "三脚电械"
+      ]
+     ]
+    },
+    {
+     "cost": 2,
+     "duration": 6,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_tripod_x2",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 6,
+     "min": 1,
+     "name": "tripod x2",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod",
+       2,
+       "三脚电械"
+      ]
+     ]
+    },
+    {
+     "cost": 3.5,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_tripod_x3",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod",
+         3
+        ]
+       ]
+      }
+     ],
+     "max": 7,
+     "min": 3,
+     "name": "tripod x3",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod",
+       3,
+       "三脚电械"
+      ]
+     ]
+    },
+    {
+     "cost": 1.5,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_apprentice",
+       "units": [
+        [
+         "characters/illuminate_apprentice/illuminate_apprentice",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 7,
+     "min": 4,
+     "name": "apprentice",
+     "units": [
+      [
+       "characters/illuminate_apprentice/illuminate_apprentice",
+       1,
+       "光能学徒"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_apprentice_x2",
+       "units": [
+        [
+         "characters/illuminate_apprentice/illuminate_apprentice",
+         2
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 5,
+     "name": "apprentices",
+     "units": [
+      [
+       "characters/illuminate_apprentice/illuminate_apprentice",
+       2,
+       "光能学徒"
+      ]
+     ]
+    },
+    {
+     "cost": 4.5,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 5,
+     "name": "trickster",
+     "units": [
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ]
+     ]
+    },
+    {
+     "cost": 4,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_obelisk",
+       "units": [
+        [
+         "characters/illuminate_obelisk/illuminate_obelisk",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 13,
+     "min": 5,
+     "name": "obelisk",
+     "units": [
+      [
+       "characters/illuminate_obelisk/illuminate_obelisk",
+       1,
+       "奥贝利斯"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "duration": 5,
+     "groups": [
+      {
+       "delay": 1.5,
+       "group": "illuminate_illusionist",
+       "units": [
+        [
+         "characters/illuminate_illusionist/illuminate_illusionist",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0.5,
+       "group": "illuminate_apprentice",
+       "units": [
+        [
+         "characters/illuminate_apprentice/illuminate_apprentice",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_apprentice",
+       "units": [
+        [
+         "characters/illuminate_apprentice/illuminate_apprentice",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 5,
+     "name": "illusionist",
+     "units": [
+      [
+       "characters/illuminate_illusionist/illuminate_illusionist",
+       1,
+       "幻光大师"
+      ],
+      [
+       "characters/illuminate_apprentice/illuminate_apprentice",
+       1,
+       "光能学徒"
+      ],
+      [
+       "characters/illuminate_apprentice/illuminate_apprentice",
+       1,
+       "光能学徒"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_tripod_elite_x3",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod_elite",
+         3
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 7,
+     "name": "tripod_elite x3",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod_elite",
+       3,
+       "步行者"
+      ]
+     ]
+    },
+    {
+     "cost": 6,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_tripod_elite_x5",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod_elite",
+         5
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 9,
+     "name": "tripod_elite x5",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod_elite",
+       5,
+       "步行者"
+      ]
+     ]
+    },
+    {
+     "cost": 20,
+     "duration": 5,
+     "groups": [
+      {
+       "delay": 0.5,
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 1,
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0.5,
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 13,
+     "min": 10,
+     "name": "illusionist_plus_plus",
+     "units": [
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ]
+     ]
+    },
+    {
+     "cost": 15,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0.3,
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0.6,
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 14,
+     "min": 13,
+     "name": "illusionist_plus_plus_final_02",
+     "units": [
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_obelisk",
+       "units": [
+        [
+         "characters/illuminate_obelisk/illuminate_obelisk",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_obelisk",
+       "units": [
+        [
+         "characters/illuminate_obelisk/illuminate_obelisk",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_obelisk",
+       "units": [
+        [
+         "characters/illuminate_obelisk/illuminate_obelisk",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "obelisk_trio",
+     "units": [
+      [
+       "characters/illuminate_obelisk/illuminate_obelisk",
+       1,
+       "奥贝利斯"
+      ],
+      [
+       "characters/illuminate_obelisk/illuminate_obelisk",
+       1,
+       "奥贝利斯"
+      ],
+      [
+       "characters/illuminate_obelisk/illuminate_obelisk",
+       1,
+       "奥贝利斯"
+      ]
+     ]
+    },
+    {
+     "cost": 8,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "trickster_horde",
+     "units": [
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ]
+     ]
+    },
+    {
+     "cost": 6,
+     "duration": 2,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_tripod_elite_x3",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod_elite",
+         3
+        ]
+       ]
+      },
+      {
+       "delay": 0.2,
+       "group": "illuminate_tripod_elite_x3",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod_elite",
+         3
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "tripod_elite x6",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod_elite",
+       3,
+       "步行者"
+      ],
+      [
+       "characters/illuminate_tripod/illuminate_tripod_elite",
+       3,
+       "步行者"
+      ]
+     ]
+    },
+    {
+     "cost": 15,
+     "duration": 4,
+     "groups": [
+      {
+       "delay": 0,
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1
+        ]
+       ]
+      },
+      {
+       "delay": 0,
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 15,
+     "name": "illusionist_plus_plus_final_04",
+     "units": [
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ]
+     ]
+    }
+   ],
+   "genocide": [
+    {
+     "cost": 2,
+     "groups": [
+      {
+       "group": "illuminate_tripod_x1",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod",
+         1,
+         "三脚电械"
+        ]
+       ]
+      }
+     ],
+     "max": 3,
+     "min": 1,
+     "name": "tripod x1",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod",
+       1,
+       "三脚电械"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "groups": [
+      {
+       "group": "illuminate_tripod_x2",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod",
+         2,
+         "三脚电械"
+        ]
+       ]
+      }
+     ],
+     "max": 6,
+     "min": 1,
+     "name": "tripod x2",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod",
+       2,
+       "三脚电械"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "groups": [
+      {
+       "group": "illuminate_hunter",
+       "units": [
+        [
+         "characters/illuminate_hunter/illuminate_hunter",
+         1,
+         "光猎者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_tripod_x2",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod",
+         2,
+         "三脚电械"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 1,
+     "name": "Hunter",
+     "units": [
+      [
+       "characters/illuminate_hunter/illuminate_hunter",
+       1,
+       "光猎者"
+      ],
+      [
+       "characters/illuminate_tripod/illuminate_tripod",
+       2,
+       "三脚电械"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "groups": [
+      {
+       "group": "illuminate_tripod_x3",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod",
+         3,
+         "三脚电械"
+        ]
+       ]
+      }
+     ],
+     "max": 8,
+     "min": 1,
+     "name": "tripod x3",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod",
+       3,
+       "三脚电械"
+      ]
+     ]
+    },
+    {
+     "cost": 3,
+     "groups": [
+      {
+       "group": "illuminate_apprentice",
+       "units": [
+        [
+         "characters/illuminate_apprentice/illuminate_apprentice",
+         1,
+         "光能学徒"
+        ]
+       ]
+      }
+     ],
+     "max": 7,
+     "min": 2,
+     "name": "apprentice",
+     "units": [
+      [
+       "characters/illuminate_apprentice/illuminate_apprentice",
+       1,
+       "光能学徒"
+      ]
+     ]
+    },
+    {
+     "cost": 5,
+     "groups": [
+      {
+       "group": "illuminate_apprentice_x2",
+       "units": [
+        [
+         "characters/illuminate_apprentice/illuminate_apprentice",
+         2,
+         "光能学徒"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 2,
+     "name": "apprentices",
+     "units": [
+      [
+       "characters/illuminate_apprentice/illuminate_apprentice",
+       2,
+       "光能学徒"
+      ]
+     ]
+    },
+    {
+     "cost": 6,
+     "groups": [
+      {
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1,
+         "光弃者"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 5,
+     "name": "trickster",
+     "units": [
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "groups": [
+      {
+       "group": "illuminate_obelisk",
+       "units": [
+        [
+         "characters/illuminate_obelisk/illuminate_obelisk",
+         1,
+         "奥贝利斯"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_apprentice_x2",
+       "units": [
+        [
+         "characters/illuminate_apprentice/illuminate_apprentice",
+         2,
+         "光能学徒"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_tripod_x2",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod",
+         2,
+         "三脚电械"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 4,
+     "name": "obelisk",
+     "units": [
+      [
+       "characters/illuminate_obelisk/illuminate_obelisk",
+       1,
+       "奥贝利斯"
+      ],
+      [
+       "characters/illuminate_apprentice/illuminate_apprentice",
+       2,
+       "光能学徒"
+      ],
+      [
+       "characters/illuminate_tripod/illuminate_tripod",
+       2,
+       "三脚电械"
+      ]
+     ]
+    },
+    {
+     "cost": 15,
+     "groups": [
+      {
+       "group": "illuminate_illusionist",
+       "units": [
+        [
+         "characters/illuminate_illusionist/illuminate_illusionist",
+         1,
+         "幻光大师"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_apprentice_x2",
+       "units": [
+        [
+         "characters/illuminate_apprentice/illuminate_apprentice",
+         2,
+         "光能学徒"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_tripod_x2",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod",
+         2,
+         "三脚电械"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 5,
+     "name": "illusionist",
+     "units": [
+      [
+       "characters/illuminate_illusionist/illuminate_illusionist",
+       1,
+       "幻光大师"
+      ],
+      [
+       "characters/illuminate_apprentice/illuminate_apprentice",
+       2,
+       "光能学徒"
+      ],
+      [
+       "characters/illuminate_tripod/illuminate_tripod",
+       2,
+       "三脚电械"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "groups": [
+      {
+       "group": "illuminate_tripod_elite_x3",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod_elite",
+         3,
+         "步行者"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 7,
+     "name": "tripod_elite x3",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod_elite",
+       3,
+       "步行者"
+      ]
+     ]
+    },
+    {
+     "cost": 14,
+     "groups": [
+      {
+       "group": "illuminate_tripod_elite_x5",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod_elite",
+         5,
+         "步行者"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 7,
+     "name": "tripod_elite x5",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod_elite",
+       5,
+       "步行者"
+      ]
+     ]
+    },
+    {
+     "cost": 20,
+     "groups": [
+      {
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1,
+         "光能决策者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1,
+         "光弃者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1,
+         "光弃者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1,
+         "光弃者"
+        ]
+       ]
+      }
+     ],
+     "max": 12,
+     "min": 9,
+     "name": "illusionist_plus_plus",
+     "units": [
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ]
+     ]
+    },
+    {
+     "cost": 18,
+     "groups": [
+      {
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1,
+         "光能决策者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1,
+         "光能决策者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1,
+         "光能决策者"
+        ]
+       ]
+      }
+     ],
+     "max": 14,
+     "min": 13,
+     "name": "illusionist_plus_plus_final_02",
+     "units": [
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ]
+     ]
+    },
+    {
+     "cost": 7,
+     "groups": [
+      {
+       "group": "illuminate_hunter_elite",
+       "units": [
+        [
+         "characters/illuminate_hunter/illuminate_hunter_elite",
+         1,
+         "illuminate_hunter_elite"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_tripod_elite_x3",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod_elite",
+         3,
+         "步行者"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "Hunter",
+     "units": [
+      [
+       "characters/illuminate_hunter/illuminate_hunter_elite",
+       1,
+       "illuminate_hunter_elite"
+      ],
+      [
+       "characters/illuminate_tripod/illuminate_tripod_elite",
+       3,
+       "步行者"
+      ]
+     ]
+    },
+    {
+     "cost": 10,
+     "groups": [
+      {
+       "group": "illuminate_obelisk",
+       "units": [
+        [
+         "characters/illuminate_obelisk/illuminate_obelisk",
+         1,
+         "奥贝利斯"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_obelisk",
+       "units": [
+        [
+         "characters/illuminate_obelisk/illuminate_obelisk",
+         1,
+         "奥贝利斯"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_obelisk",
+       "units": [
+        [
+         "characters/illuminate_obelisk/illuminate_obelisk",
+         1,
+         "奥贝利斯"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 13,
+     "name": "obelisk_trio",
+     "units": [
+      [
+       "characters/illuminate_obelisk/illuminate_obelisk",
+       1,
+       "奥贝利斯"
+      ],
+      [
+       "characters/illuminate_obelisk/illuminate_obelisk",
+       1,
+       "奥贝利斯"
+      ],
+      [
+       "characters/illuminate_obelisk/illuminate_obelisk",
+       1,
+       "奥贝利斯"
+      ]
+     ]
+    },
+    {
+     "cost": 15,
+     "groups": [
+      {
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1,
+         "光弃者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1,
+         "光弃者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1,
+         "光弃者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1,
+         "光弃者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1,
+         "光弃者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_trickster",
+       "units": [
+        [
+         "characters/illuminate_trickster/illuminate_trickster",
+         1,
+         "光弃者"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "trickster_horde",
+     "units": [
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ],
+      [
+       "characters/illuminate_trickster/illuminate_trickster",
+       1,
+       "光弃者"
+      ]
+     ]
+    },
+    {
+     "cost": 7,
+     "groups": [
+      {
+       "group": "illuminate_tripod_elite_x3",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod_elite",
+         3,
+         "步行者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_tripod_elite_x3",
+       "units": [
+        [
+         "characters/illuminate_tripod/illuminate_tripod_elite",
+         3,
+         "步行者"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 14,
+     "name": "tripod_elite x6",
+     "units": [
+      [
+       "characters/illuminate_tripod/illuminate_tripod_elite",
+       3,
+       "步行者"
+      ],
+      [
+       "characters/illuminate_tripod/illuminate_tripod_elite",
+       3,
+       "步行者"
+      ]
+     ]
+    },
+    {
+     "cost": 20,
+     "groups": [
+      {
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1,
+         "光能决策者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1,
+         "光能决策者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1,
+         "光能决策者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1,
+         "光能决策者"
+        ]
+       ]
+      },
+      {
+       "group": "illuminate_illusionist_assasinate",
+       "units": [
+        [
+         "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+         1,
+         "光能决策者"
+        ]
+       ]
+      }
+     ],
+     "max": 15,
+     "min": 15,
+     "name": "illusionist_plus_plus_final_04",
+     "units": [
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ],
+      [
+       "characters/illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+       1,
+       "光能决策者"
+      ]
+     ]
+    }
+   ],
+   "patrol": [
+    {
+     "group": "illuminate_observer_x1",
+     "max": 7,
+     "min": 0,
+     "speed_chase": 7,
+     "speed_wander": 5,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/illuminate_observer/illuminate_observer",
+       1,
+       "光能观测者"
+      ]
+     ]
+    },
+    {
+     "group": "illuminate_observer_elite_x1",
+     "max": 12,
+     "min": 8,
+     "speed_chase": 7,
+     "speed_wander": 5,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/illuminate_observer/illuminate_observer_elite",
+       1,
+       "看守者"
+      ]
+     ]
+    },
+    {
+     "group": "illuminate_hunter",
+     "max": 4,
+     "min": 2,
+     "speed_chase": 4,
+     "speed_wander": 4,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/illuminate_hunter/illuminate_hunter",
+       1,
+       "光猎者"
+      ]
+     ]
+    },
+    {
+     "group": "illuminate_hunter",
+     "max": 8,
+     "min": 5,
+     "speed_chase": 4,
+     "speed_wander": 4,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/illuminate_hunter/illuminate_hunter",
+       1,
+       "光猎者"
+      ]
+     ]
+    },
+    {
+     "group": "illuminate_hunter",
+     "max": 13,
+     "min": 9,
+     "speed_chase": 4,
+     "speed_wander": 4,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/illuminate_hunter/illuminate_hunter",
+       1,
+       "光猎者"
+      ]
+     ]
+    },
+    {
+     "group": "illuminate_observer_obsidian_x1",
+     "max": 15,
+     "min": 13,
+     "speed_chase": 8,
+     "speed_wander": 5,
+     "to_objectives": true,
+     "units": [
+      [
+       "characters/illuminate_observer/illuminate_observer_obsidian",
+       1,
+       "黑曜石观测者"
+      ]
+     ]
+    },
+    {
+     "group": "illuminate_hunter_elite",
+     "max": 13,
+     "min": 13,
+     "speed_chase": 4,
+     "speed_wander": 4,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/illuminate_hunter/illuminate_hunter_elite",
+       1,
+       "illuminate_hunter_elite"
+      ]
+     ]
+    },
+    {
+     "group": "illuminate_hunter_elite",
+     "max": 15,
+     "min": 14,
+     "speed_chase": 4,
+     "speed_wander": 4,
+     "to_objectives": false,
+     "units": [
+      [
+       "characters/illuminate_hunter/illuminate_hunter_elite",
+       1,
+       "illuminate_hunter_elite"
+      ]
+     ]
+    }
+   ],
+   "patrol_cap": {
+    "default": 6,
+    "per_difficulty": [
+     2,
+     3,
+     4,
+     5
+    ]
+   },
+   "zh": "光能者"
+  }
+ },
+ "source": "游戏 lua_src 设置文件（见 tools/spawn_tables.py 文件头）"
+}

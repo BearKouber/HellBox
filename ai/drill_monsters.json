@@ -1,0 +1,478 @@
+{
+ "source": "游戏文件：图鉴名字键 + localization/strings（简体中文）；能不能刷看 race_* 资源包，实测结果见 TESTED",
+ "races": {
+  "bugs": {
+   "zh": "虫族",
+   "prefix": "bug_",
+   "units": [
+    {
+     "path": "bug_hls/bug_hls",
+     "name": "bug_hls",
+     "zh": "黑暗影者",
+     "en": "SHADOW",
+     "zht": "暗影",
+     "name_from": "strings:enc_bug_hls",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "bug_impaler/bug_impaler",
+     "name": "bug_impaler",
+     "zh": "刺钉虫",
+     "en": "IMPALER",
+     "zht": "刺釘蟲",
+     "name_from": "strings:enc_bug_impaler",
+     "nick": "穿刺虫",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "bug_impaler/bug_impaler_tentacle",
+     "name": "bug_impaler_tentacle",
+     "zh": "bug_impaler_tentacle",
+     "en": "",
+     "zht": "",
+     "name_from": "internal",
+     "part": "穿刺虫的触手（穿刺虫钻地时自己生出来）",
+     "test": "bad",
+     "note": "刷了游戏直接崩（entity_aux.lua attempt to index a nil value）"
+    },
+    {
+     "path": "bug_scout/bug_scout",
+     "name": "bug_scout",
+     "zh": "侦查虫",
+     "en": "SCOUT",
+     "zht": "偵查蟲",
+     "name_from": "strings:enc_bug_scout",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "bug_scout_jumping/bug_scout_jumping",
+     "name": "bug_scout_jumping",
+     "zh": "先驱虫",
+     "en": "VANGUARD",
+     "zht": "先驅蟲",
+     "name_from": "strings:enc_bug_scout_elite",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "bug_stalker/bug_stalker",
+     "name": "bug_stalker",
+     "zh": "追踪虫",
+     "en": "STALKER",
+     "zht": "追蹤蟲",
+     "name_from": "strings:enc_bug_stalker",
+     "nick": "潜伏者",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "bug_tank/bug_tank",
+     "name": "bug_tank",
+     "zh": "坦克虫",
+     "en": "TANK",
+     "zht": "坦克蟲",
+     "name_from": "strings:enc_bug_tank",
+     "nick": "冲锋虫",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "bug_tank/bug_tank_heavy",
+     "name": "bug_tank_heavy",
+     "zh": "巨兽",
+     "en": "BEHEMOTH",
+     "zht": "畢西莫司",
+     "name_from": "strings:enc_bug_tank_heavy",
+     "nick": "巨兽",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "bug_warrior/bug_warrior",
+     "name": "bug_warrior",
+     "zh": "武斗虫",
+     "en": "WARRIOR",
+     "zht": "武鬥蟲",
+     "name_from": "strings:enc_bug_warrior",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "bug_warrior/bug_warrior_commander",
+     "name": "bug_warrior_commander",
+     "zh": "虫族指挥官",
+     "en": "BROOD COMMANDER",
+     "zht": "蟲族指揮官",
+     "name_from": "strings:enc_bug_boss",
+     "nick": "首领",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "bug_warrior/bug_warrior_elite",
+     "name": "bug_warrior_elite",
+     "zh": "精英部队",
+     "en": "ELITE",
+     "zht": "菁英部隊",
+     "name_from": "strings:enc_bug_warrior_elite",
+     "test": "ok",
+     "note": ""
+    }
+   ]
+  },
+  "cyborgs": {
+   "zh": "生化人",
+   "prefix": "cyborg_",
+   "units": [
+    {
+     "path": "cyborg_berserker/cyborg_berserker",
+     "name": "cyborg_berserker",
+     "zh": "狂暴者",
+     "en": "BERSERKER",
+     "zht": "狂暴者",
+     "name_from": "strings:enc_cyborg_berserker",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "cyborg_berserker/cyborg_berserker_elite",
+     "name": "cyborg_berserker_elite",
+     "zh": "屠夫",
+     "en": "BUTCHER",
+     "zht": "屠夫",
+     "name_from": "strings:enc_cyborg_berserker_elite",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "cyborg_dog/cyborg_dog_01",
+     "name": "cyborg_dog_01",
+     "zh": "猎犬",
+     "en": "HOUND",
+     "zht": "獵犬",
+     "name_from": "strings:enc_cyborg_hound",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "cyborg_hulk/cyborg_hulk",
+     "name": "cyborg_hulk",
+     "zh": "巨型者",
+     "en": "HULK",
+     "zht": "巨型者",
+     "name_from": "strings:enc_cyborg_hulk",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+     "name": "cyborg_hulk_assassinate",
+     "zh": "首领",
+     "en": "WARLORD",
+     "zht": "首領",
+     "name_from": "strings:enc_cyborg_hulk_assassinate",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "cyborg_ifv/cyborg_ifv",
+     "name": "cyborg_ifv",
+     "zh": "步兵战车",
+     "en": "INFANTRY FIGHTING VEHICLE",
+     "zht": "步兵戰車",
+     "name_from": "strings:enc_cyborg_ifv",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "cyborg_initiate/cyborg_initiate",
+     "name": "cyborg_initiate",
+     "zh": "初始者",
+     "en": "INITIATE",
+     "zht": "初始者",
+     "name_from": "strings:enc_cyborg_initiate",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "cyborg_initiate/cyborg_initiate_elite",
+     "name": "cyborg_initiate_elite",
+     "zh": "畸形人",
+     "en": "GROTESQUE",
+     "zht": "畸形人",
+     "name_from": "strings:enc_cyborg_initiate_elite",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "cyborg_soldier/cyborg_soldier",
+     "name": "cyborg_soldier",
+     "zh": "生化兵",
+     "en": "IMMOLATOR",
+     "zht": "生化兵",
+     "name_from": "strings:enc_cyborg_soldier",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "cyborg_soldier/cyborg_soldier_grenade",
+     "name": "cyborg_soldier_grenade",
+     "zh": "cyborg_soldier_grenade",
+     "en": "",
+     "zht": "",
+     "name_from": "internal",
+     "test": "bad",
+     "note": "刷了游戏直接崩（entity_aux.lua attempt to index a nil value）",
+     "family_zh": "生化兵"
+    },
+    {
+     "path": "cyborg_soldier/cyborg_soldier_squadleader",
+     "name": "cyborg_soldier_squadleader",
+     "zh": "cyborg_soldier_squadleader",
+     "en": "",
+     "zht": "",
+     "name_from": "internal",
+     "test": "ok",
+     "note": "刷得出来；mod 读不到它的真名，记录里算成生化兵（cyborg_soldier）",
+     "family_zh": "生化兵"
+    },
+    {
+     "path": "cyborg_soldier_cannon/cyborg_soldier_cannon",
+     "name": "cyborg_soldier_cannon",
+     "zh": "复合人",
+     "en": "COMRADE",
+     "zht": "複合人",
+     "name_from": "strings:enc_cyborg_soldier_cannon",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "cyborg_soldier_grenadelauncher/cyborg_soldier_grenadelauncher",
+     "name": "cyborg_soldier_grenadelauncher",
+     "zh": "“班长”战士",
+     "en": "'SQUADLEADER' SOLDIER",
+     "zht": "「班長」戰士",
+     "name_from": "strings:enc_cyborg_soldier_grenadelauncher",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "cyborg_soldier_machinegun/cyborg_soldier_machinegun",
+     "name": "cyborg_soldier_machinegun",
+     "zh": "cyborg_soldier_machinegun",
+     "en": "",
+     "zht": "",
+     "name_from": "internal",
+     "test": "bad",
+     "note": "刷了游戏直接崩（enemy_component.lua setup_master attempt to index a nil value）",
+     "family_zh": "生化兵"
+    },
+    {
+     "path": "cyborg_soldier_shield/cyborg_soldier_shield",
+     "name": "cyborg_soldier_shield",
+     "zh": "军团士兵",
+     "en": "LEGIONNAIRE",
+     "zht": "兵團戰士",
+     "name_from": "strings:enc_cyborg_soldier_shield",
+     "test": "ok",
+     "note": ""
+    }
+   ]
+  },
+  "illuminates": {
+   "zh": "光能者",
+   "prefix": "illuminate_",
+   "units": [
+    {
+     "path": "illuminate_apprentice/illuminate_apprentice",
+     "name": "illuminate_apprentice",
+     "zh": "光能学徒",
+     "en": "APPRENTICE",
+     "zht": "光能學徒",
+     "name_from": "strings:enc_illuminate_apprentice",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "illuminate_apprentice/illuminate_apprentice_bomb",
+     "name": "illuminate_apprentice_bomb",
+     "zh": "illuminate_apprentice_bomb",
+     "en": "",
+     "zht": "",
+     "name_from": "internal",
+     "test": "bad",
+     "note": "刷了游戏直接崩（entity_aux.lua attempt to index a nil value）",
+     "family_zh": "光能学徒"
+    },
+    {
+     "path": "illuminate_hunter/illuminate_hunter",
+     "name": "illuminate_hunter",
+     "zh": "光猎者",
+     "en": "HUNTER",
+     "zht": "光獵者",
+     "name_from": "strings:enc_illuminate_sniper",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "illuminate_hunter/illuminate_hunter_elite",
+     "name": "illuminate_hunter_elite",
+     "zh": "光猎者（护盾型）",
+     "en": "",
+     "zht": "",
+     "name_from": "internal",
+     "test": "ok",
+     "note": "",
+     "family_zh": "光猎者"
+    },
+    {
+     "path": "illuminate_illusionist/illuminate_councilmember_bomb",
+     "name": "illuminate_councilmember_bomb",
+     "zh": "illuminate_councilmember_bomb",
+     "en": "",
+     "zht": "",
+     "name_from": "internal",
+     "test": "bad",
+     "note": "刷了游戏直接崩（entity_aux.lua attempt to index a nil value）"
+    },
+    {
+     "path": "illuminate_illusionist/illuminate_illusionist",
+     "name": "illuminate_illusionist",
+     "zh": "幻光大师",
+     "en": "ILLUSIONIST",
+     "zht": "幻光大師",
+     "name_from": "strings:enc_illuminate_psyker",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "illuminate_illusionist/illuminate_illusionist_bomb",
+     "name": "illuminate_illusionist_bomb",
+     "zh": "illuminate_illusionist_bomb",
+     "en": "",
+     "zht": "",
+     "name_from": "internal",
+     "test": "bad",
+     "note": "刷了游戏直接崩（entity_aux.lua attempt to index a nil value）",
+     "family_zh": "幻光大师"
+    },
+    {
+     "path": "illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+     "name": "illuminate_illusionist_assassinate",
+     "zh": "光能决策者",
+     "en": "COUNCIL MEMBER",
+     "zht": "光能決策者",
+     "name_from": "strings:enc_illuminate_psyker_assassinate",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "illuminate_obelisk/illuminate_obelisk",
+     "name": "illuminate_obelisk",
+     "zh": "奥贝利斯",
+     "en": "OBELISK",
+     "zht": "奧貝利斯",
+     "name_from": "strings:enc_illuminate_obelisk",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "illuminate_obelisk/illuminate_obelisk_shield",
+     "name": "illuminate_obelisk_shield",
+     "zh": "illuminate_obelisk_shield",
+     "en": "",
+     "zht": "",
+     "name_from": "internal",
+     "part": "方尖碑的护盾（方尖碑自己生出来）",
+     "test": "bad",
+     "note": "刷了游戏直接崩（entity_aux.lua table index is nil）"
+    },
+    {
+     "path": "illuminate_observer/illuminate_observer",
+     "name": "illuminate_observer",
+     "zh": "光能观测者",
+     "en": "OBSERVER",
+     "zht": "光能觀測者",
+     "name_from": "strings:enc_illuminate_observer",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "illuminate_observer/illuminate_observer_elite",
+     "name": "illuminate_observer_elite",
+     "zh": "看守者",
+     "en": "WATCHER",
+     "zht": "看守者",
+     "name_from": "strings:enc_illuminate_observer_elite",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "illuminate_observer/illuminate_observer_obsidian",
+     "name": "illuminate_observer_obsidian",
+     "zh": "黑曜石观测者",
+     "en": "OBSIDIAN OBSERVER",
+     "zht": "黑曜石觀察員",
+     "name_from": "strings:enc_illuminate_observer_obsidian",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "illuminate_summon/enemy_nanobot_strike",
+     "name": "enemy_nanobot_strike",
+     "zh": "enemy_nanobot_strike",
+     "en": "",
+     "zht": "",
+     "name_from": "internal",
+     "part": "光能者召唤的纳米打击（召唤物）",
+     "test": "bad",
+     "note": "刷不出来（不崩，场上什么都没有）"
+    },
+    {
+     "path": "illuminate_summon/enemy_tesla_01",
+     "name": "enemy_tesla_01",
+     "zh": "enemy_tesla_01",
+     "en": "",
+     "zht": "",
+     "name_from": "internal",
+     "part": "光能者召唤的电塔（召唤物）",
+     "test": "bad",
+     "note": "刷不出来（不崩，场上什么都没有）"
+    },
+    {
+     "path": "illuminate_trickster/illuminate_trickster",
+     "name": "illuminate_trickster",
+     "zh": "光弃者",
+     "en": "OUTCAST",
+     "zht": "光棄者",
+     "name_from": "strings:enc_illuminate_trickster",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "illuminate_tripod/illuminate_tripod",
+     "name": "illuminate_tripod",
+     "zh": "三脚电械",
+     "en": "TRIPOD",
+     "zht": "三腳電械",
+     "name_from": "strings:enc_illuminate_warrior",
+     "test": "ok",
+     "note": ""
+    },
+    {
+     "path": "illuminate_tripod/illuminate_tripod_elite",
+     "name": "illuminate_tripod_elite",
+     "zh": "步行者",
+     "en": "STRIDER",
+     "zht": "步行者",
+     "name_from": "strings:enc_illuminate_warrior_elite",
+     "test": "ok",
+     "note": ""
+    }
+   ]
+  }
+ }
+}

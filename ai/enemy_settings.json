@@ -1,0 +1,6306 @@
+{
+ "races": {
+  "bugs": {
+   "units": [
+    {
+     "boss": false,
+     "name": "bug_hls",
+     "path": "bug_hls/bug_hls",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_front",
+        "size": 90
+       },
+       {
+        "dir": -90,
+        "event": "damage_right",
+        "size": 90
+       },
+       {
+        "dir": 90,
+        "event": "damage_left",
+        "size": 90
+       },
+       {
+        "armor_max": 130,
+        "armor_min": 60,
+        "dir": 180,
+        "event": "damage_back",
+        "size": 90
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "distance": 3,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 3,
+       "aggro_range": 80,
+       "attack_angle": 35,
+       "attack_range": 3,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "bug_hls",
+       "enemy_type": "bug_hls",
+       "hit_recovery": 0,
+       "jump_charge_time": 0.5,
+       "jump_close_height_diff": 0.8,
+       "jump_duration": 1.2,
+       "jump_range_max": 16,
+       "jump_range_min": 7,
+       "jump_recovery": 0.5,
+       "movement_speed": 7,
+       "movement_speed_flee": 9,
+       "patrol_range": 13,
+       "patrol_speed": 3.5,
+       "recovery_flee_distance": 15,
+       "remove_time": 5,
+       "spawn_duration": 1.2,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.1
+      },
+      "flocking_info": {
+       "alignment_factor": 0,
+       "cohesion_factor": 0,
+       "cohesion_radius": 0,
+       "separation_factor": 3,
+       "separation_radius": 8,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 60,
+       "armor_min": 0,
+       "constitution": 750,
+       "constitution_decay": -25,
+       "health": 100,
+       "health_decay": -20
+      },
+      "melee_info": {
+       "armorpiercing": true,
+       "center_distance": 2.7,
+       "delay": 0.15,
+       "duration": 1,
+       "hit_status_effects": [
+        "poison_slow",
+        "poison_damage"
+       ],
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 16,
+       "radius": 1.5
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "j_spine2"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "j_spine2"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 3,
+       "feeler_length": 4
+      },
+      "surface_type_damage": "carapace",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.9
+     },
+     "zh": "黑暗影者"
+    },
+    {
+     "boss": false,
+     "name": "bug_impaler",
+     "path": "bug_impaler/bug_impaler",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_front",
+        "size": 90
+       },
+       {
+        "armor_max": 45,
+        "armor_min": 45,
+        "dir": 0,
+        "disabled": true,
+        "event": "damage_front",
+        "size": 90
+       },
+       {
+        "dir": -90,
+        "event": "damage_right",
+        "size": 70
+       },
+       {
+        "dir": 90,
+        "event": "damage_left",
+        "size": 70
+       },
+       {
+        "dir": 180,
+        "event": "damage_back",
+        "size": 140
+       }
+      ],
+      "decay_info": {
+       "delay": 5,
+       "distance": 4,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 1,
+       "aggro_range": 80,
+       "attack_angle": 30,
+       "attack_target_distance": 8,
+       "burrow_cooldown": 1,
+       "burrow_exit_criteria_damage_taken": 600,
+       "burrow_exit_criteria_self_to_target_max_distance": 40,
+       "burrow_exit_criteria_self_to_target_min_distance": 2,
+       "burrow_exit_criteria_tentacle_to_target_max_distance": 20,
+       "burrow_exit_time": 2,
+       "burrow_max_time": 22,
+       "burrow_num_tentacles": 3,
+       "burrow_tentacle_angle_to_target_requirement": 0.3490658503988659,
+       "burrow_tentacle_max_retries": 10,
+       "burrow_tentacle_random_offset": 1,
+       "burrow_tentacle_spacing_angle": 0.3490658503988659,
+       "burrow_tentacle_spawn_close_range": 14,
+       "burrow_tentacle_spawn_delay": 1.5,
+       "burrow_tentacle_spawn_distance_from_target_close": -2,
+       "burrow_tentacle_spawn_distance_from_target_far": 4,
+       "burrow_tentacle_unit_path": "characters/bug_impaler/bug_impaler_tentacle",
+       "collision_removal_delay": 6,
+       "enemy_name": "bug_impaler",
+       "enemy_type": "bug_impaler",
+       "follow_range": 14,
+       "follow_range_deviation": 6,
+       "hit_recovery": 0,
+       "movement_speed": 3.5,
+       "remove_time": 10,
+       "spawn_duration": 2,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.3
+      },
+      "flocking_info": {
+       "alignment_factor": 0,
+       "cohesion_factor": 1,
+       "cohesion_radius": 10,
+       "separation_factor": 5,
+       "separation_radius": 7,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 1500,
+       "armor_min": 1000,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 2200,
+       "health_decay": 0,
+       "large": true
+      },
+      "heavy": true,
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 2,
+       "delay": 0.633,
+       "duration": 1.65,
+       "explosive_info": {
+        "blast_power": 350,
+        "blast_radius": 2.5,
+        "center_power": 350,
+        "center_radius": 2.5,
+        "force": 10
+       },
+       "power": 100,
+       "radius": 1.5
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun_impaler",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 10
+      },
+      "surface_type_damage": "carapace",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 2
+     },
+     "zh": "刺钉虫"
+    },
+    {
+     "boss": false,
+     "name": "bug_scout",
+     "path": "bug_scout/bug_scout",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_front",
+        "size": 120
+       },
+       {
+        "dir": -90,
+        "event": "damage_right",
+        "size": 60
+       },
+       {
+        "dir": 90,
+        "event": "damage_left",
+        "size": 60
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "duration": 1
+      },
+      "enemy_info": {
+       "acceleration": 8,
+       "aggro_range": 80,
+       "attack_angle": 60,
+       "attack_range": 0.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "bug_scout",
+       "enemy_type": "bug_scout",
+       "hit_recovery": 0.25,
+       "movement_speed": 4.25,
+       "patrol_range": 13,
+       "patrol_speed": 4.25,
+       "spawn_duration": 1,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.1
+      },
+      "flocking_info": {
+       "alignment_factor": 0.2,
+       "cohesion_factor": 0.2,
+       "cohesion_radius": 30,
+       "separation_factor": 2,
+       "separation_radius": 5,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 25,
+       "armor_min": 15,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 30
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 0.9,
+       "delay": 0.1,
+       "duration": 1,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 16,
+       "radius": 0.9
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "spine"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "spine"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 4
+      },
+      "surface_type_damage": "carapace",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.3
+     },
+     "zh": "侦查虫"
+    },
+    {
+     "boss": false,
+     "name": "bug_scout_jumping",
+     "path": "bug_scout_jumping/bug_scout_jumping",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_front",
+        "size": 120
+       },
+       {
+        "dir": -90,
+        "event": "damage_right",
+        "size": 60
+       },
+       {
+        "dir": 90,
+        "event": "damage_left",
+        "size": 60
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "duration": 1
+      },
+      "enemy_info": {
+       "acceleration": 15,
+       "aggro_range": 80,
+       "attack_angle": 60,
+       "attack_range": 0.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "bug_scout_jumping",
+       "enemy_type": "bug_scout_jumping",
+       "hit_recovery": 0.25,
+       "jump_charge_time": 0.5,
+       "jump_duration": 0.9,
+       "jump_range_max": 16,
+       "jump_range_min": 10,
+       "jump_recovery": 0.3,
+       "movement_speed": 4.25,
+       "patrol_range": 13,
+       "patrol_speed": 4.25,
+       "spawn_duration": 1,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.1
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.05,
+       "cohesion_radius": 6,
+       "separation_factor": 2.5,
+       "separation_radius": 2.5,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 35,
+       "armor_min": 15,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 30
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 0.9,
+       "delay": 0.1,
+       "duration": 1,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 19,
+       "radius": 0.9
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "spine"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 3,
+       "feeler_length": 6
+      },
+      "surface_type_damage": "carapace",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.3
+     },
+     "zh": "先驱虫"
+    },
+    {
+     "boss": false,
+     "name": "bug_stalker",
+     "path": "bug_stalker/bug_stalker",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_front",
+        "size": 90
+       },
+       {
+        "dir": -90,
+        "event": "damage_right",
+        "size": 90
+       },
+       {
+        "dir": 90,
+        "event": "damage_left",
+        "size": 90
+       },
+       {
+        "armor_max": 130,
+        "armor_min": 60,
+        "dir": 180,
+        "event": "damage_back",
+        "size": 90
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "distance": 3,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 3,
+       "aggro_range": 80,
+       "attack_angle": 35,
+       "attack_range": 3,
+       "enemy_name": "bug_stalker",
+       "enemy_type": "bug_stalker",
+       "hit_recovery": 0,
+       "jump_charge_time": 0.5,
+       "jump_close_height_diff": 0.8,
+       "jump_duration": 1.2,
+       "jump_range_max": 16,
+       "jump_range_min": 7,
+       "jump_recovery": 0.5,
+       "movement_speed": 7,
+       "movement_speed_flee": 9,
+       "patrol_speed": 3.5,
+       "recovery_flee_distance": 15,
+       "remove_time": 5,
+       "spawn_duration": 1.2,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.1
+      },
+      "flocking_info": {
+       "alignment_factor": 0,
+       "cohesion_factor": 0,
+       "cohesion_radius": 0,
+       "separation_factor": 3,
+       "separation_radius": 8,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 60,
+       "armor_min": 0,
+       "constitution": 450,
+       "constitution_decay": -18,
+       "health": 50,
+       "health_decay": -20
+      },
+      "melee_info": {
+       "armorpiercing": true,
+       "center_distance": 2.7,
+       "delay": 0.15,
+       "duration": 1,
+       "hit_status_effects": [
+        "poison_slow",
+        "poison_damage"
+       ],
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 16,
+       "radius": 1.5
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "j_spine2"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "j_spine2"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 3,
+       "feeler_length": 4
+      },
+      "surface_type_damage": "carapace",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.9
+     },
+     "zh": "追踪虫"
+    },
+    {
+     "boss": false,
+     "name": "bug_tank",
+     "path": "bug_tank/bug_tank",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_front",
+        "size": 150
+       },
+       {
+        "dir": -90,
+        "event": "damage_right",
+        "size": 70
+       },
+       {
+        "dir": 90,
+        "event": "damage_left",
+        "size": 70
+       },
+       {
+        "armor_max": 45,
+        "armor_min": 45,
+        "dir": 180,
+        "event": "damage_back",
+        "size": 140
+       }
+      ],
+      "decay_info": {
+       "delay": 5,
+       "distance": 4,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 5,
+       "aggro_range": 80,
+       "aoe_cooldown": 5,
+       "aoe_trigger_distance": 3,
+       "attack_angle": 20,
+       "collision_removal_delay": 6,
+       "enemy_name": "bug_tank",
+       "enemy_type": "bug_tank",
+       "hit_recovery": 0,
+       "movement_speed": 2,
+       "remove_time": 10,
+       "rush_cooldown": 6,
+       "rush_distance_max": 30,
+       "rush_distance_min": 6,
+       "rush_hit_obstacle_range": 5,
+       "rush_hit_obstacle_side_range": 2,
+       "rush_hit_obstacle_time": 1.5,
+       "rush_leave_time": 1.5,
+       "rush_melee_interval": 0.5,
+       "rush_movement_speed": 8,
+       "rush_startup_time": 0.2,
+       "rush_target_angle": 120,
+       "rush_time": 6,
+       "rush_turn_speed": 0.4,
+       "spawn_duration": 2,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.4
+      },
+      "flocking_info": {
+       "alignment_factor": 0,
+       "cohesion_factor": 1,
+       "cohesion_radius": 10,
+       "separation_factor": 5,
+       "separation_radius": 7,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 1500,
+       "armor_min": 1000,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 2100,
+       "health_decay": 0,
+       "large": true
+      },
+      "heavy": true,
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 2,
+       "delay": 0.633,
+       "duration": 1.5,
+       "explosive_info": {
+        "blast_power": 350,
+        "blast_radius": 2.5,
+        "center_power": 350,
+        "center_radius": 2.5,
+        "force": 10
+       },
+       "power": 220,
+       "radius": 1.5,
+       "special_attacks": [
+        {
+         "armorpiercing": false,
+         "center_distance": 1.8,
+         "delay": 0,
+         "duration": 1.3,
+         "explosive_info": {
+          "blast_power": 600,
+          "blast_radius": 2,
+          "center_power": 600,
+          "center_radius": 1.5,
+          "force": 500
+         },
+         "power": 350
+        },
+        {
+         "armorpiercing": false,
+         "center_distance": 1.8,
+         "delay": 0,
+         "duration": 1.3,
+         "explosive_info": {
+          "blast_power": 600,
+          "blast_radius": 2,
+          "center_power": 600,
+          "center_radius": 1.5,
+          "force": 500
+         },
+         "power": 350
+        },
+        {
+         "armorpiercing": false,
+         "center_distance": 0,
+         "delay": 0.8,
+         "duration": 1.8,
+         "explosive_info": {
+          "blast_power": 0,
+          "blast_radius": 4,
+          "center_power": 0,
+          "center_radius": 1.8,
+          "force": 500,
+          "hit_status_effects": [
+           "regular_knockdown"
+          ]
+         },
+         "power": 220
+        }
+       ]
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "j_head"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun_bugtank",
+         "particle_effect_node": "j_head"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "j_head"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "j_head"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 10
+      },
+      "surface_type_damage": "carapace",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 2
+     },
+     "zh": "坦克虫"
+    },
+    {
+     "boss": false,
+     "name": "bug_tank_heavy",
+     "path": "bug_tank/bug_tank_heavy",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_front",
+        "size": 90
+       },
+       {
+        "dir": -90,
+        "event": "damage_right",
+        "size": 70
+       },
+       {
+        "dir": 90,
+        "event": "damage_left",
+        "size": 70
+       },
+       {
+        "dir": 180,
+        "event": "damage_back",
+        "size": 140
+       }
+      ],
+      "decay_info": {
+       "delay": 5,
+       "distance": 4,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 5,
+       "aggro_range": 80,
+       "aoe_cooldown": 2,
+       "aoe_trigger_distance": 3,
+       "attack_angle": 20,
+       "collision_removal_delay": 6,
+       "enemy_name": "bug_tank_heavy",
+       "enemy_type": "bug_tank",
+       "hit_recovery": 0,
+       "movement_speed": 2,
+       "remove_time": 10,
+       "rush_cooldown": 6,
+       "rush_distance_max": 30,
+       "rush_distance_min": 6,
+       "rush_hit_obstacle_range": 5,
+       "rush_hit_obstacle_side_range": 2,
+       "rush_hit_obstacle_time": 1.5,
+       "rush_leave_time": 1.5,
+       "rush_melee_interval": 0.5,
+       "rush_movement_speed": 8,
+       "rush_startup_time": 0.2,
+       "rush_target_angle": 120,
+       "rush_time": 6,
+       "rush_turn_speed": 0.4,
+       "spawn_duration": 2,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.4
+      },
+      "flocking_info": {
+       "alignment_factor": 0,
+       "cohesion_factor": 1,
+       "cohesion_radius": 10,
+       "separation_factor": 5,
+       "separation_radius": 7,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 1500,
+       "armor_min": 1000,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 3200,
+       "health_decay": 0,
+       "large": true
+      },
+      "heavy": true,
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1.5,
+       "delay": 0.633,
+       "duration": 1.5,
+       "explosive_info": {
+        "blast_power": 350,
+        "blast_radius": 2.5,
+        "center_power": 350,
+        "center_radius": 2.5,
+        "force": 10
+       },
+       "power": 220,
+       "radius": 1.5,
+       "special_attacks": [
+        {
+         "armorpiercing": false,
+         "center_distance": 1.8,
+         "delay": 0,
+         "duration": 1.3,
+         "explosive_info": {
+          "blast_power": 600,
+          "blast_radius": 2,
+          "center_power": 600,
+          "center_radius": 1.5,
+          "force": 500
+         },
+         "power": 220
+        },
+        {
+         "armorpiercing": false,
+         "center_distance": 3,
+         "delay": 0,
+         "duration": 1.3,
+         "explosive_info": {
+          "blast_power": 600,
+          "blast_radius": 2,
+          "center_power": 600,
+          "center_radius": 1.5,
+          "force": 500
+         },
+         "power": 220
+        },
+        {
+         "armorpiercing": false,
+         "center_distance": 0,
+         "delay": 0.8,
+         "duration": 1.8,
+         "explosive_info": {
+          "blast_power": 0,
+          "blast_radius": 4,
+          "center_power": 600,
+          "center_radius": 1.8,
+          "force": 500,
+          "hit_status_effects": [
+           "regular_knockdown"
+          ]
+         },
+         "power": 220
+        }
+       ]
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "j_head"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun_bugtank",
+         "particle_effect_node": "j_head"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "j_head"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "j_head"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 10
+      },
+      "surface_type_damage": "carapace",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 2
+     },
+     "zh": "巨兽"
+    },
+    {
+     "boss": false,
+     "name": "bug_warrior",
+     "path": "bug_warrior/bug_warrior",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_head",
+        "size": 30
+       },
+       {
+        "dir": -60,
+        "event": "damage_right_knee_leg",
+        "size": 30
+       },
+       {
+        "dir": 60,
+        "event": "damage_left_arm",
+        "size": 30
+       },
+       {
+        "dir": 110,
+        "event": "damage_leg_left",
+        "size": 45
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 5,
+       "aggro_range": 80,
+       "attack_angle": 40,
+       "attack_range": 1,
+       "enemy_name": "bug_warrior",
+       "enemy_type": "bug_warrior",
+       "hit_recovery": 0.3,
+       "movement_speed": 2.75,
+       "patrol_speed": 2.75,
+       "remove_time": 5,
+       "spawn_duration": 0.7,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.005,
+       "wounded_movement_speed": 5
+      },
+      "flocking_info": {
+       "alignment_factor": 0.3,
+       "cohesion_factor": 0.2,
+       "cohesion_radius": 15,
+       "separation_factor": 3,
+       "separation_radius": 6,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 150,
+       "armor_min": 25,
+       "constitution": 50,
+       "constitution_decay": 3,
+       "health": 270
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1.2,
+       "delay": 0.3,
+       "duration": 0.9,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 45,
+       "radius": 1.2
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "spine1"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "spine1"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 7
+      },
+      "surface_type_damage": "carapace",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.5
+     },
+     "zh": "武斗虫"
+    },
+    {
+     "boss": false,
+     "name": "bug_warrior_commander",
+     "path": "bug_warrior/bug_warrior_commander",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_head",
+        "size": 30
+       },
+       {
+        "dir": -60,
+        "event": "damage_right_knee_leg",
+        "size": 30
+       },
+       {
+        "dir": 60,
+        "event": "damage_left_arm",
+        "size": 30
+       },
+       {
+        "dir": 110,
+        "event": "damage_leg_left",
+        "size": 45
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 8,
+       "aggro_range": 80,
+       "attack_angle": 45,
+       "attack_range": 1,
+       "enemy_name": "bug_warrior_commander",
+       "enemy_type": "bug_warrior",
+       "hit_recovery": 0.3,
+       "movement_speed": 2.5,
+       "patrol_speed": 2.5,
+       "remove_time": 5,
+       "spawn_duration": 0.7,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.05,
+       "wounded_movement_speed": 5
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.1,
+       "cohesion_radius": 20,
+       "separation_factor": 10,
+       "separation_radius": 4,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 300,
+       "armor_min": 45,
+       "constitution": 1000,
+       "constitution_decay": 0,
+       "health": 1600
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1.3,
+       "delay": 0.3,
+       "duration": 0.9,
+       "hit_status_effects": [
+        "poison_slow",
+        "poison_damage"
+       ],
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 65,
+       "radius": 1.4
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "spine1"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "spine1"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 7
+      },
+      "surface_type_damage": "carapace",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 1
+     },
+     "zh": "虫族指挥官"
+    },
+    {
+     "boss": false,
+     "name": "bug_warrior_elite",
+     "path": "bug_warrior/bug_warrior_elite",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_head",
+        "size": 30
+       },
+       {
+        "dir": -60,
+        "event": "damage_right_knee_leg",
+        "size": 30
+       },
+       {
+        "dir": 60,
+        "event": "damage_left_arm",
+        "size": 30
+       },
+       {
+        "dir": 110,
+        "event": "damage_leg_left",
+        "size": 45
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 5,
+       "aggro_range": 80,
+       "attack_angle": 40,
+       "attack_range": 1,
+       "enemy_name": "bug_warrior_elite",
+       "enemy_type": "bug_warrior",
+       "hit_recovery": 0.3,
+       "movement_speed": 2.75,
+       "patrol_speed": 2.75,
+       "remove_time": 5,
+       "spawn_duration": 0.7,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.005,
+       "wounded_movement_speed": 5
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.1,
+       "cohesion_radius": 15,
+       "separation_factor": 1,
+       "separation_radius": 6,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 250,
+       "armor_min": 35,
+       "constitution": 100,
+       "constitution_decay": 6,
+       "health": 400
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1.2,
+       "delay": 0.3,
+       "duration": 0.9,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 55,
+       "radius": 1.2
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "spine1"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "spine1"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 7
+      },
+      "surface_type_damage": "carapace",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.6
+     },
+     "zh": "精英部队"
+    },
+    {
+     "boss": true,
+     "name": "bug_boss",
+     "path": "bug_boss/bug_boss",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_front",
+        "size": 90
+       },
+       {
+        "dir": -90,
+        "event": "damage_right",
+        "size": 90
+       },
+       {
+        "dir": 90,
+        "event": "damage_left",
+        "size": 90
+       },
+       {
+        "armor_max": 400,
+        "armor_min": 300,
+        "dir": 180,
+        "event": "damage_back",
+        "size": 90
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 10,
+       "aggro_range": 80,
+       "attack_angle": 40,
+       "attack_range": 1,
+       "burrowed_spawn_distance_max": 6,
+       "burrowed_spawn_distance_min": 0,
+       "burrowed_wait_time_max": 4,
+       "burrowed_wait_time_min": 2,
+       "collision_removal_delay": 99999999,
+       "enemy_name": "bug_boss",
+       "enemy_type": "bug_boss",
+       "hit_recovery": 0.3,
+       "ignore_decay": true,
+       "melee_attack_animation_delay": 0,
+       "melee_attack_delay": 1,
+       "melee_attack_duration": 2,
+       "melee_turn_speed": 1,
+       "movement_speed": 0,
+       "poison_area_attack_animation_delay": 2,
+       "poison_area_attack_delay": 1,
+       "poison_area_attack_duration": 3,
+       "poison_area_range": 10,
+       "poison_area_status": "poison_heavy_slow",
+       "poison_area_status_2": "poison_medium_damage",
+       "poison_spit_angle_spread": 1.0471975511965976,
+       "poison_spit_attack_animation_delay": 0,
+       "poison_spit_attack_delay": 2,
+       "poison_spit_attack_duration": 2.5,
+       "poison_spit_booger_unit_path": "characters/bug_boss/poison_booger",
+       "poison_spit_max_range": 20,
+       "poison_spit_min_range": 0,
+       "poison_spit_node": "j_d_teeth",
+       "poison_spit_num_boogers": 3,
+       "poison_spit_z_direction": 0.5235987755982988,
+       "remove_time": 5,
+       "rush_attack_animation_delay": 0,
+       "rush_attack_delay": 1,
+       "rush_attack_duration": 3,
+       "rush_melee_interval": 0.5,
+       "rush_movement_speed": 8,
+       "rush_turn_speed": 1,
+       "spawn_adds_attack_animation_delay": 0,
+       "spawn_adds_attack_delay": 0,
+       "spawn_adds_attack_duration": 0,
+       "spawn_adds_cooldown": 10,
+       "spawn_adds_groups": [
+        {
+         "group": [
+          "characters/bug_warrior/bug_warrior_elite",
+          "characters/bug_warrior/bug_warrior_elite",
+          "characters/bug_warrior/bug_warrior_elite",
+          "characters/bug_warrior/bug_warrior_elite",
+          "characters/bug_warrior/bug_warrior_elite"
+         ],
+         "hp_percent_requirement": [
+          0.66,
+          1
+         ]
+        },
+        {
+         "group": [
+          "characters/bug_warrior/bug_warrior_elite",
+          "characters/bug_warrior/bug_warrior_elite",
+          "characters/bug_stalker/bug_stalker",
+          "characters/bug_stalker/bug_stalker",
+          "characters/bug_warrior/bug_warrior_commander"
+         ],
+         "hp_percent_requirement": [
+          0.33,
+          0.66
+         ]
+        },
+        {
+         "group": [
+          "characters/bug_warrior/bug_warrior_commander",
+          "characters/bug_impaler/bug_impaler",
+          "characters/bug_warrior/bug_warrior_commander",
+          "characters/bug_impaler/bug_impaler"
+         ],
+         "hp_percent_requirement": [
+          0,
+          0.33
+         ]
+        }
+       ],
+       "spawn_duration": 1.7,
+       "spawn_events": {
+        "default": "unburrow",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.01,
+       "turn_speed_rush": 1,
+       "unburrow_delay": 1
+      },
+      "flocking_info": {
+       "alignment_factor": 0.3,
+       "cohesion_factor": 0.2,
+       "cohesion_radius": 15,
+       "separation_factor": 3,
+       "separation_radius": 6,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 175,
+       "armor_min": 30,
+       "authoritative": true,
+       "constitution": 0,
+       "constitution_decay": 3,
+       "health": 250000
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1.2,
+       "delay": 0.3,
+       "duration": 0.9,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 45,
+       "radius": 1.2,
+       "special_attacks": [
+        {
+         "armorpiercing": false,
+         "center_distance": 1.3,
+         "delay": 0,
+         "duration": 1.3,
+         "explosive_info": {
+          "blast_power": 600,
+          "blast_radius": 2,
+          "center_power": 600,
+          "center_radius": 2,
+          "force": 500
+         },
+         "power": 350
+        }
+       ]
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": true,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": true,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": true
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": true
+        },
+        "stun": {
+         "immune": true
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 7
+      },
+      "surface_type_damage": "carapace",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 3
+     },
+     "zh": "霸王虫"
+    }
+   ],
+   "zh": "虫族"
+  },
+  "cyborgs": {
+   "units": [
+    {
+     "boss": false,
+     "name": "cyborg_berserker",
+     "path": "cyborg_berserker/cyborg_berserker",
+     "settings": {
+      "actor_spawner_info": {
+       "actor_spawn_delay": 0.8,
+       "actors": [
+        "c_damage"
+       ]
+      },
+      "damage_zones": [
+       {
+        "armor_max": 0,
+        "armor_min": 0,
+        "dir": 0,
+        "event": "damage_front",
+        "size": 180
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 4,
+       "aggro_range": 80,
+       "attack_angle": 40,
+       "enemy_name": "cyborg_berserker",
+       "enemy_type": "cyborg_berserker",
+       "hit_recovery": 0.3,
+       "movement_speed": 4.25,
+       "patrol_speed": 3,
+       "remove_time": 5,
+       "spawn_duration": 1.65,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.1,
+       "wounded_movement_speed": 1.25
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.5,
+       "cohesion_radius": 15,
+       "separation_factor": 3,
+       "separation_radius": 4,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 200,
+       "armor_min": 15,
+       "constitution": 500,
+       "constitution_decay": 0,
+       "health": 300
+      },
+      "melee_info": {
+       "armorpiercing": true,
+       "center_distance": 1.3,
+       "delay": 0.2,
+       "duration": 0.66,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 50,
+       "radius": 1.3
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "j_hips"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "j_hips"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 7
+      },
+      "surface_type_damage": "robot",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.5
+     },
+     "zh": "狂暴者"
+    },
+    {
+     "boss": false,
+     "name": "cyborg_berserker_elite",
+     "path": "cyborg_berserker/cyborg_berserker_elite",
+     "settings": {
+      "actor_spawner_info": {
+       "actor_spawn_delay": 0.8,
+       "actors": [
+        "c_damage"
+       ]
+      },
+      "damage_zones": {},
+      "decay_info": {
+       "delay": 3,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 4,
+       "aggro_range": 80,
+       "attack_angle": 40,
+       "enemy_name": "cyborg_berserker_elite",
+       "enemy_type": "cyborg_berserker",
+       "hit_recovery": 0.3,
+       "movement_speed": 3,
+       "patrol_speed": 3,
+       "remove_time": 5,
+       "spawn_duration": 1.65,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.1
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.5,
+       "cohesion_radius": 15,
+       "separation_factor": 3,
+       "separation_radius": 4,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 25,
+       "armor_min": 25,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 3500
+      },
+      "melee_info": {
+       "armorpiercing": true,
+       "center_distance": 1.3,
+       "delay": 0.2,
+       "duration": 0.66,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 50,
+       "radius": 1.3
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "j_hips"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "j_hips"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 7
+      },
+      "surface_type_damage": "robot",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.5
+     },
+     "zh": "屠夫"
+    },
+    {
+     "boss": false,
+     "name": "cyborg_dog",
+     "path": "cyborg_dog/cyborg_dog_01",
+     "settings": {
+      "decay_info": {
+       "delay": 3,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 8,
+       "aggro_range": 80,
+       "attack_angle": 50,
+       "attack_range": 0.5,
+       "attack_speed": 4,
+       "downed_target_special_attack": 2,
+       "enemy_name": "cyborg_dog",
+       "enemy_type": "cyborg_dog",
+       "hit_recovery": 0.25,
+       "movement_speed": 3,
+       "patrol_range": 13,
+       "rush_attack_duration": 0.4,
+       "rush_cooldown": 1,
+       "rush_distance_max": 30,
+       "rush_distance_min": 2,
+       "rush_hit_obstacle_range": 1,
+       "rush_hit_obstacle_side_range": 0.8,
+       "rush_hit_obstacle_stun_effect": "dog_hit_obstacle_stun",
+       "rush_leave_time": 0.5,
+       "rush_melee_interval": 0.5,
+       "rush_movement_speed": 8,
+       "rush_start_cooldown": 0,
+       "rush_startup_time": 0.2,
+       "rush_target_angle": 120,
+       "rush_time": 6,
+       "rush_turn_speed": 0.05,
+       "spawn_duration": 1,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.06
+      },
+      "flocking_info": {
+       "alignment_factor": 0.2,
+       "cohesion_factor": 0.2,
+       "cohesion_radius": 10,
+       "separation_factor": 3,
+       "separation_radius": 5,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 30,
+       "armor_min": 0,
+       "constitution": 0,
+       "constitution_decay": 5,
+       "health": 200
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 0.75,
+       "delay": 0.1,
+       "duration": 1,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1,
+       "special_attacks": [
+        {
+         "armorpiercing": false,
+         "center_distance": 0.75,
+         "delay": 0.1,
+         "duration": 1,
+         "hit_status_effects": [
+          "regular_knockdown"
+         ],
+         "ignore_components": [
+          "enemy"
+         ],
+         "power": 35,
+         "radius": 1
+        },
+        {
+         "armorpiercing": false,
+         "center_distance": 0.75,
+         "delay": 0.2,
+         "duration": 0.7,
+         "ignore_components": [
+          "enemy"
+         ],
+         "power": 10,
+         "radius": 1
+        }
+       ]
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 4
+      },
+      "surface_type_damage": "flesh",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.3
+     },
+     "zh": "猎犬"
+    },
+    {
+     "boss": false,
+     "name": "cyborg_hulk",
+     "path": "cyborg_hulk/cyborg_hulk",
+     "settings": {
+      "actor_spawner_info": {
+       "actor_spawn_delay": 0.8,
+       "actors": [
+        "c_body"
+       ]
+      },
+      "damage_zones": [
+       {
+        "armor_max": 5000,
+        "armor_min": 5000,
+        "dir": 0,
+        "disabled": true,
+        "event": "damage_active_shield",
+        "size": 140
+       },
+       {
+        "armor_max": 5000,
+        "armor_min": 5000,
+        "dir": 80,
+        "disabled": false,
+        "event": "damage_held_shield",
+        "size": 45
+       },
+       {
+        "armor_max": 45,
+        "armor_min": 45,
+        "dir": 0,
+        "disabled": false,
+        "event": "damage_held_shield",
+        "size": 45
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 1.5,
+       "aggro_range": 90,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 30,
+       "attack_range_shoot_max": 10,
+       "attack_range_shoot_min": 4,
+       "effect_hit": "projectile",
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "cyborg_hulk",
+       "enemy_type": "cyborg_hulk",
+       "enter_shoot_time": 0.5,
+       "hit_recovery": 0.25,
+       "movement_speed": 3,
+       "patrol_range": 12,
+       "patrol_speed": 3,
+       "player_within_angle_threshold": 120,
+       "remove_time": 5,
+       "shield_players_within_angle": 60,
+       "shield_time": 1,
+       "shield_turn_speed": 0.6,
+       "shoot_cooldown": 1,
+       "shoot_events": [
+        {
+         "aim": [
+          0,
+          -0.17453292519943295,
+          0
+         ],
+         "animation_time": 1.5,
+         "can_abort": false,
+         "disable_fire": true,
+         "time": 0
+        },
+        {
+         "aim": [
+          -0.3490658503988659,
+          -0.17453292519943295,
+          0
+         ],
+         "animation_time": 1.5,
+         "can_abort": false,
+         "disable_fire": true,
+         "time": 0.4
+        },
+        {
+         "aim": [
+          0.4363323129985824,
+          -0.17453292519943295,
+          0
+         ],
+         "animation_time": 1.25,
+         "can_abort": false,
+         "time": 0.8
+        },
+        {
+         "aim": [
+          -0.3141592653589793,
+          -0.13962634015954636,
+          0
+         ],
+         "animation_time": 0.5,
+         "can_abort": false,
+         "time": 0.6
+        },
+        {
+         "aim": [
+          0.2617993877991494,
+          -0.10471975511965978,
+          0
+         ],
+         "animation_time": 1.2,
+         "can_abort": false,
+         "time": 0.5
+        },
+        {
+         "aim": [
+          -0.13962634015954636,
+          -0.08726646259971647,
+          0
+         ],
+         "animation_time": 0.8,
+         "can_abort": true,
+         "time": 0.4
+        },
+        {
+         "aim": [
+          0.15707963267948966,
+          -0.06981317007977318,
+          0
+         ],
+         "animation_time": 1.2,
+         "can_abort": true,
+         "time": 0.3
+        },
+        {
+         "aim": [
+          -0.12217304763960307,
+          -0.05235987755982989,
+          0
+         ],
+         "animation_time": 0.8,
+         "can_abort": true,
+         "time": 0.3
+        },
+        {
+         "aim": [
+          0.12217304763960307,
+          -0.03490658503988659,
+          0
+         ],
+         "animation_time": 1.2,
+         "can_abort": true,
+         "time": 0.3
+        },
+        {
+         "aim": [
+          -0.08726646259971647,
+          -0.03490658503988659,
+          0
+         ],
+         "animation_time": 0.8,
+         "can_abort": true,
+         "time": 0.3
+        }
+       ],
+       "shoot_players_within_angle": 2,
+       "spawn_duration": 1.66,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "stop_shoot_time": 0.5,
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.2,
+       "unshield_damage_taken": 50
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 10,
+       "separation_factor": 5,
+       "separation_radius": 4,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 600,
+       "armor_min": 200,
+       "constitution": 400,
+       "constitution_decay": 100,
+       "health": 2000
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1.25,
+       "delay": 0.3,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 100,
+       "radius": 1.25
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "j_hips"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "j_hips"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 6
+      },
+      "surface_type_damage": "robot",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 1,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": false
+       },
+       "effect_hit": "projectile",
+       "firerate": 1800,
+       "power": 50,
+       "ray_source_offset": {
+        "__mock": true
+       },
+       "spread": 0.06981317007977318
+      }
+     },
+     "zh": "巨型者"
+    },
+    {
+     "boss": false,
+     "name": "cyborg_hulk_assassinate",
+     "path": "cyborg_hulk_assassinate/cyborg_hulk_assassinate",
+     "settings": {
+      "actor_spawner_info": {
+       "actor_spawn_delay": 0.8,
+       "actors": [
+        "c_body"
+       ]
+      },
+      "decay_info": {
+       "delay": 3,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 1.5,
+       "aggro_range": 90,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 30,
+       "attack_range_shoot_max": 12,
+       "attack_range_shoot_min": 4,
+       "effect_hit": "projectile_heavy",
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "cyborg_hulk_assassinate",
+       "enemy_type": "cyborg_hulk_assassinate",
+       "enter_shoot_time": 1,
+       "hit_recovery": 0.25,
+       "movement_speed": 3.25,
+       "patrol_range": 12,
+       "patrol_speed": 3.25,
+       "player_within_angle_threshold": 10,
+       "remove_time": 5,
+       "shield_players_within_angle": 30,
+       "shield_time": 1,
+       "shield_turn_speed": 0.6,
+       "shoot_cooldown": 1.5,
+       "shoot_events": [
+        {
+         "aim": [
+          -0.17453292519943295,
+          -0.11344640137963143,
+          0
+         ],
+         "animation_time": 0.8,
+         "can_abort": false,
+         "time": 0
+        },
+        {
+         "aim": [
+          0.1308996938995747,
+          -0.08726646259971647,
+          0
+         ],
+         "animation_time": 1.1,
+         "can_abort": false,
+         "time": 0.75
+        },
+        {
+         "aim": [
+          0.4363323129985824,
+          -0.11344640137963143,
+          0
+         ],
+         "animation_time": 1.5,
+         "can_abort": false,
+         "time": 0.75
+        }
+       ],
+       "shoot_players_within_angle": 2,
+       "spawn_duration": 1.66,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "stop_shoot_time": 0.25,
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.2,
+       "unshield_damage_taken": 50
+      },
+      "explosive_info": {
+       "always_explode": true,
+       "blast_power": 50,
+       "blast_radius": 2,
+       "center_power": 50,
+       "center_radius": 1,
+       "effect": "effects/generated/wep_canister_blast",
+       "force": 100
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 20,
+       "separation_factor": 7,
+       "separation_radius": 6,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 600,
+       "armor_min": 300,
+       "constitution": 1000,
+       "constitution_decay": 250,
+       "health": 3000,
+       "large": true
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1.25,
+       "delay": 0.3,
+       "duration": 1.25,
+       "hit_all": true,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 250,
+       "radius": 1.25
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "j_hips"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": true
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 6
+      },
+      "surface_type_damage": "robot",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 1.5,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": false,
+        "explosive": true,
+        "fixed_spread": true
+       },
+       "effect_hit": "projectile_heavy",
+       "firerate": 200,
+       "power": 0,
+       "ray_source_offset": {
+        "__mock": true
+       },
+       "spread": 0.08726646259971647
+      }
+     },
+     "zh": "首领"
+    },
+    {
+     "boss": false,
+     "name": "cyborg_ifv",
+     "path": "cyborg_ifv/cyborg_ifv",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_front",
+        "size": 80
+       },
+       {
+        "armor_max": 2250,
+        "armor_min": 2000,
+        "dir": -90,
+        "event": "damage_right",
+        "size": 110
+       },
+       {
+        "armor_max": 2250,
+        "armor_min": 2000,
+        "dir": 90,
+        "event": "damage_left",
+        "size": 110
+       },
+       {
+        "armor_max": 1250,
+        "armor_min": 1000,
+        "dir": 180,
+        "event": "damage_back",
+        "size": 80
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "distance": 3,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 1,
+       "aggro_range": 80,
+       "attack_angle": 30,
+       "attack_range_shoot_max": 16,
+       "attack_range_shoot_min": 6,
+       "attack_range_shoot_preferred": 10,
+       "back_distance": 8,
+       "effect_hit": "projectile",
+       "encounter_countdown_time": 0.1,
+       "enemy_idle_threshold": 0.3,
+       "enemy_move_threshold": 0.1,
+       "enemy_name": "cyborg_ifv",
+       "enemy_type": "cyborg_ifv",
+       "hit_recovery": 0.25,
+       "movement_speed": 2.5,
+       "patrol_range": 15,
+       "patrol_speed": 4,
+       "remove_time": 5,
+       "rush_charge_time": 1,
+       "rush_distance": 7,
+       "rush_max_angle_to_target": 0.7853981633974483,
+       "rush_melee_interval": 0.2,
+       "rush_movement_speed": 4.5,
+       "rush_time": 2,
+       "shoot_charge_time": 1.5,
+       "shoot_cooldown_time": 8,
+       "shoot_direction_node": "j_barrel",
+       "shoot_effect": {
+        "destroy": true,
+        "direction_node": "j_barrel",
+        "end_variable": "end",
+        "max_distance": 30,
+        "move_particles": true,
+        "particle": "effects/generated/cyborg_ifv_lasersight",
+        "particle_start_node": "j_retracting_pipe",
+        "particle_start_offset": {
+         "__mock": true
+        },
+        "position_node": "j_turret",
+        "ray_source_offset": {
+         "__mock": true
+        },
+        "start_variable": "start"
+       },
+       "shoot_events": [
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "disable_fire": true,
+         "time": 0
+        },
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "time": 1
+        },
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "disable_fire": true,
+         "time": 0.1
+        }
+       ],
+       "shoot_fire_dir_ignore_z": true,
+       "shoot_node": "j_muzzle",
+       "spawn_amount": 3,
+       "spawn_duration": 1.3,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "spawn_group_cooldown": 15,
+       "spawn_interval": 1,
+       "spawn_unit_path": "characters/cyborg_initiate/cyborg_initiate_elite",
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.5,
+       "turret_turn_cooldown": 1,
+       "turret_turn_speed": 0.2
+      },
+      "explosive_info": {
+       "audio": "wep_handgrenade",
+       "blast_power": 100,
+       "blast_radius": 4.5,
+       "center_power": 50,
+       "center_radius": 0.5,
+       "effect": "effects/generated/artillery_blast",
+       "force": 600
+      },
+      "flocking_info": {
+       "alignment_factor": 0,
+       "cohesion_factor": 0,
+       "cohesion_radius": 20,
+       "separation_factor": 10,
+       "separation_radius": 7,
+       "update_nearby_entities_interval": 0.5
+      },
+      "health_info": {
+       "armor_max": 2250,
+       "armor_min": 2000,
+       "constitution": 1000,
+       "constitution_decay": 0,
+       "health": 160,
+       "large": true
+      },
+      "heavy": true,
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0,
+       "duration": 0.1,
+       "explosive_info": {
+        "blast_power": 0,
+        "blast_radius": 2,
+        "center_power": 350,
+        "center_radius": 2,
+        "force": 10
+       },
+       "power": 220,
+       "radius": 2.5
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": true
+        },
+        "generic_stun": {
+         "immune": true
+        },
+        "lightning": {
+         "immune": false
+        },
+        "poison": {
+         "immune": true
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": true
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": true
+        },
+        "stun": {
+         "immune": true
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 15,
+       "feeler_length": 8
+      },
+      "surface_type_damage": "tech",
+      "surface_type_deflected": "deflected",
+      "track_animation_info": {
+       "left": {
+        "material": "m_track_left",
+        "node": "j_l_middle_wheel"
+       },
+       "material_speed_multiplier": 0.2,
+       "right": {
+        "material": "m_track_right",
+        "node": "j_r_middle_wheel"
+       },
+       "speed_threshold": 0.005,
+       "track_mesh": "g_cyborg_ifv"
+      },
+      "unit_radius": 2,
+      "weapon_info": {
+       "attach_node": "j_muzzle",
+       "attributes": {
+        "armorpiercing": false,
+        "explosive": true
+       },
+       "effect_hit": "projectile_heavy",
+       "firerate": 450,
+       "power": 300,
+       "power_crit": 350,
+       "range": 150,
+       "ray_source_offset": {
+        "__mock": true
+       },
+       "spread": 0
+      }
+     },
+     "zh": "步兵战车"
+    },
+    {
+     "boss": false,
+     "name": "cyborg_initiate",
+     "path": "cyborg_initiate/cyborg_initiate",
+     "settings": {
+      "actor_spawner_info": {
+       "actor_spawn_delay": 0.8,
+       "actors": [
+        "c_body"
+       ]
+      },
+      "decay_info": {
+       "delay": 2,
+       "distance": 1,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 2,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 10,
+       "attack_range_shoot_max": 9,
+       "attack_range_shoot_min": 4,
+       "can_help_up": false,
+       "downed_get_up_time": 1.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "cyborg_initiate",
+       "enemy_type": "cyborg_initiate",
+       "help_up_time": 1.5,
+       "hit_recovery": 0.25,
+       "movement_speed": 4,
+       "patrol_range": 12,
+       "patrol_speed": 3.25,
+       "remove_time": 5,
+       "shoot_cooldown": 1.5,
+       "shoot_events": [
+        {
+         "aim": [
+          0,
+          -0.35,
+          0
+         ],
+         "time": 0
+        },
+        {
+         "aim": [
+          0,
+          -0.15,
+          0
+         ],
+         "time": 0.6
+        },
+        {
+         "aim": [
+          0,
+          -0.08,
+          0
+         ],
+         "time": 0.8
+        }
+       ],
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "ifv": "spawn_ifv",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 15,
+       "separation_factor": 2,
+       "separation_radius": 3,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 45,
+       "armor_min": 0,
+       "constitution": 0,
+       "constitution_decay": 5,
+       "health": 75
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.4,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": false
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "j_hips"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "j_hips"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "robot",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.3,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": false
+       },
+       "effect_hit": "projectile",
+       "firerate": 450,
+       "power": 20,
+       "spread": 0.12217304763960307
+      }
+     },
+     "zh": "初始者"
+    },
+    {
+     "boss": false,
+     "name": "cyborg_initiate_elite",
+     "path": "cyborg_initiate/cyborg_initiate_elite",
+     "settings": {
+      "actor_spawner_info": {
+       "actor_spawn_delay": 0.8,
+       "actors": [
+        "c_body"
+       ]
+      },
+      "decay_info": {
+       "delay": 2,
+       "distance": 1,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 2,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 25,
+       "attack_range": 1,
+       "can_help_up": false,
+       "downed_get_up_time": 1.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "cyborg_initiate_elite",
+       "enemy_type": "cyborg_initiate_elite",
+       "help_up_time": 1.5,
+       "hit_recovery": 0.25,
+       "movement_speed": 4,
+       "patrol_range": 12,
+       "patrol_speed": 4,
+       "remove_time": 5,
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "ifv": "spawn_ifv",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 15,
+       "separation_factor": 2,
+       "separation_radius": 3,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 40,
+       "armor_min": 25,
+       "constitution": 0,
+       "constitution_decay": 5,
+       "health": 450
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1.2,
+       "delay": 0.15,
+       "duration": 0.72,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 30,
+       "radius": 1.2
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "j_hips"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "j_hips"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "flesh",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.3
+     },
+     "zh": "畸形人"
+    },
+    {
+     "boss": false,
+     "name": "cyborg_soldier",
+     "path": "cyborg_soldier/cyborg_soldier",
+     "settings": {
+      "actor_spawner_info": {
+       "actor_spawn_delay": 0.8,
+       "actors": [
+        "c_damage"
+       ]
+      },
+      "decay_info": {
+       "delay": 2,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 2,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 10,
+       "attack_range_shoot_max": 4,
+       "attack_range_shoot_min": 0.5,
+       "can_help_up": false,
+       "downed_get_up_time": 1.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "cyborg_soldier",
+       "enemy_type": "cyborg_soldier",
+       "enter_shoot_time": 0.1,
+       "help_up_time": 1.5,
+       "hit_recovery": 0.25,
+       "max_range": 6,
+       "min_range": 6,
+       "movement_speed": 4,
+       "patrol_range": 12,
+       "patrol_speed": 3.5,
+       "range_increase_per_second": 80,
+       "remove_time": 5,
+       "shoot_cooldown": 0.6,
+       "shoot_effect": {
+        "end_variable": "end",
+        "length_variable": "length",
+        "particle": "effects/generated/wep_flamethrower_fire",
+        "start_variable": "start"
+       },
+       "shoot_events": [
+        {
+         "aim": [
+          -0.7853981633974483,
+          0,
+          0
+         ],
+         "animation_time": 0.25,
+         "can_abort": false,
+         "time": 0
+        },
+        {
+         "aim": [
+          -0.6981317007977318,
+          0,
+          0
+         ],
+         "animation_time": 0,
+         "can_abort": false,
+         "time": 0.2
+        },
+        {
+         "aim": [
+          0.6981317007977318,
+          0,
+          0
+         ],
+         "animation_time": 2,
+         "can_abort": false,
+         "time": 0.8
+        },
+        {
+         "aim": [
+          0.7853981633974483,
+          0,
+          0
+         ],
+         "animation_time": 2,
+         "time": 0.2
+        }
+       ],
+       "shoot_type": "flame",
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.5,
+       "cohesion_radius": 20,
+       "separation_factor": 3,
+       "separation_radius": 6,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 150,
+       "armor_min": 15,
+       "constitution": 0,
+       "constitution_decay": 1,
+       "health": 250
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.4,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": false
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "robot",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.4,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": false
+       },
+       "effect_hit": "projectile",
+       "effect_scale": 0.75,
+       "hit_status_effects": [
+        "regular_burn"
+       ],
+       "power": 50,
+       "spread": 0
+      }
+     },
+     "zh": "生化兵"
+    },
+    {
+     "boss": false,
+     "name": "cyborg_soldier_cannon",
+     "path": "cyborg_soldier_cannon/cyborg_soldier_cannon",
+     "settings": {
+      "actor_spawner_info": {
+       "actor_spawn_delay": 0.8,
+       "actors": [
+        "c_damage"
+       ]
+      },
+      "decay_info": {
+       "delay": 2,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 2,
+       "aggro_range": 80,
+       "aim_time": 1,
+       "aim_turn_speed": 0.3,
+       "attack_angle": 10,
+       "attack_range_shoot_max": 8,
+       "attack_range_shoot_min": 4,
+       "can_help_up": false,
+       "downed_get_up_time": 1.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "cyborg_soldier_cannon",
+       "enemy_type": "cyborg_soldier_cannon",
+       "help_up_time": 1.5,
+       "hit_recovery": 0.25,
+       "idle_threshold": 0.1,
+       "movement_speed": 3.5,
+       "patrol_range": 12,
+       "patrol_speed": 3,
+       "remove_time": 5,
+       "shoot_cooldown": 3,
+       "shoot_events": [
+        {
+         "aim": [
+          0,
+          -0.2,
+          0
+         ],
+         "can_abort": false,
+         "time": 0
+        },
+        {
+         "aim": [
+          0,
+          -0.2,
+          0
+         ],
+         "can_abort": false,
+         "time": 1
+        }
+       ],
+       "shoot_time": 1,
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03
+      },
+      "explosive_info": {
+       "always_explode": true,
+       "blast_power": 50,
+       "blast_radius": 2,
+       "center_power": 50,
+       "center_radius": 1,
+       "effect": "effects/generated/wep_canister_blast",
+       "force": 150
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.5,
+       "cohesion_radius": 20,
+       "separation_factor": 3,
+       "separation_radius": 6,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 150,
+       "armor_min": 15,
+       "constitution": 0,
+       "constitution_decay": 1,
+       "health": 250
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.2,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": false
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "robot",
+      "surface_type_deflected": "tech_deflected",
+      "unit_radius": 0.4,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": false,
+        "explosive": true
+       },
+       "effect_hit": "projectile_heavy",
+       "firerate": 30,
+       "power": 0,
+       "range": 10,
+       "spread": 0
+      }
+     },
+     "zh": "复合人"
+    },
+    {
+     "boss": false,
+     "name": "cyborg_soldier_grenadelauncher",
+     "path": "cyborg_soldier_grenadelauncher/cyborg_soldier_grenadelauncher",
+     "settings": {
+      "actor_spawner_info": {
+       "actor_spawn_delay": 0.8,
+       "actors": [
+        "c_damage"
+       ]
+      },
+      "decay_info": {
+       "delay": 2,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 2,
+       "aggro_range": 80,
+       "aim_time": 1.3,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 10,
+       "attack_range_shoot_max": 10,
+       "attack_range_shoot_min": 6,
+       "can_help_up": false,
+       "downed_get_up_time": 1.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "cyborg_soldier_grenadelauncher",
+       "enemy_type": "cyborg_soldier_grenadelauncher",
+       "help_up_time": 1.5,
+       "hit_recovery": 0.25,
+       "idle_threshold": 0.1,
+       "movement_speed": 3.5,
+       "patrol_range": 12,
+       "patrol_speed": 3.25,
+       "power": 1,
+       "projectile": "characters/cyborg_soldier/cyborg_soldier_grenade",
+       "remove_time": 5,
+       "shoot_cooldown": 4,
+       "shoot_events": [
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "time": 0
+        },
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "time": 0.2
+        }
+       ],
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03,
+       "z_direction": 0.8726646259971648
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.5,
+       "cohesion_radius": 20,
+       "separation_factor": 3,
+       "separation_radius": 6,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 150,
+       "armor_min": 15,
+       "constitution": 0,
+       "constitution_decay": 1,
+       "health": 250
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.4,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": false
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "robot",
+      "surface_type_deflected": "tech_deflected",
+      "unit_radius": 0.3,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": false
+       },
+       "effect_hit": "projectile",
+       "firerate": 30,
+       "power": 40,
+       "spread": 0
+      }
+     },
+     "zh": "“班长”战士"
+    },
+    {
+     "boss": false,
+     "name": "cyborg_soldier_shield",
+     "path": "cyborg_soldier_shield/cyborg_soldier_shield",
+     "settings": {
+      "actor_spawner_info": {
+       "actor_spawn_delay": 0.8,
+       "actors": [
+        "c_damage"
+       ]
+      },
+      "damage_zones": [
+       {
+        "armor_max": 4000,
+        "armor_min": 1000,
+        "dir": 0,
+        "disabled": false,
+        "event": "damage_active_shield",
+        "size": 140
+       }
+      ],
+      "decay_info": {
+       "delay": 2,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 2,
+       "aggro_range": 80,
+       "aim_time": 1.3,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 10,
+       "attack_range_shoot_max": 10,
+       "attack_range_shoot_min": 6,
+       "can_help_up": false,
+       "downed_get_up_time": 1.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "cyborg_soldier_shield",
+       "enemy_type": "cyborg_soldier_shield",
+       "help_up_time": 1.5,
+       "hit_recovery": 0.25,
+       "idle_threshold": 0.1,
+       "movement_speed": 4.5,
+       "patrol_range": 12,
+       "patrol_speed": 4.25,
+       "power": 1,
+       "projectile": "characters/cyborg_soldier/cyborg_soldier_grenade",
+       "remove_time": 5,
+       "shoot_cooldown": 4,
+       "shoot_events": [
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "time": 0
+        },
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "time": 0.2
+        }
+       ],
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03,
+       "z_direction": 0.8726646259971648
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.5,
+       "cohesion_radius": 20,
+       "separation_factor": 3,
+       "separation_radius": 6,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 45,
+       "armor_min": 20,
+       "constitution": 0,
+       "constitution_decay": 1,
+       "health": 350
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.4,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": false
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "robot",
+      "surface_type_deflected": "tech_deflected",
+      "unit_radius": 0.3,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": false
+       },
+       "effect_hit": "projectile",
+       "firerate": 30,
+       "power": 40,
+       "spread": 0
+      }
+     },
+     "zh": "军团士兵"
+    },
+    {
+     "boss": true,
+     "name": "cyborg_boss",
+     "path": "cyborg_boss/cyborg_boss",
+     "settings": {
+      "actor_spawner_info": {
+       "actor_spawn_delay": 0.8,
+       "actors": [
+        "c_base_01",
+        "c_base_02",
+        "c_torso"
+       ]
+      },
+      "boss_info": {
+       "activation_animation": "activate",
+       "activation_range": 20,
+       "activation_time": 4,
+       "attachment_info": [
+        {
+         "attach_node": "j_r_weapon_attach",
+         "attachments": [
+          {
+           "activate_boss_animation_event": "gun_enter_gatling",
+           "activate_cooldown": 3,
+           "activate_delay": 0.9,
+           "attach_node": "root",
+           "deactivate_boss_animation_event": "gun_exit_gatling",
+           "deactivate_delay": 0.5,
+           "name": "gatling_gun",
+           "required_angle": 45,
+           "required_range": [
+            0,
+            15
+           ],
+           "unit_path": "characters/cyborg_boss/cyborg_boss_gatling_gun"
+          },
+          {
+           "activate_boss_animation_event": "gun_enter_grenade",
+           "activate_cooldown": 3,
+           "activate_delay": 0.9,
+           "attach_node": "root",
+           "deactivate_boss_animation_event": "gun_exit_grenade",
+           "deactivate_delay": 0.5,
+           "name": "grenade_launcher",
+           "required_angle": 45,
+           "required_range": [
+            0,
+            12
+           ],
+           "unit_path": "characters/cyborg_boss/cyborg_boss_grenade_launcher"
+          }
+         ],
+         "max_num_attachments": 1,
+         "name": "right_arm"
+        },
+        {
+         "attach_node": "j_l_weapon_attach",
+         "attachments": [
+          {
+           "activate_boss_animation_event": "gun_enter_autocannon",
+           "activate_cooldown": 3,
+           "activate_delay": 0.9,
+           "attach_node": "root",
+           "deactivate_boss_animation_event": "gun_exit_autocannon",
+           "deactivate_delay": 0.5,
+           "name": "autocannon",
+           "required_angle": 45,
+           "required_range": [
+            0,
+            12
+           ],
+           "unit_path": "characters/cyborg_boss/cyborg_boss_autocannon"
+          },
+          {
+           "activate_boss_animation_event": "gun_enter_flamer",
+           "activate_cooldown": 3,
+           "activate_delay": 0.6,
+           "attach_node": "root",
+           "deactivate_boss_animation_event": "gun_exit_flamer",
+           "deactivate_delay": 0.5,
+           "name": "heavy_flamer",
+           "required_angle": 45,
+           "required_range": [
+            0,
+            8
+           ],
+           "unit_path": "characters/cyborg_boss/cyborg_boss_heavy_flamer"
+          }
+         ],
+         "max_num_attachments": 1,
+         "name": "left_arm"
+        },
+        {
+         "attach_node": "j_rear_attach",
+         "attachments": [
+          {
+           "activate_boss_animation_event": "spawn_aa_turret",
+           "activate_boss_lock_time": 0.5,
+           "activate_cooldown": 12,
+           "attach_node": "root",
+           "name": "aa_spawner",
+           "unit_path": "characters/cyborg_boss/cyborg_boss_aa_spawner"
+          }
+         ],
+         "max_num_attachments": 1,
+         "name": "back"
+        },
+        {
+         "attach_node": "j_l_rear_attach",
+         "attachments": [
+          {
+           "activate_boss_animation_event": "spawn_dogs",
+           "activate_boss_lock_time": 1,
+           "activate_cooldown": 8,
+           "enemy_groups_to_spawn": [
+            {
+             "group": [
+              "characters/cyborg_dog/cyborg_dog_01",
+              "characters/cyborg_dog/cyborg_dog_01",
+              "characters/cyborg_dog/cyborg_dog_01",
+              "characters/cyborg_dog/cyborg_dog_01"
+             ],
+             "hp_percent_requirement": [
+              0.75,
+              1
+             ]
+            },
+            {
+             "group": [
+              "characters/cyborg_berserker/cyborg_berserker",
+              "characters/cyborg_berserker/cyborg_berserker",
+              "characters/cyborg_dog/cyborg_dog_01",
+              "characters/cyborg_dog/cyborg_dog_01",
+              "characters/cyborg_dog/cyborg_dog_01"
+             ],
+             "hp_percent_requirement": [
+              0.25,
+              0.75
+             ]
+            },
+            {
+             "group": [
+              "characters/cyborg_berserker/cyborg_berserker_elite",
+              "characters/cyborg_dog/cyborg_dog_01",
+              "characters/cyborg_dog/cyborg_dog_01",
+              "characters/cyborg_dog/cyborg_dog_01",
+              "characters/cyborg_initiate/cyborg_initiate_elite",
+              "characters/cyborg_initiate/cyborg_initiate_elite",
+              "characters/cyborg_initiate/cyborg_initiate_elite"
+             ],
+             "hp_percent_requirement": [
+              0,
+              0.25
+             ]
+            }
+           ],
+           "name": "dog_kennel"
+          }
+         ],
+         "max_num_attachments": 1,
+         "name": "back_left"
+        }
+       ]
+      },
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "hit_front",
+        "size": 90
+       },
+       {
+        "dir": -90,
+        "event": "hit_right",
+        "size": 90
+       },
+       {
+        "dir": 90,
+        "event": "hit_left",
+        "size": 90
+       },
+       {
+        "dir": 180,
+        "event": "hit_back",
+        "size": 90
+       }
+      ],
+      "decay_info": {
+       "delay": 3,
+       "distance": 2,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 1.5,
+       "aggro_range": 90,
+       "avoid_distance_max": 16,
+       "avoid_distance_min": 12,
+       "avoid_hp_diff": 2500,
+       "avoid_leave_distance": 5,
+       "avoid_time": 4,
+       "collision_removal_delay": 99999999,
+       "continuous_melee_interval": 0.2,
+       "enemy_name": "cyborg_boss",
+       "enemy_type": "cyborg_boss",
+       "hit_recovery": 0.25,
+       "ignore_decay": true,
+       "movement_speed": 3.25,
+       "patrol_speed": 0,
+       "remove_time": 5,
+       "rush_angle_requirement": 45,
+       "rush_cooldown": 3,
+       "rush_distance_requirement": [
+        0,
+        10
+       ],
+       "rush_max_angle_to_target": 0.7853981633974483,
+       "rush_melee_interval": 0.2,
+       "rush_movement_speed": 5,
+       "rush_stop_obstacle_distance": 8,
+       "rush_time": 5,
+       "spawn_duration": 4,
+       "spawn_events": {
+        "default": "dormant",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.8,
+       "turret_turn_cooldown": 1,
+       "turret_turn_speed": 0.2
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 20,
+       "separation_factor": 7,
+       "separation_radius": 6,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 1500,
+       "armor_min": 170,
+       "authoritative": true,
+       "constitution": 0,
+       "constitution_decay": 2500,
+       "health": 300000,
+       "large": true
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 2,
+       "delay": 0,
+       "duration": 0.1,
+       "explosive_info": {
+        "blast_power": 0,
+        "blast_radius": 3.4,
+        "center_power": 350,
+        "center_radius": 3.4,
+        "force": 10
+       },
+       "power": 220,
+       "radius": 3.6
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": true,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": true,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": true
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": true
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": true
+        },
+        "stun": {
+         "immune": true
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 10
+      },
+      "surface_type_damage": "robot",
+      "surface_type_deflected": "deflected",
+      "track_animation_info": {
+       "left": {
+        "material": "m_track_left",
+        "node": "j_l_outer_track_base"
+       },
+       "material_speed_multiplier": 0.2,
+       "right": {
+        "material": "m_track_right",
+        "node": "j_r_outer_track_base"
+       },
+       "speed_threshold": 0.005,
+       "track_mesh": "g_cyborg_boss"
+      },
+      "unit_radius": 4
+     },
+     "zh": "攻城机甲"
+    }
+   ],
+   "zh": "生化人"
+  },
+  "illuminates": {
+   "units": [
+    {
+     "boss": false,
+     "name": "illuminate_apprentice",
+     "path": "illuminate_apprentice/illuminate_apprentice",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_front",
+        "size": 180
+       },
+       {
+        "dir": -180,
+        "event": "damage_back",
+        "size": 180
+       }
+      ],
+      "decay_info": {
+       "decay_delay": 5,
+       "decay_duration": 5,
+       "distance": 3
+      },
+      "enemy_info": {
+       "acceleration": 7,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 10,
+       "attack_range_shoot_max": 6,
+       "attack_range_shoot_min": 3,
+       "avoid_charge_time": 0.25,
+       "avoid_cooldown": 2,
+       "avoid_range_max": 10,
+       "avoid_range_min": 4,
+       "avoid_recovery": 0.1,
+       "avoid_speed": 20,
+       "avoid_start_cooldown": 0.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "illuminate_apprentice",
+       "enemy_type": "illuminate_apprentice",
+       "hit_recovery": 0.25,
+       "jump_charge_time": 0.25,
+       "jump_cooldown": 2,
+       "jump_duration": 0.4,
+       "jump_range_max": 10,
+       "jump_range_min": 6,
+       "jump_recovery": 0.1,
+       "jump_start_cooldown": 0.5,
+       "movement_speed": 3.5,
+       "patrol_range": 12,
+       "remove_time": 5,
+       "shoot_cooldown": 10,
+       "shoot_startup": 1,
+       "shoot_time": 1.67,
+       "shoot_unit": "characters/illuminate_apprentice/illuminate_apprentice_bomb",
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.1,
+       "cohesion_radius": 20,
+       "separation_factor": 1.5,
+       "separation_radius": 4,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 50,
+       "armor_min": 15,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 300
+      },
+      "melee_info": {
+       "armorpiercing": true,
+       "center_distance": 1.5,
+       "delay": 0.1,
+       "duration": 0.84,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 22,
+       "radius": 1.5
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "flesh_illuminate",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.4
+     },
+     "zh": "光能学徒"
+    },
+    {
+     "boss": false,
+     "name": "illuminate_hunter",
+     "path": "illuminate_hunter/illuminate_hunter",
+     "settings": {
+      "decay_info": {
+       "decay_delay": 5,
+       "decay_duration": 5,
+       "distance": 3
+      },
+      "enemy_info": {
+       "acceleration": 3,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.9,
+       "attack_angle": 1,
+       "attack_range_shoot_max": 17,
+       "attack_range_shoot_min": 12,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "illuminate_hunter",
+       "enemy_type": "illuminate_hunter",
+       "follow_range": 16,
+       "follow_range_deviation": 4,
+       "hit_recovery": 0.25,
+       "movement_speed": 5,
+       "patrol_range": 12,
+       "patrol_speed": 5,
+       "remove_time": 5,
+       "shoot_charge": 1,
+       "shoot_effect": {
+        "end_variable": "end",
+        "length_variable": "length",
+        "particle": "effects/illuminate_hunter_beam",
+        "start_variable": "start"
+       },
+       "shoot_events": [
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "disable_fire": true,
+         "time": 0
+        },
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "time": 3
+        },
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "disable_fire": true,
+         "time": 0.1
+        },
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "disable_fire": true,
+         "time": 2
+        }
+       ],
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "stop_shoot_time": 0,
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 20,
+       "separation_factor": 2,
+       "separation_radius": 3,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 0,
+       "armor_min": 0,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 400
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.4,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 3,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "flesh_illuminate",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.4,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": true,
+        "unstoppable": true
+       },
+       "effect_hit": "projectile_heavy",
+       "firerate": 450,
+       "power": 300,
+       "ray_source_offset": {
+        "__mock": true
+       },
+       "spread": 0
+      }
+     },
+     "zh": "光猎者"
+    },
+    {
+     "boss": false,
+     "name": "illuminate_hunter_elite",
+     "path": "illuminate_hunter/illuminate_hunter_elite",
+     "settings": {
+      "decay_info": {
+       "decay_delay": 5,
+       "decay_duration": 5,
+       "distance": 3
+      },
+      "enemy_info": {
+       "acceleration": 3,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.9,
+       "attack_angle": 1,
+       "attack_range_shoot_max": 17,
+       "attack_range_shoot_min": 12,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "illuminate_hunter_elite",
+       "enemy_type": "illuminate_hunter_elite",
+       "follow_range": 16,
+       "follow_range_deviation": 4,
+       "hit_recovery": 0.25,
+       "movement_speed": 5,
+       "patrol_range": 12,
+       "patrol_speed": 5,
+       "remove_time": 5,
+       "shoot_charge": 1,
+       "shoot_effect": {
+        "end_variable": "end",
+        "length_variable": "length",
+        "particle": "effects/illuminate_hunter_beam",
+        "start_variable": "start"
+       },
+       "shoot_events": [
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "disable_fire": true,
+         "time": 0
+        },
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "time": 3
+        },
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "disable_fire": true,
+         "time": 0.1
+        },
+        {
+         "aim": [
+          0,
+          0,
+          0
+         ],
+         "disable_fire": true,
+         "time": 2
+        }
+       ],
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "stop_shoot_time": 0,
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 20,
+       "separation_factor": 2,
+       "separation_radius": 3,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 0,
+       "armor_min": 0,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 400
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.4,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "shield_info": {
+       "armor_max": 0,
+       "armor_min": 0,
+       "base_intensity": 2.5,
+       "hit_flash_intensity": 22,
+       "hit_flash_time": 0.05,
+       "shield": 200,
+       "shield_mesh": "g_shield",
+       "shield_regen": 666,
+       "shield_regen_delay": 4,
+       "uv_speed_full_health_x": 0,
+       "uv_speed_full_health_y": 0,
+       "uv_speed_no_health_x": -40,
+       "uv_speed_no_health_y": 40
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 3,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "flesh_illuminate",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.4,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": true,
+        "unstoppable": true
+       },
+       "effect_hit": "projectile_heavy",
+       "firerate": 450,
+       "power": 300,
+       "ray_source_offset": {
+        "__mock": true
+       },
+       "spread": 0
+      }
+     },
+     "zh": "illuminate_hunter_elite"
+    },
+    {
+     "boss": false,
+     "name": "illuminate_illusionist",
+     "path": "illuminate_illusionist/illuminate_illusionist",
+     "settings": {
+      "decay_info": {
+       "delay": 3,
+       "distance": 7,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 2,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 10,
+       "attack_range_shoot_max": 15,
+       "attack_range_shoot_min": 6,
+       "confuse_cooldown": 20,
+       "confuse_range": 13,
+       "confuse_recovery": 1,
+       "confuse_start_cooldown": 4,
+       "confuse_startup": 2,
+       "confuses": [
+        "confuse"
+       ],
+       "emergency_teleport_cooldown": 1,
+       "emergency_teleport_max_range": 3.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "illuminate_illusionist",
+       "enemy_type": "illuminate_illusionist",
+       "follow_range": 8,
+       "follow_range_deviation": 2,
+       "hit_recovery": 0.25,
+       "movement_speed": 4,
+       "patrol_range": 12,
+       "remove_time": 5,
+       "shoot_startup": 2.5,
+       "shoot_unit": "characters/illuminate_illusionist/illuminate_illusionist_bomb",
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "teleport_charge_dodge_time": 0.1,
+       "teleport_charge_time": 0.2,
+       "teleport_cooldown": 2,
+       "teleport_duration": 0.05,
+       "teleport_range_max": 10,
+       "teleport_range_min": 4,
+       "teleport_recovery": 0.2,
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.1,
+       "cohesion_radius": 20,
+       "separation_factor": 5,
+       "separation_radius": 5,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 250,
+       "armor_min": 40,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 1500
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.4,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "shield_info": {
+       "armor_max": 0,
+       "armor_min": 0,
+       "base_intensity": 2.5,
+       "hit_flash_intensity": 22,
+       "hit_flash_time": 0.05,
+       "shield": 450,
+       "shield_mesh": "g_shield",
+       "shield_regen": 666,
+       "shield_regen_delay": 1.5,
+       "uv_speed_full_health_x": 0,
+       "uv_speed_full_health_y": 0,
+       "uv_speed_no_health_x": -40,
+       "uv_speed_no_health_y": 40
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 3,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "tech",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 1,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": false
+       },
+       "effect_hit": "projectile",
+       "firerate": 450,
+       "power": 30,
+       "spread": 0.08726646259971647
+      }
+     },
+     "zh": "幻光大师"
+    },
+    {
+     "boss": false,
+     "name": "illuminate_illusionist_assassinate",
+     "path": "illuminate_illusionist_assassinate/illuminate_illusionist_assassinate",
+     "settings": {
+      "decay_info": {
+       "delay": 3,
+       "distance": 7,
+       "duration": 5
+      },
+      "enemy_info": {
+       "acceleration": 2,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 10,
+       "attack_range_shoot_max": 15,
+       "attack_range_shoot_min": 6,
+       "confuse_cooldown": 20,
+       "confuse_range": 10,
+       "confuse_recovery": 1,
+       "confuse_start_cooldown": 4,
+       "confuse_startup": 2,
+       "confuses": [
+        "confuse"
+       ],
+       "emergency_teleport_cooldown": 1,
+       "emergency_teleport_max_range": 3.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "illuminate_illusionist_assassinate",
+       "enemy_type": "illuminate_illusionist_assassinate",
+       "follow_range": 8,
+       "follow_range_deviation": 2,
+       "hit_recovery": 0.25,
+       "movement_speed": 3,
+       "patrol_range": 12,
+       "remove_time": 5,
+       "shoot_startup": 1.5,
+       "shoot_unit": "characters/illuminate_illusionist/illuminate_councilmember_bomb",
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "teleport_charge_dodge_time": 0.1,
+       "teleport_charge_time": 0.2,
+       "teleport_cooldown": 2,
+       "teleport_duration": 0.05,
+       "teleport_range_max": 10,
+       "teleport_range_min": 4,
+       "teleport_recovery": 0.2,
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.1,
+       "cohesion_radius": 20,
+       "separation_factor": 5,
+       "separation_radius": 5,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 250,
+       "armor_min": 40,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 2500
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.4,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "shield_info": {
+       "armor_max": 0,
+       "armor_min": 0,
+       "base_intensity": 2.5,
+       "hit_flash_intensity": 22,
+       "hit_flash_time": 0.05,
+       "shield": 666,
+       "shield_mesh": "g_shield",
+       "shield_regen": 666,
+       "shield_regen_delay": 1.5,
+       "uv_speed_full_health_x": 0,
+       "uv_speed_full_health_y": 0,
+       "uv_speed_no_health_x": -40,
+       "uv_speed_no_health_y": 40
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 3,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "tech",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 1.5,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": false
+       },
+       "effect_hit": "projectile",
+       "firerate": 450,
+       "power": 30,
+       "spread": 0.08726646259971647
+      }
+     },
+     "zh": "光能决策者"
+    },
+    {
+     "boss": false,
+     "name": "illuminate_obelisk",
+     "path": "illuminate_obelisk/illuminate_obelisk",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "disabled": true,
+        "event": "damage_front",
+        "size": 120
+       },
+       {
+        "dir": -90,
+        "disabled": true,
+        "event": "damage_right",
+        "size": 60
+       },
+       {
+        "dir": 90,
+        "disabled": true,
+        "event": "damage_left",
+        "size": 60
+       },
+       {
+        "armor_max": 8000,
+        "armor_min": 8000,
+        "dir": 0,
+        "event": "damage_armor",
+        "size": 359
+       }
+      ],
+      "decay_info": {
+       "delay": 5,
+       "duration": 4
+      },
+      "enemy_info": {
+       "acceleration": 0.15,
+       "aggro_range": 80,
+       "attack_angle": 60,
+       "attack_range": 0.5,
+       "enemy_name": "illuminate_obelisk",
+       "enemy_type": "illuminate_obelisk",
+       "follow_range": 12,
+       "follow_range_deviation": 4,
+       "hit_recovery": 0.25,
+       "movement_speed": 4,
+       "patrol_range": 13,
+       "shield_wall_cooldown": 4,
+       "shield_wall_distance_from_unit": 2,
+       "shield_wall_exit_time": 1.8,
+       "shield_wall_max_length": 40,
+       "shield_wall_min_length": 6,
+       "shield_wall_time": 10,
+       "spawn_duration": 1.2,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "teleport_charge_dodge_time": 1,
+       "teleport_charge_time": 1,
+       "teleport_cooldown_on_fail": 0.2,
+       "teleport_cooldown_on_success": 2,
+       "teleport_criteria_distance_to_target": 8,
+       "teleport_distance": 20,
+       "teleport_duration": 1,
+       "teleport_recovery": 1,
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 1
+      },
+      "flocking_info": {
+       "alignment_factor": 0.2,
+       "cohesion_factor": 0.2,
+       "cohesion_radius": 30,
+       "separation_factor": 2,
+       "separation_radius": 5,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 100,
+       "armor_min": 45,
+       "constitution": 0,
+       "constitution_decay": 5,
+       "health": 450
+      },
+      "shield_info": {
+       "armor_max": 15,
+       "armor_min": 15,
+       "base_intensity": 2.5,
+       "hit_flash_intensity": 22,
+       "hit_flash_time": 0.05,
+       "shield": 1200,
+       "shield_mesh": "c_shield_sm",
+       "shield_regen": 1200,
+       "shield_regen_delay": 4,
+       "uv_speed_full_health_x": 0,
+       "uv_speed_full_health_y": 0,
+       "uv_speed_no_health_x": -40,
+       "uv_speed_no_health_y": 40
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": true
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 4
+      },
+      "surface_type_damage": "shield",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.3
+     },
+     "zh": "奥贝利斯"
+    },
+    {
+     "boss": false,
+     "name": "illuminate_observer",
+     "path": "illuminate_observer/illuminate_observer",
+     "settings": {
+      "decay_info": {
+       "delay": 0.1,
+       "duration": 0
+      },
+      "enemy_info": {
+       "acceleration": 2,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 10,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "illuminate_observer",
+       "enemy_type": "illuminate_observer",
+       "follow_range": 8,
+       "follow_range_deviation": 2,
+       "hit_recovery": 0.25,
+       "minimum_z": 0,
+       "movement_speed": 7,
+       "patrol_range": 10,
+       "patrol_speed": 7,
+       "realarm_range": 20,
+       "remove_time": 5,
+       "spawn_duration": 0,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.2
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 20,
+       "separation_factor": 2,
+       "separation_radius": 3,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 25,
+       "armor_min": 15,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 50
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.4,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": true
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": true
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 5,
+       "feeler_length": 6
+      },
+      "surface_type_damage": "tech",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.25,
+      "weapon_info": {}
+     },
+     "zh": "光能观测者"
+    },
+    {
+     "boss": false,
+     "name": "illuminate_observer_elite",
+     "path": "illuminate_observer/illuminate_observer_elite",
+     "settings": {
+      "decay_info": {
+       "delay": 0.1,
+       "duration": 0
+      },
+      "enemy_info": {
+       "acceleration": 2,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 10,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "illuminate_observer_elite",
+       "enemy_type": "illuminate_observer_elite",
+       "follow_range": 8,
+       "follow_range_deviation": 2,
+       "hit_recovery": 0.25,
+       "minimum_z": 0,
+       "movement_speed": 7,
+       "patrol_range": 10,
+       "patrol_speed": 7,
+       "realarm_range": 20,
+       "remove_time": 5,
+       "spawn_duration": 0,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.2
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 20,
+       "separation_factor": 2,
+       "separation_radius": 3,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 50,
+       "armor_min": 25,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 50
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.4,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "shield_info": {
+       "armor_max": 0,
+       "armor_min": 0,
+       "base_intensity": 2.5,
+       "hit_flash_intensity": 22,
+       "hit_flash_time": 0.05,
+       "shield": 100,
+       "shield_mesh": "g_shield",
+       "shield_regen": 666,
+       "shield_regen_delay": 4,
+       "uv_speed_full_health_x": 0,
+       "uv_speed_full_health_y": 0,
+       "uv_speed_no_health_x": -40,
+       "uv_speed_no_health_y": 40
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": true
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": true
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 5,
+       "feeler_length": 6
+      },
+      "surface_type_damage": "tech",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.25,
+      "weapon_info": {}
+     },
+     "zh": "看守者"
+    },
+    {
+     "boss": false,
+     "name": "illuminate_observer_obsidian",
+     "path": "illuminate_observer/illuminate_observer_obsidian",
+     "settings": {
+      "decay_info": {
+       "delay": 0.1,
+       "duration": 0
+      },
+      "enemy_info": {
+       "acceleration": 2,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 10,
+       "attack_range_shoot_max": 15,
+       "attack_range_shoot_min": 6,
+       "confuse_range": 10,
+       "confuses": [
+        "confuse_short"
+       ],
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "illuminate_observer_obsidian",
+       "enemy_type": "illuminate_observer_obsidian",
+       "follow_range": 8,
+       "follow_range_deviation": 2,
+       "hit_recovery": 0.25,
+       "minimum_z": 0,
+       "movement_speed": 7,
+       "patrol_range": 10,
+       "patrol_speed": 7,
+       "realarm_range": 20,
+       "remove_time": 5,
+       "spawn_duration": 0,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.2
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 20,
+       "separation_factor": 2,
+       "separation_radius": 3,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 50,
+       "armor_min": 25,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 50
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 1,
+       "delay": 0.4,
+       "duration": 1.5,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 10,
+       "radius": 1
+      },
+      "shield_info": {
+       "armor_max": 0,
+       "armor_min": 0,
+       "base_intensity": 2.5,
+       "hit_flash_intensity": 22,
+       "hit_flash_time": 0.05,
+       "shield": 100,
+       "shield_mesh": "g_shield",
+       "shield_regen": 666,
+       "shield_regen_delay": 4,
+       "uv_speed_full_health_x": 0,
+       "uv_speed_full_health_y": 0,
+       "uv_speed_no_health_x": -40,
+       "uv_speed_no_health_y": 40
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": true
+        },
+        "psychic": {
+         "immune": true
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": true
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 5,
+       "feeler_length": 6
+      },
+      "surface_type_damage": "tech",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.25,
+      "weapon_info": {}
+     },
+     "zh": "黑曜石观测者"
+    },
+    {
+     "boss": false,
+     "name": "illuminate_trickster",
+     "path": "illuminate_trickster/illuminate_trickster",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "damage_front",
+        "size": 180
+       },
+       {
+        "dir": -180,
+        "event": "damage_back",
+        "size": 180
+       }
+      ],
+      "decay_info": {
+       "decay_delay": 5,
+       "decay_duration": 5,
+       "distance": 3
+      },
+      "enemy_info": {
+       "acceleration": 10,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.1,
+       "attack_angle": 10,
+       "attack_range_shoot_max": 13,
+       "attack_range_shoot_min": 4,
+       "avoid_charge_time": 0.25,
+       "avoid_cooldown": 2,
+       "avoid_range_max": 10,
+       "avoid_range_min": 4,
+       "avoid_recovery": 0.1,
+       "avoid_speed": 20,
+       "avoid_start_cooldown": 0.5,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "illuminate_trickster",
+       "enemy_type": "illuminate_trickster",
+       "hit_recovery": 0.25,
+       "jump_charge_time": 0.25,
+       "jump_cooldown": 2,
+       "jump_duration": 0.4,
+       "jump_range_max": 10,
+       "jump_range_min": 6,
+       "jump_recovery": 0.1,
+       "jump_start_cooldown": 0.5,
+       "movement_speed": 6,
+       "patrol_range": 12,
+       "remove_time": 5,
+       "shoot_recovery": 2,
+       "shoot_startup": 2,
+       "spawn_duration": 1.33,
+       "spawn_events": {
+        "default": "spawn",
+        "patrol": "idle"
+       },
+       "summon_unit_path_01": "gameobjects/enemy_tesla_01",
+       "summon_unit_path_02": "gameobjects/enemy_nanobot_strike",
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.03
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.1,
+       "cohesion_radius": 20,
+       "separation_factor": 2,
+       "separation_radius": 4,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 70,
+       "armor_min": 30,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 350
+      },
+      "melee_info": {
+       "armorpiercing": true,
+       "center_distance": 1.5,
+       "delay": 0.1,
+       "duration": 0.8,
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 25,
+       "radius": 1.5
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_poison",
+         "particle_effect_node": "root"
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 5
+      },
+      "surface_type_damage": "flesh_illuminate",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 0.4
+     },
+     "zh": "光弃者"
+    },
+    {
+     "boss": false,
+     "name": "illuminate_tripod",
+     "path": "illuminate_tripod/illuminate_tripod",
+     "settings": {
+      "decay_info": {
+       "delay": 0.1,
+       "duration": 0
+      },
+      "enemy_info": {
+       "acceleration": 4,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.01,
+       "attack_angle": 25,
+       "attack_range": 2,
+       "can_teleport": false,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "illuminate_tripod",
+       "enemy_type": "illuminate_tripod",
+       "hit_recovery": 0.25,
+       "movement_speed": 2.5,
+       "patrol_range": 12,
+       "patrol_speed": 2,
+       "remove_time": 5,
+       "spawn_duration": 1,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "teleport_charge_dodge_time": 0.6,
+       "teleport_charge_time": 1.2,
+       "teleport_cooldown": 4,
+       "teleport_duration": 0.05,
+       "teleport_range_max": 20,
+       "teleport_range_min": 7,
+       "teleport_recovery": 1,
+       "teleport_target_distance_multiplier": 1.5,
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.01,
+       "wounded_movement_speed": 2
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 20,
+       "separation_factor": 3,
+       "separation_radius": 4,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 200,
+       "armor_min": 20,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 300
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 2.5,
+       "delay": 0.1,
+       "distance": 5,
+       "duration": 2,
+       "hit_status_effects": {
+        "2": "lightning_stun"
+       },
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 34,
+       "radius": 2.5
+      },
+      "shield_info": {
+       "armor_max": 0,
+       "armor_min": 0,
+       "base_intensity": 2.5,
+       "hit_flash_intensity": 22,
+       "hit_flash_time": 0.05,
+       "shield": 100,
+       "shield_mesh": "c_shield",
+       "shield_regen": 666,
+       "shield_regen_delay": 4,
+       "uv_speed_full_health_x": 0,
+       "uv_speed_full_health_y": 0,
+       "uv_speed_no_health_x": -40,
+       "uv_speed_no_health_y": 40
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": true
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": true
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 6
+      },
+      "surface_type_damage": "tech",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 1
+     },
+     "zh": "三脚电械"
+    },
+    {
+     "boss": false,
+     "name": "illuminate_tripod_elite",
+     "path": "illuminate_tripod/illuminate_tripod_elite",
+     "settings": {
+      "decay_info": {
+       "delay": 0.1,
+       "duration": 0
+      },
+      "enemy_info": {
+       "acceleration": 4,
+       "aggro_range": 80,
+       "aim_turn_speed": 0.01,
+       "attack_angle": 25,
+       "attack_range": 2,
+       "can_teleport": false,
+       "encounter_countdown_time": 1.33,
+       "enemy_name": "illuminate_tripod_elite",
+       "enemy_type": "illuminate_tripod",
+       "hit_recovery": 0.25,
+       "movement_speed": 2.5,
+       "patrol_range": 12,
+       "patrol_speed": 2,
+       "remove_time": 5,
+       "spawn_duration": 1,
+       "spawn_events": {
+        "default": "spawn_dig",
+        "patrol": "idle"
+       },
+       "teleport_charge_dodge_time": 0.6,
+       "teleport_charge_time": 1.2,
+       "teleport_cooldown": 4,
+       "teleport_duration": 0.05,
+       "teleport_range_max": 20,
+       "teleport_range_min": 7,
+       "teleport_recovery": 1,
+       "teleport_target_distance_multiplier": 1.5,
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.01,
+       "wounded_movement_speed": 2
+      },
+      "flocking_info": {
+       "alignment_factor": 0.1,
+       "cohesion_factor": 0.3,
+       "cohesion_radius": 20,
+       "separation_factor": 3,
+       "separation_radius": 4,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 250,
+       "armor_min": 40,
+       "constitution": 0,
+       "constitution_decay": 0,
+       "health": 350
+      },
+      "melee_info": {
+       "armorpiercing": false,
+       "center_distance": 2.5,
+       "delay": 0.1,
+       "distance": 5,
+       "duration": 2,
+       "hit_status_effects": {
+        "2": "lightning_stun"
+       },
+       "ignore_components": [
+        "enemy"
+       ],
+       "power": 34,
+       "radius": 2.5
+      },
+      "shield_info": {
+       "armor_max": 0,
+       "armor_min": 0,
+       "base_intensity": 2.5,
+       "hit_flash_intensity": 22,
+       "hit_flash_time": 0.05,
+       "shield": 200,
+       "shield_mesh": "c_shield",
+       "shield_regen": 666,
+       "shield_regen_delay": 4,
+       "uv_speed_full_health_x": 0,
+       "uv_speed_full_health_y": 0,
+       "uv_speed_no_health_x": -40,
+       "uv_speed_no_health_y": 40
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": true
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": true
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 2,
+       "feeler_length": 6
+      },
+      "surface_type_damage": "tech",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 1
+     },
+     "zh": "步行者"
+    },
+    {
+     "boss": true,
+     "name": "illuminate_boss",
+     "path": "illuminate_boss/illuminate_boss",
+     "settings": {
+      "damage_zones": [
+       {
+        "dir": 0,
+        "event": "hit_front",
+        "size": 90
+       },
+       {
+        "dir": -90,
+        "event": "hit_right",
+        "size": 90
+       },
+       {
+        "dir": 90,
+        "event": "hit_left",
+        "size": 90
+       },
+       {
+        "dir": 180,
+        "event": "hit_back",
+        "size": 90
+       }
+      ],
+      "decay_info": {
+       "delay": 5,
+       "duration": 4
+      },
+      "enemy_info": {
+       "acceleration": 8,
+       "add_spawns_attack_animation_delay": 0,
+       "add_spawns_attack_delay": 0,
+       "add_spawns_attack_duration": 0,
+       "add_spawns_cooldown": 10,
+       "add_spawns_groups": [
+        {
+         "group": [
+          "characters/illuminate_tripod/illuminate_tripod_elite",
+          "characters/illuminate_tripod/illuminate_tripod_elite",
+          "characters/illuminate_tripod/illuminate_tripod_elite"
+         ],
+         "hp_percent_requirement": [
+          0.66,
+          1
+         ]
+        },
+        {
+         "group": [
+          "characters/illuminate_apprentice/illuminate_apprentice",
+          "characters/illuminate_apprentice/illuminate_apprentice",
+          "characters/illuminate_trickster/illuminate_trickster",
+          "characters/illuminate_tripod/illuminate_tripod_elite",
+          "characters/illuminate_tripod/illuminate_tripod_elite"
+         ],
+         "hp_percent_requirement": [
+          0.33,
+          0.66
+         ]
+        },
+        {
+         "group": [
+          "characters/illuminate_apprentice/illuminate_apprentice",
+          "characters/illuminate_apprentice/illuminate_apprentice",
+          "characters/illuminate_illusionist/illuminate_illusionist",
+          "characters/illuminate_trickster/illuminate_trickster"
+         ],
+         "hp_percent_requirement": [
+          0,
+          0.33
+         ]
+        }
+       ],
+       "aggro_range": 80,
+       "attack_angle": 60,
+       "attack_range": 0.5,
+       "avoid_charge_time": 0.25,
+       "avoid_cooldown": 3,
+       "avoid_hp_diff": 500,
+       "avoid_range_max": 10,
+       "avoid_range_min": 4,
+       "avoid_recovery": 0.1,
+       "avoid_speed": 20,
+       "avoid_start_cooldown": 0.5,
+       "collision_removal_delay": 99999999,
+       "confuse_bombs_angle_spread": 2.0943951023931953,
+       "confuse_bombs_attack_animation_delay": 0,
+       "confuse_bombs_attack_delay": 1,
+       "confuse_bombs_num_waves": 2,
+       "confuse_bombs_per_wave": 3,
+       "confuse_bombs_time_between_waves": 2,
+       "death_bombs_angle_spread": 2.0943951023931953,
+       "death_bombs_attack_animation_delay": 0,
+       "death_bombs_attack_delay": 1,
+       "death_bombs_num_waves": 2,
+       "death_bombs_per_wave": 3,
+       "death_bombs_time_between_waves": 2,
+       "enemy_name": "illuminate_boss",
+       "enemy_type": "illuminate_boss",
+       "hit_recovery": 0.25,
+       "idle_wait_time_max": 1,
+       "idle_wait_time_min": 0.5,
+       "ignore_decay": true,
+       "laser_attack_animation_delay": 0,
+       "laser_attack_delay": 0.5,
+       "laser_attack_duration": 3,
+       "laser_initial_turn_diff_max": 0.3,
+       "laser_initial_turn_diff_min": 0.2,
+       "laser_move_speed": 1,
+       "laser_turn_speed": 0.95,
+       "movement_speed": 2,
+       "movement_speed_close_to_target": 0.25,
+       "patrol_range": 13,
+       "spawn_duration": 2,
+       "spawn_events": {
+        "default": "spawn"
+       },
+       "stun_bombs_angle_spread": 6.283185307179586,
+       "stun_bombs_attack_animation_delay": 0,
+       "stun_bombs_attack_delay": 1,
+       "stun_bombs_attack_duration": 3,
+       "stun_bombs_num_bombs": 12,
+       "threat_calculation": {
+        "__fn": true
+       },
+       "turn_speed": 0.1,
+       "wanted_distance_to_target": 10
+      },
+      "flocking_info": {
+       "alignment_factor": 0.2,
+       "cohesion_factor": 0.2,
+       "cohesion_radius": 30,
+       "separation_factor": 2,
+       "separation_radius": 5,
+       "update_nearby_entities_interval": 1
+      },
+      "health_info": {
+       "armor_max": 250,
+       "armor_min": 45,
+       "authoritative": true,
+       "constitution": 0,
+       "constitution_decay": 5,
+       "health": 250000
+      },
+      "status_info": {
+       "elements": {
+        "environment": {
+         "immune": true
+        },
+        "fire": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_fire",
+         "particle_effect_node": "root"
+        },
+        "generic_stun": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_stun",
+         "particle_effect_node": "root"
+        },
+        "lightning": {
+         "immune": false,
+         "particle_effect_name": "effects/generated/status_lightning",
+         "particle_effect_node": "root"
+        },
+        "poison": {
+         "immune": true
+        },
+        "psychic": {
+         "immune": false
+        }
+       },
+       "statuses": {
+        "burn": {
+         "immune": false
+        },
+        "confuse": {
+         "immune": true
+        },
+        "damage": {
+         "immune": false
+        },
+        "slow": {
+         "immune": false
+        },
+        "stun": {
+         "immune": false
+        }
+       }
+      },
+      "steering_info": {
+       "avoidance_factor": 5,
+       "feeler_length": 10
+      },
+      "surface_type_damage": "tech",
+      "surface_type_deflected": "deflected",
+      "unit_radius": 2,
+      "weapon_info": {
+       "attributes": {
+        "armorpiercing": false,
+        "chambered": true,
+        "continous": true,
+        "fully_automatic": true,
+        "semi_automatic": true,
+        "sidearm": false,
+        "unstoppable": true
+       },
+       "effect_hit": "laser",
+       "heat_dissipation_per_second": 1,
+       "heat_increase": 0,
+       "heat_level_warning": 1,
+       "heat_level_warning_critical": 1,
+       "laser_effect_name": "effects/generated/enemy_illuminate_boss_beam",
+       "laser_effect_width": 0.6,
+       "magazines": 1,
+       "magazines_max": 1,
+       "move_speed_aim": 0,
+       "move_speed_reload": 0,
+       "node": "j_front_kernel",
+       "power": 3500,
+       "power_crit": 3500,
+       "range": 50,
+       "ray_source_offset": {
+        "__mock": true
+       },
+       "reload_duration": 6,
+       "turn_speed_aim": 1,
+       "turn_speed_fire": 0.3,
+       "turn_speed_reload": 0
+      }
+     },
+     "zh": "巨眼"
+    }
+   ],
+   "zh": "光能者"
+  }
+ },
+ "source": "mod/lua_src/unknown_*.lua（enemy_info.enemy_name 对应）；名字来自 ai/drill_monsters.json"
+}
