@@ -20,6 +20,9 @@ permissions:
   contents: write
 
 env:
+  # The build scripts print Chinese; the runner console is cp1252
+  PYTHONUTF8: "1"
+  PYTHONIOENCODING: utf-8
   LUAJIT_COMMIT: b83bcba6ea300d4eb16e8257ddf80bcdef1f938b
   BC_SHA256: c7964f67271d6a1fc59d5dba324daf654d9bfd2a1fa0628d8f2e6aa36c98c190
 
