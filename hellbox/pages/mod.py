@@ -151,12 +151,12 @@ class ModPage(Page):
                                                  font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
         self._row(ship, "报复关数量", "每颗星球固定带几个报复关。原版：难度 4 以上每颗星球 33% 带 1 个。只影响之后新出的星球。",
                   extras=(self.seg_strike,))
-        if not build.is_public():  # 解锁其他战线（只有自用版有）
-            self.front_on = ui.Var(build.get_front_unlock())
-            self.front_toggle = self._ctl(ui.Toggle(None, self.front_on, command=self.set_front))
-            self._row(ship, "解锁其他战线", "没开放的战线也能选，还没出场的、已攻破的都算。正在打的不动；新赛季还没出场的直接打开，"
-                                          "从起点开始；已攻破的放回攻破前最后一个星区。游戏开着也能切，退出战役地图再进一次生效。",
-                      toggle=self.front_toggle)
+        # 2026-11-22 用户定：解锁其他战线发布版也有（以前只有自用版）
+        self.front_on = ui.Var(build.get_front_unlock())
+        self.front_toggle = self._ctl(ui.Toggle(None, self.front_on, command=self.set_front))
+        self._row(ship, "解锁其他战线", "没开放的战线也能选，还没出场的、已攻破的都算。正在打的不动；新赛季还没出场的直接打开，"
+                                      "从起点开始；已攻破的放回攻破前最后一个星区。游戏开着也能切，退出战役地图再进一次生效。",
+                  toggle=self.front_toggle)
         self.view.row(ship)
 
         coop = ui.Card(self.view, "COOP", "联机和操作", fill=ui.SKY)

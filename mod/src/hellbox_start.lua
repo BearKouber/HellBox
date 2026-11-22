@@ -15,6 +15,10 @@
 --     seed=地图编号
 --   这里每 0.5 秒看一次，读到就删掉；超过 20 秒的请求不认（防止 HellBox 早关了，过很久才进飞船时突然开局）。
 --   结果写 start-training-result.txt：id=…、result=ok / not_ship / not_host / teammates / busy / bad / error。
+--   2026-11-22 用户定：游戏关着时点「开始」也要在线。以前 HellBox 用 -autohost 开游戏，游戏自己把联机方式设成 LAN
+--     （state_main_menu.lua 549 行）= 离线。现在 HellBox 正常开游戏，请求多带 wait=1：没到飞船（主菜单、加载）或飞船正忙
+--     就先记着，进飞船站稳 SHIP_SETTLE 秒后照常处理（一个人直接进、有队友设下一局）；WAIT_AGE 秒内没进飞船就作废。
+--     没走「直接进关」这条路时，把 training-loadout.txt（进关前弹选战备的标记）删掉，免得留给以后。
 --
 -- 2026-11-19「选图」设为下一局（用户定：房间里有队友时像试验场那样把这张图注入下一局，队友不用装 HellBox；
 --   房主、队友都照常记经验和银河战争；一个人时照旧直接进关。docs/任务/HD1-033 2026-11-19 那几条）。
@@ -35,6 +39,8 @@ do
 	HellBoxStart = G
 
 	local MAX_AGE = 20
+	local WAIT_AGE = 600 -- 【用户 2026-11-22】游戏关着时点「开始」：开游戏、进飞船最多等 10 分钟（和选战备标记的 10 分钟一样）
+	local SHIP_SETTLE = 3 -- 【暂定】进飞船后等几秒再开，飞船和房间先建好
 
 	local function dir()
 		local appdata = os.getenv and os.getenv("APPDATA")
@@ -259,30 +265,80 @@ do
 		end
 	end
 
+	local function drop_loadout_flag()
+		local d = dir()
+
+		if d then
+			os.remove(d .. "training-loadout.txt")
+		end
+	end
+
 	local function serve()
 		local req = take_request()
 
-		if not req then
-			return
+		if req then
+			G.pending = nil -- 新请求顶掉还在等的
+		else
+			req = G.pending
+
+			if not req then
+				return
+			end
 		end
 
 		local id = req.id or "?"
 		local stamp = tonumber(req.time)
 		local seed = tonumber(req.seed)
+		local waiting = req.wait == "1"
 
-		if not stamp or math.abs(os.time() - stamp) > MAX_AGE then
+		if not stamp or math.abs(os.time() - stamp) > (waiting and WAIT_AGE or MAX_AGE) then
 			G.last = "stale"
+			G.pending = nil
+
+			if waiting then
+				drop_loadout_flag()
+			end
 
 			return -- 太旧：HellBox 早就当超时了，不回
 		end
 
 		if not seed or seed < 0 or seed ~= math.floor(seed) then
+			G.pending = nil
 			answer(id, "bad")
 
 			return
 		end
 
 		local why, ship, sm, players = check()
+
+		if waiting then
+			if why == "not_ship" or why == "busy" then
+				G.pending = req -- 还没到飞船 / 飞船正忙：记着，下次再看
+
+				if why == "not_ship" then
+					G.ship_since = nil
+				end
+
+				return
+			end
+
+			local now = Application.time_since_launch()
+
+			G.ship_since = G.ship_since or now
+
+			if now - G.ship_since < SHIP_SETTLE then
+				G.pending = req
+
+				return
+			end
+
+			G.pending = nil
+			G.ship_since = nil
+
+			if why ~= nil then
+				drop_loadout_flag() -- 不是一个人直接进关（设下一局 / 不是房主…）：选战备标记用不上
+			end
+		end
 
 		if why == "teammates" and req.mode == "auto" then
 			-- 2026-11-19 选图：有联机队友 → 设为下一局（房主走出发舱照常出发）

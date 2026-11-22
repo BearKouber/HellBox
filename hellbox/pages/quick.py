@@ -258,8 +258,9 @@ class QuickPage(Page):
 
         self.btn_start = ui.Button(None, "开始", self.start, kind="primary", padx=26, pady=6, font=ui.f_zh(11, True))
         card.add(self.btn_start, top=14, align=ui.LEFT)
-        card.add(ui.text(card.body, "未选择保存块时，按上面的配置开始。游戏开着时在飞船上点（要当房主）：一个人或本机分屏直接进关，进关后按互动键出场；"
-                                     "房间里有联机队友就设为下一局，照常走进出发舱出发，队友不用装 HellBox，大家照常记经验。", muted=True, size=9), top=8)
+        card.add(ui.text(card.body, "未选择保存块时，按上面的配置开始。要当房主：一个人或本机分屏直接进关，进关后按互动键出场；"
+                                     "房间里有联机队友就设为下一局，照常走进出发舱出发，队友不用装 HellBox，大家照常记经验。"
+                                     "游戏关着时点，会先开游戏，进飞船后自动开图。", muted=True, size=9), top=8)
         self._paint_slots()
         return card
 
@@ -784,8 +785,8 @@ class QuickPage(Page):
             if build.status() != "on" or build.out_is_stale():
                 build.install()
             ds.save_last(cfg)
-            training.launch(cfg, None)
-            return "游戏已启动：进关前先选战略配备，再落地。"
+            training.launch_online(cfg, self._drop_play_trial)  # 2026-11-22：正常开游戏（在线），进飞船后自动开图
+            return "游戏已启动：进到飞船后自动开这张图（10 分钟内）。"
 
         self.app.run(action, working="正在开图…")
 

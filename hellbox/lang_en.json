@@ -3508,5 +3508,7 @@
 "留空 = 用你的名字（没设就是 Steam 昵称）。只有你当房主时生效。真房间名会自动带上标记，所有人都看得到：只开了自己用的功能是「[HellBox] 名字」；开了玩法、改了数据、带箱子上车或丢支援装备是「[Hex] 名字」，方括号里写鬼城、其他玩法几个（+3），敌人改得比原版难再写「炼狱」，比如「[Hex · 鬼城 +3 · 炼狱] 名字」。": "Empty = your name (or your Steam name). Only applies when you host. Your room name gets a tag everyone can see: \"[HellBox] name\" if you only use features for yourself; \"[Hex] name\" with play modes, data changes, carrying boxes into vehicles or dropping support gear. The brackets show Ghost Town, how many other modes are on (+3), and \"Inferno\" if enemies are harder than vanilla, e.g. \"[Hex · Ghost Town +3 · Inferno] name\".",
 "点地图挑地形（要开着游戏）": "Click the map to pick a terrain (game must be running)",
 "点地图挑地形（要开着游戏）。": "Click the map to pick a terrain (game must be running).",
-"外观固定是试验场": "Always looks like the Proving Grounds"
+"外观固定是试验场": "Always looks like the Proving Grounds",
+"游戏已启动：进到飞船后自动开这张图（10 分钟内）。": "Game started: this map starts by itself once you reach the ship (within 10 minutes).",
+"未选择保存块时，按上面的配置开始。要当房主：一个人或本机分屏直接进关，进关后按互动键出场；房间里有联机队友就设为下一局，照常走进出发舱出发，队友不用装 HellBox，大家照常记经验。游戏关着时点，会先开游戏，进飞船后自动开图。": "With no slot selected, starts with the settings above. You must be the host: alone or local split screen goes straight in (press Interact to drop); with online teammates it becomes your next mission, take the drop pod as usual, they don't need HellBox and everyone gets XP as usual. If the game is closed, it starts the game first and opens the map once you reach the ship."
 }
