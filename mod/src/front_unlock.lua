@@ -17,6 +17,14 @@
 --   math.random() < genocide_mission_spawn_percent_per_planet（0.33）才把一个任务换成 "genocide"（每颗最多一个）。
 --   保留旧档位 0 / 33 / 66 / 100 的存储格式，分别生成固定 0 / 1 / 2 / 3 个报复关。空 = 原版。
 --   开机值是 build.py 从 mod\genocide.txt 填进来的。
+--   2026-11-23 用户：「攻打到对应的母城了,会只有五个关卡选项,这时候报复关数量好像对这个就没影响了」。
+--     母星 / 防守事件那颗星不走 generate_planet，是 MenuScreenCampaignPlanet.setup_event_planets 生成的 5 关
+--     （难度 3、6、9、12、15，event_mission_difficulties），也调 get_planet_mission_types，但：
+--     - 落在难度 3 那一关的报复关会被原版改回普通任务（难度 < 4 没有报复关），固定 1 个时有 1/5 机会一个都没有；
+--     - 装了 QoL Mod 时它的 setup_event_planets 每一关都重新调一次 get_planet_mission_types、只取第 i 个，
+--       我们每次都重新洗牌，个数就成了随机的。
+--     所以在 setup_event_planets 里面：报复关只放在难度 >= 4 的关上，个数按设置；这一次生成里同样的调用给同一份结果。
+--     只在母星这几关重新生成时生效（原版按事件编号缓存：新的进攻 / 防守事件，或者重开游戏）。
 --
 -- 热切换：信箱表 G.t，布局和 room_name.lua 一样（只是魔数不同），窗口用 mod\room_name_live.py 写。
 --   1-4 魔数；5 VERSION；6 请求号；7 已应用的请求号；8 字节数；9 起：内容 "f=1;g=100"（f = 战线开关 1/0，g = 报复概率百分比，空 = 原版）。
@@ -260,6 +268,26 @@ do
 					end
 				end
 				local types = {}
+				local events = ds.event_mission_difficulties
+				if G.event_types and type(events) == "table" and slots == #events then
+					-- 母星 / 防守事件那 5 关（setup_event_planets 里面）：报复关只放在难度够的关上，同一次生成结果不变
+					if G.event_types[slots] then
+						return G.event_types[slots]
+					end
+					local ok_slots = {}
+					for i = 1, slots do
+						types[i] = normal
+						if (events[i] or 0) >= ds.genocide_mission_available_difficulty then
+							ok_slots[#ok_slots + 1] = i
+						end
+					end
+					math.shuffle(ok_slots)
+					for n = 1, math.min(G.gen, #ok_slots) do
+						types[ok_slots[n]] = retaliation
+					end
+					G.event_types[slots] = types
+					return types
+				end
 				for i = 1, slots do
 					types[i] = i <= G.gen and retaliation or normal
 				end
@@ -267,6 +295,23 @@ do
 				return types
 			end
 			ds.get_planet_mission_types = G.mission_types
+		end
+		local planet_screen = rawget(_G, "MenuScreenCampaignPlanet")
+		if type(planet_screen) == "table" and type(planet_screen.setup_event_planets) == "function"
+				and planet_screen.setup_event_planets ~= G.setup_event then
+			local original = planet_screen.setup_event_planets
+			G.setup_event = function(self, ...)
+				if G.gen == nil then
+					return original(self, ...)
+				end
+				G.event_types = {}
+				local ok, err = pcall(original, self, ...)
+				G.event_types = nil
+				if not ok then
+					error(err, 0)
+				end
+			end
+			planet_screen.setup_event_planets = G.setup_event
 		end
 		if campaign.generate_planet ~= G.generate_planet then
 			local original = campaign.generate_planet

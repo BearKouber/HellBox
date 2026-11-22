@@ -35,6 +35,8 @@ OCT = "来自 Oct0pu5"
 DOGGO_OCT = "来自 SomeDoggo & Oct0pu5"
 # 2026-11-22 Dive Harder 作者建议：简化成一句（下面这几行的名字也是他建议的）
 DH_YIELD = "此项已由 DH 提供"
+QOL_BASED = "借鉴 QoL Mod"  # 2026-11-23 用户：过场加速写回来，「标注是借鉴qol并需要给跟qol兼容」
+SPEED_OPTIONS = [(n, f"×{n}") for n in options.SPEEDS]
 
 # 报复关：存进 genocide.txt 的值沿用以前的百分比档位（mod 里 0/33/66/100 = 固定 0/1/2/3 个），"" = 原版
 STRIKE_OPTIONS = [("", "原版"), ("0", "0 个"), ("33", "1 个"), ("66", "2 个"), ("100", "3 个")]
@@ -149,8 +151,14 @@ class ModPage(Page):
         self.strike = ui.Var(_strike_value())
         self.seg_strike = self._ctl(ui.Segmented(None, STRIKE_OPTIONS, self.strike, command=self.set_strike,
                                                  font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(ship, "报复关数量", "每颗星球固定带几个报复关。原版：难度 4 以上每颗星球 33% 带 1 个。只影响之后新出的星球。",
+        self._row(ship, "报复关数量", "每颗星球固定带几个报复关（母星那 5 关也算，难度 3 那关不会是报复关）。原版：难度 4 以上每颗星球 33% 带 1 个。"
+                                      "只影响之后新出的星球。",
                   extras=(self.seg_strike,))
+        self.speed = ui.Var(cfg["speed_factor"] if cfg["speed_factor"] in options.SPEEDS else 3)
+        self.seg_speed = self._ctl(ui.Segmented(None, SPEED_OPTIONS, self.speed, command=self.set_speed,
+                                                font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
+        self._row(ship, "过场加速", "结算、进关过场、星球扫描这些过场按选的倍数快放；开着的话，开游戏时的片头动画直接跳过（视频没法快放）。能和 QoL Mod 一起装。",
+                  extras=(self.seg_speed,), flag="speed", credit=QOL_BASED)
         # 2026-11-22 用户定：解锁其他战线发布版也有（以前只有自用版）
         self.front_on = ui.Var(build.get_front_unlock())
         self.front_toggle = self._ctl(ui.Toggle(None, self.front_on, command=self.set_front))
@@ -229,6 +237,9 @@ class ModPage(Page):
 
     def set_ping_window(self, value):
         apply(self.app, {"ping_window": int(value)})
+
+    def set_speed(self, value):
+        apply(self.app, {"speed_factor": int(value)})
 
     def refresh_now(self):
         from room_name_live import MAGIC_REFRESH, live_set
@@ -386,7 +397,8 @@ class ModPage(Page):
                 var.set(cfg[key])  # 失败时开关弹回实际状态
         for var, val in ((self.carry_on, build.get_carry_vehicle()), (self.cf_on, build.get_commend_friends()),
                          (self.strike, _strike_value()),
-                         (self.ping_window, cfg["ping_window"] if cfg["ping_window"] in options.PING_WINDOWS else 5)):
+                         (self.ping_window, cfg["ping_window"] if cfg["ping_window"] in options.PING_WINDOWS else 5),
+                         (self.speed, cfg["speed_factor"] if cfg["speed_factor"] in options.SPEEDS else 3)):
             if var.get() != val:
                 var.set(val)
         if hasattr(self, "front_on") and self.front_on.get() != build.get_front_unlock():
@@ -419,6 +431,7 @@ class ModPage(Page):
                 note.config(text=text)
                 note.setVisible(bool(text))
         self.seg_ping.set_enabled(live and cfg["dh_ping"] and not dh)
+        self.seg_speed.set_enabled(live and cfg["speed"])
         if self.live_actions is None:
             hint = ""
         elif cfg["action"] not in self.live_actions:

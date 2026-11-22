@@ -118,7 +118,16 @@ def notes(contents=None):
     out = []
     if not st["deployed"]:
         return out
-    # 2026-11-21 HD1-038：HellBox「过场加速」删了（来自 QoL），和 Obsidian Patches 结算加速重叠的提醒一起去掉
+    # 2026-11-23 过场加速回来了，和 Obsidian Patches 结算加速 / 跳片头重叠的提醒也放回来
+    qol = mods.get("obsidian.qol")
+    if qol is not None:
+        try:
+            import hellbox_options
+            speed = hellbox_options.load().get("speed")
+        except Exception:
+            speed = False
+        if speed and (_on(qol.get("skip_intro", "true")) or qol.get("expedite_mission_end", "off") not in ("off", "")):
+            out.append(tr("Obsidian Patches 的跳片头 / 结算加速和 HellBox「过场加速」都开着，可能叠在一起，建议只开一边。"))
     if "alomare.eyesofliberty" in mods:
         out.append(tr("Obsidian 的 Eyes of Liberty（第三人称镜头）和 HellBox 分屏都改镜头，同时用可能打架。"))
     try:

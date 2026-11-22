@@ -12,7 +12,8 @@ do
 
     local BOOL_KEYS = {refresh = true, voice = true, drop = true, noslide = true,
                        dh_ping = true, dh_hidden = true, dh_friends = true, dh_qol_fix = true,  -- 2026-11-21 Dive Harder 四项（hellbox_dh.lua）
-                       supply = true, hide_samples = true, ime_fix = true}  -- 2026-11-19 补给热键 / 样本描边（Lhgrzr）、输入法防闪退（HalfSugar）
+                       supply = true, hide_samples = true, ime_fix = true,
+                       speed = true}  -- 2026-11-23 过场加速回来（借鉴 QoL Mod）  -- 2026-11-19 补给热键 / 样本描边（Lhgrzr）、输入法防闪退（HalfSugar）
     local ACTION_OK = {reload = true, switch_weapon = true, [""] = true}
     local DROP_KEY_OK = {x = true, z = true, c = true, b = true, h = true, t = true}
     -- 补给热键可选的键：主键盘 4～9（原版键盘只用了 1～3；小键盘是另外的键名，不受影响）
@@ -42,6 +43,8 @@ do
                 cfg.supply_key = v
             elseif k == "ping_window" and (v == "3" or v == "5" or v == "10") then
                 cfg.ping_window = tonumber(v)
+            elseif k == "speed_factor" and tonumber(v) and tonumber(v) >= 2 and tonumber(v) <= 5 then
+                cfg.speed_factor = math.floor(tonumber(v))
             elseif k and k:match("^voice[5-8]$") and v:match("^[%w_]+$") then
                 cfg[k] = v
             end
@@ -521,6 +524,68 @@ do
 
 
 
+
+        do
+            -- 2026-11-23 用户要回来：过场加速（借鉴 QoL Mod 的做法，照 V1.02 那版写回来）。
+            -- 和 QoL Mod 一起装也行：都是在原方法外面包一层（不换文件），QoL 自己的「按冲刺键加速结算」「跳片头」设置照常；
+            --   两边都开时结算会更快一点，不会出错。
+            local function speed()
+                return enabled("speed") and (cfg.speed_factor or 3) or 1
+            end
+            -- 2026-11-19 发行抢先版修：原版 show_planet_scanning 第一行是 dt = REAL_TIME_DT or dt，传进去的 dt 被全局
+            --   REAL_TIME_DT 盖掉，以前只乘传入的 dt 等于没加速（用户实测「检测威胁 / 侦测到重大威胁」动画没变快）。
+            --   改成调用期间把全局 REAL_TIME_DT 也乘上倍数，调完马上改回，同一帧别处读到的还是原值。
+            wrap("MenuScreenCampaignPlanet", "show_planet_scanning", function(original, self, gui, layer, alpha, dt)
+                local k = speed()
+                if k == 1 then
+                    return original(self, gui, layer, alpha, dt)
+                end
+                local real = rawget(_G, "REAL_TIME_DT")
+                if type(real) == "number" then
+                    rawset(_G, "REAL_TIME_DT", real * k)
+                end
+                local ok, err = pcall(original, self, gui, layer, alpha, dt * k)
+                if type(real) == "number" then
+                    rawset(_G, "REAL_TIME_DT", real)
+                end
+                if not ok then
+                    error(err, 0)
+                end
+            end)
+            wrap("StateMissionStart", "on_enter", function(original, self, ...)
+                original(self, ...)
+                local k = speed()
+                if k ~= 1 then
+                    if self.start_timer then self.start_timer = self.start_timer / k end
+                    if self.camera_move_timer then self.camera_move_timer = self.camera_move_timer / k end
+                end
+            end)
+            for _, name in ipairs({"MissionEndStateMissionResult", "MissionEndStateMissionScore",
+                    "MissionEndStateIndividualStats", "MissionEndStateExperienceDistribution",
+                    "MissionEndStateTeamEfforts", "MissionEndStatePlanetCompletedScore",
+                    "MissionEndStateEventCompletedScore"}) do
+                wrap(name, "update", function(original, self, dt)
+                    return original(self, dt * speed())
+                end)
+            end
+            -- 开了过场加速就跳过开游戏时的片头动画（视频没法快放，只能跳）。
+            -- 照 QoL Mod / HalfSugar 的做法：原版 state_cutscene.lua 的 update 里，启动参数 skip_splash 为真时
+            --   等存档读完就直接进主菜单。这里只在调 update 的那一下临时把它设成真，调完马上改回，别处读不到。
+            --   QoL 自己的「跳片头」设置开着时它本来就跳，这里不碍事。
+            wrap("StateCutscene", "update", function(original, self, ...)
+                local args = rawget(_G, "Boot") and Boot.arguments
+                if not enabled("speed") or type(args) ~= "table" or args.skip_splash then
+                    return original(self, ...)
+                end
+                local old = args.skip_splash
+                args.skip_splash = true
+                local ok, err = pcall(original, self, ...)
+                args.skip_splash = old
+                if not ok then
+                    error(err, 0)
+                end
+            end)
+        end
 
         do
             -- 2026-11-19 隐藏样本描边（Lhgrzr 写的 sample_highlight.lua，用户要求收进 HellBox）。

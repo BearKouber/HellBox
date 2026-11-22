@@ -39,12 +39,15 @@ DEFAULT = {
     "supply": False, "supply_key": "5",  # 2026-11-19 补给背包热键（Lhgrzr）
     "hide_samples": False,  # 2026-11-19 隐藏样本描边（Lhgrzr）
     "ime_fix": True,  # 2026-11-19 聊天输入法防闪退（HalfSugar），修闪退的默认开
+    # 2026-11-23 用户要回来：过场加速（借鉴 QoL Mod，照 V1.02 那版写；能和 QoL 一起装）
+    "speed": False, "speed_factor": 3,
 }
 
 
 ROOM_ORDERS = {"tag": "[HellBox] 名字", "name": "名字 [HellBox]"}
 PING_WINDOWS = (3, 5, 10)  # HUD 延迟显示：最近几次取平均（Dive Harder 原版就这三档）
-INT_CHOICES = {"ping_window": PING_WINDOWS}
+SPEEDS = (2, 3, 4, 5)  # 过场加速倍数
+INT_CHOICES = {"ping_window": PING_WINDOWS, "speed_factor": SPEEDS}
 
 
 def _int(key, value):
