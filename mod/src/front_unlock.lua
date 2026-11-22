@@ -26,6 +26,18 @@
 --     所以在 setup_event_planets 里面：报复关只放在难度 >= 4 的关上，个数按设置；这一次生成里同样的调用给同一份结果。
 --     只在母星这几关重新生成时生效（原版按事件编号缓存：新的进攻 / 防守事件，或者重开游戏）。
 --
+-- 2026-11-23 用户定（V1.06）：解锁战线三选一：普通星区（上面那套）/ 进攻母星 / 保卫超级地球（选一个种族）。
+--   母星、保卫超级地球原版都是服务器发「事件」才有（CampaignManager.cache.attack_events / defend_event）。这里在本机
+--   假装有这个事件：get_active_* / get_latest_* 多返回一个我们造的事件（编号 >= FAKE_BASE，服务器上没有）。
+--   战役地图（update_campaign_status）看到进攻事件就把这条战线放到第 11 星区（母星），防守事件放到事件的星区（0 = 超级地球），
+--   setup_event_planets 照原版生成那颗星的 5 关（难度 3/6/9/12/15，报复关数量照样管）。
+--   - 打完不报服务器：complete_*_event_mission 遇到我们的编号直接跳过（只算自己玩，不算进银河战争）。
+--   - 结算时把任务统计里的事件编号改回 0（StateMissionEnd.on_enter 之后）：结算照普通任务走，房主和队友（不管装没装 HellBox）
+--     的存档都不会记下这个假事件，不会算进事件相关的成就。
+--   - 已经有真事件的种族不加假的（母星）；保卫超级地球时盖掉真的防守事件（只在本机显示上）。
+--   - 刷新：planet_refresh.lua 在这颗星里按刷新键 = G.reroll_event 重抽这 5 关。
+--   - 开机值：build.py 填 FRONT_EVENT 占位（"" / "home" / "se1"～"se3"，1～3 = 虫族 / 赛博人 / 光能族）；热切换信箱 e=。
+--
 -- 热切换：信箱表 G.t，布局和 room_name.lua 一样（只是魔数不同），窗口用 mod\room_name_live.py 写。
 --   1-4 魔数；5 VERSION；6 请求号；7 已应用的请求号；8 字节数；9 起：内容 "f=1;g=100"（f = 战线开关 1/0，g = 报复概率百分比，空 = 原版）。
 --   旧格式 "1" / 空 只管战线开关。战线切换后下一次打开战役地图（MenuScreenCampaign.on_enter 会重新读状态）生效。
@@ -69,6 +81,11 @@ do
 		G.gen = count("@GENOCIDE@") -- nil = 原版
 	end
 
+	if not G.event_init then
+		G.event_init = true
+		G.event = "@FRONT_EVENT@" -- "" / "home" / "se1"～"se3"
+	end
+
 	local t = G.t
 
 	local function poll_mailbox()
@@ -100,6 +117,7 @@ do
 		else
 			local f = s:match("f=(%d)")
 			local g = s:match("g=([^;]*)")
+			local e = s:match("e=([^;]*)")
 
 			if f then
 				G.on = f == "1"
@@ -107,6 +125,10 @@ do
 
 			if g then
 				G.gen = count(g)
+			end
+
+			if e and (e == "" or e == "home" or e:match("^se[123]$")) then
+				G.event = e
 			end
 		end
 
@@ -301,6 +323,7 @@ do
 				and planet_screen.setup_event_planets ~= G.setup_event then
 			local original = planet_screen.setup_event_planets
 			G.setup_event = function(self, ...)
+				G.planet_screen = self -- 刷新假事件那颗星时要用它的任务表
 				if G.gen == nil then
 					return original(self, ...)
 				end
@@ -335,9 +358,210 @@ do
 		end
 	end
 
+	-- ------------------------------------------------------------ 假事件（V1.06）
+	local FAKE_BASE = 2000000000 -- 服务器的事件编号到不了这么大；网络对象里是 uint31，放得下
+
+	local function is_fake(id)
+		return type(id) == "number" and id >= FAKE_BASE
+	end
+
+	G.is_fake = is_fake
+
+	local function live(cm)
+		return G.on and G.raw == 0 and type(cm) == "table" and cm.status == "online"
+	end
+
+	local function fake_event(cm, kind, enemy)
+		G.fakes = G.fakes or {}
+
+		local key = kind .. enemy
+		local e = G.fakes[key]
+
+		if not e then
+			local ok, now = pcall(cm.get_server_time, cm)
+
+			now = math.floor(ok and tonumber(now) or os.time())
+			e = {
+				event_id = FAKE_BASE + (kind == "defend" and 10 or 20) + enemy,
+				event_type = kind,
+				enemy = enemy,
+				region = kind == "defend" and 0 or 11,
+				status = "active",
+				start_time = now - 3600,
+				end_time = now + 7 * 86400,
+				points = 0,
+				points_max = 100,
+				hellbox = true,
+			}
+			G.fakes[key] = e
+		end
+
+		return e
+	end
+
+	local function se_enemy()
+		local n = type(G.event) == "string" and G.event:match("^se([123])$")
+
+		return n and tonumber(n) - 1
+	end
+
+	local function with_fake_attacks(cm, real)
+		if not live(cm) or G.event ~= "home" then
+			return real
+		end
+
+		local out, have = {}, {}
+
+		for _, e in ipairs(real or {}) do
+			out[#out + 1] = e
+			have[e.enemy] = true
+		end
+
+		for enemy = 0, 2 do
+			if not have[enemy] then
+				out[#out + 1] = fake_event(cm, "attack", enemy)
+			end
+		end
+
+		return out
+	end
+
+	local function hook_events()
+		local cm = rawget(_G, "CampaignManager")
+
+		if type(cm) == "table" then
+			local function wrapf(name, fn)
+				if type(cm[name]) == "function" and cm[name] ~= G["ev_" .. name] then
+					local orig = cm[name]
+
+					G["ev_" .. name] = function(...)
+						return fn(orig, ...)
+					end
+					cm[name] = G["ev_" .. name]
+				end
+			end
+
+			for _, name in ipairs({ "get_active_defend_event", "get_latest_defend_event" }) do
+				wrapf(name, function(orig, self, ...)
+					local enemy = se_enemy()
+
+					if enemy and live(self) then
+						return fake_event(self, "defend", enemy)
+					end
+
+					return orig(self, ...)
+				end)
+			end
+
+			for _, name in ipairs({ "get_active_attack_events", "get_latest_attack_events" }) do
+				wrapf(name, function(orig, self, ...)
+					return with_fake_attacks(self, orig(self, ...))
+				end)
+			end
+
+			for _, name in ipairs({ "complete_defend_event_mission", "complete_attack_event_mission" }) do
+				wrapf(name, function(orig, self, id, ...)
+					if is_fake(id) then
+						G.not_reported = (G.not_reported or 0) + 1 -- 我们造的事件：不报服务器
+
+						return
+					end
+
+					return orig(self, id, ...)
+				end)
+			end
+		end
+
+		local sme = rawget(_G, "StateMissionEnd")
+
+		if type(sme) == "table" and type(sme.on_enter) == "function" and sme.on_enter ~= G.ev_mission_end then
+			local orig = sme.on_enter
+
+			G.ev_mission_end = function(self, ...)
+				local result = orig(self, ...)
+				local p = self.current_planet
+				local stats = self.mission_stats_go
+
+				if type(p) == "table" and (is_fake(p.defend_event) or is_fake(p.attack_event)) and stats then
+					pcall(stats.set, stats, "defend_event_id", 0)
+					pcall(stats.set, stats, "attack_event_id", 0)
+				end
+
+				return result
+			end
+			sme.on_enter = G.ev_mission_end
+		end
+	end
+
+	-- 刷新键（planet_refresh.lua）：重抽假事件那颗星的 5 关，原地改任务表（星球、选任务界面、发给客机的是同一份）
+	function G.reroll_event(planet)
+		local ds = rawget(_G, "DifficultySettings")
+
+		if type(planet) ~= "table" or type(planet.missions) ~= "table" or not ds then
+			return false
+		end
+
+		local diffs = ds.event_mission_difficulties
+		local n = #diffs
+
+		G.event_types = {}
+
+		local ok, types = pcall(ds.get_planet_mission_types, diffs[n], n)
+
+		G.event_types = nil
+
+		if not ok then
+			error(types, 0)
+		end
+
+		local genocide_type = ds.get_mission_type_value("genocide")
+		local mission_type = ds.get_mission_type_value("mission")
+
+		for i = 1, n do
+			local diff = diffs[i]
+			local ty = types[i]
+
+			if ty == genocide_type and diff < ds.genocide_mission_available_difficulty then
+				ty = mission_type
+			end
+
+			local seed
+
+			if planet.attack_event then
+				seed = ds.modulate_seed_for_planet(planet.shading_environment, planet.environment, planet.environment_variant,
+					planet.enemy, ty, diff, math.random(0, 2147483646), 0)
+			else
+				seed = ds.modulate_seed_for_planet(planet.shading_environment, planet.environment, planet.environment_variant,
+					planet.enemy, ty, diff, math.random(0, 2147483646))
+			end
+
+			planet.missions[i] = planet.missions[i] or {}
+			planet.missions[i].seed = seed
+			planet.missions[i].completed = false
+		end
+
+		for i = #planet.missions, n + 1, -1 do
+			planet.missions[i] = nil
+		end
+
+		planet.selected_mission_index = nil
+
+		local ps = G.planet_screen
+		local camp = type(ps) == "table" and ps.parent
+
+		if type(camp) == "table" and type(camp.send_planet_info) == "function" then
+			pcall(camp.send_planet_info, camp, ps.defend_event_missions, ps.attack_events_missions)
+		end
+
+		G.event_rerolls = (G.event_rerolls or 0) + 1
+
+		return true
+	end
+
 	local function tick()
 		poll_mailbox()
 		genocide()
+		hook_events()
 
 		if not G.hooked then
 			local a = hook_campaign()

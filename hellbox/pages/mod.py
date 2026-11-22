@@ -38,6 +38,10 @@ DH_YIELD = "此项已由 DH 提供"
 QOL_BASED = "借鉴 QoL Mod"  # 2026-11-23 用户：过场加速写回来，「标注是借鉴qol并需要给跟qol兼容」
 SPEED_OPTIONS = [(n, f"×{n}") for n in options.SPEEDS]
 
+# 2026-11-23 V1.06：解锁战线三选一（build.FRONT_MODES）；保卫超级地球再选种族
+FRONT_OPTIONS = [("", "关"), ("1", "普通星区"), ("home", "进攻母星"), ("se", "保卫超级地球")]
+SE_RACES = [("1", "虫族"), ("2", "赛博人"), ("3", "光能族")]
+
 # 报复关：存进 genocide.txt 的值沿用以前的百分比档位（mod 里 0/33/66/100 = 固定 0/1/2/3 个），"" = 原版
 STRIKE_OPTIONS = [("", "原版"), ("0", "0 个"), ("33", "1 个"), ("66", "2 个"), ("100", "3 个")]
 REFRESH_KEYS = [(k, v) for k, v in options.ACTIONS.items() if k]
@@ -160,11 +164,15 @@ class ModPage(Page):
         self._row(ship, "过场加速", "结算、进关过场、星球扫描这些过场按选的倍数快放；开着的话，开游戏时的片头动画直接跳过（视频没法快放）。能和 QoL Mod 一起装。",
                   extras=(self.seg_speed,), flag="speed", credit=QOL_BASED)
         # 2026-11-22 用户定：解锁其他战线发布版也有（以前只有自用版）
-        self.front_on = ui.Var(build.get_front_unlock())
-        self.front_toggle = self._ctl(ui.Toggle(None, self.front_on, command=self.set_front))
-        self._row(ship, "解锁其他战线", "没开放的战线也能选，还没出场的、已攻破的都算。正在打的不动；新赛季还没出场的直接打开，"
-                                      "从起点开始；已攻破的放回攻破前最后一个星区。游戏开着也能切，退出战役地图再进一次生效。",
-                  toggle=self.front_toggle)
+        mode = build.get_front_mode()
+        self.front_mode = ui.Var("se" if mode.startswith("se") else mode)
+        self.se_race = ui.Var(mode[2:] if mode.startswith("se") else "1")
+        self.seg_front = self._ctl(ui.Segmented(None, FRONT_OPTIONS, self.front_mode, command=self.set_front,
+                                                font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
+        self.seg_se = self._ctl(ui.Segmented(None, SE_RACES, self.se_race, command=self.set_front,
+                                             font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
+        self._row(ship, "解锁其他战线", "没开放的战线也能选：还没出场的从起点开始，已攻破的放回攻破前最后一个星区，正在打的不动。选「进攻母星」或「保卫超级地球」时，那颗星和 5 关（难度 3～15）直接出来，能用刷新键重抽；这些关只在自己游戏里打，不算进银河战争。游戏开着也能切，退出战役地图再进一次生效。",
+                  extras=(self.seg_front, self.seg_se))
         self.view.row(ship)
 
         coop = ui.Card(self.view, "COOP", "联机和操作", fill=ui.SKY)
@@ -252,9 +260,11 @@ class ModPage(Page):
 
         self.app.run(action)
 
-    def set_front(self):
-        on = self.front_on.get()
-        self._campaign(lambda: build.set_front_unlock(on))
+    def set_front(self, _value=None):
+        mode = self.front_mode.get()
+        if mode == "se":
+            mode = "se" + (self.se_race.get() or "1")
+        self._campaign(lambda: build.set_front_mode(mode))
 
     def set_strike(self, value):
         self._campaign(lambda: build.set_genocide(int(value) if value else None))
@@ -401,8 +411,12 @@ class ModPage(Page):
                          (self.speed, cfg["speed_factor"] if cfg["speed_factor"] in options.SPEEDS else 3)):
             if var.get() != val:
                 var.set(val)
-        if hasattr(self, "front_on") and self.front_on.get() != build.get_front_unlock():
-            self.front_on.set(build.get_front_unlock())
+        mode = build.get_front_mode()
+        if self.front_mode.get() != ("se" if mode.startswith("se") else mode):
+            self.front_mode.set("se" if mode.startswith("se") else mode)
+        if mode.startswith("se") and self.se_race.get() != mode[2:]:
+            self.se_race.set(mode[2:])
+        self.seg_se.set_enabled(live and mode.startswith("se"))
         drop_key = cfg["drop_key"] if cfg["drop_key"] in options.DROP_KEYS else "x"
         if self.drop_key.get() != drop_key:
             self.drop_key.set(drop_key)
