@@ -101,20 +101,6 @@ class _MapBody(QWidget):
             self.updateGeometry()
 
 
-class _ClickMap(mt.MapThumb):
-    """地图卡右边的小地图，点了打开「挑地形」（2026-11-22 用户定）。"""
-
-    def __init__(self, size, on_click):
-        super().__init__(size)
-        self.on_click = on_click
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.setToolTip(tr("点一下挑地形"))
-
-    def mousePressEvent(self, e):
-        if e.button() == Qt.MouseButton.LeftButton:
-            self.on_click()
-
-
 class _MapRight(QWidget):
     """小地图 + 说明，竖着放。"""
 
@@ -383,11 +369,7 @@ class QuickPage(Page):
         lay.addSpacing(6)
         lay.addWidget(small("（1~15）", 9, False, ui.MUTED), 0, VC)
 
-        # 2026-11-22 用户定（Dive Harder 作者的建议）：编号输入框和「换一张图」去掉，改成点小地图挑地形
-        lay = self._line(card, "地形", 12, box=lv)
-        lay.addWidget(ui.Button(None, "挑地形", self._pick_terrain, kind="accent", padx=10, pady=3), 0, VC)
-        lay.addSpacing(8)
-        lay.addWidget(ui.Button(None, "默认", self._default_map, padx=8, pady=3), 0, VC)
+        # 2026-11-22 用户定（Dive Harder 作者的建议）：编号输入框、「换一张图」「挑地形」按钮都去掉，只留点小地图挑地形
         lv.addStretch(1)
 
         # 右边：小地图 + 这一关是什么 + 说明
@@ -395,13 +377,12 @@ class QuickPage(Page):
         rl = QVBoxLayout(text_col)
         rl.setContentsMargins(0, 0, 0, 0)
         rl.setSpacing(6)
-        self.map_thumb = _ClickMap(200, self._pick_terrain)
+        self.map_thumb = map_picker.ClickMap(200, self._pick_terrain)
         self.map_text = ui.text(None, "", bold=True, size=10)
         rl.addSpacing(4)
         rl.addWidget(self.map_text)
         # 2026-11-14 用户：说明要直观，别啰嗦
-        rl.addWidget(ui.text(None, "· 点小地图挑地形，能看到这一组所有不同的图\n· 改了类型、种族、环境、时间、难度，地形也会跟着变\n"
-                                   "· 小图要开着游戏才会出来", muted=True, size=9))
+        rl.addWidget(ui.text(None, "点地图挑地形（要开着游戏）", muted=True, size=9))
         rl.addStretch(1)
         w = _MapBody(left, _MapRight(self.map_thumb, text_col))
         card.add(w, top=4)
@@ -421,7 +402,7 @@ class QuickPage(Page):
         seeds = self._map_seeds()
         if seeds != self._map_requested:
             self._map_requested = seeds
-            mt.request(seeds)
+            mt.request(seeds, owner="quick")
         self.map_thumb.set_cells(mt.load(self.cfg["seed"]))
         if hasattr(self, "slot_btns"):
             for b in self.slot_btns:
@@ -450,8 +431,9 @@ class QuickPage(Page):
             self._set_seed(seed)
             self._map_requested = None  # 下次 _map_tick 把主页面要的图重新告诉游戏
             self.app.say(T('换了地形：{0}', ds.describe(seed)), "ok")
-        map_picker.MapPicker(self.view, self.cfg["seed"], picked, self._map_seeds,
-                             lambda: bool(self.app.state.get("running"))).exec()
+        seed = self.cfg["seed"]
+        map_picker.MapPicker(self.view, seed, map_picker.candidates(seed), picked,
+                             lambda: bool(self.app.state.get("running")), title=ds.describe(seed)).exec()
         self._map_requested = None
 
     def _default_map(self):

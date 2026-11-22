@@ -18,6 +18,8 @@ import random
 import build
 import ui
 from pages import host_loadout as hl
+from pages import map_picker
+from pages import map_thumbs as mt
 from pages import my_plays as mp
 from pages import play_modes as pm
 from pages import profile_feed
@@ -965,7 +967,7 @@ class PlayPage(Page):
 
     # ------------------------------------------------------------ 真训练场
     def _build_trial(self):
-        m = ui.Card(self.view, "MAP", "地图", fill=ui.YELLOW, note="外观固定是试验场；同样的设置 = 同一张图")
+        m = ui.Card(self.view, "MAP", "地图", fill=ui.YELLOW, note="外观固定是试验场")
         self.v_race = ui.Var(self.cfg["race"])
         self.v_tod = ui.Var(self.cfg["tod"])
         self.v_diff = ui.Var(self.cfg["diff"])
@@ -976,9 +978,10 @@ class PlayPage(Page):
         m.row("种族", self.seg_race, help="打哪个种族。")
         m.row("时间", self.seg_tod, help="黎明 / 白天 / 黄昏 / 夜晚。想要更黑：修正参数选「鬼城」。")
         m.row("难度", self.seg_diff, help="试验场只有三档：简单（难度 5）、中等（难度 9）、困难（最高）。有的规则在某些难度不能选，会灰掉。")
-        self.terrain_lab = ui.Label("", font=ui.f_mono(10, True))
-        self.btn_terrain = ui.Button(None, "换一张", self._new_terrain, font=ui.f_zh(9, True), padx=8, pady=2, shadow=2)
-        m.row("地形", self.terrain_lab, 8, self.btn_terrain, help="地形编号一样，地图就一样。点「换一张」随机换。")
+        # 2026-11-22 用户定：和选图页一样，点小地图挑地形（编号和「换一张」去掉）
+        self.t_thumb = map_picker.ClickMap(120, self._pick_terrain)
+        m.row("地形", self.t_thumb, help="点地图挑地形（要开着游戏）。")
+        self._t_requested = None
         self.t_chal = [ModeCell(k, name, desc, self._pick_t_chal, self._hint_trial) for k, name, desc in pm.CHALLENGES]
         self.t_cond = [ModeCell(k, name, desc, self._pick_t_cond, self._hint_trial) for k, _g, name, desc, _s in pm.CONDITIONS]
         self.t_mod = [ModeCell(k, name, desc, self._pick_t_mod, self._hint_trial) for k, name, desc, _s in pm.MODIFIERS]
@@ -1033,8 +1036,32 @@ class PlayPage(Page):
     def _pick_t_mod(self, key):
         self._set("pmod", key)
 
-    def _new_terrain(self):
-        self._set("terrain", str(random.randrange(pm.TERRAINS) * 10000000))
+    def _trial_key(self, terrain=None):
+        c = self.cfg
+        t = int(c["terrain"]) // 10000000 if terrain is None else terrain
+        return mt.trial_key(c["race"], c["tod"], c["diff"], c["chal"], t)
+
+    def _trial_thumb(self):
+        """试验场地图卡的小图：把现在这张告诉游戏，拼好了就画出来。"""
+        key = self._trial_key()
+        if key != self._t_requested:
+            self._t_requested = key
+            mt.request([key], owner="play")
+        self.t_thumb.set_cells(mt.load(key))
+
+    def _pick_terrain(self):
+        c = self.cfg
+        cands = [self._trial_key(t) for t in range(pm.TERRAINS)]
+        names = dict(pm.RACES), dict(pm.TIMES), dict(pm.DIFFS), {k: n for k, n, _d in pm.CHALLENGES}
+        title = " · ".join(tr(x) for x in (T("试验场"), names[0].get(c["race"], ""), names[1].get(c["tod"], ""),
+                                           names[2].get(c["diff"], ""), names[3].get(c["chal"], "")) if x)
+
+        def picked(key):
+            self._set("terrain", str(cands.index(key) * 10000000))
+            self._trial_thumb()
+
+        map_picker.MapPicker(self.view, self._trial_key(), cands, picked,
+                             lambda: bool(self.app.state.get("running")), title=title).exec()
 
     def _arm(self):
         c = self.cfg
@@ -1177,7 +1204,7 @@ class PlayPage(Page):
         for var, key in ((self.v_race, "race"), (self.v_tod, "tod"), (self.v_diff, "diff")):
             if var.get() != c[key]:
                 var.set(c[key])
-        self.terrain_lab.config(text=T("#{0}", int(c["terrain"]) // 10000000 + 1))
+        self._trial_thumb()
         for cells, key in ((self.t_chal, "chal"), (self.t_cond, "pcond"), (self.t_mod, "pmod")):
             for cell in cells:
                 cell.set_state(cell.key == c[key], self._why_blocked(cell) is None or cell.key == c[key], "")

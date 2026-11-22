@@ -1,5 +1,6 @@
 """选图页「挑地形」弹窗（2026-11-22 用户定，Dive Harder 作者的建议：编号对玩家没意义、「换一张图」靠碰运气）。
 
+2026-11-22 用户：「挑地形」按钮也不要，只留点地图；玩法页「试验场」的地图也一样点开挑（候选由调用的页面给）。
 点地图卡右边的小地图 = 打开这个窗口：把「类型 · 种族 · 环境 · 时间 · 难度」都不变、只换地形随机数（0～214）的
 所有图一次列出来，看着形状挑一张，点了就换成它、窗口关掉。
 
@@ -9,13 +10,20 @@
 长得一样的只留一张（地形数小的那个）：报复关中间是一整块现成的场地，按场地算（每个种族 + 环境两块，转了方向也算同一块）；
 大图、首领战按整张拼法算。
 """
-import drill_spec as ds
+import os
+import sys
+
 from PySide6.QtCore import QRect, Qt, QTimer
 from PySide6.QtGui import QColor, QPainter, QPen
 from PySide6.QtWidgets import QDialog, QGridLayout, QScrollArea, QVBoxLayout, QWidget
 
+import paths
 import ui
 from pages import map_thumbs as mt
+_AI = os.path.join(paths.ROOT, "ai")
+if _AI not in sys.path:  # drill_spec 在 ai 目录（玩法页可能比选图页先加载）
+    sys.path.insert(0, _AI)
+import drill_spec as ds  # noqa: E402
 try:
     from i18n import T, tr
 except ImportError:
@@ -32,13 +40,9 @@ GENOCIDE_MODES = ("genocide", "provinggrounds_genocide_map")
 
 
 def candidates(seed):
-    """这张图只换地形随机数的全部编号（编号超出范围的去掉），地形数从小到大。"""
-    out = []
-    for t in range(ds.MAX_TERRAIN + 1):
-        s = ds.with_fields(seed, terrain=t)
-        if ds.valid_seed(s):
-            out.append(s)
-    return out
+    """选图页：这张图只换地形随机数的全部编号（编号超出范围的去掉），地形数从小到大。"""
+    base = int(seed) % 10000000
+    return [t * 10000000 + base for t in range(ds.MAX_TERRAIN + 1) if t * 10000000 + base <= ds.MAX_SEED]
 
 
 def signature(layout):
@@ -51,6 +55,20 @@ def signature(layout):
     return tuple(sorted((t["name"], t["rot"], t["x"], t["y"], t["sx"], t["sy"]) for t in tiles))
 
 
+class ClickMap(mt.MapThumb):
+    """页面上的小地图，点了打开「挑地形」（选图页、玩法页试验场共用）。"""
+
+    def __init__(self, size, on_click):
+        super().__init__(size)
+        self.on_click = on_click
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setToolTip(tr("点一下挑地形"))
+
+    def mousePressEvent(self, e):
+        if e.button() == Qt.MouseButton.LeftButton:
+            self.on_click()
+
+
 class _Thumb(ui.Clickable):
     """弹窗里的一格：小地图 + 下面「地形 N」；现在选的那张黄底粗框。"""
 
@@ -58,7 +76,8 @@ class _Thumb(ui.Clickable):
         super().__init__()
         self.seed, self.layout_data, self.index, self.picked, self.on_pick = seed, layout, index, picked, on_pick
         self.setFixedSize(THUMB, THUMB + 22)
-        self.setToolTip(tr(ds.describe(seed)))
+        if isinstance(seed, int):
+            self.setToolTip(tr(ds.describe(seed)))
 
     def paintEvent(self, _e):
         p = QPainter(self)
@@ -79,15 +98,16 @@ class _Thumb(ui.Clickable):
 
 
 class MapPicker(QDialog):
-    """挑地形的窗口。on_pick(编号) 在点了一张时调用；keep_seeds() 返回主页面自己也要的图（一起告诉游戏，免得被挤掉）。"""
+    """挑地形的窗口。cands = 候选的图（map_thumbs 的键：编号或试验场的 (请求行, 文件名)），current = 现在那张，
+    on_pick(候选) 在点了一张时调用，title = 标题旁的小字。"""
 
-    def __init__(self, parent, seed, on_pick, keep_seeds, game_running):
+    def __init__(self, parent, current, cands, on_pick, game_running, title=""):
         super().__init__(parent)
         self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setModal(True)
-        self.seed, self.on_pick, self.keep_seeds, self.game_running = seed, on_pick, keep_seeds, game_running
-        self.cands = candidates(seed)
+        self.seed, self.on_pick, self.game_running = current, on_pick, game_running
+        self.cands = list(cands)
         self.shown = []  # [(编号, 布局)]，已经放进格子的
         self.picked_sig = None
 
@@ -100,7 +120,7 @@ class MapPicker(QDialog):
         hl.addSpacing(9)
         hl.addWidget(ui.Label("挑地形", font=ui.f_zh(12, True)), 0, Qt.AlignmentFlag.AlignVCenter)
         hl.addSpacing(12)
-        hl.addWidget(ui.Label(ds.describe(seed), font=ui.f_zh(9), fg=ui.MUTED), 0, Qt.AlignmentFlag.AlignVCenter)
+        hl.addWidget(ui.Label(title, font=ui.f_zh(9), fg=ui.MUTED), 0, Qt.AlignmentFlag.AlignVCenter)
         hl.addStretch(1)
         box.lay.addWidget(head)
         box.lay.addSpacing(8)
@@ -128,7 +148,7 @@ class MapPicker(QDialog):
         rl.addWidget(ui.Button(None, "取消", self.reject))
         box.lay.addWidget(row)
 
-        mt.request(list(keep_seeds()) + self.cands)
+        mt.request(self.cands, owner="picker")
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._poll)
         self.timer.start(POLL_MS)
@@ -178,7 +198,7 @@ class MapPicker(QDialog):
 
     def done(self, r):
         self.timer.stop()
-        mt.request(list(self.keep_seeds()))  # 别让游戏接着拼没人要的图
+        mt.request([], owner="picker")  # 别让游戏接着拼没人要的图
         super().done(r)
 
     def showEvent(self, e):

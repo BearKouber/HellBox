@@ -36,14 +36,30 @@ _bundles = {}   # 环境 -> (材料字节, {名字哈希: 数据})
 
 
 # ------------------------------------------------------------ 请求 / 读布局
-def request(seeds):
-    """告诉游戏要拼哪些图（覆盖整张清单）。游戏没开时也先写着，开了就拼。"""
-    seeds = [int(s) for s in dict.fromkeys(seeds) if s is not None]
+_wanted = {}  # 谁要哪些图（2026-11-22：选图页、玩法页、挑地形窗口各报各的，合起来写一份清单，谁也不挤掉谁）
+
+
+def trial_key(race, tod, diff, chal, terrain):
+    """玩法页「试验场」的一张图：(请求行, 文件名)。和 mod/src/map_preview.lua 的「t ...」行对应。"""
+    return f"t {race} {tod} {diff} {chal} {int(terrain)}", f"t_{race}_{tod}_{diff}_{chal}_{int(terrain)}"
+
+
+def _line(item):
+    """清单里的一项：地图编号（数）或 (请求行, 文件名)。"""
+    return item[0] if isinstance(item, tuple) else str(int(item))
+
+
+def request(seeds, owner="main"):
+    """告诉游戏 owner 要拼哪些图（覆盖 owner 自己那份）。游戏没开时也先写着，开了就拼。
+    挑地形窗口（owner="picker"）的排最后，主页面的小图先拼。"""
+    _wanted[owner] = [s for s in seeds if s is not None]
+    order = [k for k in _wanted if k != "picker"] + (["picker"] if "picker" in _wanted else [])
+    lines = list(dict.fromkeys(_line(s) for k in order for s in _wanted[k]))
     try:
         os.makedirs(MAPS, exist_ok=True)
         tmp = REQUESTS + ".tmp"
         with open(tmp, "w", encoding="ascii") as f:
-            f.write("".join(f"{s}\n" for s in seeds))
+            f.write("".join(f"{s}\n" for s in lines))
         os.replace(tmp, REQUESTS)
     except OSError:
         pass
@@ -53,7 +69,7 @@ def load(seed):
     """这张图的布局 {"env", "mode", "tiles": [...]}；还没拼好返回 None。"""
     if seed is None:
         return None
-    seed = int(seed)
+    seed = seed[1] if isinstance(seed, tuple) else int(seed)  # 试验场的图用文件名当键
     if seed in _layouts:
         return _layouts[seed]
     try:

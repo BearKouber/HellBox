@@ -36,10 +36,10 @@ do
 		return false
 	end
 
-	local function generate(seed)
+	local function generate(seed, pg)
 		local level = GeneratedLevel()
 
-		level:initialize(nil, seed, nil)
+		level:initialize(nil, seed, pg)
 		level:generate_area()
 		level:generate_mission()
 		level:generate_children()
@@ -80,6 +80,39 @@ do
 		return table.concat(lines, "\n") .. "\n"
 	end
 
+	-- 2026-11-22 玩法页「试验场」也点地图挑地形：请求行还可以是「t 种族 时间 难度档 目标 地形号」，
+	--   结果写 maps2/t_种族_时间_难度档_目标_地形号.txt。地图编号照 hellbox_play.lua 的 build_trial 算；
+	--   第二个编号只带目标（条件、修正参数填第一个）：拼图只看目标（GeneratedLevel 按 sub_challenge 筛地块）。
+	local function index_of(list, name)
+		for i, v in ipairs(list or {}) do
+			if v == name then
+				return i
+			end
+		end
+	end
+
+	local function trial_seeds(race, tod, diff, chal, terrain)
+		local P, D = rawget(_G, "ProvinggroundsSettings"), rawget(_G, "DifficultySettings")
+
+		if not P or not D then
+			return nil
+		end
+
+		local enemy, t = index_of(D.enemy_lookup, race), index_of(D.time_of_day_lookup, tod)
+		local step = P.difficulty_steps and P.difficulty_steps[tonumber(diff) or 0]
+		local okc, ci = pcall(P.get_flat_sub_challenge_index_from_name, chal)
+
+		if not enemy or not t or not step or not okc or type(ci) ~= "number" or ci < 1 then
+			return nil
+		end
+
+		local mtype = P.is_genocide_map(chal) and 4 or 3
+		local seed = D.modulate_seed(t - 1, (t - 1) % 3, 5, 1, enemy - 1, mtype, step.value, (tonumber(terrain) or 0) * 10000000)
+
+		return seed, P.modulate_seed_flat_indicies(ci - 1, 0, 0)
+	end
+
+	-- 返回 文件名（不带 .txt）, 地图编号, 第二个编号（试验场才有）
 	local function next_request(dir)
 		local f = io.open(dir .. "map-requests.txt", "rb")
 
@@ -94,9 +127,28 @@ do
 		for line in text:gmatch("[^\r\n]+") do
 			local seed = tonumber(line)
 
-			if seed and seed >= 0 and seed <= 2147483647 and not G.failed[seed]
-				and not exists(dir .. "maps2/" .. string.format("%d", seed) .. ".txt") then
-				return seed
+			if seed then
+				local key = string.format("%d", seed)
+
+				if seed >= 0 and seed <= 2147483647 and not G.failed[key] and not exists(dir .. "maps2/" .. key .. ".txt") then
+					return key, seed
+				end
+			else
+				local race, tod, diff, chal, terrain = line:match("^t (%S+) (%S+) (%S+) (%S+) (%d+)$")
+
+				if race then
+					local key = "t_" .. race .. "_" .. tod .. "_" .. diff .. "_" .. chal .. "_" .. terrain
+
+					if not G.failed[key] and not exists(dir .. "maps2/" .. key .. ".txt") then
+						local s, pg = trial_seeds(race, tod, diff, chal, terrain)
+
+						if s then
+							return key, s, pg
+						end
+
+						G.failed[key] = true
+					end
+				end
 			end
 		end
 	end
@@ -109,25 +161,30 @@ do
 		end
 
 		local dir = root()
-		local seed = dir and next_request(dir)
 
-		if not seed then
+		if not dir then
+			return
+		end
+
+		local key, seed, pg = next_request(dir)
+
+		if not key then
 			return
 		end
 
 		local ok, result = pcall(function()
-			return render(generate(seed))
+			return render(generate(seed, pg))
 		end)
 
 		if not ok then
-			G.failed[seed] = true
+			G.failed[key] = true
 			G.last_error = tostring(result)
 			if rawget(_G, "HellBoxLog") then HellBoxLog("map_preview", G.last_error) end
 
 			return
 		end
 
-		local name = dir .. "maps2/" .. string.format("%d", seed)
+		local name = dir .. "maps2/" .. key
 		local f = io.open(name .. ".tmp", "wb")
 
 		if not f then
