@@ -83,6 +83,8 @@ jobs:
           Copy-Item publish/README.txt .work/hellbox-public/HellBox/README.txt
           $zips = Get-ChildItem .work/hellbox-public/HellBox -Recurse -Filter *.zip
           if ($zips) { throw "Nested zip in package: $($zips.FullName -join ', ')" }
+          # mod/backup holds copies of the player's own game files (written when HellBox runs); never ship it
+          if (Test-Path .work/hellbox-public/HellBox/mod/backup) { throw "mod/backup must not be in the package" }
 
       - name: Self-check
         shell: pwsh
@@ -94,6 +96,7 @@ jobs:
           if ($p.ExitCode -ne 0) { throw "HellBox --check-ui exit code $($p.ExitCode)" }
           $v = (Get-Item .work/hellbox-public/HellBox/HellBox.exe).VersionInfo.FileVersion
           if ("V$v" -ne "${{ steps.ver.outputs.version }}") { throw "exe version $v" }
+          if (Test-Path .work/hellbox-public/HellBox/mod/backup) { throw "mod/backup appeared in the package" }
           Write-Host "Self-check OK, exe version $v"
 
       - name: Zip
