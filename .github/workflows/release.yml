@@ -1,0 +1,138 @@
+# HellBox release build (exported to the public repo as .github/workflows/release.yml by tools/export_public.py).
+#
+# Push a tag like v1.06  -> build the release package on GitHub, zip it, publish the GitHub Release.
+# Run it by hand (Actions tab -> "Release" -> Run workflow) -> build only, the zip is kept as a workflow artifact.
+#
+# Same toolchain as the developer machine:
+#   - LuaJIT: official LuaJIT/LuaJIT, branch v2.0, commit LUAJIT_COMMIT, built with msvcbuild.bat (x64).
+#     bc_check.lua must compile to exactly BC_SHA256, otherwise the build stops.
+#   - Python 3.14, PySide6-Essentials 6.12.0, PyInstaller 6.22.3.
+#   - hellbox/make_exe.py --public, README from publish/README.txt.
+
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  LUAJIT_COMMIT: b83bcba6ea300d4eb16e8257ddf80bcdef1f938b
+  BC_SHA256: c7964f67271d6a1fc59d5dba324daf654d9bfd2a1fa0628d8f2e6aa36c98c190
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Version
+        id: ver
+        shell: pwsh
+        run: |
+          $m = Select-String -Path hellbox/app.py -Pattern '^VERSION = "(V\d+\.\d+)"' | Select-Object -First 1
+          if (-not $m) { throw "VERSION not found in hellbox/app.py" }
+          $version = $m.Matches[0].Groups[1].Value
+          if ("${{ github.ref_type }}" -eq "tag") {
+            $tag = "${{ github.ref_name }}"
+            if ($tag -ne $version.ToLower()) { throw "Tag $tag does not match app.py VERSION $version" }
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
+          Write-Host "Building HellBox $version"
+
+      - name: Build LuaJIT
+        shell: pwsh
+        run: |
+          git clone https://github.com/LuaJIT/LuaJIT.git tools/luajit-2.0
+          git -C tools/luajit-2.0 checkout --quiet $env:LUAJIT_COMMIT
+          $vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          cmd /c "call `"$vs\VC\Auxiliary\Build\vcvars64.bat`" && cd tools\luajit-2.0\src && msvcbuild.bat"
+          if ($LASTEXITCODE -ne 0) { throw "msvcbuild failed" }
+          tools/luajit-2.0/src/luajit.exe -v
+
+      - name: Check LuaJIT bytecode
+        shell: pwsh
+        run: |
+          Push-Location tools/luajit-2.0/src
+          ./luajit.exe -b ../../../publish/bc_check.lua ../../../bc_check.luac
+          Pop-Location
+          $sha = (Get-FileHash bc_check.luac -Algorithm SHA256).Hash.ToLower()
+          Remove-Item bc_check.luac
+          if ($sha -ne $env:BC_SHA256) { throw "LuaJIT bytecode differs from the developer build: $sha" }
+          Write-Host "LuaJIT bytecode matches"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install Python packages
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "PySide6-Essentials==6.12.0" "pyinstaller==6.22.3" "pyinstaller-hooks-contrib==2026.9"
+
+      - name: Package
+        shell: pwsh
+        run: |
+          python -B hellbox/make_exe.py --public
+          if ($LASTEXITCODE -ne 0) { throw "make_exe failed" }
+          Copy-Item publish/README.txt .work/hellbox-public/HellBox/README.txt
+          $zips = Get-ChildItem .work/hellbox-public/HellBox -Recurse -Filter *.zip
+          if ($zips) { throw "Nested zip in package: $($zips.FullName -join ', ')" }
+
+      - name: Self-check
+        shell: pwsh
+        timeout-minutes: 5
+        run: |
+          # On a copy: starting HellBox writes settings into its mod folder, which must not end up in the zip.
+          Copy-Item .work/hellbox-public/HellBox .work/selfcheck -Recurse
+          $p = Start-Process .work/selfcheck/HellBox.exe -ArgumentList "--check-ui" -PassThru -Wait
+          if ($p.ExitCode -ne 0) { throw "HellBox --check-ui exit code $($p.ExitCode)" }
+          $v = (Get-Item .work/hellbox-public/HellBox/HellBox.exe).VersionInfo.FileVersion
+          if ("V$v" -ne "${{ steps.ver.outputs.version }}") { throw "exe version $v" }
+          Write-Host "Self-check OK, exe version $v"
+
+      - name: Zip
+        id: zip
+        shell: pwsh
+        run: |
+          $version = "${{ steps.ver.outputs.version }}"
+          $name = "HellBox-$version"
+          python -I -c "import os, sys, zipfile; src, top, out = sys.argv[1:4]; z = zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED, compresslevel=9); [z.write(os.path.join(d, f), os.path.join(top, os.path.relpath(os.path.join(d, f), src))) for d, _, fs in os.walk(src) for f in fs]; z.close()" .work/hellbox-public/HellBox $name "$name.zip"
+          if ($LASTEXITCODE -ne 0) { throw "zip failed" }
+          $sha = (Get-FileHash "$name.zip" -Algorithm SHA256).Hash.ToLower()
+          $count = (Get-ChildItem .work/hellbox-public/HellBox -Recurse -File).Count
+          Write-Host "$name.zip: $count files, sha256 $sha"
+          $run = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          (Get-Content publish/notes.md -Raw -Encoding utf8).Replace("@VERSION@", $version).Replace("@SHA256@", $sha).Replace("@RUN_URL@", $run) |
+            Set-Content notes.md -Encoding utf8 -NoNewline
+          "name=$name" >> $env:GITHUB_OUTPUT
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.zip.outputs.name }}
+          path: ${{ steps.zip.outputs.name }}.zip
+          retention-days: 14
+
+      - name: Publish release
+        if: github.ref_type == 'tag'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $name = "${{ steps.zip.outputs.name }}"
+          $title = "HellBox ${{ steps.ver.outputs.version }}"
+          $existing = @(gh release list --limit 200 --json tagName --jq '.[].tagName')
+          if ($existing -contains $tag) {
+            gh release upload $tag "$name.zip" --clobber
+            if ($LASTEXITCODE -ne 0) { throw "gh release upload failed" }
+            gh release edit $tag --title $title --notes-file notes.md
+          } else {
+            gh release create $tag "$name.zip" --verify-tag --title $title --notes-file notes.md
+          }
+          if ($LASTEXITCODE -ne 0) { throw "gh release failed" }
