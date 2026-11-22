@@ -25,9 +25,9 @@ HellBox does not replace game files. It adds patch files next to them (`<package
 
 **Other mods:** HellBox can be installed together with Obsidian (Alomare's mod manager): neither removes the other's patches, and HellBox steps back where both offer the same feature. Mods that change the same resources can still conflict; HellBox warns about the ones it knows. HellBox also works together with **QoL Mod** and **Dive Harder** in any combination: it installs on whichever boot package the game uses, "Restore vanilla" never touches their files, and the Dive Harder features included in HellBox step aside when Dive Harder is installed.
 
-**Multiplayer:** players without HellBox can still join you. When you join someone else's room, your data changes are not applied there (vanilla rules); feature switches still work for you.
+**Multiplayer:** HellBox only changes your own game. Players without HellBox can still join you. As host, your enemy / spawn edits and play modes apply to your room, and the room name is tagged `[HellBox]` so everyone can see it is modded (HellBox users can also hide such rooms with the "Hide HellBox games" filter). When you join someone else's room, your data changes are not applied there (vanilla rules); feature switches still work for you, and teammates who also run HellBox can choose to follow the host's play modes.
 
-<sub>Hidden developer mode: click the version number on the About page 10 times. It adds detailed per-enemy / per-weapon editing, logs, split screen and Map Select. Use at your own risk.</sub>
+<sub>Hidden developer mode: click the version number on the About page 10 times. It adds per-enemy / per-spawn-source data editing and the Map Select, Split screen, Helldiver and Log pages. Use at your own risk.</sub>
 
 Have fun, and don't spoil other players' games.
 
@@ -74,9 +74,9 @@ HellBox 不替换游戏文件，而是在游戏的 contents 文件夹里放补�
 
 **和别的 MOD：** 能和 Obsidian（Alomare 的 MOD 管理器）一起装：两边谁也不删谁的补丁，两边都有的功能 HellBox 让出。改同样资源的 MOD 还是可能冲突，HellBox 认得的会提醒。也能和 **QoL Mod**、**Dive Harder** 任意组合一起装：HellBox 装在游戏当前用的启动包上，「恢复原版」不碰它们的文件；HellBox 里来自 Dive Harder 的几项在装了 Dive Harder 时交给它。
 
-**联机：** 没装 HellBox 的人也能进你的房间。你进别人的房间时，你改的数据不生效（按原版），功能开关照常。
+**联机：** HellBox 只改你自己的游戏。没装 HellBox 的人也能进你的房间。你当房主时，改的怪物 / 出怪和玩法在你的房间里生效，房间名会带 `[HellBox]` 标记，大家一看就知道是改过的房间（装了 HellBox 的人还能用「隐藏 HellBox 房间」筛掉）。你进别人的房间时，你改的数据不生效（按原版），功能开关照常；队友也装了 HellBox 的，可以自己选跟不跟随房主的玩法。
 
-<sub>隐藏的开发者模式：「关于」页的版本号连点 10 次。多出按单只怪 / 单把枪细改、日志、分屏、选图，风险自负。</sub>
+<sub>隐藏的开发者模式：「关于」页的版本号连点 10 次。数据能按单只怪 / 单个出怪来源细改，左边多出「选图」「分屏」「潜兵」「日志」，风险自负。</sub>
 
 希望大家玩得开心，也请不要影响别的玩家。
 
