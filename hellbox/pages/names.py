@@ -40,8 +40,9 @@ class NamesPage(Page):
                        lambda: self.apply_player(0))
         self._name_row(me, "房间名", "room", build.get_room_name(), None,
                        "留空 = 用你的名字（没设就是 Steam 昵称）。只有你当房主时生效。"
-                       "真房间名会自动变成「[HellBox · 玩法] 名字」，所有人都看得到：影响平衡的玩法和数据修改写在方括号里，"
-                       "太长时先换简写再截短你的名字（整个房间名最多 200 字节，约 60 个汉字）。", self.apply_room)
+                       "真房间名会自动带上标记，所有人都看得到：只开了自己用的功能是「[HellBox] 名字」；"
+                       "开了玩法、改了数据、带箱子上车或丢支援装备是「[Hex] 名字」，方括号里写鬼城、其他玩法几个（+3），"
+                       "敌人改得比原版难再写「炼狱」，比如「[Hex · 鬼城 +3 · 炼狱] 名字」。", self.apply_room)
         # 2026-11-21 HD1-038 用户要求：[HellBox] 放前面还是名字放前面（写进 room-desc.txt，游戏几秒内跟着改）
         self.room_order = ui.Var(self._order())
         self.seg_order = ui.Segmented(None, list(options.ROOM_ORDERS.items()), self.room_order, command=self.set_order,

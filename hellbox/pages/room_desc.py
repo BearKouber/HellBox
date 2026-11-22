@@ -20,6 +20,12 @@
     tshort=试验场 · 改数据
     order=name                      2026-11-21 HD1-038：名字放前面「名字 [HellBox …]」；tag / 没有 = [HellBox …] 在前（原来的样子）
 
+2026-11-22 用户定新规矩（Dive Harder 作者说房间名太长，列表里一栏只显示十几个字）：
+  - 开头：开了别人看得出来、影响游戏性的东西 = [Hex …]，否则还是 [HellBox]。算 Hex 的：任何玩法、任何数据修改、
+    「功能」页的带箱子上车 / 丢支援装备。试验场（联机版）一律 Hex。
+  - 方括号里：鬼城写出来，别的玩法只写个数「鬼城 +3」（没鬼城就是「玩法 +3」）；
+    数据改得比原版难（敌人数量、场上上限、怪物属性任何一项超过原版）再加「炼狱」。只改武器 / 战备 / 潜兵这些不写炼狱，开头还是 Hex。
+  - room-desc.txt 多两行 tag= / ttag=（Hex 或 HellBox，游戏只认这两个）；full 和 short 现在一样（新写法已经够短）。
 长度（compose）：游戏本身不限房间名长度（选房列表里长名字是滚动显示的，menu_screen_campaign_multiplayer.lua draw_looping_scroll），
 Steam 房间数据的值最多 8192 字节。为了选房列表里一眼能看全，整个房间名定 MAX_BYTES = 200 字节（约 60 个汉字）：
   1. 「[HellBox · 全部描述] 名字」装得下就用它；
@@ -53,7 +59,11 @@ OWN = {
     "mods": ("改数据", "Data Mods"),
     "uncapped": ("破限", "Uncapped"),
     "saber": ("军刀", "Saber"),  # 2026-11-21 修正参数「副武器换成军刀」
+    "modes": ("玩法", "Modes"),  # 2026-11-22 新规矩：没鬼城时「玩法 +3」
+    "inferno": ("炼狱", "Inferno"),  # 2026-11-22 数据改得比原版难
 }
+TAG_BOX, TAG_HEX = "HellBox", "Hex"
+ENEMY_FIELDS = os.path.join(paths.ROOT, "ai", "enemy_fields.json")
 # 游戏文字资源里取不到时的备用（ai/room_words.json 由 tools/room_words.py 生成）
 GAME_FALLBACK = {
     "pg": ("试验场", "Proving Grounds"),
@@ -163,6 +173,104 @@ def data_mods():
     return out, uncapped
 
 
+def _kv(cmd, sep=";"):
+    kv = {}
+    for part in (cmd or "").split(sep):
+        k, _, v = part.partition("=")
+        kv[k.strip()] = v.strip()
+    return kv
+
+
+def _num(s):
+    try:
+        return float(s)
+    except (TypeError, ValueError):
+        return None
+
+
+def spawn_harder(cmd):
+    """出怪命令比原版难吗：哪条来源按倍数出且倍数 > 1，或者场上上限比原版 16 大 / 破限。"""
+    kv = _kv(cmd)
+    for mode, mult in (("g", "multg"), ("a", "mult"), ("p", "multp")):
+        if kv.get(mode) == "mult" and (_num(kv.get(mult)) or 0) > 1:
+            return True
+    cap = _num(kv.get("cap")) or 0
+    return cap == -1 or cap > 16
+
+
+_enemy_defaults = None
+
+
+def enemy_default(name, path):
+    """怪物某一项的原版数值（ai/enemy_fields.json）；没有 = None。"""
+    global _enemy_defaults
+    if _enemy_defaults is None:
+        _enemy_defaults = {}
+        try:
+            with open(ENEMY_FIELDS, encoding="utf-8") as f:
+                units = json.load(f).get("units") or {}
+            for unit, info in units.items():
+                for block in info.get("blocks") or []:
+                    for row in block.get("rows") or []:
+                        v = row.get("value")
+                        if isinstance(v, (int, float)) and not isinstance(v, bool):
+                            _enemy_defaults[(unit, row.get("path"))] = float(v)
+        except (OSError, ValueError, AttributeError):
+            pass
+    return _enemy_defaults.get((name, path))
+
+
+def enemy_harder(cmd):
+    """怪物属性命令（pages/data_blocks.enemy_command）比原版难吗：任何一项超过原版。
+    common=路径*倍数,…（倍数 > 1 算）；set=怪.路径*倍数（> 1 算）或 怪.路径=值（比原版数大算，开关和路径不算）。"""
+    if not cmd or cmd == "reset":
+        return False
+    kv = _kv(cmd)
+    for item in (kv.get("common") or "").split(","):
+        _p, _, m = item.rpartition("*")
+        if (_num(m) or 0) > 1:
+            return True
+    for item in (kv.get("set") or "").split(","):
+        if "=" in item:
+            key, _, val = item.partition("=")
+            name, _, path = key.partition(".")
+            v, base = _num(val), enemy_default(name, path)
+            if v is not None and base is not None and v > base:
+                return True
+        elif "*" in item:
+            _p, _, m = item.rpartition("*")
+            if (_num(m) or 0) > 1:
+                return True
+    return False
+
+
+def data_harder():
+    """data-live.txt 里出怪或怪物属性有没有改得比原版难（房间名的「炼狱」）。"""
+    lines = {}
+    for line in _read(DATA_LIVE).splitlines():
+        k, _, v = line.partition("=")
+        lines[k.strip()] = v.strip()
+    if any(spawn_harder(v) for k, v in lines.items() if k.startswith("spawn.")):
+        return True
+    return enemy_harder(lines.get("params"))
+
+
+def own_hex():
+    """「功能」页里别人看得出来、影响游戏性的开关开着没有：带箱子上车、丢支援装备。"""
+    on = False
+    try:
+        import build
+        on = bool(build.get_carry_vehicle())
+    except Exception:  # noqa: BLE001 单独跑时没有 build
+        pass
+    try:
+        import hellbox_options
+        on = on or bool(hellbox_options.load().get("drop"))
+    except Exception:  # noqa: BLE001
+        pass
+    return on
+
+
 def play_items():
     """玩法里影响平衡的：[键, ...]（顺序 = 房间名里的顺序）。"""
     from pages import host_loadout as hl
@@ -185,39 +293,24 @@ def play_items():
 
 
 def describe(en=None):
-    """-> {"full", "short", "tfull", "tshort"}（不带方括号和 HellBox 字样）。"""
+    """-> {"full", "short", "tfull", "tshort", "tag", "ttag"}（描述不带方括号；tag = 开头写 Hex 还是 HellBox）。
+    2026-11-22 用户定的新规矩见文件头。"""
     en = is_en() if en is None else en
     mods, uncapped = data_mods()
     play = play_items()
-    event_set = {k for k in play if k in EVENT_WORD.values()}  # 有两样以上合成「修正参数」
-
-    def build(short):
-        words = []
-        for k in play:
-            if k in event_set:
-                if short and len(event_set) > 1:
-                    if "events" not in words:
-                        words.append("events")
-                    continue
-            words.append(k)
-        if short and len(mods) > 1:
-            words.append("mods")
-        else:
-            words += mods
-        if uncapped:
-            words.append("uncapped")
-        return SEP.join(word(k, en) for k in words)
-
-    def train(short):
-        words = ["pg"]
-        if short and len(mods) > 1:
-            words.append("mods")
-        else:
-            words += mods
-        if uncapped:
-            words.append("uncapped")
-        return SEP.join(word(k, en) for k in words)
-    return {"full": build(False), "short": build(True), "tfull": train(False), "tshort": train(True)}
+    hard = data_harder()
+    others = len([k for k in play if k != "ghost_town"])
+    words = []
+    if "ghost_town" in play:
+        words.append(word("ghost_town", en) + (f" +{others}" if others else ""))
+    elif others:
+        words.append(f"{word('modes', en)} +{others}")
+    if hard:
+        words.append(word("inferno", en))
+    trial = [word("pg", en)] + ([word("inferno", en)] if hard else [])
+    full, tfull = SEP.join(words), SEP.join(trial)
+    tag = TAG_HEX if (play or mods or uncapped or own_hex()) else TAG_BOX
+    return {"full": full, "short": full, "tfull": tfull, "tshort": tfull, "tag": tag, "ttag": TAG_HEX}
 
 
 def name_first():
@@ -231,7 +324,7 @@ def name_first():
 
 def text(en=None):
     d = describe(en)
-    return ("HBROOM1\n" + "".join(f"{k}={d[k]}\n" for k in ("full", "short", "tfull", "tshort"))
+    return ("HBROOM1\n" + "".join(f"{k}={d[k]}\n" for k in ("full", "short", "tfull", "tshort", "tag", "ttag"))
             + "order=" + ("name" if name_first() else "tag") + "\n")
 
 
@@ -259,9 +352,11 @@ def _cut(s, limit):
     return s
 
 
-def compose(base, full, short, max_bytes=MAX_BYTES, name_first=False):
+def compose(base, full, short, max_bytes=MAX_BYTES, name_first=False, tag=TAG_BOX):
+    tag = TAG_HEX if tag == TAG_HEX else TAG_BOX
+
     def head(d):
-        return f"[HellBox{SEP}{d}]" if d else "[HellBox]"
+        return f"[{tag}{SEP}{d}]" if d else f"[{tag}]"
 
     def size(s):
         return len(s.encode("utf-8"))
@@ -275,8 +370,8 @@ def compose(base, full, short, max_bytes=MAX_BYTES, name_first=False):
         if size(h) + 1 + size(base) <= max_bytes:
             return join(h, base)
     h = head(short)
-    if size(h) + 1 + size(ELLIPSIS) >= max_bytes:  # 简写本身就太长（不会发生）：只留 [HellBox]
-        return "[HellBox]"
+    if size(h) + 1 + size(ELLIPSIS) >= max_bytes:  # 简写本身就太长（不会发生）：只留 [HellBox] / [Hex]
+        return f"[{tag}]"
     room = max_bytes - size(h) - 1 - size(ELLIPSIS)
     return join(h, f"{_cut(base, room)}{ELLIPSIS}")
 
@@ -287,7 +382,8 @@ def preview(base, en=None, trial=False):
     en = is_en() if en is None else en
     name = (base or "").strip() or (build_self_name() or ("Steam name" if en else "Steam 昵称"))
     d = describe(en)
-    return compose(name, d["tfull" if trial else "full"], d["tshort" if trial else "short"], name_first=name_first())
+    return compose(name, d["tfull" if trial else "full"], d["tshort" if trial else "short"], name_first=name_first(),
+                   tag=d["ttag" if trial else "tag"])
 
 
 def build_self_name():
@@ -332,14 +428,14 @@ def _same_as_now(real, en, trial):
     """游戏写的真名和现在这套设置算出来的一致吗：把真名里「] 」后面的名字部分拿出来，按现在的描述重新拼一遍比较。
     （名字部分是游戏那边的，可能是 Steam 昵称，桌面这边不知道，所以只比方括号那一段加长度规矩。）"""
     first = name_first()
-    if first:  # 「名字 [HellBox …]」：名字是最后一个「[HellBox」前面那段
-        i = real.rfind("[HellBox")
+    if first:  # 「名字 [HellBox …]」：名字是最后一个「[HellBox」/「[Hex」前面那段
+        i = max(real.rfind("[" + TAG_BOX), real.rfind("[" + TAG_HEX))
         if i < 0 or not real.endswith("]"):
             return False
         rest = real[:i]
         rest = rest[:-1] if rest.endswith(" ") else rest
     else:
-        if not real.startswith("[HellBox"):
+        if not (real.startswith("[" + TAG_BOX) or real.startswith("[" + TAG_HEX)):
             return False
         i = real.find("]")
         if i < 0:
@@ -348,7 +444,7 @@ def _same_as_now(real, en, trial):
         rest = rest[1:] if rest.startswith(" ") else rest
     d = describe(en)
     k = "t" if trial else ""
-    return compose(rest, d[k + "full"], d[k + "short"], name_first=first) == real
+    return compose(rest, d[k + "full"], d[k + "short"], name_first=first, tag=d[k + "tag"]) == real
 
 
 def current(base, running, trial=False, en=None):

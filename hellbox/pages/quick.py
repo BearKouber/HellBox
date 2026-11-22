@@ -35,6 +35,7 @@ AI_DIR = os.path.join(paths.ROOT, "ai")
 if AI_DIR not in sys.path:
     sys.path.insert(0, AI_DIR)
 import drill_spec as ds  # noqa: E402
+from pages import map_picker  # noqa: E402  要在 ai 目录加进 sys.path 之后（它也用 drill_spec）
 
 PYTHON = os.path.join(paths.ROOT, ".venv", "Scripts", "python.exe")
 RUNNER = os.path.join(AI_DIR, "drill_run.py")
@@ -98,6 +99,20 @@ class _MapBody(QWidget):
             self.lay.setDirection(QBoxLayout.Direction.LeftToRight if side else QBoxLayout.Direction.TopToBottom)
             self.lay.setSpacing(self.gap if side else 10)
             self.updateGeometry()
+
+
+class _ClickMap(mt.MapThumb):
+    """地图卡右边的小地图，点了打开「挑地形」（2026-11-22 用户定）。"""
+
+    def __init__(self, size, on_click):
+        super().__init__(size)
+        self.on_click = on_click
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setToolTip(tr("点一下挑地形"))
+
+    def mousePressEvent(self, e):
+        if e.button() == Qt.MouseButton.LeftButton:
+            self.on_click()
 
 
 class _MapRight(QWidget):
@@ -368,13 +383,9 @@ class QuickPage(Page):
         lay.addSpacing(6)
         lay.addWidget(small("（1~15）", 9, False, ui.MUTED), 0, VC)
 
-        lay = self._line(card, "编号", 12, box=lv)
-        self.seed_box = ui.Entry(None, self.v_seed, width=12, font=ui.f_mono(11, True))
-        self.e_seed = self.seed_box.edit
-        lay.addWidget(self.seed_box, 0, VC)
-        self.e_seed.editingFinished.connect(self._seed_typed)  # 回车或离开输入框
-        lay.addSpacing(10)
-        lay.addWidget(ui.Button(None, "换一张图", self._new_terrain, kind="accent", padx=10, pady=3), 0, VC)
+        # 2026-11-22 用户定（Dive Harder 作者的建议）：编号输入框和「换一张图」去掉，改成点小地图挑地形
+        lay = self._line(card, "地形", 12, box=lv)
+        lay.addWidget(ui.Button(None, "挑地形", self._pick_terrain, kind="accent", padx=10, pady=3), 0, VC)
         lay.addSpacing(8)
         lay.addWidget(ui.Button(None, "默认", self._default_map, padx=8, pady=3), 0, VC)
         lv.addStretch(1)
@@ -384,13 +395,13 @@ class QuickPage(Page):
         rl = QVBoxLayout(text_col)
         rl.setContentsMargins(0, 0, 0, 0)
         rl.setSpacing(6)
-        self.map_thumb = mt.MapThumb(200)
+        self.map_thumb = _ClickMap(200, self._pick_terrain)
         self.map_text = ui.text(None, "", bold=True, size=10)
         rl.addSpacing(4)
         rl.addWidget(self.map_text)
         # 2026-11-14 用户：说明要直观，别啰嗦
-        rl.addWidget(ui.text(None, "· 编号一样，地图就一样\n· 「换一张图」只换地形\n· 粘贴编号后按回车也行\n· 小图要开着游戏才会出来",
-                             muted=True, size=9))
+        rl.addWidget(ui.text(None, "· 点小地图挑地形，能看到这一组所有不同的图\n· 改了类型、种族、环境、时间、难度，地形也会跟着变\n"
+                                   "· 小图要开着游戏才会出来", muted=True, size=9))
         rl.addStretch(1)
         w = _MapBody(left, _MapRight(self.map_thumb, text_col))
         card.add(w, top=4)
@@ -434,20 +445,14 @@ class QuickPage(Page):
         self._rebuild_units()
         self._save()
 
-    def _seed_typed(self):
-        text = (self.v_seed.get() or "").strip()
-        if text == str(self.cfg["seed"]):
-            return
-        if ds.valid_seed(text):
-            self._set_seed(int(text))
-            self.app.say(T('地图编号改成 {0}：{1}', text, ds.describe(int(text))), "ok")
-        else:
-            self.v_seed.set(str(self.cfg["seed"]))
-            self.app.say("这个编号选图用不了（末两位 01~15 = 大图、21~35 = 首领战、41~55 = 报复关，万位环境 0~4），已恢复原来的。", "warn")
-
-    def _new_terrain(self):
-        self._set_seed(ds.new_terrain(self.cfg["seed"]))
-        self.app.say(T('换了一张图：{0}', self.cfg['seed']), "ok")
+    def _pick_terrain(self):
+        def picked(seed):
+            self._set_seed(seed)
+            self._map_requested = None  # 下次 _map_tick 把主页面要的图重新告诉游戏
+            self.app.say(T('换了地形：{0}', ds.describe(seed)), "ok")
+        map_picker.MapPicker(self.view, self.cfg["seed"], picked, self._map_seeds,
+                             lambda: bool(self.app.state.get("running"))).exec()
+        self._map_requested = None
 
     def _default_map(self):
         self._set_seed(ds.DEFAULT["seed"])

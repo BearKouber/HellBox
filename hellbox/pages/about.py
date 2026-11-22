@@ -36,7 +36,7 @@ THANKS = [
     # 2026-11-20 用户要求写进鸣谢（同日增强 HUD 整个删掉，Alomare 那行也删）；2026-11-21 HD1-038：QoL 的功能删了，
     #   名字原来误写 SomeDogge；Dive Harder 作者同意收进它的几项，加一行
     ("QoL Mod", "SomeDoggo"),
-    ("Dive Harder（延迟显示、隐藏目标、好友列表刷新）", "Oct0pu5"),
+    ("Dive Harder", "Oct0pu5"),  # 2026-11-22 DH 作者建议：括号里的说明删掉
     ("协助测试", "91、HalfSugar、吃大份、K-ON!、Kent、QiQi"),
     ("总体 UI 规划、代码设计", "Claude"),
 ]

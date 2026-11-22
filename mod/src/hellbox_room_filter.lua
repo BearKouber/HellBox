@@ -4,7 +4,8 @@
 --   进找房间界面时照这张表建开关（menu_screen_campaign_multiplayer.lua on_enter），选的结果游戏自己存进
 --   存档的 multiplayer_filters（按 name 记），列房间时每个房间挨个过 filter_func。
 -- 这里：往表里加一条，和原版那几条一模一样能开能关、游戏自己记住；默认不隐藏。
---   认 HellBox 房间：房间名里有「[HellBox」（room_name.lua 当房主时一直写这个标记，放前面放后面都有）。
+--   认 HellBox 房间：房间名里有「[HellBox」或「[Hex」（room_name.lua 当房主时一直写这个标记，放前面放后面都有；
+--   2026-11-22 起开了影响游戏性的东西写 [Hex …]）。
 --   只有公开列表有筛选面板（原版就这样），好友列表不管。没装 HellBox 的人看不到这条。
 --   名字：语言表里没有这个键，LocalizationManager.string 碰到它时照游戏现在的语言给中文或英文。
 do
@@ -12,9 +13,17 @@ do
 	local G = HellBoxRoomFilter or {}
 	HellBoxRoomFilter = G
 
+	local HEX_SEP = "[Hex \194\183"
+
 	local function hidden(room, enabled)
-		return enabled and type(room) == "table" and type(room.name) == "string"
-			and room.name:find("[HellBox", 1, true) ~= nil
+		if not (enabled and type(room) == "table" and type(room.name) == "string") then
+			return false
+		end
+
+		local name = room.name
+
+		return name:find("[HellBox", 1, true) ~= nil or name:find("[Hex]", 1, true) ~= nil
+			or name:find(HEX_SEP, 1, true) ~= nil
 	end
 
 	local function add_filter()

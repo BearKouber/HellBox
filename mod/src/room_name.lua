@@ -163,7 +163,7 @@ do
 	local MAX_NAME = 200
 	local SEP = " \194\183 " -- 空格 + 中点 U+00B7 + 空格
 	local ELLIPSIS = "\226\128\166" -- 省略号 U+2026
-	local EMPTY_DESC = { full = "", short = "", tfull = "", tshort = "", order = "" }
+	local EMPTY_DESC = { full = "", short = "", tfull = "", tshort = "", order = "", tag = "", ttag = "" }
 
 	-- 切到最多 n 字节，不把一个字切成两半
 	local function cut(str, n)
@@ -187,9 +187,12 @@ do
 	end
 
 	-- name_first（2026-11-21 HD1-038 用户要求可选）：名字在前、[HellBox …] 在后；截短规矩一样（截的是名字）
-	local function compose(base, full, short, name_first)
+	-- tag（2026-11-22 用户定）：开头写 Hex（开了别人看得出来、影响游戏性的东西）还是 HellBox；只认这两个
+	local function compose(base, full, short, name_first, tag)
+		tag = tag == "Hex" and "Hex" or "HellBox"
+
 		local function head(d)
-			return d ~= "" and ("[HellBox" .. SEP .. d .. "]") or "[HellBox]"
+			return d ~= "" and ("[" .. tag .. SEP .. d .. "]") or ("[" .. tag .. "]")
 		end
 
 		local function join(h, b)
@@ -211,7 +214,7 @@ do
 		local h = head(short)
 
 		if #h + 1 + #ELLIPSIS >= MAX_NAME then
-			return "[HellBox]"
+			return "[" .. tag .. "]"
 		end
 
 		return join(h, cut(base, MAX_NAME - #h - 1 - #ELLIPSIS) .. ELLIPSIS)
@@ -239,7 +242,7 @@ do
 
 		G.desc_text = text
 
-		local d = { full = "", short = "", tfull = "", tshort = "", order = "" }
+		local d = { full = "", short = "", tfull = "", tshort = "", order = "", tag = "", ttag = "" }
 
 		if text:match("^HBROOM1") then
 			for line in text:gmatch("[^\r\n]+") do
@@ -285,10 +288,10 @@ do
 		local name_first = d.order == "name"
 
 		if training() then
-			return compose(base_name(), d.tfull, d.tshort, name_first)
+			return compose(base_name(), d.tfull, d.tshort, name_first, d.ttag)
 		end
 
-		return compose(base_name(), d.full, d.short, name_first)
+		return compose(base_name(), d.full, d.short, name_first, d.tag)
 	end
 
 	local desc_timer = 0

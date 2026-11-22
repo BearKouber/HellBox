@@ -87,7 +87,7 @@ do
 			return nil
 		end
 
-		local text = f:read(4096) or ""
+		local text = f:read(16384) or "" -- 2026-11-22「挑地形」一次要 215 张，清单变长
 
 		f:close()
 
@@ -149,15 +149,27 @@ do
 		G.wrapped = function(self, dt, ...)
 			local now = Application.time_since_launch()
 
-			if now - G.last >= 0.5 then
+			-- 2026-11-22「挑地形」：每 0.25 秒最多拼 4 张、最多花 20 毫秒（以前 0.5 秒一张，215 张要将近两分钟）
+			if now - G.last >= 0.25 then
 				G.last = now
 
-				local ok, err = pcall(step)
+				local start = os.clock()
 
-				if not ok then
-					G.errors = (G.errors or 0) + 1
-					G.last_error = tostring(err)
-					if rawget(_G, "HellBoxLog") then HellBoxLog("map_preview", G.last_error) end
+				for _ = 1, 4 do
+					local before = G.made or 0
+					local ok, err = pcall(step)
+
+					if not ok then
+						G.errors = (G.errors or 0) + 1
+						G.last_error = tostring(err)
+						if rawget(_G, "HellBoxLog") then HellBoxLog("map_preview", G.last_error) end
+
+						break
+					end
+
+					if (G.made or 0) == before or os.clock() - start > 0.02 then
+						break
+					end
 				end
 			end
 

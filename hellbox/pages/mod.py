@@ -33,7 +33,8 @@ HALFSUGAR = "来自 半糖（HalfSugar）"  # 2026-11-19 聊天输入法防闪�
 # 2026-11-21 HD1-038：Dive Harder 作者同意收进来。它独有的署 Oct0pu5；修 QoL 的两处署两个人（用户原话「doggo & oct0pu5」）
 OCT = "来自 Oct0pu5"
 DOGGO_OCT = "来自 SomeDoggo & Oct0pu5"
-DH_YIELD = "游戏里装着 Dive Harder，这项由它提供（它的设置在游戏暂停菜单 MOD SETTINGS 里）"
+# 2026-11-22 Dive Harder 作者建议：简化成一句（下面这几行的名字也是他建议的）
+DH_YIELD = "此项已由 DH 提供"
 
 # 报复关：存进 genocide.txt 的值沿用以前的百分比档位（mod 里 0/33/66/100 = 固定 0/1/2/3 个），"" = 原版
 STRIKE_OPTIONS = [("", "原版"), ("0", "0 个"), ("33", "1 个"), ("66", "2 个"), ("100", "3 个")]
@@ -127,11 +128,11 @@ class ModPage(Page):
         self.ping_window = ui.Var(cfg["ping_window"] if cfg["ping_window"] in options.PING_WINDOWS else 5)
         self.seg_ping = self._ctl(ui.Segmented(None, PING_WINDOWS, self.ping_window, command=self.set_ping_window,
                                                font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._dh_row(mission, "队友延迟显示在 HUD 上", "任务里每个网上队友的状态卡片下面写他的延迟（往返毫秒数），"
+        self._dh_row(mission, "HUD 显示延迟", "任务里每个网上队友的状态卡片下面写他的延迟（往返毫秒数），"
                                                  "按最近几次取平均（右边选几次），不会一跳一跳。暂停菜单玩家列表里的延迟也改成往返，和这里对得上。"
                                                  "本机的人（你自己、分屏的 2P）不写。",
                      "dh_ping", OCT, extras=(self.seg_ping,))
-        self._dh_row(mission, "开局就显示隐藏目标", "任务里打问号的隐藏目标一开局就显示在地图上，不用先走过去发现。", "dh_hidden", OCT)
+        self._dh_row(mission, "自动定位任务位置", "任务里打问号的隐藏目标一开局就显示在地图上，不用先走过去发现。", "dh_hidden", OCT)
         self.view.row(mission)
 
         ship = ui.Card(self.view, "SHIP", "星图和飞船", fill=ui.YELLOW)
@@ -168,7 +169,7 @@ class ModPage(Page):
         self.view.row(coop)
 
         # 2026-11-18 V0.96 用户定：修原版毛病的开关单独一组「Bug 修复」
-        fix = ui.Card(self.view, "FIX", "Bug 修复", fill=ui.MINT, note="修原版的毛病，一个个单独开关")
+        fix = ui.Card(self.view, "FIX", "Bug 修复", fill=ui.MINT)  # 2026-11-22 DH 作者建议：标题旁那句说明删掉
         self._row(fix, "冲刺时换弹不往前滑", "原版冲刺中换弹会锁着方向往前冲一段。开了以后换弹时松开摇杆 / 方向键就停，"
                                              "往哪推就往哪走。只管你自己的绝地潜兵，当客机也能用。",
                   flag="noslide")

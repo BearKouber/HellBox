@@ -3492,5 +3492,18 @@
 "房间名顺序": "Room name order",
 "房间名里 [HellBox …] 放前面还是你的名字放前面。只是换个顺序，方括号里写什么、太长时怎么截都一样。只有你当房主时生效，游戏开着几秒内就换。": "Whether [HellBox …] or your name comes first in the room name. Only the order changes; what's in the brackets and how long names are shortened stay the same. Only applies when you host; with the game running it changes within a few seconds.",
 "房间名顺序已改，当房主时几秒内生效。": "Room name order changed; it applies within a few seconds when you host.",
-"房间名顺序已改，下次当房主时生效。": "Room name order changed; it applies next time you host."
+"房间名顺序已改，下次当房主时生效。": "Room name order changed; it applies next time you host.",
+"此项已由 DH 提供": "Provided by Dive Harder",
+"HUD 显示延迟": "Ping on HUD",
+"自动定位任务位置": "Auto-locate objectives",
+"挑地形": "Pick terrain",
+"地形 {0}": "Terrain {0}",
+"地形 {0}（现在）": "Terrain {0} (current)",
+"点一下挑地形": "Click to pick a terrain",
+"换了地形：{0}": "Terrain changed: {0}",
+"一共 {0} 种不同的地形，点一张就换成它。长得一样的只留了一张。": "{0} different terrains. Click one to use it. Identical ones are shown once.",
+"要开着游戏（在飞船或主菜单里）才能把图拼出来。已经拼好 {0} / {1} 张。": "The game has to be running (on the ship or in the main menu) to build the maps. Built so far: {0} / {1}.",
+"游戏正在拼图：{0} / {1}，已经有 {2} 种不同的地形，可以先挑。": "The game is building maps: {0} / {1}. {2} different terrains so far; you can already pick one.",
+"· 点小地图挑地形，能看到这一组所有不同的图\n· 改了类型、种族、环境、时间、难度，地形也会跟着变\n· 小图要开着游戏才会出来": "· Click the map to pick a terrain from every different map of this kind\n· Changing type, race, environment, time or difficulty changes the terrain too\n· Maps only appear while the game is running",
+"留空 = 用你的名字（没设就是 Steam 昵称）。只有你当房主时生效。真房间名会自动带上标记，所有人都看得到：只开了自己用的功能是「[HellBox] 名字」；开了玩法、改了数据、带箱子上车或丢支援装备是「[Hex] 名字」，方括号里写鬼城、其他玩法几个（+3），敌人改得比原版难再写「炼狱」，比如「[Hex · 鬼城 +3 · 炼狱] 名字」。": "Empty = your name (or your Steam name). Only applies when you host. Your room name gets a tag everyone can see: \"[HellBox] name\" if you only use features for yourself; \"[Hex] name\" with play modes, data changes, carrying boxes into vehicles or dropping support gear. The brackets show Ghost Town, how many other modes are on (+3), and \"Inferno\" if enemies are harder than vanilla, e.g. \"[Hex · Ghost Town +3 · Inferno] name\"."
 }
