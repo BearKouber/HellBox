@@ -23,16 +23,18 @@ class Page:
         self.when_sq = ui.Square(None, self.when_color, 9)
         hl.addWidget(self.when_sq, 0, VC)
         hl.addSpacing(7)
-        self.when_lab = ui.ElideLabel("", font=ui.f_zh(10), fg=ui.MUTED)
+        self.when_lab = ui.ElideLabel(self.when, font=ui.f_zh(10), fg=ui.MUTED)
         hl.addWidget(self.when_lab, 1, VC)
         hl.addSpacing(10)
-        self.when_sq.setVisible(True)
+        self.when_sq.setVisible(bool(self.when))
         self.head_lay = hl
         self.view.pin(head)
         self.build()
 
     def set_when(self, text, color=None):
-        pass
+        self.when_lab.config(text=text, fg=ui.MUTED)
+        self.when_sq.set_color(color or self.when_color)
+        self.when_sq.setVisible(bool(text))
 
     def build(self):
         pass

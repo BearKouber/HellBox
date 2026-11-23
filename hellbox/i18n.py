@@ -43,8 +43,12 @@ def _res_dir():
 
 
 def _system_lang():
-    """没选过语言时默认中文；保留函数名给旧调用。"""
-    return "zh"
+    try:
+        import ctypes
+        langid = ctypes.windll.kernel32.GetUserDefaultUILanguage()
+        return "zh" if langid & 0x3FF == 0x04 else "en"
+    except (AttributeError, OSError, ValueError):
+        return "en"
 
 
 def _load_lang():

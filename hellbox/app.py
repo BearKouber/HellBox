@@ -30,10 +30,10 @@ import i18n  # noqa: E402
 import logbook  # noqa: E402
 import ui  # noqa: E402
 
-VERSION = "V1.08"  # 2026-11-23 版本号改为 1.08； 2026-11-23 用户定：解锁战线三选一（普通星区 / 进攻母星 / 保卫超级地球，假事件不报服务器、能刷新）这一版叫 1.06； 2026-11-22 用户定：解锁其他战线进发布版、选图游戏关着时也在线、打包去掉套娃压缩包这一版叫 1.05； 2026-11-22 用户定：房间名新规矩（[Hex]、鬼城 +3、炼狱）、选图点小地图挑地形、Dive Harder 作者的几处措辞，这一版叫 1.04
+VERSION = "V1.08"  # 2026-11-23 版本号改为 1.08；合并上游 1.07（PR #1 界面文字整理 + 联机限制）； 2026-11-23 用户定：解锁战线三选一（普通星区 / 进攻母星 / 保卫超级地球，假事件不报服务器、能刷新）这一版叫 1.06； 2026-11-22 用户定：解锁其他战线进发布版、选图游戏关着时也在线、打包去掉套娃压缩包这一版叫 1.05； 2026-11-22 用户定：房间名新规矩（[Hex]、鬼城 +3、炼狱）、选图点小地图挑地形、Dive Harder 作者的几处措辞，这一版叫 1.04
 VERSION_NOTE = ""
 POLL_MS = 2000
-MASTER_HELP = ("核心：HellBox 总开关\n打开 = 安装 Hellbox；关闭 = 游戏换回原版文件"
+MASTER_HELP = ("核心：HellBox 总开关\n打开 = 安装 HellBox；关闭 = 游戏换回原版文件"
                "\n调整时游戏不能启动")
 DEV_FILE = os.path.join(os.environ.get("APPDATA", ""), "Arrowhead", "Helldivers", "hellbox", "dev.txt")
 
@@ -80,8 +80,8 @@ SCRIPT_TEXT = {
     "off": ("原版", ui.DISABLED),
     "unknown": ("无法识别", ui.SALMON),
 }
-UNKNOWN_HELP = ("HellBox 无法识别游戏脚本（可能装过别的 MOD，或其他版本的 HellBox）"
-                "点「核心」开关旁边的「恢复原版")
+UNKNOWN_HELP = ("HellBox 无法识别游戏脚本（可能装过别的 MOD，或其他版本的 HellBox），为安全起见不会修改。"
+                "点击「核心」开关旁边的「恢复原版」：有原版备份就直接换回，没有就让 Steam 检查并修复游戏文件。")
 CURSOR_TEXT = {
     "on": ("替换", ui.MINT),
     "old": ("待更新", ui.YELLOW),
@@ -261,7 +261,7 @@ class App(QWidget):
             import cursor_mod
             build.install()
             cursor_mod.apply_saved()
-            return "Hellbox 已安装"
+            return "HellBox 已安装"
 
         def restore_all():
             import build
@@ -277,11 +277,17 @@ class App(QWidget):
             if not self._ask_map_backup():
                 self.master_on.set(False)
                 return
-            self.run(install_all, working="正在安装 Hellbox（可能需要几分钟）")
+            self.run(install_all, working="正在安装 HellBox（第一次可能需要几分钟），请先别开游戏")
         else:
             self.run(restore_all, working="正在还原游戏")
 
-    MAP_BACKUP_TEXT = ()
+    MAP_BACKUP_TEXT = (
+        "第一次开启「核心」时，要给 45 个地图文件换上鬼城配色。请选择是否备份原版地图：\n\n"
+        "· 备份地图：多占约 1.3GB，第一次更慢；以后在「关于」中关闭「核心」即可一键恢复原版。\n"
+        "· 不备份：快很多；以后要恢复原版地图，需要在 Steam 中「验证游戏文件完整性」"
+        "（Steam 会重新下载改过的 45 个地图文件）。\n\n"
+        "无论选哪个，游戏脚本的小备份都会保留；以后更新 HellBox 也不受影响。")
+
     def _ask_map_backup(self):
         import build
         try:
@@ -426,7 +432,7 @@ class App(QWidget):
         if script == "old" and running is False and not self.busy and not self.auto_updated and "--check-ui" not in sys.argv:
             import build
             self.auto_updated = True
-            self.after(0, lambda: self.run(build.install, "Hellbox 已更新到最新版本。", "Hellbox 是旧版本，正在更新…"))
+            self.after(0, lambda: self.run(build.install, "HellBox 已更新到最新版本。", "HellBox 是旧版本，正在更新…"))
         for p in self.pages:
             p.sync()
 

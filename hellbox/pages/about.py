@@ -40,6 +40,7 @@ THANKS = [
 NOTICE = ("· HellBox 完全免费且开源，源码: https://www.github.com/BearKouber/HellBox。如果你是花钱买到的，请找卖家退款。\n"
           "· 可以自由修改、再发布，但请保留作者 07 的署名和授权说明（LICENSE），并注明原发布页。\n"
           "· 收录的他人作品归原作者，转发时请一并注明。\n"
+          "· 非官方 MOD，与游戏官方无关。使用 MOD 有风险，出了问题可以点击上面的「恢复原版」。\n"
           "· 用到的开源组件：Python、PySide6 / Qt、LuaJIT、Silkscreen 字体，授权说明见 LICENSE。")
 CLOSING = ("希望大家能在游戏里找到它本身的乐趣，也希望这个工具能让你玩得开心。\n"
            "请不要滥用，不要影响别的玩家的体验。")

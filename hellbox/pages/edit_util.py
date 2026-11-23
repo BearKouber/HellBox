@@ -258,6 +258,11 @@ class PickGrid(ui.Clickable):
         if i != self.hover_i:
             self.hover_i = i
             self.update()
+            if i is None:
+                ui.hide_hint()
+            else:
+                _key, label, _changed, help_text = self.items[i]
+                ui.show_hint(label, help_text)
 
     def leaveEvent(self, e):
         self.hover_i = None
@@ -302,7 +307,7 @@ class ParamList:
             ui.filled(sep, ui.DISABLED)
             self.lay.addWidget(sep)
         self.n += 1
-        r = ui.HoverRow(label)
+        r = ui.HoverRow(label, help)
         r.lay.setContentsMargins(8, 5, 8, 5)
         lab = ui.Label(label, font=ui.f_zh(10))
         lab.setFixedWidth(self.NAME_W)

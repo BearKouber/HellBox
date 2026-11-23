@@ -11,8 +11,15 @@ local box_mod_restore_carry_after_exit = false
 
 -- 2026-11-14 V0.91：带箱子上车热切换。这个脚本一直装着，开关看全局 HellBoxCarryOn
 -- （hellbox_qol.lua 每秒从 HellBox 写的 options.txt 读；没读到 = 开）。关着时每处都照原版走。
+-- 2026-11-23 V1.07 联机限制：当客机时只在有 MOD 的房间生效（hellbox_room_gate.lua 的 HellBoxRoomGate.ok）
 local function box_mod_on()
-	return HellBoxCarryOn ~= false
+	if HellBoxCarryOn == false then
+		return false
+	end
+
+	local gate = rawget(_G, "HellBoxRoomGate")
+
+	return not (type(gate) == "table" and type(gate.ok) == "function") or gate.ok()
 end
 
 local function box_mod_is_seat(unit)

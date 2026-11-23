@@ -188,10 +188,15 @@ def main():
         print(f"发行测试包：{target}" + ("（全数据版）" if "--full" in sys.argv else ""))
         return
     if dist != DIST:
-        print(f"测试版：{exe}（没改 bin）")
+        print(f"测试版：{exe}（没改 bin 和快捷方式）")
         return
+    old = os.path.join(ROOT, "HellBox.exe")
+    if os.path.exists(old):
+        os.remove(old)
+    link = os.path.join(ROOT, "HellBox.lnk")
+    make_shortcut(exe, link)
     size = sum(os.path.getsize(os.path.join(d, f)) for d, _, fs in os.walk(os.path.dirname(exe)) for f in fs)
-    print(f"已生成 {exe}（整个文件夹 {size / 1e6:.1f} MB）")
+    print(f"已生成 {exe}（整个文件夹 {size / 1e6:.1f} MB），快捷方式 {link}")
 
 
 def prune(qt):
@@ -203,6 +208,14 @@ def prune(qt):
         elif os.path.isfile(p):
             os.remove(p)
 
+
+
+def make_shortcut(target, link):
+    ps = (f"$s = (New-Object -ComObject WScript.Shell).CreateShortcut('{link}'); "
+          f"$s.TargetPath = '{target}'; $s.WorkingDirectory = '{os.path.dirname(target)}'; "
+          f"$s.IconLocation = '{target},0'; $s.Description = 'HellBox'; $s.Save()")
+    subprocess.run(["powershell", "-NoProfile", "-Command", ps], check=True,
+                   creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 if __name__ == "__main__":

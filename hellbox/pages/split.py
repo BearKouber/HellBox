@@ -130,11 +130,11 @@ class SplitPage(Page):
         self.controls = []
         card = ui.Card(self.view, "SPLIT", "分屏", fill=ui.MINT, note="来自 CameraCTRL")
         self.t_view = self._toggle(card, self.v_view, "解除视角限制", None,
-                                   "镜头不再框住全队，只跟着你。队友也装了 HellBox 并开了分屏，才能各自走开。")
+                                   "镜头不再框住全队，只跟着你。队友也装了 HellBox 并开了分屏，才能各自走开。当客机时：房主也装了 HellBox（或开着分屏）才生效，进没装 MOD 的房间不生效。")
         self.t_free = self._toggle(card, self.v_free, "解除位置限制", None,
                                    "能走出全队的画面范围。要先开「解除视角限制」。在远处关掉分屏，要先走回队伍画面里才会还原。")
         self.t_spawn = self._toggle(card, self.v_spawn, "房主刷怪区域扩展", None,
-                                    "离开主屏幕的人周围刷怪")
+                                    "离开主屏幕的人周围单独刷一份怪，分开几个人就是几倍（测试中，太多可能卡）。只在你当房主时生效。")
         self.seg_ratio = ui.Segmented(None, RATIOS, self.v_ratio, command=lambda _v: self._changed(), padx=8, pady=3)
         self.controls.append(self.seg_ratio)
         card.row("画面比例", self.seg_ratio,

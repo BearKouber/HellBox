@@ -77,14 +77,16 @@ class CharacterPage(Page):
         self.v_lv = ui.Var("1")
         self.lv_step = ui.Stepper(None, self.v_lv, 1, MAX_LV, width=3)
         self.btn_lv = small_button("应用", self.apply_level, kind="accent")
-        me.row("等级", self.lv_step, 10, self.btn_lv)
+        me.row("等级", self.lv_step, 10, self.btn_lv,
+               help="把经验改成这一级的起点。升级会照原版解锁这一级以前的武器、战略配备、披风；降级不会收回已解锁的东西。")
         self.rp_var = ui.Var("")
         box = ui.Entry(None, self.rp_var, width=6, pad=(6, 3))
         box.edit.returnPressed.connect(self.apply_rp)
         self.btn_rp = small_button("应用", self.apply_rp, kind="accent")
         self.btn_max = small_button("加满", self.apply_max)
         self.rp_sub = ui.Label("", font=ui.f_zh(9), fg=ui.MUTED)
-        me.row("研究点", box, 10, self.btn_rp, 8, self.btn_max, sub=self.rp_sub)
+        me.row("研究点", box, 10, self.btn_rp, 8, self.btn_max, sub=self.rp_sub,
+               help="军械库里升级用的点数（10 个样本 = 1 点）。修改时不要开着军械库：退出军械库时会把旧数写回去。")
 
         # ---------------- 武器
         self.w_card = ui.Card(self.view, "GUN", "武器", fill=ui.YELLOW)
@@ -173,6 +175,9 @@ class CharacterPage(Page):
     def _show_empty(self):
         for lay in (self.w_lay, self.s_lay, self.c_lay):
             ui.clear_layout(lay)
+            lab = ui.Label("需要游戏正在运行才能查看和解锁", font=ui.f_zh(10), fg=ui.MUTED)
+            lab.setContentsMargins(4, 8, 4, 8)
+            lay.addWidget(lab)
         self.empty_shown = True
 
     def _build_lists(self, st):
@@ -202,7 +207,7 @@ class CharacterPage(Page):
                     ctl = self._button("要购买", None, False)
                 else:
                     ctl = self._button("解锁", lambda i=c["index"]: self._send(f"unlockcape={i}"), True)
-                cl.row(c["name"], ctl, short(c))
+                cl.row(c["name"], ctl, short(c), help=why(c))
         self.btn_all_c.can = any(c["status"] in UNLOCKABLE for c in st["capes"])
 
     def _unlock_list(self, lay, color, items_all, cmd):
@@ -221,7 +226,7 @@ class CharacterPage(Page):
                 note = short(w)
                 if w.get("kind") in STRAT_KIND:
                     note = tr(STRAT_KIND[w["kind"]]) + " · " + note
-                pl.row(w["name"], ctl, note)
+                pl.row(w["name"], ctl, note, help=why(w))
 
     def _button(self, text, command, can, kind="plain"):
         b = small_button(text, command, kind=kind)

@@ -305,14 +305,14 @@ class SpawnEditor:
         self.v_race = ui.Var(self.race)
         self.seg_race = ui.Segmented(None, [(k, z) for k, z in RACE_ZH.items()], self.v_race,
                                      command=self._race_changed, **seg)
-        src.row("阵营", self.seg_race)
+        src.row("阵营", self.seg_race, help="一块里三个阵营各存一份：进哪个阵营的地图就用哪一份。")
         self.v_spread = ui.Var(self.spread)
         self.seg_spread = ui.Segmented(None, SPREADS, self.v_spread, command=self._spread_changed, **seg)
-        src.row("出生时散开", self.seg_spread)
+        src.row("出生时散开", self.seg_spread, help="一捆怪刷出来时站得多开（三条来源和载具放兵都算，三个阵营一起）。原版挤在一起；小 / 中 / 大越来越开。")
         self.v_limit = ui.Var(self.limit)
         self.sl_limit = ui.StepSlider(None, [(v, cap_label(v)) for v in CAP_VALUES], self.v_limit,
                                       command=self._limit_changed, width=260, text_width=92, tail=True)
-        src.row("场上上限", self.sl_limit)
+        src.row("场上上限", self.sl_limit, help="场上同时最多几只敌人（活的和没消失的尸体一起算）。16 是原版。最右边红格「破限」= 按每一波自动放开，最多 1000 只，几百只可能会卡。")
         self.src_hint = src.add(ui.text(src.body, "", muted=True, size=9), top=8)
 
         # ---- 这条来源怎么出
@@ -322,7 +322,7 @@ class SpawnEditor:
         self.seg_mode = ui.Segmented(None, MODES, self.v_mode, command=self._mode_changed, **seg)
         self.btn_src_reset = small_button("这一条还原", self._reset_src)
         main.head_lay.addWidget(self.btn_src_reset, 0, VC)
-        main.row("方式", self.seg_mode, name_w=90)
+        main.row("方式", self.seg_mode, name_w=90, help="原版 = 照游戏；自己改 = 逐捆换怪和数量；倍数 = 种类照原版、数量翻倍；不出 = 这条来源一只都不出。")
         self.v_cap = ui.Var("16")
         self.cap_step = ui.Stepper(None, self.v_cap, 1, CAP_MAX, command=self._cap_changed)
         self.cap_note = ui.Label("", font=ui.f_zh(9), fg=ui.MUTED)
@@ -342,13 +342,14 @@ class SpawnEditor:
         veh = ui.Card(self.view, "VEH", "载具 / 首领放兵", fill=ui.SKY)
         self.v_veh = ui.Var(self.veh_mode)
         self.seg_veh = ui.Segmented(None, VEH_MODES, self.v_veh, command=self._veh_changed, **seg)
-        self.row_veh = veh.row("方式", self.seg_veh, name_w=90)
+        self.row_veh = veh.row("方式", self.seg_veh, name_w=90, help="步兵战车放的兵、首领召唤的兵单独算：原版固定放某种怪，这里可以换成你勾选的。")
         self.v_veh_count = ui.Var("3")
         self.veh_orig = 3
         self.veh_step = ui.Stepper(None, self.v_veh_count, 1, 50, width=3, command=self._set_veh_count)
         self.veh_count_note = ui.Label("", font=ui.f_zh(9), fg=ui.MUTED)
         self.btn_veh_count = small_button("原版", self._reset_veh_count)
-        self.row_veh_count = veh.row("每次放几只", self.veh_count_note, 10, self.btn_veh_count, 8, self.veh_step, name_w=90)
+        self.row_veh_count = veh.row("每次放几只", self.veh_count_note, 10, self.btn_veh_count, 8, self.veh_step, name_w=90,
+                                     help="步兵战车开门一次放几只兵（原版 3 只）。场上上限满了还是放不出来。")
         self.veh_box, self.veh_lay = ui.vbox(spacing=6)
         veh.add(self.veh_box, top=6)
         self.veh_hint = veh.add(ui.text(veh.body, "", muted=True, size=9), top=8)

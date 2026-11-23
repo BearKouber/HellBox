@@ -162,7 +162,13 @@ do
     end
 
     -- 2026-11-13：没有「QoL 增强」总开关了，MOD 装着就按各自的开关
+    -- 2026-11-23 V1.07 联机限制：这两项当客机时只在有 MOD 的房间生效（hellbox_room_gate.lua）
+    local GATED = {drop = true, supply = true}
     local function enabled(key)
+        if GATED[key] and cfg[key] then
+            local gate = rawget(_G, "HellBoxRoomGate")
+            return not (type(gate) == "table" and type(gate.ok) == "function") or gate.ok()
+        end
         return cfg[key]
     end
 

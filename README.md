@@ -30,7 +30,7 @@ HellBox does not replace game files. It adds patch files next to them (`<package
 
 **Other mods:** HellBox can be installed together with Obsidian (Alomare's mod manager): neither removes the other's patches, and HellBox steps back where both offer the same feature. Mods that change the same resources can still conflict; HellBox warns about the ones it knows. HellBox also works together with **QoL Mod** and **Dive Harder**: it installs on whichever boot package the game uses, "Restore vanilla" never touches their files, and the Dive Harder features included in HellBox step aside when Dive Harder is installed.
 
-**Multiplayer:** HellBox only changes your own game. Players without HellBox can still join you. As host, your enemy / spawn edits and play modes apply to your room, and the room name is tagged `[HellBox]`, so everyone can see it is modded (HellBox users can hide such rooms with the "Hide HellBox games" filter). When you join someone else's room, your data changes are not applied there (vanilla rules); feature switches still work for you, and teammates who also use HellBox can choose to follow the host's play modes.
+**Multiplayer:** HellBox only changes your own game. Players without HellBox can still join you. As host, your enemy / spawn edits and play modes apply to your room, and the room name is tagged `[HellBox]`, so everyone can see it is modded (HellBox users can hide such rooms with the "Hide HellBox games" filter). When you join someone else's room, your data changes are not applied there (vanilla rules); most feature switches still work for you (carrying boxes into vehicles, dropping support gear, self-resupply, auto-locating objectives and split screen only work in rooms whose host also runs HellBox or has CameraCTRL split screen on), and teammates who also use HellBox can choose to follow the host's play modes.
 
 <sub>Hidden developer mode: click the version number on the About page 10 times. It adds per-enemy / per-spawn-source data editing and the Map Select, Split screen, Helldiver and Log pages. Use at your own risk.</sub>
 
@@ -53,7 +53,7 @@ LuaJIT 2.0 is needed to compile the Lua scripts when the core is installed. Put 
 python hellbox/make_exe.py
 ```
 
-This creates `bin\HellBox\HellBox.exe` (PyInstaller, one folder). It does not create or update shortcuts; use an existing shortcut or run `HellBox.exe` directly.
+This creates `bin\HellBox\HellBox.exe` (PyInstaller, one folder). It also points a `HellBox.lnk` shortcut in the repository root at it.
 
 **Release-style build:**
 
@@ -71,13 +71,9 @@ On Windows a copied, extracted or freshly built folder can inherit a **Low** int
 Permission denied: ...\play.txt.tmp
 ```
 
-`fix-save.bat` restores the **Medium** integrity label on the built app folder and starts HellBox. Run it **as administrator** (right-click → *Run as administrator*). It expects the standard build at:
+`fix-save.bat` restores the **Medium** integrity label on the built app folder and starts HellBox. Run it **as administrator** (right-click → *Run as administrator*). It expects the build next to it, at `bin\HellBox` in the repository root.
 
-```
-D:\Desktop\HellBox\bin\HellBox
-```
-
-If your checkout or build is somewhere else, edit the `set "B=..."` line at the top of the file first. It only changes the folder's integrity label, not the file contents, and then launches `HellBox.exe`; close HellBox before running it. You normally need it only when saving fails after a build or copy.
+If your build is somewhere else, edit the `set "B=..."` line at the top of the file first. It only changes the folder's integrity label, not the file contents, and then launches `HellBox.exe`; close HellBox before running it. You normally need it only when saving fails after a build or copy.
 
 ### Optional components
 

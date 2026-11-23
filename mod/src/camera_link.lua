@@ -45,8 +45,15 @@ do
 		return text:match("^%s*1") ~= nil
 	end
 
+	-- 2026-11-23 V1.07 联机限制：当客机时只在有 MOD 的房间开分屏（房主装了 HellBox 或开着分屏，hellbox_room_gate.lua）
+	local function room_ok()
+		local gate = rawget(_G, "HellBoxRoomGate")
+
+		return not (type(gate) == "table" and type(gate.ok) == "function") or gate.ok()
+	end
+
 	local function read_settings(dir)
-		if not dev_on() then
+		if not dev_on() or not room_ok() then
 			return 0, 4, 4, 0
 		end
 

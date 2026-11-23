@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set "B=D:\Desktop\HellBox\bin\HellBox"
+set "B=%~dp0bin\HellBox"
 if not exist "%B%\HellBox.exe" (
   echo HellBox build not found:
   echo %B%

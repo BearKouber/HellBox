@@ -113,6 +113,8 @@ class DataPage(Page):
         self.btn_del = ui.Button(None, "删掉这块", self.delete_block, kind="danger", padx=8, pady=2)
         el.addWidget(ui.line(self.ed_title, 14, ui.Label("名字", font=ui.f_zh(10, True), fg=ui.MUTED), 6,
                              self.name_entry, 14, self.btn_ok, 8, self.btn_cancel, "<>", self.btn_del))
+        self.ed_warn = ui.ElideLabel("", font=ui.f_zh(9, True), fg=ui.MUTED)
+        el.addWidget(self.ed_warn)
         self.edit_bar = edit
         edit.hide()
         self.view.pin_lay.addWidget(edit)
@@ -170,7 +172,7 @@ class DataPage(Page):
 
         s.command = done
         rs.command = reset
-        card.row(name, s, 6, rs, name_w=120)
+        card.row(name, s, 6, rs, help=help_text, name_w=120)
         self.sliders[key] = (var, default, s, rs)
 
     # ---------------- 坦克屁股出兵
@@ -304,7 +306,7 @@ class DataPage(Page):
             ui.filled(sep, ui.DISABLED)
             self.list_lay.addWidget(sep)
             summ = tr(db.summary(k, cell))
-            r = ui.HoverRow(cell["name"])
+            r = ui.HoverRow(cell["name"], summ + tr("。点击「使用」= 游戏里换成这块；「编辑」修改里面的数值。"))
             on = live == i
             r.lay.addWidget(ui.Square(None, ui.MINT if on else ui.CARD, 10), 0, VC)
             col, cl = ui.vbox()
@@ -417,6 +419,9 @@ class DataPage(Page):
         self.editing = (kind, idx, new)
         self.v_name.set(cell["name"])
         self.ed_title.config(text=tr(db.TYPE_NAME[kind]) + (tr("（新建）") if new else ""))
+        live = self.data["live"].get(kind) == idx
+        self.ed_warn.config(text=tr("这块正在使用：点击「确定」后游戏里立即换成改好的。") if live
+                            else tr("改完点击「确定」存进这块；要用的话回列表点击「使用」。"), fg=ui.WARN if live else ui.MUTED)
         self.btn_del.set_enabled(not new)
         self.dev_row.hide()
         for k, e in self.editors.items():

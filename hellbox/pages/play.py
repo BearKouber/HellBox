@@ -164,7 +164,10 @@ class PlayPage(Page):
         self.follow_var = ui.Var("0" if self.cfg["follow"] == "0" else "1")
         self.seg_follow = ui.Segmented(None, [("1", "跟随房主"), ("0", "照原版")], self.follow_var, command=self._follow_picked,
                                        font=ui.f_zh(9, True), padx=9, pady=2, shadow=2)
-        self.follow_row = top.row("进别人房间时", self.seg_follow)
+        self.follow_row = top.row("进别人房间时", self.seg_follow,
+                                  help="当客机时：跟随房主 = 武装配置、换弹惊喜、修正参数、鬼城都照房主的（你这页的设置回自己房间才用）；"
+                                       "照原版 = 这些都不开，不用退房。出怪、怪物属性、随机掉落、电磁干扰由房主那边做，开不开都有。")
+        self.view_note = top.add(ui.text(top.body, "", muted=True, size=9), top=8)
         self.view.row(top)
 
         self._build_custom()
@@ -174,7 +177,7 @@ class PlayPage(Page):
         self.app.after(500, self._tick)
 
     def _custom_help(self):
-        return ("开启后，每一关都会包含修正参数、填弹惊喜和环境，直到关掉。修正参数需要为房主；填弹惊喜、鬼城只对安装并运行 HellBox 的玩家有效。")
+        return ("开启后，每一关都会包含修正参数、换弹惊喜和环境，直到关掉。修正参数需要你当房主；换弹惊喜、鬼城只对安装并运行 HellBox 的玩家有效。")
 
     # ------------------------------------------------------------ HellBox 版
     def _build_custom(self):
@@ -505,7 +508,7 @@ class PlayPage(Page):
     def _pick_c_cond(self, _key):
         on = self.cfg.get("cond") != "reload_surprise"
         self.cfg["cond"] = "reload_surprise" if on else ""
-        self._save("填弹惊喜已" + ("打开" if on else "关闭") + "。")
+        self._save("换弹惊喜已" + ("打开" if on else "关闭") + "。")
 
     # ------------------------------------------------------------ 配装块
     LO_NAMES = (("perk", "天赋"), ("primary", "主武器"), ("s5", "战略配备 1"), ("s6", "战略配备 2"), ("s7", "战略配备 3"), ("s8", "战略配备 4"))
@@ -839,13 +842,22 @@ class PlayPage(Page):
     }
 
     def _hint_custom(self, cell):
-        return ""
+        full = tr(self.FULL.get(cell.key) or cell.desc)
+        other = self._conflict(cell.key)
+        if other:
+            return full + "\n" + T("不能和「{0}」一起开，请先取消「{0}」。", tr(pm.NAMES.get(other, other)))
+        if self._custom_support(cell.key) == "team":
+            extra = tr("只在虫族、生化人关卡有。") if cell.key == "emp" else ""
+            return full + "\n" + tr("你当房主时全队都有；队友无需安装 HellBox。") + extra
+        return full + "\n" + tr("只对安装了 HellBox 的玩家有效：你当房主，队友照你的；你在别人房间，照房主的。")
 
     def _env(self):
         e = self.cfg.get("env") or ""
         return e if e in pm.ENV_KEYS else ""
 
     def _hint_env(self, cell):
+        if cell.key == "ghost_town":
+            return tr("只对安装了 HellBox 的玩家有效，房主说了算；没装的人看到正常光照，也能一起玩。")
         return ""
 
     def _pick_env(self, key):
@@ -992,6 +1004,10 @@ class PlayPage(Page):
         for w in (self.custom_toggle, self.custom_sub, self.follow_row):
             w.setVisible(value == "custom")
         self.guest_row.setVisible(value == "custom" and self._is_guest())
+        self.view_note.config(text=tr(
+            "任何关卡都能用；修正参数你当房主全队都有，其余只对安装了 HellBox 的玩家有效，房主说了算。"
+            if value == "custom" else
+            "开一局真正的试验场：全队完整生效，队友无需安装 HellBox，外观固定是试验场。"))
         self.sync()
 
     def _save(self, msg=None):
@@ -1063,7 +1079,7 @@ class PlayPage(Page):
             names = [pm.NAMES[k] for k in [c["cond"], *evs, self._env()] if k in pm.NAMES]
             sub = T("已开启：{0}", tr("、").join(tr(n) for n in names)) if names else tr("已开启，但尚未选择玩法")
             if "emp" in evs:
-                sub += tr("（电磁脉冲只在虫族、生化人关卡有）")
+                sub += tr("（电磁干扰只在虫族、生化人关卡有）")
             if "drop" in evs and not [k for k in self._drop_keys() if not self._drop_locked(k)]:
                 sub += tr("（随机掉落还没勾战略配备）")
             running = [e for e in pm.split_list(self.status.get("events")) if e in pm.NAMES]

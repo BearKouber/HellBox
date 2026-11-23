@@ -58,7 +58,43 @@ PTH = "\n".join([
     "",
 ])
 
-SITECUSTOMIZE = ''
+SITECUSTOMIZE = '''"""双击 HellBox.exe（= Python 官方 pythonw.exe 改名）时打开 HellBox。
+带参数运行（比如换语言后重开：HellBox.exe app\\\\hellbox\\\\app.pyc --page xxx）时什么都不做，照 Python 平常的样子跑。
+2026-11-21 HD1-037：发行版不再用 PyInstaller，见 hellbox\\\\make_portable.py（源码仓库里）。"""
+import os
+import sys
+
+if len(getattr(sys, "orig_argv", sys.argv)) <= 1 and os.path.basename(sys.executable).lower() == "hellbox.exe":
+    import runpy
+    app = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "app", "hellbox", "app.pyc")
+    if not os.path.isfile(app):
+        app = app[:-1]  # 没编译的（app.py）
+    sys.argv = [app]
+    code = 0
+    try:
+        runpy.run_path(app, run_name="__main__")
+    except SystemExit as e:  # 界面关掉时 app.py 用 sys.exit 退出
+        code = e.code if isinstance(e.code, int) else (0 if e.code is None else 1)
+    except BaseException:
+        import traceback
+        log = os.path.join(os.environ.get("APPDATA", ""), "Arrowhead", "Helldivers", "hellbox", "logs", "hellbox-crash.txt")
+        try:
+            os.makedirs(os.path.dirname(log), exist_ok=True)
+            with open(log, "w", encoding="utf-8") as f:
+                f.write(traceback.format_exc())
+        except OSError:
+            pass
+        code = 1
+    # 这里还在 Python 启动阶段（读 sitecustomize），直接 SystemExit 会被当成启动失败；收好尾后直接结束进程
+    import atexit
+    atexit._run_exitfuncs()
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream and stream.flush()
+        except Exception:
+            pass
+    os._exit(code)
+'''
 
 
 def _sha(path):

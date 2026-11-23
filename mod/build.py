@@ -68,6 +68,7 @@ PATCHES = {
         "src/ai_mech.lua",  # HD1-012（2026-10-13）：机制表（输入、状态计时、发射器连发、出膛 / 爆炸 / 近战 / 挨打事件），录实机操作用
         "src/hb_log.lua",  # 2026-11-14：HellBox 日志本（HellBoxLog 写 hellbox/logs/game.log），要在用它的脚本前面
         "src/hb_probe.lua",  # 2026-11-19：闪退探针（一直写 hellbox/logs/game-probe.txt 现在在干什么；没正常退出 = 可能闪退），要在 hb_log 后面
+        "src/hellbox_room_gate.lua",  # 2026-11-23 V1.07：联机限制（当客机时只在有 MOD 的房间开几项功能），要在用它的脚本前面
         "src/recap_guard.lua",  # 2026-10-18：开机战役回顾服务器回 0 张快照时不再闪退（parent:exit 为 nil）
         "src/room_name.lua",  # 2026-10-21：自定义房间名（名字在 room_name.txt）
         "src/hellbox_room_filter.lua",  # 2026-11-21 HD1-038：找房间「筛选」里加「隐藏 HellBox 房间」（认房间名里的 [HellBox）

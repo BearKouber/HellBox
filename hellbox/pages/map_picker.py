@@ -91,7 +91,7 @@ class MapPicker(QDialog):
         self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setModal(True)
-        self.seed, self.on_pick = current, on_pick
+        self.seed, self.on_pick, self.game_running = current, on_pick, game_running
         self.cands = list(cands)
         self.shown = []
         self.picked_sig = None
@@ -104,6 +104,9 @@ class MapPicker(QDialog):
         hl.addWidget(ui.Label("地形选择", font=ui.f_zh(12, True)), 0, Qt.AlignmentFlag.AlignVCenter)
         hl.addStretch(1)
         box.lay.addWidget(head)
+        box.lay.addSpacing(8)
+        self.status = ui.Label("", font=ui.f_zh(9), fg=ui.MUTED, wrap=True)
+        box.lay.addWidget(self.status)
         box.lay.addSpacing(8)
 
         self.grid_host = QWidget()
@@ -153,7 +156,12 @@ class MapPicker(QDialog):
             self._rebuild()
         total = len(self.cands)
         if made >= total:
+            self.status.config(text=T("共 {0} 种地形，点击一张即可换成它。", len(unique)))
             self.timer.stop()
+        elif not self.game_running():
+            self.status.config(text=T("需要游戏正在运行（在飞船或主菜单）才能生成地图预览。已生成 {0} / {1} 张。", made, total))
+        else:
+            self.status.config(text=T("正在生成地图预览：{0} / {1}，已有 {2} 种地形可选。", made, total, len(unique)))
 
     def _rebuild(self):
         while self.grid.count():

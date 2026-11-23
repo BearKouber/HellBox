@@ -498,6 +498,7 @@ class EnemyEditor:
                 var = ui.Var(on)
                 cb = ui.CheckBox(None, label, var, font=ui.f_zh(9, True), note=("已改" if on != default else None),
                                  command=lambda v=var, p=path, d=default: self._set_immune(name, p, v.get(), d))
+                ui.hover_help(cb, label, tr(tip) + tr("\n原版：免疫" if default else "\n原版：不免疫").replace("\n", " "))
                 g_lay.addWidget(cb, n // 3, n % 3, LEFT_VC)
                 n += 1
             g_lay.setColumnStretch(3, 1)

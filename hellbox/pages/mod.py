@@ -82,23 +82,23 @@ class ModPage(Page):
         mission = ui.Card(self.view, "MISSION", "任务中", fill=ui.SALMON)
         self.carry_on = ui.Var(build.get_carry_vehicle())
         self.carry_toggle = self._ctl(ui.Toggle(None, self.carry_on, command=self.apply_carry))
-        self._row(mission, "带箱子上车", "搬箱子时对着载具按 E，能带着箱子上车。下车后箱子会卡在手上，到传送带前可交互放下。",
+        self._row(mission, "带箱子上车", "搬箱子时对着载具按 E，能带着箱子上车。下车后箱子会卡在手上，到传送带前可交互放下。当客机时：房主也装了 HellBox（或开着分屏）才生效。",
                   toggle=self.carry_toggle)
         self.drop_key = ui.Var(cfg["drop_key"] if cfg["drop_key"] in options.DROP_KEYS else "x")
         self.seg_drop = self._ctl(ui.Segmented(None, DROP_KEYS, self.drop_key, command=self.set_drop_key,
                                                font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(mission, "丢支援装备", "丢下支援武器和背包：手里拿着支援武器就丢它，不然丢背包。手柄需要按住交互键（A）0.6 秒。",
+        self._row(mission, "丢支援装备", "丢下支援武器或背包：键盘按右边选的键，手柄按住交互键（A）0.6 秒。丢下的东西队友也能捡。当客机时：房主也装了 HellBox（或开着分屏）才生效。",
                   extras=(self.seg_drop,), flag="drop")
         self.drop_first = ui.Var(cfg["drop_first"] if cfg["drop_first"] in options.DROP_FIRST else "")
         self.seg_drop_first = self._ctl(ui.Segmented(None, DROP_FIRST, self.drop_first, command=self.set_drop_first,
                                                      font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(mission, "先丢哪个", "",
+        self._row(mission, "先丢哪个", "看手上：拿着支援武器就丢武器，不然丢背包；先丢武器 / 先丢背包：有就先丢它。",
                   extras=(self.seg_drop_first,))
         self.supply_key = ui.Var(cfg["supply_key"] if cfg["supply_key"] in options.SUPPLY_KEYS else "5")
         self.seg_supply = self._ctl(ui.Segmented(None, SUPPLY_KEYS, self.supply_key, command=self.set_supply_key,
                                                  font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(mission, "补给背包自己用", "背着补给背包时随时给自己补一次弹药"
-                                       "手柄按住换弹键（RB）0.6 秒。",
+        self._row(mission, "补给背包自己用", "背着补给背包时随时给自己补一次弹药，背包少一格。键盘按右边选的数字键，"
+                                       "手柄按住换弹键（RB）0.6 秒。当客机时：房主也装了 HellBox（或开着分屏）才生效。",
                   extras=(self.seg_supply,), flag="supply", credit=LHGRZR)
         self._row(mission, "隐藏样本描边", "样本发光轮廓不显示。",
                   flag="hide_samples", credit=LHGRZR)
@@ -110,7 +110,10 @@ class ModPage(Page):
                                                font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
         self._dh_row(mission, "HUD 显示延迟", "在队友的状态卡片下标注延迟。",
                      "dh_ping", OCT, extras=(self.seg_ping,))
-        self._dh_row(mission, "自动定位任务位置", "黄色问号表示的未定位目标一开局就显示在地图上。", "dh_hidden", OCT)
+        self._dh_row(mission, "自动定位任务位置", "黄色问号表示的未定位目标一开局就显示在地图上。当客机时：房主也装了 HellBox（或开着分屏）才生效。", "dh_hidden", OCT)
+        mission.add(ui.text(mission.body, "带箱子上车、丢支援装备、补给背包自己用、自动定位任务位置、分屏：当客机时，"
+                                          "只在房主也装了 HellBox（或开着分屏）的房间生效；自己当房主、单机、本机多人照常用。",
+                            muted=True, size=9), top=8)
         self.view.row(mission)
 
         ship = ui.Card(self.view, "SHIP", "星图和飞船", fill=ui.YELLOW)
@@ -121,12 +124,12 @@ class ModPage(Page):
         self.btn_refresh = self._ctl(ui.Button(None, "全部刷新", self.refresh_now, font=ui.f_zh(9, True),
                                                padx=7, pady=2, shadow=2))
         self.key_hint = ui.Label("", font=ui.f_zh(9), fg=ui.BAD)
-        self._row(ship, "刷新星球", "在选择星球界面刷新星球",
+        self._row(ship, "刷新星球", "在选择星球界面按选好的键换一批星球（要当房主，刷掉的星球没打完的进度会清掉）。「全部刷新」三个阵营一起刷。",
                   note=self.key_hint, extras=(self.seg_key, self.btn_refresh), flag="refresh")
         self.strike = ui.Var(_strike_value())
         self.seg_strike = self._ctl(ui.Segmented(None, STRIKE_OPTIONS, self.strike, command=self.set_strike,
                                                  font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(ship, "报复关数量", "每颗星球报复关数量",
+        self._row(ship, "报复关数量", "每颗星球固定带几个报复关，只影响之后新出的星球。原版：难度 4 以上每颗 33% 带 1 个。",
                   extras=(self.seg_strike,))
         self.speed = ui.Var(cfg["speed_factor"] if cfg["speed_factor"] in options.SPEEDS else 3)
         self.seg_speed = self._ctl(ui.Segmented(None, SPEED_OPTIONS, self.speed, command=self.set_speed,
@@ -141,7 +144,7 @@ class ModPage(Page):
                                                 font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
         self.seg_se = self._ctl(ui.Segmented(None, SE_RACES, self.se_race, command=self.set_front,
                                              font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(ship, "解锁其他战线", "提供任意战线选择",
+        self._row(ship, "解锁其他战线", "未开放的战线也能选。进攻母星 / 保卫超级地球是本机任务，不算进银河战争。退出战役地图再进一次生效。",
                   extras=(self.seg_front, self.seg_se))
         self.view.row(ship)
 
@@ -157,7 +160,7 @@ class ModPage(Page):
         fix = ui.Card(self.view, "FIX", "Bug 修复", fill=ui.MINT)
         self._row(fix, "冲刺时换弹不往前滑", "原版冲刺中换弹会锁着方向往前冲一段。启用后换弹时松开摇杆 / 方向键就停。",
                   flag="noslide")
-        self._row(fix, "聊天输入法防闪退", "启用后修复原版中文输入法可能导致游戏闪退的bug",
+        self._row(fix, "聊天输入法防闪退", "修复原版用中文输入法在聊天框打字可能闪退的问题。",
                   flag="ime_fix", credit=HALFSUGAR)
         self._dh_row(fix, "配合 QoL 的两处修正", "只在游戏里装了 QoL Mod 时有用：结算、星球奖励界面的名字照 QoL「名字用聊天字体」的设置；"
                                               "QoL 的选项名不再显示成「LOC:……」，统一装进 MOD SETTINGS 列表。",

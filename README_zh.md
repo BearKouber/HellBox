@@ -30,7 +30,7 @@ HellBox 不替换游戏文件，而是在游戏的 `contents` 文件夹里放补
 
 **和别的 MOD 一起用：** 可以和 Obsidian（Alomare 的 MOD 管理器）一起装：两边谁也不删谁的补丁，两边都有的功能 HellBox 让出。改同样资源的 MOD 还是可能冲突，HellBox 认得的会提醒。也能和 **QoL Mod**、**Dive Harder** 任意组合：HellBox 装在游戏当前用的启动包上，「恢复原版」不碰它们的文件；HellBox 里来自 Dive Harder 的几项在装了 Dive Harder 时交给它。
 
-**联机：** HellBox 只改你自己的游戏，没装 HellBox 的人也能进你的房间。你当房主时，改的怪物 / 出怪和玩法在你的房间里生效，房间名会带 `[HellBox]` 标记，大家一看就知道是改过的房间（装了 HellBox 的人还能用「隐藏 HellBox 房间」筛掉）。你进别人的房间时，你改的数据不生效（按原版），功能开关照常；队友也装了 HellBox 的，可以自己选跟不跟随房主的玩法。
+**联机：** HellBox 只改你自己的游戏，没装 HellBox 的人也能进你的房间。你当房主时，改的怪物 / 出怪和玩法在你的房间里生效，房间名会带 `[HellBox]` 标记，大家一看就知道是改过的房间（装了 HellBox 的人还能用「隐藏 HellBox 房间」筛掉）。你进别人的房间时，你改的数据不生效（按原版），功能开关大多照常（带箱子上车、丢支援装备、补给背包自己用、自动定位任务位置、分屏只在房主也装了 HellBox 或开着 CameraCTRL 分屏的房间生效）；队友也装了 HellBox 的，可以自己选跟不跟随房主的玩法。
 
 <sub>隐藏的开发者模式：「关于」页的版本号连点 10 次。数据能按单只怪 / 单个出怪来源细改，左边多出「选图」「分屏」「潜兵」「日志」，风险自负。</sub>
 
@@ -53,7 +53,7 @@ python hellbox/app.py
 python hellbox/make_exe.py
 ```
 
-生成 `bin\HellBox\HellBox.exe`（PyInstaller 文件夹版）。不会再自动创建或更新快捷方式；用现有快捷方式或直接运行 `HellBox.exe`。
+生成 `bin\HellBox\HellBox.exe`（PyInstaller 文件夹版）。同时会在仓库根目录生成指向它的快捷方式 `HellBox.lnk`。
 
 **发行版打包：**
 
@@ -74,7 +74,7 @@ Permission denied: ...\play.txt.tmp
 `fix-save.bat` 会把构建目录改回 **Medium** 完整性，然后启动 HellBox。用法：
 
 - **右键 → 以管理员身份运行**。
-- 默认目录是 `D:\Desktop\HellBox\bin\HellBox`。如果你的仓库或构建在别处，先改文件顶部的 `set "B=..."`。
+- 默认找它旁边的 `bin\HellBox`（仓库根目录下的构建）。如果你的构建在别处，先改文件顶部的 `set "B=..."`。
 - 它只改文件夹的完整性标签，不改文件内容；运行前先关掉 HellBox。
 - 一般只在构建 / 复制后保存失败时用，不需要每次都跑。
 

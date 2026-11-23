@@ -228,7 +228,7 @@ class CursorPage(Page):
 
     def _loaded(self, ok, res):
         if ok:
-            self.pv_note.config(text="")
+            self.pv_note.config(text="这里只是预览，点击「装到游戏里」才会生效。\n“不瞄准”需要在游戏设置里开启“准星总是可见”。")
             self.refresh()
         else:
             self.pv_note.config(text=T('读不到原版指针：{0}', tr(str(res))), fg=ui.BAD)
