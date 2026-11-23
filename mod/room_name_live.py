@@ -65,7 +65,7 @@ k32.ReadProcessMemory.argtypes = [wintypes.HANDLE, ctypes.c_void_p, ctypes.c_voi
                                   ctypes.c_size_t, ctypes.POINTER(ctypes.c_size_t)]
 k32.CloseHandle.argtypes = [wintypes.HANDLE]
 k32.WriteProcessMemory.restype = ctypes.c_int
-k32.WriteProcessMemory.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_size_t,
+k32.WriteProcessMemory.argtypes = [wintypes.HANDLE, ctypes.c_void_p, ctypes.c_char_p, ctypes.c_size_t,
                                    ctypes.POINTER(ctypes.c_size_t)]
 
 _cache = {}  # (pid, 魔数) -> 表地址（同一次游戏里不用每次都扫一遍内存）
@@ -93,8 +93,14 @@ def _read(h, addr, n):
 def _write(h, addr, values):
     data = struct.pack(f"<{len(values)}d", *values)
     got = ctypes.c_size_t()
-    if not k32.WriteProcessMemory(h, addr, data, len(data), ctypes.byref(got)) or got.value != len(data):
-        raise OSError(ctypes.get_last_error(), "写不进游戏内存")
+    # WriteProcessMemory 的第一个参数必须是进程句柄；原来写成 ctypes.c_void_p 而且漏传了 h，
+    # 句柄被当成目标地址，所以改名永远报 [Errno 5]（2026-11-15 修）
+    ok = k32.WriteProcessMemory(h, addr, data, len(data), ctypes.byref(got))
+    if not ok or got.value != len(data):
+        err = ctypes.get_last_error()
+        if err in (5, 87, 299):  # ERROR_ACCESS_DENIED / 参数错 / 只读（游戏以自己的保护级别运行）
+            raise OSError(err, "写不进游戏内存：HellBox 的权限比游戏低。关掉游戏再点一次（关着的时候改，下次开游戏生效）。")
+        raise OSError(err, "写不进游戏内存")
 
 
 def _scan(handle, magic):
@@ -189,7 +195,10 @@ def live_set(name, timeout=3.0, pid=None, magic=MAGIC):
     h = k32.OpenProcess(PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_VM_OPERATION | PROCESS_QUERY_INFORMATION,
                         False, pid)
     if not h:
-        raise OSError(ctypes.get_last_error(), "打不开游戏进程")
+        err = ctypes.get_last_error()
+        if err == 5:
+            raise OSError(err, "打不开游戏进程：HellBox 的权限比游戏低。关掉游戏再点一次（关着的时候改，下次开游戏生效）。")
+        raise OSError(err, "打不开游戏进程")
     try:
         addr, v = _table(h, pid, magic)
         if addr is None:
