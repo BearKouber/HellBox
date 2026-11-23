@@ -146,7 +146,6 @@ def main():
     cmd = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir",
            "--console" if "--console" in sys.argv else "--windowed",
            "--name", "HellBox",
-           "--uac-admin",
            "--icon", os.path.join(HERE, "icon.ico"),
            "--noupx",
            "--version-file", version_file(),

@@ -1007,7 +1007,7 @@ class PlayPage(Page):
         self.view_note.config(text=tr(
             "任何关卡都能用；修正参数你当房主全队都有，其余只对安装了 HellBox 的玩家有效，房主说了算。"
             if value == "custom" else
-            "开一局真正的试验场：全队完整生效，队友无需安装 HellBox，外观固定是试验场。"))
+            "开一局真正的试炼场：全队完整生效，队友无需安装 HellBox，外观固定是试炼场。"))
         self.sync()
 
     def _save(self, msg=None):
