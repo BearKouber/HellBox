@@ -112,12 +112,12 @@ def version_file():
     """2026-11-22（GPT 建议，减误报 / 方便核对）：exe 带版本信息（右键属性 → 详细信息），版本号跟 app.py 的 VERSION。"""
     import re
     with open(os.path.join(HERE, "app.py"), encoding="utf-8") as f:
-        m = re.search(r'^VERSION = "V(\d+)\.(\d+)"', f.read(), re.M)
-    major, minor = int(m.group(1)), int(m.group(2))
+        m = re.search(r'^VERSION = "V(\d+)\.(\d+)(?:\.(\d+))?"', f.read(), re.M)
+    major, minor, patch = int(m.group(1)), int(m.group(2)), int(m.group(3) or 0)
     path = os.path.join(WORK, "version_info.txt")
     os.makedirs(WORK, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
-        f.write(VERSION_INFO.format(nums=(major, minor, 0, 0), text=f"{major}.{m.group(2)}"))
+        f.write(VERSION_INFO.format(nums=(major, minor, patch, 0), text=f"{major}.{minor}.{patch}"))
     return path
 
 

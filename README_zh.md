@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-**HELLDIVERS™ 1**（Steam / Windows）的免费开源（MIT）MOD 工具箱：功能修正、额外玩法、怪物与出怪调整等，都在一个窗口里开关。
+HellBox 作者：**07**。**HELLDIVERS™ 1**（Steam / Windows）的免费开源（MIT）MOD 工具箱：功能修正、额外玩法、怪物与出怪调整等，都在一个窗口里开关。
 
 > **下载：** 成品在 Nexus Mods：https://www.nexusmods.com/helldivers/mods/63  
 > 这个仓库是源码。
@@ -92,7 +92,7 @@ Permission denied: ...\play.txt.tmp
 
 ## 鸣谢与授权
 
-HellBox 自己的代码按 [MIT](LICENSE) 授权。收录的第三方部分保留各自的授权或条款，列在 [LICENSE](LICENSE) 末尾。
+HellBox 由 **07** 制作；自己的代码按 [MIT](LICENSE) 授权。收录的第三方部分保留各自的授权或条款，列在 [LICENSE](LICENSE) 末尾。
 
 - **分屏：** CameraCTRL，**HalfSugar**。
 - **输入法防闪退：** **HalfSugar**。

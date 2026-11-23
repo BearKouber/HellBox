@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-A free, open-source (MIT) toolbox for **HELLDIVERS™ 1** on Steam / Windows: quality-of-life fixes, extra play modes, enemy and spawn tuning, and more — all switched on and off from one window.
+HellBox is created by **07**. A free, open-source (MIT) toolbox for **HELLDIVERS™ 1** on Steam / Windows: quality-of-life fixes, extra play modes, enemy and spawn tuning, and more — all switched on and off from one window.
 
 > **Download:** the ready-to-use build is on Nexus Mods: https://www.nexusmods.com/helldivers/mods/63  
 > This repository contains the source code.
@@ -93,7 +93,7 @@ No original game files are in this repository. When the core is installed, HellB
 
 ## Credits and license
 
-HellBox's own code is under the [MIT license](LICENSE). Third-party parts keep their own licenses or terms, listed at the end of [LICENSE](LICENSE).
+HellBox was created by **07**; its own code is under the [MIT license](LICENSE). Third-party parts keep their own licenses or terms, listed at the end of [LICENSE](LICENSE).
 
 - **Split screen:** CameraCTRL by **HalfSugar**.
 - **Input-method crash fix:** **HalfSugar**.
