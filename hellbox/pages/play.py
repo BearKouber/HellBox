@@ -838,7 +838,7 @@ class PlayPage(Page):
         "super_boots": "你的跑速加快 40%，但怪物打你的伤害翻倍。",
         "what_goes_around": "你打到队友：队友照样受伤，同样大小的伤害也会打回你自己身上。",
         "reload_surprise": "每次换弹，手里的枪随机换成另一把。",
-        "sidearm_saber": "每次出生把手枪换成试炼场「只能近战」里的那把军刀。",
+        "sidearm_saber": "每次出生把手枪换成试炼场「只有近战」里的那把军刀。",
     }
 
     def _hint_custom(self, cell):
