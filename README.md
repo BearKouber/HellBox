@@ -2,7 +2,9 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-HellBox is created by **07**. A free, open-source (MIT) toolbox for **HELLDIVERS™ 1** on Steam / Windows: quality-of-life fixes, extra play modes, enemy and spawn tuning, and more — all switched on and off from one window.
+HellBox is created by **07**. **Current version: 1.06.1.**
+
+A free, open-source (MIT) toolbox for **HELLDIVERS™ 1** on Steam / Windows: quality-of-life fixes, extra play modes, enemy and spawn tuning, and more — all switched on and off from one window.
 
 > **Download:** the ready-to-use build is on Nexus Mods: https://www.nexusmods.com/helldivers/mods/63  
 > This repository contains the source code.
@@ -12,6 +14,7 @@ HellBox is created by **07**. A free, open-source (MIT) toolbox for **HELLDIVERS
 - **Fixes:** reload bug fix, carry objective boxes into vehicles, drop your support weapon or backpack, and other small quality-of-life switches.
 - **Display:** readable name plates and clean handling of long names.
 - **Play modes:** Proving Grounds modes online, stackable field events, random stratagem drops, Ghost Town, room loadout rules, and saved presets. Players who also use HellBox can follow the host's settings.
+- **Map Select (developer mode):** choose mission type, race, environment, time and difficulty, preview the map, pick a terrain, and keep up to eight map presets.
 - **Data:** enemy stats and spawn rules for your own room.
 - **Cursor:** aim cursor colour and preview.
 - **Extras:** quick voice lines, faster cutscenes (QoL Mod compatible), planet refresh, teammate ping on the HUD (from Dive Harder), and a "Hide HellBox games" room filter.
@@ -102,6 +105,7 @@ HellBox was created by **07**; its own code is under the [MIT license](LICENSE).
 - **QoL Mod:** **SomeDoggo**.
 - Self-resupply and hide sample outlines: **Lhgrzr**.
 - Outer UI design: **91** · high-difficulty data guidance: **吃大份** · testing: **91, HalfSugar, 吃大份, K-ON!, Kent, QiQi** · overall planning and code: **Claude**.
+- **Text:** **Oct0pu5**.
 - Features borrowed from other mods name their source under the feature in HellBox.
 
 Font: Silkscreen (SIL Open Font License, `hellbox/fonts/OFL.txt`). LuaJIT © Mike Pall (MIT). Release builds also contain Python (PSF license), PySide6 / Qt (LGPL-3.0) and pymem (MIT).

@@ -2,7 +2,9 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-HellBox 作者：**07**。**HELLDIVERS™ 1**（Steam / Windows）的免费开源（MIT）MOD 工具箱：功能修正、额外玩法、怪物与出怪调整等，都在一个窗口里开关。
+HellBox 作者：**07**。**当前版本：1.06.1。**
+
+**HELLDIVERS™ 1**（Steam / Windows）的免费开源（MIT）MOD 工具箱：功能修正、额外玩法、怪物与出怪调整等，都在一个窗口里开关。
 
 > **下载：** 成品在 Nexus Mods：https://www.nexusmods.com/helldivers/mods/63  
 > 这个仓库是源码。
@@ -12,6 +14,7 @@ HellBox 作者：**07**。**HELLDIVERS™ 1**（Steam / Windows）的免费开�
 - **功能修正：** 换弹 Bug 修复、把任务箱子搬上车、丢掉支援武器 / 背包，以及其他小功能开关。
 - **显示：** 更清楚的名字显示，长名字不会被截得乱七八糟。
 - **玩法：** 试验场玩法联机可用、可叠加的战场事件、随机战略配备掉落、鬼城、房间武装规则、玩法预设。也装了 HellBox 的队友可以选择跟随房主的设置。
+- **选图（开发者模式）：** 选任务类型、种族、环境、时间和难度，预览地图、挑地形，并能保存 8 个地图存档。
 - **数据：** 自己房间里的怪物属性和出怪规则。
 - **指针：** 准星颜色和预览。
 - **其他：** 快捷语音、过场加速（兼容 QoL Mod）、刷新星球、队友 HUD 标记（来自 Dive Harder）、「隐藏 HellBox 房间」筛选。
@@ -101,6 +104,7 @@ HellBox 由 **07** 制作；自己的代码按 [MIT](LICENSE) 授权。收录的
 - **QoL Mod：** **SomeDoggo**。
 - 自己补给、隐藏样本轮廓：**Lhgrzr**。
 - 界面设计：**91** · 高难度数据指导：**吃大份** · 测试：**91、HalfSugar、吃大份、K-ON!、Kent、QiQi** · 总体规划与代码：**Claude**。
+- **文本：** **Oct0pu5**。
 - 从别的 MOD 借来的功能，会在 HellBox 对应功能下面写明来源。
 
 字体：Silkscreen（SIL Open Font License，`hellbox/fonts/OFL.txt`）。LuaJIT © Mike Pall（MIT）。发行版还包含 Python（PSF 授权）、PySide6 / Qt（LGPL-3.0）和 pymem（MIT）。
