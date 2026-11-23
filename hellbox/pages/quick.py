@@ -225,7 +225,7 @@ class QuickPage(Page):
 
     # ------------------------------------------------------------ 训练存档
     def _build_train(self):
-        card = ui.Card(self.view, "TRAIN", "开始", fill=ui.MINT, note="8 个存档")
+        card = ui.Card(self.view, "TRAIN", "开始", fill=ui.MINT)
         self.slots = slots.load()
         self.slot_sel = None
         grid_w = QWidget()
@@ -242,13 +242,8 @@ class QuickPage(Page):
         self.btn_slot_save = ui.Button(None, "存进选中的格子", self._slot_save, kind="accent", padx=10, pady=3)
         self.btn_slot_clear = ui.Button(None, "清空这一格", self._slot_clear, padx=10, pady=3)
         card.add(ui.line(self.btn_slot_save, 10, self.btn_slot_clear), top=12)
-        self.slot_hint = card.add(ui.text(card.body, "", muted=True, size=9), top=6)
-
         self.btn_start = ui.Button(None, "开始", self.start, kind="primary", padx=26, pady=6, font=ui.f_zh(11, True))
         card.add(self.btn_start, top=14, align=ui.LEFT)
-        card.add(ui.text(card.body, "未选择保存块时，按上面的配置开始。要当房主：一个人或本机分屏直接进关，进关后按互动键出场；"
-                                     "房间里有联机队友就设为下一局，照常走进出发舱出发，队友不用装 HellBox，大家照常记经验。"
-                                     "游戏未运行时点，会先开游戏，进飞船后自动打开地图。", muted=True, size=9), top=8)
         self._paint_slots()
         return card
 
@@ -258,12 +253,7 @@ class QuickPage(Page):
         has = self.slot_sel is not None
         self.btn_slot_save.set_enabled(has)
         self.btn_slot_clear.set_enabled(has and bool(self.slots[self.slot_sel]))
-        if not has:
-            self.slot_hint.config(text="点击一格选中（再次点击取消），点击「开始」即进入那一关。")
-        elif self.slots[self.slot_sel]:
-            self.slot_hint.config(text=T('第 {0} 格：上面就是这一关。', self.slot_sel + 1))
-        else:
-            self.slot_hint.config(text=T('第 {0} 格是空的。', self.slot_sel + 1))
+
 
     def _slot_clicked(self, i):
         if self.slot_sel == i:
@@ -361,10 +351,9 @@ class QuickPage(Page):
         rl.setContentsMargins(0, 0, 0, 0)
         rl.setSpacing(6)
         self.map_thumb = map_picker.ClickMap(200, self._pick_terrain)
-        self.map_text = ui.text(None, "", bold=True, size=10)
         rl.addSpacing(4)
-        rl.addWidget(self.map_text)
-        rl.addWidget(ui.text(None, "点击地图挑选地形（需游戏正在运行）", muted=True, size=9))
+        self.map_hint = ui.text(None, tr("点击地图挑选地形（需游戏正在运行）"), muted=True, size=9)
+        rl.addWidget(self.map_hint)
         rl.addStretch(1)
         w = _MapBody(left, _MapRight(self.map_thumb, text_col))
         card.add(w, top=4)
@@ -421,7 +410,7 @@ class QuickPage(Page):
         self._set_seed(ds.DEFAULT["seed"])
 
     def _refresh_map_text(self):
-        self.map_text.config(text="■  " + ds.describe(self.cfg["seed"]))
+        self.map_hint.config(text=ds.describe(self.cfg["seed"]) + "\n" + tr("点击地图挑选地形（需游戏正在运行）"))
         if hasattr(self, "map_thumb"):
             self.map_thumb.set_cells(mt.load(self.cfg["seed"]))
 

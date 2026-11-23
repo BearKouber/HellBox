@@ -1423,8 +1423,6 @@ class Footer(QWidget):
         lay = QHBoxLayout(self)
         lay.setContentsMargins(16, 8, 16, 6)
         lay.setSpacing(10)
-        self.sq = Square(None, DISABLED, 10)
-        lay.addWidget(self.sq, 0, Qt.AlignmentFlag.AlignTop)
         col = QWidget()
         cl = QVBoxLayout(col)
         cl.setContentsMargins(0, 0, 0, 0)
@@ -1448,7 +1446,6 @@ class Footer(QWidget):
         self.title.config(text=title, fg=fg)
         self._raw_body = (body or "").replace("\n", " ")
         self.body.config(text=self._fit(self._raw_body))
-        self.sq.set_color(color)
 
     def _fit(self, text):
         fm = QFontMetrics(self.body.font())

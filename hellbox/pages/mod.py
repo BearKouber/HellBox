@@ -28,7 +28,7 @@ SPEED_OPTIONS = [(n, f"×{n}") for n in options.SPEEDS]
 
 # 2026-11-23 V1.06：解锁战线三选一（build.FRONT_MODES）；保卫超级地球再选种族
 FRONT_OPTIONS = [("", "关"), ("1", "普通星区"), ("home", "进攻母星"), ("se", "保卫超级地球")]
-SE_RACES = [("1", "虫族"), ("2", "赛博人"), ("3", "光能族")]
+SE_RACES = [("1", "虫族"), ("2", "生化人"), ("3", "光能者")]
 
 STRIKE_OPTIONS = [("", "原版"), ("0", "0 个"), ("33", "1 个"), ("66", "2 个"), ("100", "3 个")]
 REFRESH_KEYS = [(k, v) for k, v in options.ACTIONS.items() if k]
@@ -118,21 +118,20 @@ class ModPage(Page):
         self.refresh_key = ui.Var(cfg["action"] or "reload")
         self.seg_key = self._ctl(ui.Segmented(None, REFRESH_KEYS, self.refresh_key, command=self.set_key,
                                               font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self.btn_refresh = self._ctl(ui.Button(None, "现在刷新", self.refresh_now, font=ui.f_zh(9, True),
+        self.btn_refresh = self._ctl(ui.Button(None, "全部刷新", self.refresh_now, font=ui.f_zh(9, True),
                                                padx=7, pady=2, shadow=2))
         self.key_hint = ui.Label("", font=ui.f_zh(9), fg=ui.BAD)
-        self._row(ship, "刷新星球", "在飞船的选星界面按选好的键换一批星球：右边「现在刷新」三个阵营全刷。需为房主，刷到的星球中未完成的进度会被清除。",
+        self._row(ship, "刷新星球", "在选择星球界面刷新星球",
                   note=self.key_hint, extras=(self.seg_key, self.btn_refresh), flag="refresh")
         self.strike = ui.Var(_strike_value())
         self.seg_strike = self._ctl(ui.Segmented(None, STRIKE_OPTIONS, self.strike, command=self.set_strike,
                                                  font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(ship, "报复关数量", "每颗星球固定带几个报复关（母星那 5 关也算，难度 3 那关不会是报复关）。原版：难度 4 以上每颗星球 33% 带 1 个。"
-                                      "只影响之后新出的星球。",
+        self._row(ship, "报复关数量", "每颗星球报复关数量",
                   extras=(self.seg_strike,))
         self.speed = ui.Var(cfg["speed_factor"] if cfg["speed_factor"] in options.SPEEDS else 3)
         self.seg_speed = self._ctl(ui.Segmented(None, SPEED_OPTIONS, self.speed, command=self.set_speed,
                                                 font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(ship, "过场加速", "结算、进关过场、星球扫描这些过场按选的倍数快放；开启时，开游戏时的片头动画直接跳过（视频没法快放）。能和 QoL Mod 一起装。",
+        self._row(ship, "过场加速", "加速结算、进图、星球扫描等过场动画速度，跳过游戏片头",
                   extras=(self.seg_speed,), flag="speed", credit=QOL_BASED)
         # 2026-11-22 用户定：解锁其他战线发布版也有（以前只有自用版）
         mode = build.get_front_mode()
@@ -142,7 +141,7 @@ class ModPage(Page):
                                                 font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
         self.seg_se = self._ctl(ui.Segmented(None, SE_RACES, self.se_race, command=self.set_front,
                                              font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(ship, "解锁其他战线", "未开放的战线也能选：还没出场的从起点开始，已攻破的放回攻破前最后一个星区，正在打的不动。选「进攻母星」或「保卫超级地球」时，那颗星和 5 关（难度 3～15）直接出来，能用刷新键重抽；这些关只在自己游戏里打，不算进银河战争。游戏运行时也能切，退出战役地图再进一次生效。",
+        self._row(ship, "解锁其他战线", "提供任意战线选择",
                   extras=(self.seg_front, self.seg_se))
         self.view.row(ship)
 
@@ -156,9 +155,9 @@ class ModPage(Page):
         self.view.row(coop)
 
         fix = ui.Card(self.view, "FIX", "Bug 修复", fill=ui.MINT)
-        self._row(fix, "冲刺时换弹不往前滑", "原版冲刺中换弹会锁着方向往前冲一段。开了以后换弹时松开摇杆 / 方向键就停。",
+        self._row(fix, "冲刺时换弹不往前滑", "原版冲刺中换弹会锁着方向往前冲一段。启用后换弹时松开摇杆 / 方向键就停。",
                   flag="noslide")
-        self._row(fix, "聊天输入法防闪退", "原版换房间后第一次在聊天框用中文输入法打字可能直接闪退，开了就不会。。",
+        self._row(fix, "聊天输入法防闪退", "启用后修复原版中文输入法可能导致游戏闪退的bug",
                   flag="ime_fix", credit=HALFSUGAR)
         self._dh_row(fix, "配合 QoL 的两处修正", "只在游戏里装了 QoL Mod 时有用：结算、星球奖励界面的名字照 QoL「名字用聊天字体」的设置；"
                                               "QoL 的选项名不再显示成「LOC:……」，统一装进 MOD SETTINGS 列表。",
