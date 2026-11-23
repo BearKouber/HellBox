@@ -1443,7 +1443,15 @@ class Footer(QWidget):
         lay.addWidget(self.badge, 0, Qt.AlignmentFlag.AlignVCenter)
         self.status = (_tr(self.IDLE[0]), _tr(self.IDLE[1]), DISABLED, INK)
         self.hinting = False
+        self._idle_timer = QTimer(self)
+        self._idle_timer.setSingleShot(True)
+        self._idle_timer.timeout.connect(self._to_idle)
         self._show(*self.status)
+
+    def _to_idle(self):
+        self.status = (_tr(self.IDLE[0]), _tr(self.IDLE[1]), DISABLED, INK)
+        if not self.hinting:
+            self._show(*self.status)
 
     def _show(self, title, body, color, fg=INK):
         self.title.config(text=title, fg=fg)
@@ -1480,6 +1488,9 @@ class Footer(QWidget):
             self.status = (text, "", color, fg)
         else:
             self.status = (_tr(self.WORD.get(kind, "提示")), text, color, fg)
+        self._idle_timer.stop()
+        if kind == "ok":
+            self._idle_timer.start(8000)
         if not self.hinting:
             self._show(*self.status)
 
