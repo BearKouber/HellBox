@@ -85,8 +85,11 @@ class NamesPage(Page):
             box.edit.textEdited.connect(typed)
             show()
 
-    def _live_set(value, table, room_name_live, room_helper):
+    @staticmethod
+    def _live_set(value, table):
         """先自己写；HellBox 比游戏权限低（游戏由管理员启动）时找中级 helper 代写。"""
+        import room_name_live
+        from pages import room_helper
         try:
             room_name_live.live_set(value, magic=table)
         except room_name_live._Helper:
@@ -97,8 +100,7 @@ class NamesPage(Page):
             save()
             if build.game_running():
                 import room_name_live
-                from pages import room_helper
-                _live_set(live_text(), getattr(room_name_live, magic), room_name_live, room_helper)
+                self._live_set(live_text(), getattr(room_name_live, magic))
                 self.app.pending_install = True
                 return live_hint + "关游戏时 HellBox 别关，会自动记住。"
             build.install()
