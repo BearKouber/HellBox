@@ -14,7 +14,8 @@ A free, open-source (MIT) toolbox for **HELLDIVERS™ 1** on Steam / Windows: qu
 - **Play modes:** Proving Grounds modes online, stackable field events, random stratagem drops, Ghost Town, room loadout rules, and saved presets. Players who also use HellBox can follow the host's settings.
 - **Data:** enemy stats and spawn rules for your own room.
 - **Cursor:** aim cursor colour and preview.
-- **Extras:** quick voice lines, planet refresh, teammate ping on the HUD (from Dive Harder), and a "Hide HellBox games" room filter.
+- **Extras:** quick voice lines, faster cutscenes (QoL Mod compatible), planet refresh, teammate ping on the HUD (from Dive Harder), and a "Hide HellBox games" room filter.
+- **Other fronts:** unlock normal sectors, a homeworld assault or the Super Earth defence locally, with homeworld missions that can be rerolled. These missions are not reported to the Galactic War.
 
 ## Install and remove
 

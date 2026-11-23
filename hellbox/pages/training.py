@@ -78,11 +78,38 @@ def start_in_game(cfg, drop_play_trial=None):
     return "已进关：先选战略配备，再落地。" + extra
 
 
-def launch(cfg, preset=None):
+def _steam():
     steam = next((Path(root) / "steam.exe" for root in build.steam_roots()
                   if (Path(root) / "steam.exe").is_file()), None)
     if steam is None:
         raise RuntimeError("找不到 Steam。")
+    return steam
+
+
+def launch_online(cfg, drop_play_trial=None):
+    """2026-11-22 用户定：游戏关着时点「开始」也要在线。正常开游戏（不带 -autohost，那样游戏会进离线），
+    同时写一个带 wait=1 的请求：游戏进到飞船后自己开这张图（mod/src/hellbox_start.lua，10 分钟内有效）。"""
+    import uuid
+    if drop_play_trial:
+        drop_play_trial()
+    steam = _steam()
+    os.makedirs(HB_DIR, exist_ok=True)
+    try:
+        os.remove(START_RES)
+    except OSError:
+        pass
+    mark_loadout()
+    tmp = START_REQ + ".tmp"
+    with open(tmp, "w", encoding="ascii") as f:
+        f.write(f"HBSTART1\nid={uuid.uuid4().hex[:12]}\ntime={int(time.time())}\nseed={int(cfg['seed'])}\nmode=auto\nwait=1\n")
+    os.replace(tmp, START_REQ)
+    subprocess.Popen([str(steam), "-applaunch", build.STEAM_APP_ID],
+                     creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+                     stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
+def launch(cfg, preset=None):
+    steam = _steam()
     args = drill_spec.game_args(cfg)
     mark_loadout()
     subprocess.Popen([str(steam), "-applaunch", build.STEAM_APP_ID, *args],

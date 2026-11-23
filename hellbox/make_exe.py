@@ -2,7 +2,7 @@
 把 HellBox 打包成 bin\\HellBox\\HellBox.exe（文件夹版），不自动创建或更新快捷方式。
 
 运行：.venv\\Scripts\\python hellbox\\make_exe.py
-     .venv\\Scripts\\python hellbox\\make_exe.py --dist .work\\hb_test   先打一份测试用的（不碰 bin\\、不改快捷方式；
+     .venv\\Scripts\\python hellbox\\make_exe.py --dist .work\\hb_test   先打一份测试用的（不碰 bin；
      要放在 Helldivers 下面三层以内，exe 才找得到 mod 文件夹）
      --public 会打独立发行目录，可用 --luajit 指定现有 LuaJIT 工具目录。
      2026-11-21 HD1-037：--public --portable 是另一种打法（Python 官方便携版 + .pyc，make_portable.py）；
@@ -90,6 +90,37 @@ def compiler_dir():
     return os.path.join(ROOT, "tools", "luajit-2.0")
 
 
+VERSION_INFO = """VSVersionInfo(
+  ffi=FixedFileInfo(filevers={nums}, prodvers={nums}, mask=0x3f, flags=0x0, OS=0x40004, fileType=0x1, subtype=0x0, date=(0, 0)),
+  kids=[
+    StringFileInfo([StringTable('040904B0', [
+      StringStruct('CompanyName', '07'),
+      StringStruct('FileDescription', 'HellBox - HELLDIVERS (2015) mod tool'),
+      StringStruct('FileVersion', '{text}'),
+      StringStruct('InternalName', 'HellBox'),
+      StringStruct('LegalCopyright', 'Copyright (c) 2026 07. MIT License.'),
+      StringStruct('OriginalFilename', 'HellBox.exe'),
+      StringStruct('ProductName', 'HellBox'),
+      StringStruct('ProductVersion', '{text}')])]),
+    VarFileInfo([VarStruct('Translation', [1033, 1200])])
+  ]
+)
+"""
+
+
+def version_file():
+    """2026-11-22（GPT 建议，减误报 / 方便核对）：exe 带版本信息（右键属性 → 详细信息），版本号跟 app.py 的 VERSION。"""
+    import re
+    with open(os.path.join(HERE, "app.py"), encoding="utf-8") as f:
+        m = re.search(r'^VERSION = "V(\d+)\.(\d+)"', f.read(), re.M)
+    major, minor = int(m.group(1)), int(m.group(2))
+    path = os.path.join(WORK, "version_info.txt")
+    os.makedirs(WORK, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(VERSION_INFO.format(nums=(major, minor, 0, 0), text=f"{major}.{m.group(2)}"))
+    return path
+
+
 def main():
     public = "--public" in sys.argv
     dist = os.path.join(ROOT, ".work", "hellbox-public") if public else DIST
@@ -116,6 +147,8 @@ def main():
            "--console" if "--console" in sys.argv else "--windowed",
            "--name", "HellBox",
            "--icon", os.path.join(HERE, "icon.ico"),
+           "--noupx",
+           "--version-file", version_file(),
            "--add-data", f"{os.path.join(HERE, 'fonts')}{sep}fonts",
            "--add-data", f"{os.path.join(HERE, 'icon.png')}{sep}.",
            "--add-data", f"{os.path.join(HERE, 'icon.ico')}{sep}.",
@@ -126,7 +159,14 @@ def main():
            "--specpath", WORK]
     for m in EXCLUDE:
         cmd += ["--exclude-module", m]
-    for m in HIDDEN:
+    hidden = HIDDEN
+    if public:
+        # 2026-11-22：发布版不带 pymem（发布版读写内存走 mod\room_name_live.py 的 ctypes；用 pymem 的 ai\bridge.py 不进发布版）。
+        #   不带 base_library.zip：Python 模块散放在 _internal 里（N 网把「压缩包里套压缩包」当隔离理由）。顶层目录和图标不变。
+        hidden = [m for m in HIDDEN if m != "pymem" and not m.startswith("pymem.")]
+        cmd += ["--debug", "noarchive"]
+        cmd += ["--exclude-module", "pymem"]
+    for m in hidden:
         cmd += ["--hidden-import", m]
     for m in FROM_DISK:
         cmd += ["--exclude-module", m]
@@ -147,7 +187,7 @@ def main():
         print(f"发行测试包：{target}" + ("（全数据版）" if "--full" in sys.argv else ""))
         return
     if dist != DIST:
-        print(f"测试版：{exe}（没改 bin 和快捷方式）")
+        print(f"测试版：{exe}（没改 bin）")
         return
     size = sum(os.path.getsize(os.path.join(d, f)) for d, _, fs in os.walk(os.path.dirname(exe)) for f in fs)
     print(f"已生成 {exe}（整个文件夹 {size / 1e6:.1f} MB）")

@@ -290,14 +290,36 @@ def set_commend_friends(on):
     _set_line(COMMEND_FRIENDS_FILE, "1" if on else "", "开关", 1)
 
 
+# 2026-11-23 用户定（V1.06）：解锁战线三选一。front_unlock.txt 存："" 关 / "1" 普通星区 / "home" 进攻母星 /
+#   "se1"～"se3" 保卫超级地球（虫族 / 赛博人 / 光能族）。后两种也带普通解锁（被攻破、没出场的战线照样能进）。
+FRONT_MODES = ("", "1", "home", "se1", "se2", "se3")
+
+
+def get_front_mode():
+    v = _get_line(FRONT_UNLOCK_FILE)
+    return v if v in FRONT_MODES else ""
+
+
+def set_front_mode(mode):
+    if mode not in FRONT_MODES:
+        mode = ""
+    if not os.path.exists(GENOCIDE_FILE):
+        set_genocide(get_genocide())  # 旧设置跟战线走，只迁移一次
+    _set_line(FRONT_UNLOCK_FILE, mode, "开关", 1)
+
+
+def front_event():
+    """给 front_unlock.lua 的事件部分："" / "home" / "se1"～"se3"。"""
+    m = get_front_mode()
+    return m if m != "1" else ""
+
+
 def get_front_unlock():
-    return _get_line(FRONT_UNLOCK_FILE) == "1"
+    return get_front_mode() != ""
 
 
 def set_front_unlock(on):
-    if not os.path.exists(GENOCIDE_FILE):
-        set_genocide(get_genocide())  # 旧设置跟战线走，只迁移一次
-    _set_line(FRONT_UNLOCK_FILE, "1" if on else "", "开关", 1)
+    set_front_mode("1" if on else "")
 
 
 def get_genocide():
@@ -321,7 +343,7 @@ def set_genocide(percent):
 def front_mail():
     """热切换时写进 front_unlock 信箱的内容（格式见 src/front_unlock.lua 文件头）。"""
     g = get_genocide()
-    return f"f={1 if get_front_unlock() else 0};g={'' if g is None else g}"
+    return f"f={1 if get_front_unlock() else 0};g={'' if g is None else g};e={front_event()}"
 
 
 def lua_quote(text):
@@ -495,6 +517,7 @@ def compile_lua(res, sources):
         text = text.replace(f'"@P{n}_NAME@"', lua_quote(get_pn_name(n)))
     text = text.replace('"@COMMEND_FRIENDS@"', lua_quote("1" if get_commend_friends() else ""))
     text = text.replace('"@FRONT_UNLOCK@"',lua_quote("1" if get_front_unlock() else ""))
+    text = text.replace('"@FRONT_EVENT@"', lua_quote(front_event()))
     g = get_genocide()
     text = text.replace('"@GENOCIDE@"', lua_quote("" if g is None else str(g)))
     if '"@HELLBOX_OPTIONS@"' in text:

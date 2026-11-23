@@ -203,8 +203,29 @@ do
 	-- 2026-11-14 V0.91 用户定：在星球里面（选任务界面）按刷新键 = 只重抽这颗星的任务（打过的也行），弹同样的确认框。
 	-- 照原版 MenuScreenCampaign.generate_planet 的任务部分重新生成：任务数按难度随机、任务类型 / 样本数照原版算，
 	-- 星球本身（名字、环境、难度、奖励）不变；存回存档的 available_planets，房主发给客机，再把选任务界面重进一次。
+	-- 2026-11-23 用户（V1.06）：「希望刷新同样使用于这个特殊事件」——解锁战线造出来的母星 / 超级地球（front_unlock.lua 的假事件）也能刷。
+	--   真的事件星（服务器发的）照旧不刷。
+	local function fake_event_planet(planet)
+		local fu = rawget(_G, "FrontUnlockMod")
+
+		return type(planet) == "table" and type(fu) == "table" and type(fu.is_fake) == "function"
+			and (fu.is_fake(planet.defend_event) or fu.is_fake(planet.attack_event)), fu
+	end
+
 	local function reroll_planet(camp, ms)
 		local planet = ms.selected_planet
+		local fake, fu = fake_event_planet(planet)
+
+		if fake then
+			if not fu.reroll_event(planet) then
+				return false
+			end
+
+			camp:show_state("mission", { selected_planet = planet, selected_planet_index = ms.selected_planet_index })
+			G.rerolls = (G.rerolls or 0) + 1
+
+			return true
+		end
 
 		if type(planet) ~= "table" or planet.boss or planet.defend_event or planet.attack_event then
 			return false
@@ -297,7 +318,7 @@ do
 
 		local planet = ms.selected_planet
 
-		if type(planet) ~= "table" or planet.boss or planet.defend_event or planet.attack_event then
+		if type(planet) ~= "table" or planet.boss or (planet.defend_event or planet.attack_event) and not fake_event_planet(planet) then
 			return false
 		end
 

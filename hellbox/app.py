@@ -30,9 +30,8 @@ import i18n  # noqa: E402
 import logbook  # noqa: E402
 import ui  # noqa: E402
 
-VERSION = "V1.05"
+VERSION = "V1.06"  # 2026-11-23 用户定：解锁战线三选一（普通星区 / 进攻母星 / 保卫超级地球，假事件不报服务器、能刷新）这一版叫 1.06； 2026-11-22 用户定：解锁其他战线进发布版、选图游戏关着时也在线、打包去掉套娃压缩包这一版叫 1.05； 2026-11-22 用户定：房间名新规矩（[Hex]、鬼城 +3、炼狱）、选图点小地图挑地形、Dive Harder 作者的几处措辞，这一版叫 1.04
 VERSION_NOTE = ""
-
 POLL_MS = 2000
 MASTER_HELP = ("核心：HellBox 总开关\n打开 = 安装 Hellbox；关闭 = 游戏换回原版文件"
                "\n调整时游戏不能启动")
@@ -423,8 +422,8 @@ class App(QWidget):
             self.say(UNKNOWN_HELP, "warn")
         if script == "old" and running and not self.old_told:
             self.old_told = True
-            self.say("目前安装的是旧版 Hellbox，游戏关闭后自动更新", "warn")
-        if script == "old" and running is False and not self.busy and not self.auto_updated:
+            self.say("游戏里还是旧版 MOD，新加的功能在游戏里用不了。关掉游戏后 HellBox 会自动更新。", "warn")
+        if script == "old" and running is False and not self.busy and not self.auto_updated and "--check-ui" not in sys.argv:
             import build
             self.auto_updated = True
             self.after(0, lambda: self.run(build.install, "Hellbox 已更新到最新版本。", "Hellbox 是旧版本，正在更新…"))
