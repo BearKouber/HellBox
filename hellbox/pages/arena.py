@@ -1,10 +1,5 @@
-"""考场（HD1-027 第 2 步，2026-11-11）：勾几个固定场景、每个跑几局，一键连着跑完；跑完算成绩单。
-
-用户："希望可以有每次你测试的多个场景可以直接在hellbox里面选择,省的我一个一个点"。
-场景定义、连跑都在 ai\\arena.py（命令行也能跑），成绩单在 ai\\scorecard.py；这一页只是按钮和显示。
-进度读 ai\\logs\\runs\\arena\\current.json（arena.py 写）和正在跑那局的 drill_status.json。
-「停止」= 在 arena 文件夹和这一局的文件夹各放 STOP：这一局马上收尾，后面的不跑。
-方案见开发文档「考场方案」。
+"""
+「考场」页：勾选固定场景、每个跑几局，一键连着跑完并生成成绩单；场景与连跑在 ai/arena.py，成绩单在 ai/scorecard.py，进度读 ai/logs/runs/arena/current.json。
 """
 import json
 import os
@@ -24,7 +19,7 @@ import arena  # noqa: E402
 import scorecard  # noqa: E402
 
 POLL_MS = 1000
-MINUTES = {"1": 3.5, "2": 4.5, "3": 5.5, "4": 5.5, "5": 9.5}   # 一局大概几分钟（含开关游戏）
+MINUTES = {"1": 3.5, "2": 4.5, "3": 5.5, "4": 5.5, "5": 9.5}
 
 
 class ArenaPage(Page):
@@ -77,7 +72,7 @@ class ArenaPage(Page):
         self.btn_report = ui.Button(None, "算成绩单", self.report, kind="accent", padx=12, pady=3)
         self.btn_folder = ui.Button(None, "打开记录文件夹", self.open_folder, padx=10, pady=3)
         rep.add(ui.line(self.btn_report, 8, self.btn_folder), top=8)
-        self.report_text = rep.add(ui.Label("选一个场景，点「算成绩单」。", font=ui.f_mono(9), wrap=True, breakable=True),
+        self.report_text = rep.add(ui.Label("选一个场景，点击「算成绩单」。", font=ui.f_mono(9), wrap=True, breakable=True),
                                    top=10)
         self.view.row(rep)
         self._changed()
@@ -116,9 +111,9 @@ class ArenaPage(Page):
         if not ks or self.running():
             return
         if self.app.state.get("script") != "on":
-            self.app.warn("脚本 mod 不是最新版（或没开），出怪设置不会生效。\n先打开「关于」页的「核心」开关（要先关游戏）。")
+            self.app.warn("游戏内的 MOD 不是最新版（或未开启），出怪设置不会生效。\n请先在「关于」页开启「核心」开关（需先关闭游戏）。")
             return
-        if self.app.state.get("running") and not self.app.ask("游戏现在开着。开始会先把它关掉（没存的进度会丢）。\n确定吗？"):
+        if self.app.state.get("running") and not self.app.ask("游戏正在运行。开始后会先关闭游戏（未保存的进度会丢失）。\n确定继续吗？"):
             return
         args = [PYTHON, "-B", os.path.join(AI_DIR, "arena.py"), "run", ",".join(ks), "--n", str(self.step_n.value())]
         if self.v_ver.get() == "old":
@@ -186,7 +181,7 @@ class ArenaPage(Page):
             self.word.config(text="已结束" if s else "未开始")
             self.sq.set_color(ui.SKY if s else ui.DISABLED)
             self.now.config(text=("上一次" + ("被停止" if s.get("stopped") else "跑完了") + f"（{s.get('started', '')} 开始）")
-                            if s else "勾好场景，点「开始」。")
+                            if s else "勾好场景，点击「开始」。")
             self.nums.config(text="")
         done = s.get("done") or []
         self.done.config(text="\n".join(f"场景 {d['scene']} 第 {d['round']} 局：{d['reason']}，打死 {d.get('kills')}，"
@@ -197,11 +192,11 @@ class ArenaPage(Page):
         self.btn_start.set_enabled(bool(self.chosen()) and not run and not self.app.busy)
         self.btn_stop.set_enabled(run)
         if run:
-            hint = "正在跑。点「停止」= 这一局收尾、关游戏，后面的不跑。快速开局页这时别用。"
+            hint = "正在运行。点击「停止」= 这一局收尾、关游戏，后面的不跑。快速开局页这时别用。"
         elif self.app.state.get("script") not in (None, "on"):
-            hint = "脚本 mod 不是最新版：先打开「关于」页的「核心」开关。"
+            hint = "游戏内的 MOD 不是最新版：请先在「关于」页开启「核心」开关。"
         else:
-            hint = "点「开始」会先关掉正在运行的游戏。跑完自动关游戏。"
+            hint = "点击「开始」会先关掉正在运行的游戏。完成后自动关闭游戏。"
         self.hint.config(text=hint)
 
     def on_show(self):

@@ -1,13 +1,13 @@
-"""我的名字、房间名、2P / 3P / 4P 名字。游戏开着也能改，几秒内生效。
-我的名字和 2P~4P：游戏只存 51 字节（汉字 3、英文数字 1），框里打满就打不进去，别人看到的也是这么长。
-房间名：Steam 房间数据最多 8192 字节。"""
+"""
+昵称页：修改自己的名字、房间名和本地多人 2P–4P 的名字；游戏运行时也能修改，几秒内生效。
+"""
 import build
 import hellbox_options as options
 import ui
 from pages import room_desc
 from pages.base import Page
 try:
-    from i18n import T, tr  # HellBox 里跑时有中英文切换
+    from i18n import T, tr
 except ImportError:
     def tr(s):
         return s
@@ -17,7 +17,6 @@ except ImportError:
 
 
 def _fit(s, limit):
-    """按整字切到 limit 字节以内。"""
     while len(s.encode("utf-8")) > limit:
         s = s[:-1]
     return s
@@ -26,13 +25,12 @@ def _fit(s, limit):
 class NamesPage(Page):
     key = "names"
     tab = "昵称"
-    when = "游戏开着：几秒内生效　没开：下次开游戏生效"
+    when = "游戏运行时：几秒内生效；游戏未运行：下次启动游戏后生效"
 
     def build(self):
         lim = build.PLAYER_NAME_BYTES
         self.vars = {}
         self.buttons = []
-        # 2026-11-15 新界面：两张卡一行一个名字；原来的「怎么生效」卡拆进顶上那行和每行的说明（鼠标停上去看）
         me = ui.Card(self.view, "ME", "我", fill=ui.MINT)
         self._name_row(me, "我的名字", "me", build.get_self_name(), lim,
                        T("留空 = Steam 昵称。头顶、结算、联机的人看到的都是它；房间名留空时也用它。"
@@ -43,19 +41,15 @@ class NamesPage(Page):
                        "真房间名会自动带上标记，所有人都看得到：只开了自己用的功能是「[HellBox] 名字」；"
                        "开了玩法、改了数据、带箱子上车或丢支援装备是「[Hex] 名字」，方括号里写鬼城、其他玩法几个（+3），"
                        "敌人改得比原版难再写「炼狱」，比如「[Hex · 鬼城 +3 · 炼狱] 名字」。", self.apply_room)
-        # 2026-11-21 HD1-038 用户要求：[HellBox] 放前面还是名字放前面（写进 room-desc.txt，游戏几秒内跟着改）
         self.room_order = ui.Var(self._order())
-        self.seg_order = ui.Segmented(None, list(options.ROOM_ORDERS.items()), self.room_order, command=self.set_order,
+        orders = [(k, "HellBox 在前" if k == "tag" else "HellBox 在后") for k in options.ROOM_ORDERS]
+        self.seg_order = ui.Segmented(None, orders, self.room_order, command=self.set_order,
                                       font=ui.f_zh(9, True), padx=7, pady=2, shadow=2)
-        me.row("房间名顺序", self.seg_order, help="房间名里 [HellBox …] 放前面还是你的名字放前面。只是换个顺序，"
-               "方括号里写什么、太长时怎么截都一样。只有你当房主时生效，游戏开着几秒内就换。", name_w=90)
-        # 现在的房间名：游戏开着且你是房主 = 游戏里实际的；别的时候 = 预览。方括号里跟「玩法」「数据修改」页的设置走
+        me.row("房间名顺序", self.seg_order, name_w=90)
         self.room_prev = me.add(ui.text(me.body, "", size=10, bold=True), top=8)
-        self.room_note = me.add(ui.text(me.body, "", muted=True, size=9), top=2)
-        me.add(ui.text(me.body, tr("方括号里的内容跟「玩法」「数据修改」页的设置走，改了几秒内跟着变；太长会自动简写、截短名字。"),
-                       muted=True, size=9), top=2)
         self.vars["room"].trace(self._room_preview)
         self._room_preview()
+        room_desc.refresh()
         self.view.row(me)
         local = ui.Card(self.view, "LOCAL", "本地多人（同一台电脑的手柄）", fill=ui.SKY)
         for n in (2, 3, 4):
@@ -73,14 +67,14 @@ class NamesPage(Page):
         btn = ui.Button(None, "应用", command, kind="accent", font=ui.f_zh(9, True), padx=10, pady=2, shadow=2)
         self.buttons.append(btn)
         count = ui.Label("", font=ui.f_zh(9), fg=ui.MUTED) if limit else None
-        card.row(title, box, 8, btn, help=help_text, sub=count, name_w=90)
+        card.row(title, box, 8, btn, sub=count, name_w=90)
         if limit:
             def show():
                 used = len((var.get() or "").encode("utf-8"))
                 count.config(text=T('{0} / {1} 字节', used, limit), fg=ui.BAD if used >= limit else ui.MUTED)
 
             def typed(s):
-                if len(s.encode("utf-8")) > limit:  # 打满了：多出来的不要，光标留在原处
+                if len(s.encode("utf-8")) > limit:
                     pos = box.edit.cursorPosition()
                     cut = _fit(s, limit)
                     var.set(cut)
@@ -136,10 +130,8 @@ class NamesPage(Page):
         trial = pm.read_status().get("state") in ("armed", "used") if self.app.state.get("running") else False
         name, kind = room_desc.current(self.vars["room"].get(), bool(self.app.state.get("running")), trial=trial)
         self.room_prev.config(text=T("现在的房间名：{0}", name))
-        self.room_note.config(text=tr(room_desc.NOTES[kind]))
 
     def _tick(self):
-        """游戏开着时「现在的房间名」跟着游戏回报走（看着这一页时每秒读一次）。"""
         if self.app.current is self:
             self._room_preview()
         self.app.after(1000, self._tick)

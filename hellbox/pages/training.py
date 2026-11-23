@@ -1,4 +1,6 @@
-"""Launch a manually played training mission through Steam."""
+"""
+训练关：通过 Steam 启动一局手动训练任务，并把地图、出怪设置写进游戏。
+"""
 import os
 import subprocess
 import time
@@ -8,7 +10,6 @@ import build
 import drill_spec
 from room_name_live import MAGIC_DRILL, MAGIC_SPAWN, find_pid, live_set
 
-# 出发前先弹原版选战备界面的标记（mod/src/training_loadout.lua 读到就用一次并删掉，只认 10 分钟内写的）
 LOADOUT_FLAG = os.path.join(os.environ.get("APPDATA", ""), "Arrowhead", "Helldivers", "hellbox", "training-loadout.txt")
 
 
@@ -21,24 +22,19 @@ def mark_loadout():
 HB_DIR = os.path.dirname(LOADOUT_FLAG)
 START_REQ = os.path.join(HB_DIR, "start-training.txt")
 START_RES = os.path.join(HB_DIR, "start-training-result.txt")
-START_WAIT = 6  # 游戏每 0.5 秒看一次请求；加载卡顿时多等几秒
-PLAY_SETTLE = 1.5  # 2026-11-19 取消玩法页的真训练场以后，等游戏（每 0.5 秒读一次 play.txt）把它撤掉再设选图
-# mod/src/hellbox_start.lua 回的结果 -> 给人看的话
+START_WAIT = 6
+PLAY_SETTLE = 1.5
 START_RESULTS = {
-    "not_ship": "游戏现在不在飞船上（在任务里、结算或主菜单）。进到飞船里再点，或者退出游戏后点「开始」。",
+    "not_ship": "游戏现在不在飞船上（在任务里、结算或主菜单）。进入飞船后再点击，或者退出游戏后点击「开始」。",
     "not_host": "你在别人的房间里，只有房主能开。",
-    "teammates": "房间里有联机队友，游戏里的 MOD 是旧版，设不了下一局。请退出游戏后再点「开始」（会先更新 MOD）。",
+    "teammates": "房间里有联机队友，游戏里的 MOD 是旧版，设不了下一局。请退出游戏后再点击「开始」（会先更新 MOD）。",
     "busy": "飞船正在出发（出发舱倒计时 / 任务简报 / 选装备），等这一步结束或取消后再点。",
     "bad": "地图编号不对，游戏没认。",
-    "error": "游戏里开图出错了，可以到「日志」页看游戏报错。",
+    "error": "游戏内进入关卡时出错，可以到「日志」页查看游戏报错。",
 }
 
 
 def start_in_game(cfg, drop_play_trial=None):
-    """游戏开着、人在飞船上：写请求让游戏直接进训练关（2026-11-16 V0.95，mod/src/hellbox_start.lua），不重开游戏。
-    2026-11-19「选图」：请求带 mode=auto，房间里有联机队友时游戏回 armed（设为下一局，房主走出发舱照常出发）。
-    drop_play_trial：「玩法」页真训练场也设了下一局时先取消它（两个占游戏同一个位置），等游戏撤掉再发请求。
-    返回给人看的结果；游戏拒绝或没回应时抛 RuntimeError。"""
     import uuid
     dropped = bool(drop_play_trial and drop_play_trial())
     if dropped:
@@ -49,7 +45,7 @@ def start_in_game(cfg, drop_play_trial=None):
         os.remove(START_RES)
     except OSError:
         pass
-    mark_loadout()  # 进关前先弹选战备（training_loadout.lua 认 planet_name = Autohost 的训练关）
+    mark_loadout()
     tmp = START_REQ + ".tmp"
     with open(tmp, "w", encoding="ascii") as f:
         f.write(f"HBSTART1\nid={rid}\ntime={int(time.time())}\nseed={int(cfg['seed'])}\nmode=auto\n")
@@ -67,17 +63,16 @@ def start_in_game(cfg, drop_play_trial=None):
             break
         time.sleep(0.25)
     if result != "ok":
-        for path in (START_REQ, LOADOUT_FLAG):  # 没开成：别把请求 / 选战备标记留给以后
+        for path in (START_REQ, LOADOUT_FLAG):
             try:
                 os.remove(path)
             except OSError:
                 pass
     if result is None:
-        raise RuntimeError("游戏没回应。可能游戏里还是旧版 MOD，或者正卡在加载。退出游戏后再点「开始」也能进。")
+        raise RuntimeError("游戏无响应。可能游戏里还是旧版 MOD，或者正卡在加载。退出游戏后再点击「开始」也能进。")
     extra = "（「玩法」页设的试验场下一局已取消。）" if dropped else ""
     if result == "armed":
-        return ("已设为下一局：房间里有队友，照常走进出发舱出发就是这张图，队友不用装 HellBox，大家照常记经验。"
-                "打完回飞船，原来的星球自动放回去；想换回原来的任务，在星图上选别的星球就行。" + extra)
+        return ("已设为下一局：房间里有队友，照常走进出发舱出发就是这张图，队友无需安装 HellBox，大家照常获得经验。打完回飞船，原来的星球自动放回去；想换回原来的任务，在星图上选别的星球就行。" + extra)
     if result != "ok":
         raise RuntimeError(START_RESULTS.get(result, result))
     return "已进关：先选战略配备，再落地。" + extra
@@ -128,7 +123,7 @@ def launch(cfg, preset=None):
     seen = False
     while time.monotonic() < end:
         pid = find_pid()
-        if seen and not pid:  # 2026-11-14：启动途中游戏没了（崩了 / 被关），不再干等到超时
+        if seen and not pid:
             raise RuntimeError("游戏启动过程中退出了（可能闪退），出怪设置没写进去。可以到「日志」页看游戏报错。")
         seen = seen or bool(pid)
         if pid:

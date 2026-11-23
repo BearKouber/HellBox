@@ -1,4 +1,4 @@
-HellBox V1.06
+HellBox V1.07
 =============
 
 作者：07
@@ -8,6 +8,16 @@ HellBox V1.06
 HELLDIVERS（1 代）MOD 工具：带箱子上车、给好友点赞、刷新星球、报复关数量、
 选图（报复关 / 大图 / 首领战）、玩法（试验场联机版、修正参数、武装配置、鬼城）、
 数据修改（怪物属性 / 出怪逻辑）、各种显示、指针颜色、快捷语音、战绩等（选图、分屏在开发者模式里）。
+
+【V1.07 改了什么】（和 V1.06 比）
+- 界面文字整体整理（感谢 Oct0pu5）：用词更统一、说明更短，卡片标题更简洁；「关于」鸣谢加「文本 Oct0pu5」。
+  · 玩法页修正参数改名：超级地球支援（原随机掉落）、电磁干扰、命中补给、精确打击、侦察兵、以牙还牙、军刀；填弹惊喜改叫换弹惊喜。
+  · 选「鬼城」环境时才显示无人机探照灯、战备信标更亮两行。
+  · 底栏「完成」提示过 8 秒自动回到「就绪」。
+- 房间名统一为「[HellBox] 名字」（不再写 [Hex]、玩法个数、炼狱）。
+- 联机限制：带箱子上车、丢支援装备、补给背包自己用、自动定位任务位置、分屏这几项，
+  当客机时只在房主也装了 HellBox（或开着分屏 CameraCTRL）的房间生效，进普通房间不生效；
+  自己当房主、单机、本机多人照常用。
 
 【V1.06 改了什么】（和 V1.05 比）
 - 「功能」页「解锁其他战线」改成选一种：关 / 普通星区 / 进攻母星 / 保卫超级地球（再选是哪个种族打过来）。
@@ -209,7 +219,7 @@ HELLDIVERS（1 代）MOD 工具：带箱子上车、给好友点赞、刷新星�
 
 --------------------------------------------------------------
 
-HellBox V1.03
+HellBox V1.07
 
 Author: 07
 Home page (new versions, changelog, feedback): https://www.nexusmods.com/helldivers/mods/63
@@ -218,6 +228,18 @@ A mod tool for HELLDIVERS (the first game): carry boxes into vehicles, commend f
 retaliation mission count, Map Select (retaliation / big maps / boss fights), game modes (online Proving
 Grounds, modifiers, loadout rules, Ghost Town), data edits (enemies / spawn logic), more displays, cursor color, quick
 voice, mission stats and more (Map Select and split screen are in developer mode).
+
+WHAT'S NEW IN V1.07 (since V1.06)
+- Interface text cleaned up throughout (thanks to Oct0pu5): more consistent wording, shorter descriptions,
+  simpler card headers; "Text: Oct0pu5" added to the credits.
+  * Modifier names on the Modes page: Super Earth Support (was Random Drops), EM Interference, Ammo on Hit,
+    Precision Strike, Scout, Eye for an Eye, Saber; Reload Surprise keeps its name.
+  * The drone searchlight / brighter beacon rows only show when the Ghost Town environment is selected.
+  * The "Done" message in the footer goes back to "Ready" after 8 seconds.
+- Room names are always "[HellBox] name" now (no more [Hex], mode counts or Inferno).
+- Guest restriction: carrying boxes into vehicles, dropping support gear, self-resupply, auto-locating objectives
+  and split screen only work as a guest in rooms whose host also runs HellBox (or has CameraCTRL split screen on);
+  they do nothing in other rooms. As host, solo or in local co-op they work as before.
 
 WHAT'S NEW IN V1.06 (since V1.05)
 - "Unlock other fronts" (Features page) is now a choice: Off / Normal sectors / Attack homeworld / Defend Super

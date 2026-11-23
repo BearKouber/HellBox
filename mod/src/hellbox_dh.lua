@@ -265,7 +265,10 @@ else
 		end
 		local orig = lvl.get_data
 		lvl.get_data = function(...)
-			if select(2, ...) == "objective_hidden_data" and on("dh_hidden") then
+			-- 2026-11-23 V1.07 联机限制：当客机时只在有 MOD 的房间显示（hellbox_room_gate.lua）
+			local gate = rawget(_G, "HellBoxRoomGate")
+			if select(2, ...) == "objective_hidden_data" and on("dh_hidden")
+				and (not (type(gate) == "table" and type(gate.ok) == "function") or gate.ok()) then
 				return nil
 			end
 			return orig(...)

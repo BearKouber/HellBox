@@ -1,17 +1,5 @@
-"""怪物属性块的编辑器（2026-11-14 V0.91，数据修改页里的编辑卡片；替代原「怪物属性」页）。
-
-每只怪列哪些参数、书面名称、选项方式来自 ai/enemy_fields.json（HD1-033 怪物属性清单，用户 2026-11-14 认可：
-只列游戏代码实际会读的参数）。原版数值来自 ai/enemy_settings.json。
-选项方式（用户定）：
-  倍率 mult      ×0～×100（原版值为 0 的给具体数值档）
-  角度 angle     30° / 60° / 90° / 180° / 270° / 360°
-  仰角 elev      15° / 30° / 45° / 60° / 75°（设置里存的是斜率）
-  秒数 time      0、0.1、0.25、0.5、1、2、3、5、10、30 秒
-  数量 count     0～10、15、20、30
-  是否 bool / 单位下拉 unit / 状态下拉 status；text = 暂不开放
-数值类（倍率 / 角度 / 秒数 / 数量……）是按档位吸附的滑条（2026-11-15 用户要求：下拉换成能拖的滑条），双击数字能直接打；
-是否、单位、状态这种选名字的还是小方块，点了才变下拉框（0.9 一只怪上百个下拉框很卡）。
-块的数据：{"common": {路径: 倍数}, "ov": {怪名: {路径: 值}}}；值 '*2' = 按原值乘，其它 = 绝对值。
+"""
+怪物属性块的编辑器：每只怪列哪些参数、名称与选项方式来自 ai/enemy_fields.json，原版数值来自 ai/enemy_settings.json。
 """
 import copy
 import math
@@ -51,7 +39,6 @@ COUNTS = list(range(0, 11)) + [15, 20, 30]
 ZERO_DIST = [0.5, 1, 2, 5, 10, 20]
 ZERO_PLAIN = [0.5, 1, 2, 5, 10, 50, 100]
 
-# 「所有怪」：每只怪都有的属性，按各自原值乘
 COMMON = [
     ("health_info.health", "生命值"),
     ("health_info.armor_max", "正面装甲"),
@@ -95,8 +82,6 @@ KIND_TIP = {
 
 
 def same_race(name, path):
-    """怪名（bug_tank）和 characters/ 路径（characters/bug_warrior/...）都以种族开头；
-    不是 characters/ 的（gameobjects 之类）不算跨种族。和 mod/src/enemy_params.lua 的 cross_race 一样。"""
     if not name or not path.startswith("characters/"):
         return True
     return name.split("_", 1)[0] == path[len("characters/"):].split("_", 1)[0]
@@ -114,7 +99,6 @@ def parse_raw(text):
 
 
 class ValueChip(ui.Clickable):
-    """数值格平时的样子：白底黑边小方块，点了换成下拉框。"""
 
     def __init__(self, text, command, changed=False):
         super().__init__()
@@ -154,8 +138,8 @@ class EnemyEditor:
         self.app, self.view = app, view
         self.fields = load_json(FIELDS, {}).get("units") or {}
         races = load_json(SETTINGS, {"races": {}}).get("races") or {}
-        self.units = {}  # 阵营 -> [怪名]（按清单顺序）
-        self.settings = {}  # 怪名 -> 设置表
+        self.units = {}
+        self.settings = {}
         self.path_zh = dict(zh.THING_ZH)
         self.unit_paths = []
         for race, r in races.items():
@@ -174,10 +158,9 @@ class EnemyEditor:
         self.common = {}
         self.ov = {}
         self.dirty = False
-        self._open = None  # 正在下拉的那一格 (combo, chip)
+        self._open = None
 
-        # 2026-11-15 新界面：选怪 = 平的等宽格子（绿方块 = 改过），参数 = 一行一项、说明进底栏
-        pick = ui.Card(view, "PICK", "选怪", fill=ui.YELLOW, note="绿色方块 = 改过")
+        pick = ui.Card(view, "PICK", "选怪", fill=ui.YELLOW)
         self.v_race = ui.Var(self.race)
         self.seg_race = ui.Segmented(None, list(RACE_ZH.items()), self.v_race, command=self._race_changed,
                                      padx=12, pady=3, shadow=2, font=ui.f_zh(10, True))
@@ -185,8 +168,8 @@ class EnemyEditor:
         self.picker = PickGrid(self._select)
         pick.add(self.picker, top=10)
 
-        self.card = ui.Card(view, "EDIT", "", fill=ui.SALMON, note=" ")
-        self.btn_reset = small_button("全部还原", self._reset_unit)
+        self.card = ui.Card(view, "EDIT", "", fill=ui.SALMON)
+        self.btn_reset = small_button("还原", self._reset_unit)
         self.card.head_lay.addSpacing(10)
         self.card.head_lay.addWidget(self.btn_reset, 0, VC)
         self.notes = self.card.add(ui.text(self.card.body, "", muted=True, size=9))
@@ -196,7 +179,6 @@ class EnemyEditor:
         self.rows = [view.row(pick), view.row(self.card)]
         self._refresh()
 
-    # ================================================================ 块的读写
     def load(self, data, race=None):
         data = data or {}
         self.common = {p: float(m) for p, m in (data.get("common") or {}).items()}
@@ -216,7 +198,6 @@ class EnemyEditor:
         for r in self.rows:
             r.setVisible(on)
 
-    # ================================================================ 选怪
     def _race_changed(self, race):
         self.race = race
         self.enemy = ALL
@@ -235,7 +216,7 @@ class EnemyEditor:
                   "所有怪（三个阵营一起）：按每只怪自己的原版数值乘；单只怪设了的那一项以单只为准。")]
         for n in self.units.get(self.race, []):
             notes = (self.fields.get(n) or {}).get("notes") or []
-            items.append((n, self._zh(n), bool(self.ov.get(n)), "\n".join(notes) or "点开改这只怪的参数。"))
+            items.append((n, self._zh(n), bool(self.ov.get(n)), "\n".join(notes) or "点击展开以修改这只怪的参数。"))
         return items
 
     def _refresh(self):
@@ -250,10 +231,8 @@ class EnemyEditor:
         self.notes.setVisible(bool(self.notes.text()))
         self._mark_buttons()
 
-    # ================================================================ 所有怪
     def _build_common(self):
         self.card.title_lab.config(text="所有怪")
-        self.card.note_lab.config(text="三个阵营一起，按每只怪自己的原版数值乘")
         self.notes.config(text="")
         for path, label in COMMON:
             m = self.common.get(path, 1.0)
@@ -279,12 +258,10 @@ class EnemyEditor:
 
         chip.setup(opts, choose, typed, key=lambda v: 1.0 if v is None else float(v), cur=self.common.get(path, 1.0))
 
-    # ================================================================ 单只怪
     def _build_unit(self, name):
         f = self.fields.get(name) or {}
         settings = self.settings.get(name) or {}
         self.card.title_lab.config(text=self._zh(name))
-        self.card.note_lab.config(text=f.get("race") or "")
         self.notes.config(text="\n".join(f.get("notes") or []))
         for block in f.get("blocks") or []:
             self.plist.section(block["title"])
@@ -302,13 +279,11 @@ class EnemyEditor:
                 if kind == "unit" and row.get("key") not in zh.SUMMON_FIELDS:
                     tip += tr("只列这个种族的（一张图只装一个种族，选别的种族会闪退）。")
                 if name == "cyborg_ifv" and row.get("key") in ("spawn_unit_path", "spawn_amount"):
-                    # 2026-11-19：和「出怪逻辑」的坦克屁股出兵管同一件事，那边设了就以那边为准（spawn_rules.lua 的两个挂点）
                     tip += tr("「出怪逻辑」的「载具 / 首领放兵」（普通模式叫「坦克屁股出兵」）选了「只出选中」或「不出」、或设了每次放几只时，以那边为准。")
                 self.plist.row(row["label"], w, T("原版 {0}", self._show(row, base)), help=tip)
         self._build_immune(name, settings)
 
     def _value_widget(self, name, row, base, kind, text, changed, grid, r):
-        """数值类：滑条；选名字的（是否 / 单位 / 状态）：点了变下拉框的小方块。"""
         if kind in NUMERIC_KINDS and is_num(base):
             w = ValueSlider(text, changed)
             opts, choose, typed = self._unit_handlers(w, name, row, base)
@@ -364,11 +339,10 @@ class EnemyEditor:
         m = self.common.get(row["path"])
         if m is not None and isinstance(base, (int, float)) and not isinstance(base, bool):
             return T("跟所有怪 ×{0:g} = {1}", m, self._show(row, base * m)), True
-        return tr("原版"), False  # 2026-11-15 新界面：原版的数在这一行最右边
+        return tr("原版"), False
 
     # ---------------------------------------------------------------- 下拉的选项
     def _options(self, row, base, kind, name=""):
-        """[(文字, 存的值 / None = 原版)]，和「打字怎么解析」。name = 正在改的怪（选怪 / 投掷物时只列它这个种族的）。"""
         orig = (T("原版（{0}）", self._show(row, base)), None)
         if kind == "mult":
             opts = [orig] + [(f"×{m:g} = {self._show(row, base * m)}", f"*{m:g}") for m in MULTS]
@@ -421,7 +395,6 @@ class EnemyEditor:
                 keys = list(self.unit_paths)
                 if key == "burrow_tentacle_unit_path":
                     keys = ["characters/bug_impaler/bug_impaler_tentacle"] + keys
-            # 2026-11-19：只列这只怪自己种族的（一张图只加载一个种族的资源，选别的种族会闪退；游戏里 enemy_params.lua 也会跳过）
             keys = [k for k in keys if same_race(name, k)]
             return [orig] + [(self.path_zh.get(k, k.rsplit("/", 1)[-1]), k) for k in keys if k != base], None
         return [orig], None
@@ -439,7 +412,6 @@ class EnemyEditor:
         self._open_combo(chip, grid, r, *self._unit_handlers(chip, name, row, base))
 
     def _unit_handlers(self, chip, name, row, base):
-        """(选项, 选好以后, 打字怎么解析)；chip 是这一格（小方块或滑条，都有 set_text）。"""
         kind = self._kind(row, base)
         opts, typed = self._options(row, base, kind, name)
 
@@ -542,7 +514,6 @@ class EnemyEditor:
             self.ov.pop(name, None)
         self._changed()
 
-    # ================================================================ 改动
     def _reset_unit(self):
         if self.enemy == ALL:
             self.common = {}
@@ -553,7 +524,7 @@ class EnemyEditor:
 
     def _changed(self):
         self.dirty = True
-        self._mark_buttons()  # 选怪格子上的绿方块跟着变（只重画格子，不重建参数表）
+        self._mark_buttons()
 
     def _mark_buttons(self):
         self.picker.set_items(self._pick_items(), self.enemy)

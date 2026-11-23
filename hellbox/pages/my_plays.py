@@ -1,13 +1,5 @@
-"""「玩法 → HellBox 版」的「我的玩法」（2026-11-18 V0.97 第 ④ 步）。
-
-把配装块（六格各自固定 / 自由 / 随机 + 固定的是哪样）、场上事件（选了哪几个）、随机掉落名单、环境、换弹惊喜
-合起来存成一个玩法，起名字，下次点一下全部用上（用法和配装块的「存好的块」一样）。
-只存在自己电脑上（mod/my_plays.json，最多 MAX 个），不做分享、不做导入导出，不进发行包（换版本时属于个人文件）。
-配装存的是六格的内容本身，不是引用「存好的块」的名字：块删了玩法照样能用。
-不存各个「开启」开关：用上一个玩法时由界面把开关打开（见 play.py）。
-
-读文件时不崩：文件坏了 / 版本旧缺字段，缺的项按默认补（事件空、掉落空、环境原版、换弹惊喜关、配装六格自由），
-名字不认识的事件、战备丢掉，不能一起开的事件留前一个。
+"""
+「玩法 → HellBox 版」的「我的玩法」：把配装块、场上事件、随机掉落、环境、换弹惊喜存成一个玩法，存在 mod/my_plays.json。
 """
 import json
 import os
@@ -26,7 +18,6 @@ def empty(name=""):
 
 
 def clean(raw):
-    """读到的一项 → 补全、去掉不认识的以后的玩法；名字不对返回 None。"""
     if not isinstance(raw, dict) or not isinstance(raw.get("name"), str) or not raw["name"].strip():
         return None
     p = empty(raw["name"].strip())
@@ -45,7 +36,7 @@ def clean(raw):
             evs.remove(b)
     p["events"] = evs
     drop = raw.get("drop") if isinstance(raw.get("drop"), list) else []
-    known = {r[0] for _c, rows in pm.drop_pool() for r in rows}  # 名单读不到时不筛，只去掉落不了的
+    known = {r[0] for _c, rows in pm.drop_pool() for r in rows}
     p["drop"] = list(dict.fromkeys(d for d in drop if isinstance(d, str) and d not in pm.DROP_BAN and (not known or d in known)))
     env = raw.get("env")
     p["env"] = env if isinstance(env, str) and env in pm.ENV_KEYS else ""
@@ -75,5 +66,4 @@ def save(plays, path=None):
 
 
 def key_of(p):
-    """用来比「现在的设置是不是这个玩法」：不含名字和各个开关。"""
     return (tuple(p["slots"][k] for k in hl.SLOTS), tuple(p["events"]), tuple(sorted(p["drop"])), p["env"], bool(p["surprise"]))

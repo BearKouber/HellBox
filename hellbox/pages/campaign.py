@@ -1,9 +1,11 @@
-"""战役：解锁其他战线、报复打击概率、刷新星球（原来"箱子mod开关"窗口里的一行）。"""
+"""
+战役页：解锁其他战线、设置报复打击概率、刷新星球。
+"""
 import build
 import ui
 from pages.base import Page
 try:
-    from i18n import T, tr  # HellBox 里跑时有中英文切换
+    from i18n import T, tr
 except ImportError:
     def tr(s):
         return s
@@ -11,7 +13,6 @@ except ImportError:
     def T(template, *args, **kw):
         return template.format(*args, **kw)
 
-# 报复打击概率的几档：(存进 genocide.txt 的值, 按钮文字)；"" = 原版
 GENOCIDE_OPTIONS = [("0", "0%"), ("", "33% 原版"), ("66", "66%"), ("100", "100%")]
 
 
@@ -32,18 +33,16 @@ class CampaignPage(Page):
         w, lay = ui.hbox()
         lay.addWidget(self.toggle, 0, ui.Qt.AlignmentFlag.AlignVCenter)
         lay.addSpacing(14)
-        lay.addWidget(ui.text(None, "没开放的战线也能选\n还没出场的、已攻破的都算", bold=True), 1)
+        lay.addWidget(ui.text(None, "未开放的战线也能选择\n尚未出场、已攻破的都算", bold=True), 1)
         front.add(w)
-        front.add(ui.text(front.body, "自动看每条战线的情况：正在打的不动；新赛季还没出场的直接打开，从起点开始；"
-                          "已攻破的放回攻破前最后一个星区。游戏开着也能切，退出战役地图再进一次生效。",
+        front.add(ui.text(front.body, "自动检查每条战线：正在战斗的不改动；新赛季尚未出场的直接开放，从起点开始；已攻破的放回攻破前最后一个星区。游戏运行时也能切换，退出战役地图后再进入一次即可生效。",
                           muted=True, size=9), top=12)
 
         gen = ui.Card(self.view, "STRIKE", "报复打击概率", fill=ui.MINT)
         self.genocide = ui.Var(_genocide_value())
         self.seg = ui.Segmented(None, GENOCIDE_OPTIONS, self.genocide, command=self.apply_genocide, padx=10)
         gen.add(self.seg, align=ui.LEFT)
-        gen.add(ui.text(gen.body, "难度 4 以上的新星球，每颗有多大机会带一个报复打击任务（每颗最多一个）。"
-                        "只影响之后新出的星球，想马上见效就再点一下刷新星球。",
+        gen.add(ui.text(gen.body, "难度 4 以上的新星球，每颗有多大概率带一个报复打击任务（每颗最多一个）。只影响之后新出的星球；想立即生效，再点击一次刷新星球。",
                         muted=True, size=9), top=12)
 
         planets = ui.Card(self.view, "PLANETS", "刷新星球", fill=ui.YELLOW)
@@ -55,7 +54,6 @@ class CampaignPage(Page):
         self.view.row(planets)
 
     def _push_live(self):
-        """游戏开着：把战线开关和报复概率一起热发过去。返回是否发了。"""
         if not build.game_running():
             return False
         import room_name_live
@@ -90,10 +88,10 @@ class CampaignPage(Page):
     def refresh_planets(self):
         def action():
             if not build.game_running():
-                raise RuntimeError("刷新星球要在游戏开着时点（在飞船里，没进任务）。")
+                raise RuntimeError("刷新星球需要在游戏运行时点击（在飞船中，未进入任务）。")
             import room_name_live
             room_name_live.live_set("", magic=room_name_live.MAGIC_REFRESH)
-            return "已刷新：战役地图开着就当场换一批新星球；没开的话下次打开地图时换。"
+            return "已刷新：战役地图打开时立即更换一批新星球；未打开则下次打开地图时更换。"
 
         self.app.run(action)
 
@@ -104,11 +102,10 @@ class CampaignPage(Page):
         if not self.app.busy:
             on = build.get_front_unlock()
             if self.unlock.get() != on:
-                self.unlock.set(on)  # 失败时开关弹回实际状态
+                self.unlock.set(on)
             if self.genocide.get() != _genocide_value():
                 self.genocide.set(_genocide_value())
         self.btn_refresh.set_enabled(running and not self.app.busy)
         self.refresh_hint.config(
-            text="在飞船里、没进任务时点（要你当房主）。战役地图开着时当场换，三个种族的星球都换一批新的；"
-                 "地图没开就等下次打开时换。" if running
-            else "要游戏开着才能点（在飞船里，没进任务）。")
+            text="在飞船中、未进入任务时点击（需要你是房主）。战役地图打开时立即更换，三个种族的星球都换一批新的；地图未打开则下次打开时更换。" if running
+            else "需要游戏正在运行才能点击（在飞船中，未进入任务）。")

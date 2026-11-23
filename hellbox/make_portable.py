@@ -1,8 +1,5 @@
-r"""发行版的 HellBox 程序部分：Python 官方便携版 + 编译好的 HellBox（.pyc），不再用 PyInstaller（2026-11-21 HD1-037）。
-
-为什么：N 网上传要过 VirusTotal，PyInstaller 打的 HellBox.exe 被 2 家杀毒软件误报，它的 _internal\base_library.zip
-又算「压缩包套压缩包」，一起被隔离。用户定开源（MIT），源码放 GitHub；发行包里的 Python 代码编成 .pyc
-（用户 2026-11-21 要包看着整齐：根目录只留 HellBox.exe、运行库、说明和 app / runtime 两个文件夹）。
+r"""
+发行版的 HellBox 程序部分：Python 官方便携版 + 编译好的 HellBox（.pyc）
 
 做出来的样子（target = 发行目录）：
   HellBox.exe          = Python 官方的 pythonw.exe 改名（改名不影响 Python 软件基金会的数字签名）
@@ -28,19 +25,15 @@ import zipfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
-PY_VERSION = "3.14.4"  # 和开发环境 .venv 一样
+PY_VERSION = "3.14.4"
 EMBED_URL = f"https://www.python.org/ftp/python/{PY_VERSION}/python-{PY_VERSION}-embed-amd64.zip"
 EMBED_SHA256 = "cda80a9b1e75c0f1b4f9872ca1b417f0d19bce32facc811aea9180e70fad5fb9"
 EMBED_ZIP = os.path.join(ROOT, ".work", "python-embed", "dl", f"python-{PY_VERSION}-embed-amd64.zip")
 
-# 和 exe 放一起的（exe 启动时要直接载入）
 TOP_FILES = ("python314.dll", "python3.dll", "vcruntime140.dll", "vcruntime140_1.dll")
-# 从 .venv 拷的第三方包（含 dist-info 里的授权说明）
 PACKAGES = ("PySide6", "shiboken6", "pymem")
 DIST_INFO_PREFIX = ("pyside6_essentials-", "shiboken6-", "pymem-")
-# PySide6 只留这三个 Qt 模块（界面只用到它们，和以前 PyInstaller 版一样）
 QT_KEEP = ("QtCore", "QtGui", "QtWidgets")
-# PySide6 里整个删掉的（相对 PySide6 目录）：开发用的、用不到的插件和翻译
 QT_DROP_DIRS = ("translations", "qml", "include", "typesystems", "glue", "metatypes", "scripts", "doc", "examples",
                 "resources", "plugins/generic", "plugins/networkinformation", "plugins/tls", "plugins/platforminputcontexts",
                 "plugins/iconengines", "plugins/qmltooling", "plugins/sqldrivers", "plugins/multimedia", "plugins/designer",
@@ -53,7 +46,6 @@ QT_DROP_FILES = ("opengl32sw.dll", "plugins/platforms/qdirect2d.dll", "plugins/p
                  "plugins/imageformats/qpdf.dll", "plugins/imageformats/qsvg.dll", "plugins/imageformats/qtga.dll",
                  "plugins/imageformats/qtiff.dll", "plugins/imageformats/qwbmp.dll", "plugins/imageformats/qwebp.dll",
                  "plugins/imageformats/qicns.dll")
-# hellbox\ 里不进发行包的（打包工具）
 UI_SKIP = ("make_exe.py", "make_portable.py", "make_icon.py")
 
 PTH = "\n".join([
@@ -126,7 +118,7 @@ def embed_zip():
 
 
 def _venv_site_packages():
-    import PySide6  # 打包用的就是开发环境的 Python
+    import PySide6
     return os.path.dirname(os.path.dirname(os.path.abspath(PySide6.__file__)))
 
 
@@ -148,23 +140,19 @@ def _prune_qt(qt):
         if not os.path.isfile(full):
             continue
         low = name.lower()
-        # Qt 模块：只留 QtCore / QtGui / QtWidgets 的 .pyd 和 .pyi
         if low.startswith("qt") and low.endswith((".pyd", ".pyi")):
             if name.split(".")[0] not in QT_KEEP:
                 os.remove(full)
             continue
-        # Qt 动态库：只留三个模块要的（Qt6Core / Qt6Gui / Qt6Widgets），别的 Qt6*.dll 删
         if low.startswith("qt6") and low.endswith(".dll"):
             if name.split(".")[0] not in ("Qt6Core", "Qt6Gui", "Qt6Widgets"):
                 os.remove(full)
             continue
-        # 设计器、工具程序
         if low.endswith(".exe"):
             os.remove(full)
 
 
 def build_runtime(target, app):
-    """在 target 里放好 HellBox.exe、运行库、runtime\\；界面代码放进 app\\hellbox（还是 .py，最后 compile_app 编译）。"""
     z = zipfile.ZipFile(embed_zip())
     names = set(z.namelist())
     runtime = os.path.join(target, "runtime")
@@ -177,14 +165,12 @@ def build_runtime(target, app):
             f.write(z.read(name))
     with open(os.path.join(runtime, "PYTHON-LICENSE.txt"), "wb") as f:
         f.write(z.read("LICENSE.txt"))
-    # PySide6 / Qt 按 LGPL-3.0 用（没改过），附上 LGPL 和它引用的 GPL 原文（tools\licenses，来自 gnu.org）
     shutil.copytree(os.path.join(ROOT, "tools", "licenses"), os.path.join(runtime, "licenses"))
     for name in names:
         low = name.lower()
         if low.endswith(".pyd") or (low.endswith(".dll") and name not in TOP_FILES):
             with open(os.path.join(runtime, "dlls", name), "wb") as f:
                 f.write(z.read(name))
-    # 标准库：便携版里是 python314.zip（编译好的 .pyc），解开放进 runtime\lib，发行包里不留压缩包
     import io
     with zipfile.ZipFile(io.BytesIO(z.read("python314.zip"))) as stdlib:
         stdlib.extractall(os.path.join(runtime, "lib"))
@@ -192,7 +178,6 @@ def build_runtime(target, app):
         f.write(PTH)
     with open(os.path.join(runtime, "boot", "sitecustomize.py"), "w", encoding="utf-8") as f:
         f.write(SITECUSTOMIZE)
-    # 第三方包
     sp = _venv_site_packages()
     for pkg in PACKAGES:
         src = os.path.join(sp, pkg)
@@ -200,7 +185,7 @@ def build_runtime(target, app):
         def ignore(d, names, src=src):
             skip = _ignore_cache(d, names)
             rel = os.path.relpath(d, src).replace(os.sep, "/")
-            for n in names:  # 要删的文件夹拷都不拷（有的路径太长，拷不过去）
+            for n in names:
                 if (n if rel == "." else rel + "/" + n) in QT_DROP_DIRS:
                     skip.append(n)
             return skip
@@ -209,14 +194,11 @@ def build_runtime(target, app):
         if name.lower().startswith(DIST_INFO_PREFIX) and name.endswith(".dist-info"):
             shutil.copytree(os.path.join(sp, name), os.path.join(runtime, "site-packages", name), ignore=_ignore_cache)
     _prune_qt(os.path.join(runtime, "site-packages", "PySide6"))
-    # 界面代码
     ui = os.path.join(app, "hellbox")
     shutil.copytree(HERE, ui, ignore=lambda d, names: _ignore_cache(d, names) + [n for n in names if n in UI_SKIP])
 
 
 def compile_app(target, app):
-    """app 里的 .py 全部编成同名 .pyc（放在原地，Python 认「没有源码的 .pyc」），删掉 .py。
-    文件名记成 app 里的相对路径（报错时显示 hellbox/app.py 这样，不带打包电脑上的路径）。"""
     import py_compile
     assert sys.version.split()[0] == PY_VERSION, f"要用 Python {PY_VERSION} 编（和发行包里的一样），现在是 {sys.version}"
     n = 0

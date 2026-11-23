@@ -1,8 +1,5 @@
-"""潜兵块的编辑器（2026-11-15，用户要：数据里加上潜兵自己的数据、两种无敌）。
-
-接口同别的编辑器（load / dump / set_visible / dirty）。块的数据：{"god": "off|heal|true", "common": {路径: 倍数}}。
-游戏那边是 mod/src/player_params.lua：只管这台电脑控制的潜兵（你和本机 2P），联机时管不到队友。
-原版数值来自游戏的潜兵设置表（lua_src/unknown_4d817700197e8ee5.lua）。
+"""
+潜兵块的编辑器：数据格式 {"god": "off|heal|true", "common": {路径: 倍数}}，游戏端由 mod/src/player_params.lua 生效。
 """
 from PySide6.QtCore import Qt
 
@@ -24,7 +21,6 @@ GOD = [("off", "关"), ("heal", "加血无敌"), ("true", "真无敌")]
 GOD_HELP = ("加血无敌：掉血马上补满、倒地马上站起来，但一下打掉太多血（重炮、自己的空袭）还是会死。"
             "真无敌：完全不掉血，掉出地图除外。只管你和本机 2P。")
 
-# (分段, [(路径, 名字, 原版, 说明)])；路径是潜兵设置表里的，按原值乘
 ROWS = [
     ("生存", [
         ("health_info.health", "生命值", 100, "血条有多长。改了已经在场的角色马上按比例变。"),
@@ -50,7 +46,6 @@ PATHS = {p for _s, rows in ROWS for p, *_ in rows}
 
 
 def player_command(data):
-    """潜兵块 -> player_params.lua 的命令。"""
     data = data or {}
     god = data.get("god") if data.get("god") in ("heal", "true") else "off"
     common = ",".join(f"{p}*{float(m):g}" for p, m in sorted((data.get("common") or {}).items())
@@ -82,8 +77,8 @@ class PlayerEditor:
         self.v_god = ui.Var("off")
         self.dirty = False
 
-        self.card = ui.Card(view, "EDIT", "绝地潜兵", fill=ui.MINT, note="你和本机 2P · 联机时只管自己")
-        self.btn_reset = small_button("全部还原", self._reset)
+        self.card = ui.Card(view, "EDIT", "绝地潜兵", fill=ui.MINT)
+        self.btn_reset = small_button("还原", self._reset)
         self.card.head_lay.addSpacing(10)
         self.card.head_lay.addWidget(self.btn_reset, 0, VC)
         self.body_w, self.body_lay = ui.vbox(spacing=0)
@@ -91,7 +86,6 @@ class PlayerEditor:
         self.rows = [view.row(self.card)]
         self._refresh()
 
-    # ================================================================ 块的读写
     def load(self, data, race=None):
         data = data or {}
         self.common = {p: float(m) for p, m in (data.get("common") or {}).items() if p in PATHS}
@@ -109,7 +103,6 @@ class PlayerEditor:
         for r in self.rows:
             r.setVisible(on)
 
-    # ================================================================ 界面
     def _refresh(self):
         ui.clear_layout(self.body_lay)
         plist = ParamList(self.body_lay, ui.MINT)

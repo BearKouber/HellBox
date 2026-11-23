@@ -1,6 +1,5 @@
-"""训练模式的 8 个存档（2026-11-13 用户要求）：每格存一份「地图 + 出怪」设置和选的出怪方案名。
-
-文件 mod/training_slots.json：长度 8 的列表，空格是 null；一格 = {"cfg": drill_spec 的设置, "preset": 出怪方案名或 ""}。
+"""
+训练模式的 8 个存档：每格存一份地图和出怪设置，文件是 mod/training_slots.json。
 """
 import json
 import os

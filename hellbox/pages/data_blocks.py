@@ -1,13 +1,5 @@
-"""「数据修改」页的存档和写给游戏的文件（2026-11-14 V0.91，用户定）。
-
-存档 mod/data_blocks.json：
-  {"version": 1, "seq": 写过几次,
-   "blocks": {类型: [8 格，空格 null，一格 = {"name": 名字, "data": 块的数据}]},
-   "live": {类型: 放在右边「当前对局数据」里的是第几格（0～7），null = 原版}}
-类型：player 潜兵（2026-11-15 加）、enemy 怪物属性、spawn 出怪逻辑、weapon 武器属性、strat_blue/red/green/vehicle/yellow 战备属性（2026-11-14 全部能用）。
-
-写给游戏：%APPDATA%/Arrowhead/Helldivers/hellbox/data-live.txt（格式见 mod/src/data_live.lua），游戏每秒读一次；
-游戏处理完写回 data-live-ack.txt（seq、在哪、阵营、两边的结果）。
+"""
+数据修改页的存档和写给游戏的文件：存档在 mod/data_blocks.json，游戏端由 mod/src/data_live.lua 每秒读取 data-live.txt。
 """
 import copy
 import json
@@ -32,9 +24,8 @@ ACK = GAME_DIR / "data-live-ack.txt"
 RACES = ("bugs", "cyborgs", "illuminates")
 STRAT_CATS = ("blue", "red", "green", "vehicle", "yellow")
 
-# (类型, 名字, 颜色, 做好了没有)
 TYPES = [
-    ("player", "绝地潜兵", "#8fd3c1", True),  # 2026-11-15 用户要：数据里加上潜兵自己的数据
+    ("player", "绝地潜兵", "#8fd3c1", True),
     ("enemy", "怪物属性", "#c3a6e0", True),
     ("spawn", "出怪逻辑", "#e3b38c", True),
     ("weapon", "武器属性", "#a9bccf", True),
@@ -48,22 +39,13 @@ TYPE_NAME = {t: n for t, n, _c, _r in TYPES}
 TYPE_COLOR = {t: c for t, _n, c, _r in TYPES}
 READY = {t for t, _n, _c, r in TYPES if r}
 
-# 2026-11-18 V0.98 用户定：发行测试版的「数据」页只留怪物属性和出怪逻辑（其它会影响玩家体验）。
-# 1.0 打两份：带全部数据的、不带的。带全部 = mod 文件夹里放一个空文件 data_full（make_exe 以后按版本放）。
-# 存档里别的类型的块和滑条照样留着（不删玩家的东西），只是不显示、不写给游戏（写给游戏的一律原版）。
 FULL = os.path.isfile(os.path.join(paths.MOD, "data_full"))
 OPEN_KINDS = {t for t, *_ in TYPES} if FULL else {"enemy", "spawn"}
-OPEN_GROUPS = {"player", "enemy", "weapon", "strat"} if FULL else {"enemy"}  # 普通模式的滑条卡（敌人卡里含出怪那几条）
+OPEN_GROUPS = {"player", "enemy", "weapon", "strat"} if FULL else {"enemy"}
 SHOWN = [t for t in TYPES if t[0] in OPEN_KINDS]
 
 
-# ---------------------------------------------------------------- 普通模式的滑条（2026-11-15 新界面）
-# 不开开发者模式时，数据页就是一页滑条：全局倍数，叠在开发者模式放进去的块上面（两边都设了就相乘）。
-# (键, 名字, 档位, 原版那档, 改的东西, 说明)；改的东西：enemy/weapon/strat = 「所有怪 / 全部武器 / 全部战备」的路径或组，
-# spawn.count = 三条来源里还是原版的都换成「倍数」，spawn.spread = 出生时散开（块里没设时）。
-# 2026-11-16 用户定：场上上限不让手填，游戏那边自动（spawn_rules.lua 自动上限），以前存的 spawn.cap 不再用。
-# 2026-11-18 V0.96 用户改主意：上限写出来。spawn.limit = 场上上限滑条：16（原版）～300，最右边隔开的 -1 =「破限」
-#   （自动、最多 1000）。用新键名，免得以前存的 spawn.cap 又生效。
+# ---------------------------------------------------------------- 普通模式的滑条
 CAP_VALUES = tuple(range(16, 301, 4)) + (-1,)
 MULT_BIG = (0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0, 10.0)
 MULT_MID = (0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0)
@@ -119,16 +101,13 @@ SIMPLE = [
 ]
 SIMPLE_ROWS = {r[0]: r for _g, _t, _c, _n, rows in SIMPLE for r in rows}
 SIMPLE_SHOWN = [g for g in SIMPLE if g[0] in OPEN_GROUPS]
-if not FULL:  # 只剩敌人这张卡时拆成两张，名字和开发者模式的两类一样
+if not FULL:
     _er = next(g[4] for g in SIMPLE if g[0] == "enemy")
     SIMPLE_SHOWN = [("enemy", "怪物属性", TYPE_COLOR["enemy"], "三个种族一起改", [r for r in _er if r[0].startswith("enemy.")]),
                     ("spawn", "出怪逻辑", TYPE_COLOR["spawn"], "三个种族一起改", [r for r in _er if r[0].startswith("spawn.")])]
 SHOWN_ROWS = {r[0] for _g, _t, _c, _n, rows in SIMPLE_SHOWN for r in rows}
 
 
-# 2026-11-18 V0.99 用户要：普通模式「出怪逻辑」下面加一块坦克屁股出兵（有人不喜欢复杂的），和开发者模式出怪逻辑里的
-# 「载具 / 首领放兵」一样：方式（原版 / 只出选中 / 不出）、勾放哪些怪、每次放几只。只管生化人（步兵战车只有生化人有）。
-# 存在 data["veh"] = {"mode": ..., "sel": {怪路径: 1}, "count": 0 = 原版 / 1～50}
 VEH_RACE = "cyborgs"
 VEH_MODES = ("vanilla", "only", "none")
 
@@ -145,7 +124,6 @@ def clean_veh(v):
 
 
 def simple_veh(data):
-    """普通模式坦克屁股要发给游戏的那份（没改 = None）。「只出选中」一只没勾当原版。"""
     v = clean_veh(data.get("veh"))
     if v["mode"] == "only" and not v["sel"]:
         v["mode"] = "vanilla"
@@ -157,12 +135,10 @@ def simple_veh(data):
 
 
 def shown_simple(data):
-    """普通模式里现在这版能看到、会生效的滑条值。"""
     return {k: v for k, v in (data.get("simple") or {}).items() if k in SHOWN_ROWS}
 
 
 def effective(data):
-    """写给游戏用的那份：这版没开放的类型当原版（块不放、滑条不算）。"""
     out = dict(data)
     out["live"] = {k: (v if k in OPEN_KINDS else None) for k, v in (data.get("live") or {}).items()}
     out["simple"] = shown_simple(data)
@@ -201,7 +177,6 @@ def load():
 
 
 def simple_adds(data, group):
-    """普通模式里某一类（enemy / weapon / strat）要乘的 {路径或组: 倍数}。"""
     out = {}
     for key, val in (data.get("simple") or {}).items():
         row = SIMPLE_ROWS.get(key)
@@ -212,7 +187,6 @@ def simple_adds(data, group):
 
 
 def _with_common(d, adds):
-    """块的数据 + 普通模式的倍数（相乘）。"""
     d = copy.deepcopy(d or {})
     if adds:
         common = dict(d.get("common") or {})
@@ -223,15 +197,14 @@ def _with_common(d, adds):
 
 
 def _with_spawn(rd, data, race=None):
-    """一个阵营的出怪数据 + 普通模式的「敌人数量」「出生时散开」：块里还是原版的来源才换成倍数；块里没设散开才用这里的。"""
     simple = data.get("simple") or {}
     count, spread = int(simple.get("spawn.count") or 1), int(simple.get("spawn.spread") or 0)
     limit = int(simple.get("spawn.limit") or 16)
     rd = copy.deepcopy(rd or {})
-    if limit != 16 and not rd.get("cap"):  # 块里没设上限才用滑条的
+    if limit != 16 and not rd.get("cap"):
         rd["cap"] = limit
     sv = simple_veh(data)
-    if race == VEH_RACE and sv:  # 普通模式的坦克屁股：块里的载具放兵还是原版才用这里的
+    if race == VEH_RACE and sv:
         veh = rd.get("veh") or {}
         if (veh.get("mode") or "vanilla") == "vanilla" and not int(veh.get("count") or 0):
             rd["veh"] = copy.deepcopy(sv)
@@ -248,7 +221,6 @@ def _with_spawn(rd, data, race=None):
 
 
 def simple_summary(data):
-    """普通模式改了哪些（开发者模式里提示用）。"""
     parts = []
     for key, val in shown_simple(data).items():
         row = SIMPLE_ROWS.get(key)
@@ -261,7 +233,6 @@ def simple_summary(data):
 
 
 def simple_label(row, val, mark="（原版）"):
-    """滑条上显示的值（已翻译）。mark = 等于原版时后面加的字。"""
     if row[0] == "player.god":
         base = tr(GOD_LABEL.get(int(val), "关"))
     elif row[0] == "spawn.limit":
@@ -284,8 +255,6 @@ def save(data):
 
 # ---------------------------------------------------------------- 块 -> 命令
 def enemy_command(d):
-    """怪物属性块 -> enemy_params.lua 的命令。d = {"common": {路径: 倍数}, "ov": {怪名: {路径: 值}}}；
-    值是文字：'*2' = 按这只怪的原值乘，其它 = 绝对值（数 / true / false / 路径）。"""
     d = d or {}
     common = ",".join(f"{p}*{float(m):g}" for p, m in sorted((d.get("common") or {}).items())
                       if abs(float(m) - 1.0) > 1e-9)
@@ -300,8 +269,7 @@ def enemy_command(d):
 
 
 def live_text(data):
-    """当前对局数据（放进去的块 + 普通模式的滑条）-> data-live.txt 的内容。"""
-    from pages import spawn  # 出怪命令的拼法在出怪编辑器那边
+    from pages import spawn
     lines = ["HBDATA1", f"seq={data['seq']}"]
     data = effective(data)
 
@@ -313,7 +281,7 @@ def live_text(data):
     from pages.player_editor import player_command
     pd = _with_common(cell_data("player"), simple_adds(data, "player"))
     god = GOD_KEY.get(int((data.get("simple") or {}).get("player.god") or 0), "off")
-    if god != "off":  # 普通模式的无敌开着就用它，没开就照块里的
+    if god != "off":
         pd["god"] = god
     lines.append("player=" + player_command(pd))
     lines.append("params=" + enemy_command(_with_common(cell_data("enemy"), simple_adds(data, "enemy"))))
@@ -323,7 +291,7 @@ def live_text(data):
         lines.append(f"spawn.{race}=" + (spawn.race_command(rd, race) if rd else "reset"))
     from pages.weapon_editor import weapon_command
     lines.append("weapon=" + weapon_command(_with_common(cell_data("weapon"), simple_adds(data, "weapon"))))
-    from pages import strat_editor  # 战备命令的拼法在战备编辑器那边
+    from pages import strat_editor
     for c in STRAT_CATS:
         d = _with_common(cell_data("strat_" + c), simple_adds(data, "strat"))
         lines.append(f"strat.{c}=" + strat_editor.strat_command(d, c))
@@ -331,7 +299,6 @@ def live_text(data):
 
 
 def write_live(data):
-    """seq 加 1，写 data-live.txt（先写临时文件再换名，游戏不会读到半截），再存档。"""
     data["seq"] = int(data.get("seq") or 0) + 1
     GAME_DIR.mkdir(parents=True, exist_ok=True)
     tmp = LIVE.with_suffix(".tmp")
@@ -341,7 +308,6 @@ def write_live(data):
 
 
 def read_ack():
-    """游戏写回的结果 {seq, where, race, params, spawn}；没有文件返回 {}。"""
     try:
         text = ACK.read_text(encoding="utf-8")
     except (OSError, ValueError):

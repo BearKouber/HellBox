@@ -37,7 +37,7 @@ jobs:
         id: ver
         shell: pwsh
         run: |
-          $m = Select-String -Path hellbox/app.py -Pattern '^VERSION = "(V\d+\.\d+)"' | Select-Object -First 1
+          $m = Select-String -Path hellbox/app.py -Pattern '^VERSION = "(V\d+\.\d+(?:\.\d+)?)"' | Select-Object -First 1
           if (-not $m) { throw "VERSION not found in hellbox/app.py" }
           $version = $m.Matches[0].Groups[1].Value
           if ("${{ github.ref_type }}" -eq "tag") {
@@ -98,7 +98,8 @@ jobs:
           $p = Start-Process .work/selfcheck/HellBox.exe -ArgumentList "--check-ui" -PassThru -Wait
           if ($p.ExitCode -ne 0) { throw "HellBox --check-ui exit code $($p.ExitCode)" }
           $v = (Get-Item .work/hellbox-public/HellBox/HellBox.exe).VersionInfo.FileVersion
-          if ("V$v" -ne "${{ steps.ver.outputs.version }}") { throw "exe version $v" }
+          $want = "${{ steps.ver.outputs.version }}".TrimStart("V")
+          if ([version]$v -ne [version]$want) { throw "exe version $v" }
           if (Test-Path .work/hellbox-public/HellBox/mod/backup) { throw "mod/backup appeared in the package" }
           Write-Host "Self-check OK, exe version $v"
 

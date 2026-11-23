@@ -1,6 +1,5 @@
-"""数据修改页几个编辑器共用的小工具：读 JSON、按路径取值、给人看的数、不偷滚轮的下拉框。
-
-2026-11-14 V0.91：原来在旧「怪物」页 enemies.py 里；旧页被「数据修改」页替代后删掉，工具挪到这里。
+"""
+数据修改页几个编辑器共用的小工具：读 JSON、按路径取值、数值显示、不抢滚轮的下拉框。
 """
 import json
 
@@ -31,7 +30,6 @@ def get_path(settings, path):
 
 
 def num(v):
-    """给人看的数：最多 4 位有效数字，大数不写成 1e+04。"""
     if isinstance(v, bool) or not isinstance(v, (int, float)):
         return str(v)
     if abs(v) >= 1000:
@@ -40,7 +38,6 @@ def num(v):
 
 
 class NoWheelCombo(QComboBox):
-    """没点开下拉列表时，滚轮交给页面去滚，不偷偷改值。on_hide = 列表收起来以后调（open_popup 用）。"""
 
     on_hide = None
 
@@ -53,18 +50,13 @@ class NoWheelCombo(QComboBox):
     def hidePopup(self):
         super().hidePopup()
         if self.on_hide:
-            QTimer.singleShot(0, self.on_hide)  # 等点选的 activated 先处理完
+            QTimer.singleShot(0, self.on_hide)
 
 
-COMBO_W = 240  # 下拉框和弹出列表都是这个宽（长的选项省略号）
+COMBO_W = 240
 
 
 def open_popup(c, chip, cancel=None):
-    """2026-11-15 用户反馈的三个下拉问题：
-    - 有时弹出列表跑到软件外面：原来下拉框刚塞进布局、还没摆好位置就弹列表，位置按 (0,0) 算了。改成等布局摆好（下一轮事件）再弹。
-    - 点开会把已经选的变成空：原来特意清空了当前项。改成选中现在这一项；不在选项里的（比如打字输入过的数）显示成灰字占位。
-    - 宽度忽宽忽窄：原来跟着这一格原来的宽度、列表又按最长的选项撑。改成下拉框、列表都固定 COMBO_W。
-    cancel：没选就收起列表时调（只对不能打字的下拉框；能打字的收起列表后还可以接着打）。"""
     cur = getattr(chip, "text", "") or ""
     if callable(cur):
         cur = cur()
@@ -74,10 +66,9 @@ def open_popup(c, chip, cancel=None):
     else:
         c.setCurrentIndex(-1)
         if c.isEditable():
-            c.setEditText(cur)  # 能打字的：框里留着现在的值
+            c.setEditText(cur)
         else:
             c.setPlaceholderText(cur)
-    # 2026-11-15 用户第二次反馈：点开后框变长了，要和没点开时一样宽 → 用这一格原来的宽度（列表也一样宽）
     w = chip.width() if chip.width() > 60 else COMBO_W
     c.setFixedWidth(w)
     v = c.view()
@@ -91,7 +82,7 @@ def open_popup(c, chip, cancel=None):
             if c.isVisible():
                 c.setFocus()
                 c.showPopup()
-        except RuntimeError:  # 已经被删了
+        except RuntimeError:
             pass
 
     QTimer.singleShot(0, show)
@@ -105,7 +96,6 @@ def is_num(v):
 
 
 def eff_key(base):
-    """存的值 -> 实际数（排档位、找滑块位置用）：None = 原版，'*2' = 原值 ×2，其它 = 绝对值。"""
     def key(stored):
         if stored is None:
             return float(base)
@@ -117,13 +107,11 @@ def eff_key(base):
 
 
 class ValueSlider(ui.StepSlider):
-    """数值格（2026-11-15 用户要求：下拉换成能拖的滑条）。按档位吸附，原版是其中一档；松手就改。
-    双击右边的字可以直接打一个数（和原来下拉框里打字一样）。.set_text(文字, 改过没) 和原来的 ValueChip 一样用。"""
 
     def __init__(self, text, changed=False):
         self._v = ui.Var(0)
         super().__init__(None, [], self._v, command=self._picked, width=170)
-        self.items = []  # (实际数, 存的值)
+        self.items = []
         self.choose = self.typed = None
         self.key = None
         self._edit = None
@@ -133,7 +121,6 @@ class ValueSlider(ui.StepSlider):
         self.set_current(text, changed)
 
     def setup(self, opts, choose, typed, key, cur):
-        """opts = [(文字, 存的值)]（原版那档的存的值是 None）；key(存的值) -> 实际数；cur = 现在的实际数。"""
         seen, items = set(), []
         for label, stored in opts:
             try:
@@ -159,7 +146,7 @@ class ValueSlider(ui.StepSlider):
             i = min(range(len(self.items)), key=lambda j: abs(self.items[j][0] - c))
         except (TypeError, ValueError):
             i = 0
-        self._v._v = i  # 不触发 command
+        self._v._v = i
         self.update()
 
     def _picked(self, i):
@@ -202,11 +189,8 @@ class ValueSlider(ui.StepSlider):
         ed.editingFinished.connect(done)
 
 
-# ---------------------------------------------------------------- 2026-11-15 编辑器新界面（UI 交给 Claude）
+# ---------------------------------------------------------------- 编辑器新界面
 class PickGrid(ui.Clickable):
-    """选怪 / 选武器 / 选战备：平的等宽格子（不再是一堆带阴影的按钮）。
-    每格 = 小方块（改过 = 绿）+ 名字；选中那格白底黑框；鼠标停上去底栏显示 help。
-    items = [(值, 文字, 改过没, 说明)]；点了调 command(值)。"""
 
     H = 34
     MIN_W = 150
@@ -293,8 +277,6 @@ class PickGrid(ui.Clickable):
 
 
 class ParamList:
-    """参数表（2026-11-15 新界面）：一行一个参数 = 名字 …… 滑条 / 选择 …… 原版值；行间细线，
-    分段标题是小色块 + 粗字；鼠标停在一行上，底栏显示这一项的说明（代替原来的鼠标提示框）。"""
 
     NAME_W = 190
 
@@ -307,7 +289,7 @@ class ParamList:
         head, hl = ui.hbox(spacing=7)
         hl.setContentsMargins(0, 0, 0, 4)
         hl.addWidget(ui.Square(None, self.color, 8), 0, Qt.AlignmentFlag.AlignVCenter)
-        en = ui._tr("■ " + title)  # 英文版：分段标题以前是带「■ 」翻的
+        en = ui._tr("■ " + title)
         title = en[2:] if en != "■ " + title else title
         hl.addWidget(ui.Label(title, font=ui.f_zh(10, True)), 0, Qt.AlignmentFlag.AlignVCenter)
         hl.addStretch(1)
@@ -340,7 +322,6 @@ class ParamList:
 
 
 def swap_combo(chip, combo):
-    """点开的下拉框放在小方块原来的位置（小方块先藏起来，关掉下拉框再露出来）。"""
     lay = chip.parentWidget().layout()
     lay.insertWidget(lay.indexOf(chip), combo, 0, Qt.AlignmentFlag.AlignVCenter)
     chip.hide()

@@ -1,15 +1,5 @@
-"""武器属性块的编辑器（2026-11-14 V0.91，数据修改页里的编辑卡片，接口同 EnemyEditor）。
-
-每把武器列哪些参数、书面名称、选项方式、原版值来自 ai/weapon_fields.json（tools/weapon_fields.py 生成，
-HD1-033 武器属性清单：只列游戏代码实际会读的参数）。游戏这边是 mod/src/weapon_params.lua。
-选项方式同怪物属性：
-  倍率 mult      ×0～×100（原版值为 0 的给具体数值档）；散布按度显示
-  秒数 time      0、0.1、0.25、0.5、1、2、3、5、10、30 秒
-  数量 count     0～10、15、20、30
-  是否 bool / 角度 angle（电弧扇区）
-数值那一格平时是一块小方块，点到才变成下拉框（同怪物属性）。
-块的数据：{"common": {组: 倍数}, "ov": {单位短名: {路径: 值}}}；值 '*2' = 按原值乘，其它 = 绝对值（数 / true / false）。
-单位短名是武器（wep_*）或它打出去的弹头 / 炸药包（equipment_impact_grenade_02 等），和 Lua 那边的 KEYS 一致。
+"""
+武器属性块的编辑器：参数、名称、选项方式与原版值来自 ai/weapon_fields.json，游戏端是 mod/src/weapon_params.lua。
 """
 import copy
 import math
@@ -49,7 +39,6 @@ _DATA = None
 
 
 def fields():
-    """ai/weapon_fields.json（读一次）。"""
     global _DATA
     if _DATA is None:
         _DATA = load_json(FIELDS, {}) or {}
@@ -63,7 +52,6 @@ def fields():
 
 
 def _fix(row, v):
-    """和 Lua 那边一样：取整、下限。"""
     if row.get("int"):
         v = math.floor(v + 0.5)
     if row.get("min") is not None and v < row["min"]:
@@ -75,11 +63,8 @@ def _is_num(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool)
 
 
-# ---------------------------------------------------------------- 块 -> 命令（给 data_blocks 用）
+# ---------------------------------------------------------------- 块 -> 命令
 def weapon_command(data):
-    """武器属性块 -> weapon_params.lua 的命令。「全部武器」的组在这里展开成每把武器的倍率
-    （发射器的发射力度之类不该跟着变的行，清单里没标组就不会被带上）；单把设了的那一项以单把为准。
-    设置里本来没有、按代码缺省值显示的行，倍率换算成绝对值发过去（游戏那边没有原值可乘）。"""
     data = data or {}
     meta = fields()
     idx = meta.get("_index") or {}
@@ -130,7 +115,6 @@ def summary(data):
 
 
 def _upgrade_text(items):
-    """「扩展弹匣：325」这样的升级说明逐段翻（英文版升级名、是 / 否、标点都换成英文）。"""
     try:
         from i18n import is_en
         en = is_en()
@@ -157,10 +141,9 @@ class WeaponEditor:
         self.common = {}
         self.ov = {}
         self.dirty = False
-        self._open = None  # 正在下拉的那一格 (combo, chip, choose, typed)
+        self._open = None
 
-        # 2026-11-15 新界面：选武器 = 平的等宽格子（绿方块 = 改过），参数 = 一行一项、说明进底栏
-        pick = ui.Card(view, "PICK", "选武器", fill=ui.YELLOW, note="绿色方块 = 改过")
+        pick = ui.Card(view, "PICK", "选武器", fill=ui.YELLOW)
         self.v_group = ui.Var(self.group)
         self.seg_group = ui.Segmented(None, self.groups, self.v_group, command=self._group_changed,
                                       padx=12, pady=3, shadow=2, font=ui.f_zh(10, True))
@@ -168,8 +151,8 @@ class WeaponEditor:
         self.picker = PickGrid(self._select)
         pick.add(self.picker, top=10)
 
-        self.card = ui.Card(view, "EDIT", "", fill=ui.SALMON, note=" ")
-        self.btn_reset = small_button("全部还原", self._reset_weapon)
+        self.card = ui.Card(view, "EDIT", "", fill=ui.SALMON)
+        self.btn_reset = small_button("还原", self._reset_weapon)
         self.card.head_lay.addSpacing(10)
         self.card.head_lay.addWidget(self.btn_reset, 0, VC)
         self.notes = self.card.add(ui.text(self.card.body, "", muted=True, size=9))
@@ -179,8 +162,7 @@ class WeaponEditor:
         self.rows = [view.row(pick), view.row(self.card)]
         self._refresh()
 
-    # ================================================================ 块的读写
-    def load(self, data, race=None):  # race 没用，和 EnemyEditor 接口一致
+    def load(self, data, race=None):
         data = data or {}
         self.common = {g: float(m) for g, m in (data.get("common") or {}).items()}
         self.ov = copy.deepcopy(data.get("ov") or {})
@@ -196,7 +178,6 @@ class WeaponEditor:
         for r in self.rows:
             r.setVisible(on)
 
-    # ================================================================ 选武器
     def _group_changed(self, group):
         self.group = group
         self.weapon = ALL
@@ -217,7 +198,7 @@ class WeaponEditor:
                   "全部武器（主武器、副武器、支援武器一起）：按每把武器自己的原版数值乘；单把武器设了的那一项以单把为准。"
                   "倍率按装上升级后的数值乘。")]
         items += [(s, self.weapons[s]["zh"], self._changed_weapon(s),
-                   "\n".join(self.weapons[s].get("notes") or []) or "点开改这把武器的参数。")
+                   "\n".join(self.weapons[s].get("notes") or []) or "点击展开以修改这把武器的参数。")
                   for s in self.order if self.weapons[s].get("group") == self.group]
         return items
 
@@ -232,16 +213,14 @@ class WeaponEditor:
         self.notes.setVisible(bool(self.notes.text()))
         self._mark()
 
-    # ================================================================ 全部武器
     def _build_common(self):
         self.card.title_lab.config(text="全部武器")
-        self.card.note_lab.config(text="主武器、副武器、支援武器一起，按每把自己的原版数值乘")
         self.notes.config(text="")
         for g in self.common_groups:
             key, label = g["key"], g["label"]
             m = self.common.get(key, 1.0)
             chip = ValueSlider("×1（原版）" if abs(m - 1) < 1e-9 else f"×{m:g}", abs(m - 1) > 1e-9)
-            self._setup_common(chip, key)  # 2026-11-15 下拉换成滑条
+            self._setup_common(chip, key)
             self.plist.row(label, chip, help=" ".join(t for t in (tr(g.get("tip", "")), tr(KIND_TIP["mult"])) if t))
 
     def _setup_common(self, chip, key):
@@ -262,11 +241,9 @@ class WeaponEditor:
 
         chip.setup(opts, choose, typed, key=lambda v: 1.0 if v is None else float(v), cur=self.common.get(key, 1.0))
 
-    # ================================================================ 单把武器
     def _build_weapon(self, short):
         w = self.weapons[short]
         self.card.title_lab.config(text=w["zh"])
-        self.card.note_lab.config(text=dict(self.groups).get(w.get("group"), ""))
         self.notes.config(text="\n".join(w.get("notes") or []))
         for block in w.get("blocks") or []:
             self.plist.section(block["title"])
@@ -322,7 +299,7 @@ class WeaponEditor:
         m = self.common.get(row.get("common"))
         if m is not None and _is_num(base):
             return T("跟全部武器 ×{0:g} = {1}", m, self._show(row, _fix(row, base * m))), True
-        return tr("原版"), False  # 2026-11-15 新界面：原版的数在这一行最右边
+        return tr("原版"), False
 
     @staticmethod
     def _parse(text):
@@ -345,7 +322,6 @@ class WeaponEditor:
 
     # ---------------------------------------------------------------- 下拉的选项
     def _store(self, row, v):
-        """给人看的数（度 / 秒 / 个）-> 存的文字（设置里的单位）。"""
         if row.get("scale") == "rad":
             v = math.radians(v)
         v = _fix(row, max(0.0, v))
@@ -356,7 +332,7 @@ class WeaponEditor:
         orig = (T("原版（{0}）", self._show(row, base)), None)
 
         def as_shown(t):
-            return self._num(str(t).replace("秒", "").replace("°", "").replace("个", "").strip().rstrip("sS").strip())  # 英文版显示「5s」
+            return self._num(str(t).replace("秒", "").replace("°", "").replace("个", "").strip().rstrip("sS").strip())
 
         if kind == "mult":
             opts = [orig] + [(f"×{m:g} = {self._show(row, _fix(row, base * m))}", f"*{m:g}") for m in MULTS]
@@ -397,7 +373,6 @@ class WeaponEditor:
 
     # ---------------------------------------------------------------- 点开 / 选好
     def _value_widget(self, row, kind, text, changed, grid, r):
-        """数值类：滑条（2026-11-15 用户要求）；是否这种：点了变下拉框的小方块。"""
         base = row["value"]
         if kind in NUMERIC_KINDS and is_num(base):
             w = ValueSlider(text, changed)
@@ -481,7 +456,6 @@ class WeaponEditor:
         except RuntimeError:
             pass
 
-    # ================================================================ 改动
     def _reset_weapon(self):
         if self.weapon == ALL:
             self.common = {}
@@ -496,6 +470,5 @@ class WeaponEditor:
         self._mark()
 
     def _mark(self):
-        """选武器格子上的绿方块、「全部还原」能不能点。"""
         self.picker.set_items(self._pick_items(), self.weapon)
         self.btn_reset.set_enabled(bool(self.common) if self.weapon == ALL else self._changed_weapon(self.weapon))

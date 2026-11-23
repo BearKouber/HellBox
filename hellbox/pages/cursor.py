@@ -1,4 +1,6 @@
-"""指针：颜色、不透明度、黑边，实时预览（原来的"瞄准指针"窗口）。设置只在装上 / 恢复时保存。"""
+"""
+指针页：调整指针颜色、不透明度和黑边，实时预览；设置只在安装或恢复时保存。
+"""
 from PySide6.QtCore import QRect
 from PySide6.QtGui import QColor, QImage, QPainter, QPixmap
 from PySide6.QtWidgets import QColorDialog, QGridLayout, QWidget
@@ -7,7 +9,7 @@ import cursor_mod
 import ui
 from pages.base import Page
 try:
-    from i18n import T, tr  # HellBox 里跑时有中英文切换
+    from i18n import T, tr
 except ImportError:
     def tr(s):
         return s
@@ -21,11 +23,6 @@ ROWS = [("game", "瞄准"), ("game_inactive", "不瞄准"), ("menu", "菜单箭�
 
 
 def compose(w, h, px, bg):
-    """指针叠到背景色上，返回 w×h 的 QImage（还没放大）。
-
-    游戏贴图是从最下面一行开始存的，游戏画的时候上下是反的；这里也上下翻一下，预览才和游戏里一样
-    （2026-11-14：之前没翻，预览里菜单箭头看着朝左下，误把游戏里的贴图翻了）。
-    看得见的部分挪到格子正中（2026-11-14 用户要求：菜单箭头原图贴在左上角，预览里和上面两行对不齐）。"""
     px = px[:w * h]
     seen = [i for i, (_r, _g, _b, a) in enumerate(px) if a > 8]
     dx = dy = 0
@@ -49,7 +46,6 @@ def compose(w, h, px, bg):
 
 
 class Swatch(ui.Clickable):
-    """一个颜色方块，选中时外面多一圈黑框 + 里面一个小白块。"""
 
     def __init__(self, rgb, on_pick):
         super().__init__()
@@ -82,7 +78,6 @@ class Swatch(ui.Clickable):
 
 
 class Tile(QWidget):
-    """预览格：2 像素黑边 + 指针图（按真实像素 2 倍放大显示，和 tk 版一样）。"""
 
     def __init__(self, bg):
         super().__init__()
@@ -92,7 +87,7 @@ class Tile(QWidget):
 
     def set_image(self, img):
         dpr = self.devicePixelRatioF()
-        self.pm = QPixmap.fromImage(img.scaled(img.width() * SCALE, img.height() * SCALE))  # 最近邻放大，像素清楚
+        self.pm = QPixmap.fromImage(img.scaled(img.width() * SCALE, img.height() * SCALE))
         self.pm.setDevicePixelRatio(dpr)
         self.setFixedSize(int(round(self.pm.width() / dpr)) + 4, int(round(self.pm.height() / dpr)) + 4)
         self.update()
@@ -112,12 +107,11 @@ CURSOR_STATE = {"on": ("已替换", ui.GOOD), "old": ("待更新", ui.WARN), "of
 class CursorPage(Page):
     key = "cursor"
     tab = "指针"
-    when = "要先关游戏；装好后重新打开游戏生效"
-    when_color = ui.YELLOW
+    when = "需先关闭游戏；装好后重新打开游戏生效"
+    when_color = ui.MINT
 
     def build(self):
         cfg = cursor_mod.load()
-        # 2026-11-15 新界面：指针状态从顶栏挪到这页顶上
         self.state_lab = ui.Label("", font=ui.f_zh(10, True))
         self.head_lay.addWidget(self.state_lab, 0, ui.Qt.AlignmentFlag.AlignVCenter)
         self.color = tuple(cfg["color"])
@@ -154,7 +148,6 @@ class CursorPage(Page):
         w, lay = ui.hbox()
         lay.addWidget(ui.Toggle(None, self.outline, command=self.refresh), 0, ui.Qt.AlignmentFlag.AlignVCenter)
         lay.addSpacing(10)
-        lay.addWidget(ui.text(None, "亮地面上也看得出轮廓", muted=True, size=9), 1)
         card.add(w)
 
         self.btn_install = ui.Button(None, "装到游戏里", self.install, kind="primary")
@@ -174,7 +167,7 @@ class CursorPage(Page):
         self.tiles = {}
         for r, (key, name) in enumerate(ROWS):
             lab = ui.Label(name, font=ui.f_zh(9, True), fg=ui.MUTED)
-            lab.setMinimumWidth(ui._tw(lab.font(), lab.text()) + 8)  # 「菜单箭头」别被截掉
+            lab.setMinimumWidth(ui._tw(lab.font(), lab.text()) + 8)
             grid.addWidget(lab, r + 1, 0,
                            ui.Qt.AlignmentFlag.AlignRight | ui.Qt.AlignmentFlag.AlignVCenter)
             for c in range(len(GROUNDS)):
@@ -182,11 +175,11 @@ class CursorPage(Page):
                 grid.addWidget(t, r + 1, c + 1)
                 self.tiles[(key, c)] = t
         pv.add(gw, align=ui.CENTER)
-        self.pv_note = pv.add(ui.text(pv.body, "读取原版指针…", muted=True, size=9), top=10)
+        self.pv_note = pv.add(ui.text(pv.body, "", muted=True, size=9), top=10)
 
         self.view.row(card, pv, weights=(5, 4))
         self.update_labels()
-        self.app.bg(cursor_mod.load_textures, self._loaded)  # 第一次读原图要两三秒，放后台
+        self.app.bg(cursor_mod.load_textures, self._loaded)
 
     def _label(self, card, s):
         card.add(ui.Label(s, font=ui.f_zh(10, True)), top=10 if card.blay.count() else 0)
@@ -215,7 +208,7 @@ class CursorPage(Page):
         custom = self.color not in [s.rgb for s in self.swatches]
         self.custom.rgb = self.color
         self.custom.draw(True)
-        self.custom.setVisible(custom)  # 只有选了预设以外的颜色才显示自选块
+        self.custom.setVisible(custom)
 
     def schedule(self):
         self.op_text.config(text=f"{int(self.opacity.get())}%")
@@ -235,8 +228,7 @@ class CursorPage(Page):
 
     def _loaded(self, ok, res):
         if ok:
-            self.pv_note.config(text="这里改了只是预览，点「装到游戏里」才会生效。\n"
-                                     "“不瞄准”要游戏设置里开了“准星总是可见”才有。")
+            self.pv_note.config(text="这里只是预览，点击「装到游戏里」才会生效。\n“不瞄准”需要在游戏设置里开启“准星总是可见”。")
             self.refresh()
         else:
             self.pv_note.config(text=T('读不到原版指针：{0}', tr(str(res))), fg=ui.BAD)
@@ -266,7 +258,7 @@ class CursorPage(Page):
         ok = not self.app.busy and not running and cursor_mod.ready()
         self.btn_install.set_enabled(ok)
         self.btn_restore.set_enabled(ok and self.app.state["cursor"] != "off")
-        self.hint.config(text="游戏开着，要先关游戏才能装。" if running else "", fg=ui.WARN)
+        self.hint.config(text="游戏正在运行，请先关闭游戏再安装。" if running else "", fg=ui.WARN)
         self.hint.setVisible(running)
         text, color = CURSOR_STATE.get(self.app.state.get("cursor"), ("…", ui.MUTED))
         self.state_lab.config(text=T("现在：{0}", tr(text)), fg=color)

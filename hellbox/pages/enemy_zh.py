@@ -1,11 +1,8 @@
-"""怪物参数的中文名和说明（「怪物」页用）。
-
-键：`分组.字段`（分组里的数组序号会去掉，比如 damage_zones.1.size → damage_zones.size）。
-查不到完整键时退回按字段名查；再查不到就显示原字段名。
-说明一句话，鼠标停在名字上能看。
+"""
+怪物参数的中文名和说明：键为「分组.字段」，查不到时退回字段名，鼠标悬停在名字上显示说明。
 """
 try:
-    from i18n import T, tr  # HellBox 里跑时有中英文切换
+    from i18n import T, tr
 except ImportError:
     def tr(s):
         return s
@@ -49,7 +46,6 @@ GROUP = {
     "surface_type_deflected": "弹开材质",
 }
 
-# 完整键（分组.字段）优先；说明写在值里
 FIELD = {
     # ---- 血量 / 护甲
     "health_info.health": ("血量", "打死它要打掉多少血。"),
@@ -123,7 +119,6 @@ FIELD = {
     "enemy_info.confuse_recovery": ("干扰恢复", "干扰持续多久。"),
     "enemy_info.confuse_startup": ("干扰前摇", "干扰前要准备多久。"),
     "enemy_info.confuse_start_cooldown": ("开局干扰冷却", "刚出场多久内不能干扰。"),
-    # 冲锋
     "enemy_info.rush_distance_min": ("冲锋最近距离", "离得多近才会冲。"),
     "enemy_info.rush_distance_max": ("冲锋最远距离", "离得多远就不冲了。"),
     "enemy_info.rush_distance": ("冲锋距离", "一次冲多远。"),
@@ -142,7 +137,6 @@ FIELD = {
     "enemy_info.rush_hit_obstacle_time": ("撞障碍停顿", "撞到东西后停多久。"),
     "enemy_info.aoe_trigger_distance": ("范围攻击触发距离", "离你多近会放范围攻击。"),
     "enemy_info.aoe_cooldown": ("范围攻击冷却", "两次范围攻击间隔。"),
-    # 闪避
     "enemy_info.avoid_charge_time": ("闪避蓄力", "闪避前准备多久。"),
     "enemy_info.avoid_cooldown": ("闪避冷却", "两次闪避间隔。"),
     "enemy_info.avoid_start_cooldown": ("开局闪避冷却", "刚出场多久内不会闪。"),
@@ -150,7 +144,6 @@ FIELD = {
     "enemy_info.avoid_range_max": ("闪避最远距离", "多远还闪。"),
     "enemy_info.avoid_recovery": ("闪避恢复", "闪完多久恢复。"),
     "enemy_info.avoid_speed": ("闪避速度", "闪避时的速度。"),
-    # 跳跃
     "enemy_info.jump_charge_time": ("跳跃蓄力", "跳之前准备多久。"),
     "enemy_info.jump_close_height_diff": ("跳上高差", "能跳上多高的台子。"),
     "enemy_info.jump_cooldown": ("跳跃冷却", "两次跳跃间隔。"),
@@ -159,7 +152,6 @@ FIELD = {
     "enemy_info.jump_range_max": ("跳跃最远距离", "最远跳多远。"),
     "enemy_info.jump_recovery": ("落地恢复", "落地后多久能动。"),
     "enemy_info.jump_start_cooldown": ("开局跳跃冷却", "刚出场多久内不跳。"),
-    # 传送
     "enemy_info.teleport_charge_dodge_time": ("传送蓄力闪避", "蓄力时闪避的时间。"),
     "enemy_info.teleport_charge_time": ("传送蓄力", "传送前准备多久。"),
     "enemy_info.teleport_cooldown": ("传送冷却", "两次传送间隔。"),
@@ -172,7 +164,6 @@ FIELD = {
     "enemy_info.teleport_range_min": ("传送最近距离", "最近传多远。"),
     "enemy_info.teleport_recovery": ("传送恢复", "传完多久能动。"),
     "enemy_info.teleport_target_distance_multiplier": ("传送距离倍数", "按离目标的距离乘多少。"),
-    # 护盾 / 护盾墙
     "enemy_info.shield_time": ("举盾时间", "护盾挡住多久。"),
     "enemy_info.shield_turn_speed": ("举盾转身速度", "举着盾时转多快。"),
     "enemy_info.shield_players_within_angle": ("举盾角度", "玩家在多少度内才会举盾。"),
@@ -183,7 +174,6 @@ FIELD = {
     "enemy_info.shield_wall_max_length": ("盾墙最长", "最长多长。"),
     "enemy_info.shield_wall_min_length": ("盾墙最短", "最短多长。"),
     "enemy_info.shield_wall_time": ("盾墙存在时间", "立多久。"),
-    # 开火节奏
     "enemy_info.shoot_charge": ("开火蓄力", "要不要蓄力再打。"),
     "enemy_info.shoot_charge_time": ("蓄力时间", "打之前蓄多久。"),
     "enemy_info.shoot_cooldown": ("开火冷却", "两枪间隔。"),
@@ -202,7 +192,6 @@ FIELD = {
     "enemy_info.shoot_fire_dir_ignore_z": ("忽略高低朝向", "开火方向是否忽略高度差。"),
     "enemy_info.turret_turn_speed": ("炮塔转速", "炮塔转多快。"),
     "enemy_info.turret_turn_cooldown": ("炮塔转向冷却", "炮塔两次转向间隔。"),
-    # 钻地
     "enemy_info.burrow_cooldown": ("钻地冷却", "两次钻地间隔。"),
     "enemy_info.burrow_exit_time": ("钻出时间", "从地里出来要多久。"),
     "enemy_info.burrow_max_time": ("最长钻地时间", "最多在地下待多久。"),
@@ -220,7 +209,6 @@ FIELD = {
     "enemy_info.burrow_tentacle_spawn_distance_from_target_close": ("近距触手落点", "近距离触手离你多远。"),
     "enemy_info.burrow_tentacle_spawn_distance_from_target_far": ("远距触手落点", "远距离触手离你多远。"),
     "enemy_info.burrow_tentacle_unit_path": ("触手用哪种", "触手的单位路径。"),
-    # 近战
     "melee_info.power": ("近战威力", "近战一下多少伤害。"),
     "melee_info.radius": ("近战范围", "挥击覆盖的半径。"),
     "melee_info.center_distance": ("近战中心距离", "判定中心离自己多远。"),
@@ -236,7 +224,6 @@ FIELD = {
     "special_attacks.center_distance": ("特殊攻击中心距离", "判定中心离自己多远。"),
     "special_attacks.delay": ("特殊攻击延迟", "抬手到打中多久。"),
     "special_attacks.duration": ("特殊攻击时长", "动作多久。"),
-    # 爆炸
     "explosive_info.blast_radius": ("爆炸半径", "爆炸最大半径。"),
     "explosive_info.blast_power": ("爆炸威力", "边缘伤害。"),
     "explosive_info.center_radius": ("中心半径", "中心高伤区的半径。"),
@@ -246,7 +233,6 @@ FIELD = {
     "explosive_info.hit_status_effects": ("附加状态", "炸到后附加什么状态。"),
     "explosive_info.effect": ("爆炸特效用哪个", "爆炸动画 / 特效名。"),
     "explosive_info.audio": ("爆炸音效", "爆炸用哪个声音。"),
-    # 护盾
     "shield_info.shield": ("护盾类型", "护盾模型类型。"),
     "shield_info.armor_max": ("护盾正面护甲", "护盾正面需要的穿透。"),
     "shield_info.armor_min": ("护盾背面护甲", "护盾背面需要的穿透。"),
@@ -260,7 +246,6 @@ FIELD = {
     "shield_info.uv_speed_full_health_y": ("贴图流动速度 Y（满血）", "满盾时贴图纵向流动速度。"),
     "shield_info.uv_speed_no_health_x": ("贴图流动速度 X（快没盾）", "快破盾时贴图横向流动速度。"),
     "shield_info.uv_speed_no_health_y": ("贴图流动速度 Y（快没盾）", "快破盾时贴图纵向流动速度。"),
-    # 转向 / 群体
     "steering_info.avoidance_factor": ("避障强度", "躲障碍物的力度。"),
     "steering_info.feeler_length": ("探路长度", "往前面探多远躲障碍。"),
     "flocking_info.cohesion_radius": ("聚拢范围", "同类之间多近会靠在一起。"),
@@ -269,24 +254,19 @@ FIELD = {
     "flocking_info.separation_factor": ("散开强度", "分开的力度。"),
     "flocking_info.alignment_factor": ("方向对齐强度", "和同类走同一方向的力度。"),
     "flocking_info.update_nearby_entities_interval": ("刷新间隔", "多久重算一次附近同类。"),
-    # 尸体
     "decay_info.delay": ("消失延迟", "死后多久开始消失。"),
     "decay_info.duration": ("消失时长", "消失过程多久。"),
     "decay_info.distance": ("消失距离", "离玩家多远就消失。"),
-    # 召唤器
     "actor_spawner_info.actor_spawn_delay": ("召唤延迟", "出来后多久开始放怪。"),
     "actor_spawner_info.actors": ("召唤的东西", "放出来的是什么。"),
-    # 出场
     "spawn_events.default": ("默认出场", "平时怎么出场。"),
     "spawn_events.patrol": ("巡逻出场", "随巡逻队出现时怎么出场。"),
     "spawn_events.ifv": ("步兵战车放兵", "从车上下来的方式。"),
-    # 开火动作
     "shoot_events.time": ("动作时间点", "这个动作在整段开火里第几秒。"),
     "shoot_events.animation_time": ("动画时长", "这个动作播多久。"),
     "shoot_events.can_abort": ("能被打断", "这个阶段能不能被打断。"),
     "shoot_events.disable_fire": ("这一帧不开火", "这个阶段要不要禁止出弹。"),
     "shoot_events.aim": ("瞄准角度", "这个阶段枪口抬到哪。"),
-    # 开火特效
     "shoot_effect.particle": ("粒子特效", "用哪个粒子。"),
     "shoot_effect.max_distance": ("特效长度", "特效最远多长。"),
     "shoot_effect.start_variable": ("起点参数", "特效起点参数名。"),
@@ -297,7 +277,6 @@ FIELD = {
     "shoot_effect.direction_node": ("特效方向", "按哪个节点决定方向。"),
     "shoot_effect.move_particles": ("移动粒子", "粒子是否跟着动。"),
     "shoot_effect.destroy": ("结束后销毁", "特效放完是否销毁。"),
-    # 武器
     "weapon_info.power": ("武器威力", "这一枪多少伤害。"),
     "weapon_info.power_crit": ("暴击威力", "打弱点时的伤害。"),
     "weapon_info.range": ("武器射程", "最远打多远。"),
@@ -307,23 +286,19 @@ FIELD = {
     "weapon_info.effect_hit": ("命中特效", "打中东西播什么。"),
     "weapon_info.effect_scale": ("特效大小", "命中特效缩放。"),
     "weapon_info.hit_status_effects": ("附加状态", "打中后附加什么状态。"),
-    # 属性
     "attributes.armorpiercing": ("穿甲", "能不能无视护甲。"),
     "attributes.explosive": ("爆炸", "打出去是不是爆炸类。"),
     "attributes.fixed_spread": ("固定散布", "散布是否固定。"),
     "attributes.unstoppable": ("不可阻挡", "会不会被挡住。"),
-    # 履带
     "track_animation_info.material_speed_multiplier": ("履带速度倍数", "履带贴图滚动快慢。"),
     "track_animation_info.speed_threshold": ("履带启动速度", "速度超过多少算在开。"),
     "track_animation_info.track_mesh": ("履带模型", "用哪个履带模型。"),
-    # 材质 / 特殊（这几个字段不在分组里，键就是字段名）
     "surface_type_damage": ("命中材质", "打中它算哪种材质（影响伤害音效）。"),
     "surface_type_deflected": ("弹开材质", "没打穿时算哪种材质。"),
     "unit_radius": ("体积半径", "身体半径（米），影响碰撞和近战判定。"),
     "heavy": ("重型单位", "是不是重型（车可以撞开？）。"),
 }
 
-# 按字段名兜底的翻译（不分分组）
 SHORT = {
     "immune": "免疫",
     "particle_effect_name": "粒子特效",
@@ -351,7 +326,6 @@ FIELD.update({
     "enemy_info.can_help_up": ("会扶起同伴", "队友倒地时会不会过去扶。"),
 })
 
-# 单位（括号里）。角度字段游戏里是弧度，界面上换成度
 RADIAN_FIELDS = {"rush_max_angle_to_target", "burrow_tentacle_angle_to_target_requirement",
                  "burrow_tentacle_spacing_angle", "spread", "z_direction"}
 DEGREE_FIELDS = {"rush_target_angle", "shoot_players_within_angle", "shield_players_within_angle",
@@ -359,7 +333,6 @@ DEGREE_FIELDS = {"rush_target_angle", "shoot_players_within_angle", "shield_play
 
 
 def unit_of(field):
-    """字段的单位（显示在名字后面）；没有就空串。"""
     f = field
     if f in RADIAN_FIELDS or f in DEGREE_FIELDS:
         return "度"
@@ -377,9 +350,7 @@ def unit_of(field):
     return ""
 
 
-# ---------------------------------------------------------------- 免疫（status_info）
-# 游戏规则（status_component.lua）：一个效果有「来源」（毒 / 火 / 电……）和「效果」（减速 / 眩晕 / 掉血……），
-# 来源免疫 或 效果免疫 任一个打开，这个效果就挂不上。
+# ---------------------------------------------------------------- 免疫
 IMMUNE_ELEMENTS = [
     ("poison", "毒", "毒虫的毒、毒气：中毒掉血和中毒减速都不吃。"),
     ("fire", "火", "喷火器、燃烧弹点着：不会着火。"),
@@ -395,7 +366,6 @@ IMMUNE_STATUSES = [
     ("damage", "持续掉血", "中毒、铁丝网这类持续掉血都不吃。"),
 ]
 
-# 命中附加效果（StatusTemplateSettings 的名字）
 STATUS_FX = {
     "poison_slow": "中毒减速（慢 60%，4 秒）",
     "poison_heavy_slow": "重度中毒减速（慢 75%，6 秒）",
@@ -419,7 +389,6 @@ STATUS_FX = {
     "switch_move_aim_confuse": "移动和瞄准对调（5 秒）",
 }
 
-# 打出去 / 放出来的东西（路径 -> 中文）。怪本身的名字从 enemy_settings.json 补
 THING_ZH = {
     "characters/cyborg_soldier/cyborg_soldier_grenade": "榴弹（班长 / 军团士兵扔的）",
     "characters/illuminate_apprentice/illuminate_apprentice_bomb": "光能学徒的光弹",
@@ -429,7 +398,6 @@ THING_ZH = {
     "gameobjects/enemy_tesla_01": "电击塔",
     "gameobjects/enemy_nanobot_strike": "纳米机器人打击",
 }
-# 哪些字段是「打出去的东西」、哪些是「放出来的怪」
 PROJECTILE_FIELDS = {"projectile", "shoot_unit"}
 SUMMON_FIELDS = {"summon_unit_path_01", "summon_unit_path_02"}
 UNIT_FIELDS = {"spawn_unit_path", "burrow_tentacle_unit_path"}
@@ -437,7 +405,6 @@ SHOOT_TYPE_ZH = {"flame": "喷火"}
 
 
 def _lookup(parts):
-    """从最具体到最笼统找中文名：分组.字段 → 倒数第二个非数字段.字段 → 字段。"""
     field = parts[-1]
     names = [p for p in parts[:-1] if not p.isdigit()]
     for g in [parts[0]] + names[::-1]:
@@ -452,11 +419,10 @@ def _lookup(parts):
 
 
 def describe(path):
-    """返回 (中文名, 说明, 原字段名)。名字后面带单位，比如「冲锋冷却（秒）」。"""
     parts = path.split(".")
     group = parts[0]
     field = parts[-1]
-    if field.isdigit() and len(parts) >= 2:  # 列表里的第几项（hit_status_effects.1）
+    if field.isdigit() and len(parts) >= 2:
         found = _lookup(parts[:-1])
         name, tip = found if found else (parts[-2], "游戏里的原始参数。")
         return f"{name} {int(field)}", tip, parts[-2]
@@ -474,7 +440,6 @@ def describe(path):
 
 
 def group_label(path):
-    """独特属性里每一小节的标题：近战 · 第1招 · 爆炸 这样。"""
     parts = path.split(".")
     if parts[-1].isdigit():
         parts = parts[:-1]
