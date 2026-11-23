@@ -1,8 +1,5 @@
-"""快速开局：选报复关地图、出怪方式、运行方式和停止条件，一键开游戏进训练关（2026-11-07）。
-
-点「开始」= 后台跑 ai\\drill_run.py（关旧游戏 → 带参数开游戏 → 接陪玩程序 → 到条件收尾、关游戏），
-这一页每半秒读记录文件夹里的 drill_status.json 显示进度。「停止」= 在记录文件夹里放 STOP。
-地图编号怎么拼、默认值、游戏参数都在 ai\\drill_spec.py（和 runner 共用）。只做训练模式，不碰战役进度。
+"""
+选图页：选择地图、出怪方式、运行方式与停止条件，一键启动训练关；后台运行 ai/drill_run.py，状态读 drill_status.json，地图参数在 ai/drill_spec.py。
 """
 import copy
 import ctypes
@@ -23,7 +20,7 @@ from pages.base import Page
 from pages import map_thumbs as mt
 from pages import training_slots as slots
 try:
-    from i18n import T, tr  # HellBox 里跑时有中英文切换
+    from i18n import T, tr
 except ImportError:
     def tr(s):
         return s
@@ -35,7 +32,7 @@ AI_DIR = os.path.join(paths.ROOT, "ai")
 if AI_DIR not in sys.path:
     sys.path.insert(0, AI_DIR)
 import drill_spec as ds  # noqa: E402
-from pages import map_picker  # noqa: E402  要在 ai 目录加进 sys.path 之后（它也用 drill_spec）
+from pages import map_picker  # noqa: E402
 
 PYTHON = os.path.join(paths.ROOT, ".venv", "Scripts", "python.exe")
 RUNNER = os.path.join(AI_DIR, "drill_run.py")
@@ -60,7 +57,7 @@ STATE_TEXT = {
 def pid_alive(pid):
     try:
         k32 = ctypes.windll.kernel32
-        h = k32.OpenProcess(0x1000, False, int(pid))  # PROCESS_QUERY_LIMITED_INFORMATION
+        h = k32.OpenProcess(0x1000, False, int(pid))
         if not h:
             return False
         code = ctypes.c_ulong()
@@ -72,13 +69,10 @@ def pid_alive(pid):
 
 
 def small(s, size=10, bold=True, fg=ui.INK):
-    """一小段不折行的字（行里的单位、括号说明）。"""
     return ui.Label(s, font=ui.f_zh(size, bold), fg=fg)
 
 
 class _MapBody(QWidget):
-    """地图卡的内容：选项在左、小地图 + 说明在右；卡片不够宽（两栏并排的自用版、缩小窗口）就把小地图放到选项下面，
-    选项一排排完整显示（2026-11-18 V0.97 整理：以前右边的按钮被切掉半个）。"""
 
     def __init__(self, left, right, gap=28):
         super().__init__()
@@ -89,7 +83,7 @@ class _MapBody(QWidget):
         self.lay.addWidget(left, 0, Qt.AlignmentFlag.AlignTop)
         self.lay.addWidget(right, 1)
         self.side = True
-        self._need = left.sizeHint().width() + gap + 230  # 小地图 200 宽 + 说明
+        self._need = left.sizeHint().width() + gap + 230
 
     def resizeEvent(self, e):
         super().resizeEvent(e)
@@ -102,7 +96,6 @@ class _MapBody(QWidget):
 
 
 class _MapRight(QWidget):
-    """小地图 + 说明，竖着放。"""
 
     def __init__(self, thumb, text_col):
         super().__init__()
@@ -114,7 +107,6 @@ class _MapRight(QWidget):
 
 
 class SlotButton(ui.Clickable):
-    """训练存档的一格：左上角编号，下面两行写这一关是什么；选中的那格是绿的。"""
 
     def __init__(self, index, command):
         super().__init__()
@@ -147,7 +139,6 @@ class SlotButton(ui.Clickable):
             p.drawText(r.adjusted(34, 0, -6, 0), left, tr("空"))
             return
         cfg = self.data["cfg"]
-        # 右边一小张地图（2026-11-14）
         th = r.height() - 8
         mt.paint(p, ui.QRect(r.right() - th - 3, r.top() + 4, th, th), mt.load(cfg["seed"]), "")
         r = r.adjusted(0, 0, -(th + 6), 0)
@@ -174,9 +165,9 @@ class SlotButton(ui.Clickable):
 
 class QuickPage(Page):
     key = "quick"
-    tab = "选图"  # 2026-11-19 用户定：「训练」改名「选图」（Map Select），仍在开发者模式
-    # 2026-11-16 V0.95：游戏开着、人在飞船上也能直接进（不重开游戏）；2026-11-19 房间里有队友时设为下一局
-    when = "游戏没开：自己开游戏进这一关；在飞船上：一个人直接进，有队友设为下一局"
+    tab = "选图"
+    when = "游戏未运行：自行启动游戏进入这一关；在飞船上：单人直接进入，有队友则设为下一局"
+    when_color = ui.YELLOW
 
     def build(self):
         self.cfg = ds.load_last()
@@ -219,7 +210,6 @@ class QuickPage(Page):
         map_card = self._build_map()
         spawn_card = self._build_spawn()
         if build.is_public():
-            # 2026-11-14 V0.91 用户定：训练模式不要出怪方式（出怪交给「数据修改」页的当前对局数据），只选地图
             spawn_card.hide()
             self.view.row(map_card)
             self.view.row(self._build_train())
@@ -233,10 +223,8 @@ class QuickPage(Page):
             self._attach_current()
         self._refresh_map_text()
 
-    # ------------------------------------------------------------ 训练存档（发行版）
+    # ------------------------------------------------------------ 训练存档
     def _build_train(self):
-        """2026-11-13 用户要求：8 个训练存档。点一格 = 把那格存的地图和出怪设置填回上面，再点「开始练习」就是那一关。
-        2026-11-15：再点一次取消选中；没选或选空格都按上面的配置开。"""
         card = ui.Card(self.view, "TRAIN", "开始", fill=ui.MINT, note="8 个存档")
         self.slots = slots.load()
         self.slot_sel = None
@@ -258,8 +246,7 @@ class QuickPage(Page):
 
         self.btn_start = ui.Button(None, "开始", self.start, kind="primary", padx=26, pady=6, font=ui.f_zh(11, True))
         card.add(self.btn_start, top=14, align=ui.LEFT)
-        card.add(ui.text(card.body, "未选择保存块时，按上面的配置开始。游戏开着时在飞船上点（要当房主）：一个人或本机分屏直接进关，进关后按互动键出场；"
-                                     "房间里有联机队友就设为下一局，照常走进出发舱出发，队友不用装 HellBox，大家照常记经验。", muted=True, size=9), top=8)
+        card.add(ui.text(card.body, "未选择保存块时，按上面的配置开始。游戏正在运行时在飞船上点击（需为房主）：单人游玩或本机分屏直接进入关卡，进入关卡后按互动键出场；房间里有联机队友则设为下一局，照常走进出发舱出发，队友无需安装 HellBox，大家照常获得经验。", muted=True, size=9), top=8)
         self._paint_slots()
         return card
 
@@ -270,14 +257,14 @@ class QuickPage(Page):
         self.btn_slot_save.set_enabled(has)
         self.btn_slot_clear.set_enabled(has and bool(self.slots[self.slot_sel]))
         if not has:
-            self.slot_hint.config(text="点一格选中（再点取消），点「开始」就是那一关。")
+            self.slot_hint.config(text="点击一格选中（再次点击取消），点击「开始」即进入那一关。")
         elif self.slots[self.slot_sel]:
             self.slot_hint.config(text=T('第 {0} 格：上面就是这一关。', self.slot_sel + 1))
         else:
             self.slot_hint.config(text=T('第 {0} 格是空的。', self.slot_sel + 1))
 
     def _slot_clicked(self, i):
-        if self.slot_sel == i:  # 2026-11-15 用户要求：再点一次 = 取消选中
+        if self.slot_sel == i:
             self.slot_sel = None
             self._paint_slots()
             return
@@ -308,7 +295,6 @@ class QuickPage(Page):
         self._paint_slots()
 
     def _apply_cfg(self, cfg):
-        """把一份存下来的设置填回页面（地图 + 出怪）。"""
         self.cfg = ds.normalize(copy.deepcopy(cfg))
         sp = self.cfg["spawn"]
         for var, val in ((self.v_mode, sp["mode"]), (self.v_max, str(sp["max"])), (self.v_seq, ",".join(map(str, sp["seq"]))),
@@ -322,12 +308,10 @@ class QuickPage(Page):
     # ------------------------------------------------------------ 小工具
     def _label(self, text, width=5):
         lab = ui.Label(text, font=ui.f_zh(10, True), fg=ui.MUTED)
-        # 英文比中文长：至少放得下整个词，不截断（2026-11-14）
         lab.setFixedWidth(max(ui.chars(lab.font(), width), ui._tw(lab.font(), lab.text()) + 8))
         return lab
 
     def _line(self, card, label=None, pady=4, box=None, left=True):
-        """卡片里加一行（横排，left=True 时靠左），返回这一行的布局。box：加到这个竖排布局里（默认卡片本身）。"""
         w, lay = ui.hbox()
         if left:
             lay.setAlignment(Qt.AlignmentFlag.AlignLeft)
@@ -349,7 +333,6 @@ class QuickPage(Page):
 
     # ------------------------------------------------------------ 地图
     def _build_map(self):
-        """地图卡片（2026-11-15 用户要求）：左边选项，右边放大的小地图和说明（大图也看得清）。"""
         card = ui.Card(self.view, "MAP", "地图", fill=ui.YELLOW)
         left = QWidget()
         lv = QVBoxLayout(left)
@@ -369,10 +352,8 @@ class QuickPage(Page):
         lay.addSpacing(6)
         lay.addWidget(small("（1~15）", 9, False, ui.MUTED), 0, VC)
 
-        # 2026-11-22 用户定（Dive Harder 作者的建议）：编号输入框、「换一张图」「挑地形」按钮都去掉，只留点小地图挑地形
         lv.addStretch(1)
 
-        # 右边：小地图 + 这一关是什么 + 说明
         text_col = QWidget()
         rl = QVBoxLayout(text_col)
         rl.setContentsMargins(0, 0, 0, 0)
@@ -381,8 +362,7 @@ class QuickPage(Page):
         self.map_text = ui.text(None, "", bold=True, size=10)
         rl.addSpacing(4)
         rl.addWidget(self.map_text)
-        # 2026-11-14 用户：说明要直观，别啰嗦
-        rl.addWidget(ui.text(None, "点地图挑地形（要开着游戏）", muted=True, size=9))
+        rl.addWidget(ui.text(None, "点击地图挑选地形（需游戏正在运行）", muted=True, size=9))
         rl.addStretch(1)
         w = _MapBody(left, _MapRight(self.map_thumb, text_col))
         card.add(w, top=4)
@@ -398,7 +378,6 @@ class QuickPage(Page):
         return seeds
 
     def _map_tick(self):
-        """每 1.5 秒：把要看的图告诉游戏；游戏拼好的读进来、重画。"""
         seeds = self._map_seeds()
         if seeds != self._map_requested:
             self._map_requested = seeds
@@ -429,7 +408,7 @@ class QuickPage(Page):
     def _pick_terrain(self):
         def picked(seed):
             self._set_seed(seed)
-            self._map_requested = None  # 下次 _map_tick 把主页面要的图重新告诉游戏
+            self._map_requested = None
             self.app.say(T('换了地形：{0}', ds.describe(seed)), "ok")
         seed = self.cfg["seed"]
         map_picker.MapPicker(self.view, seed, map_picker.candidates(seed), picked,
@@ -563,7 +542,7 @@ class QuickPage(Page):
             self.gap_label.config(text="少了隔")
         elif mode == "seq":
             self.gap_label.config(text="死光后隔")
-        lab = self.gap_label  # 换了字以后按新字重算宽度（英文更长）
+        lab = self.gap_label
         lab.setFixedWidth(max(ui.chars(lab.font(), 8), ui._tw(lab.font(), lab.text()) + 8))
         if save:
             self._save()
@@ -607,7 +586,7 @@ class QuickPage(Page):
         lay.addWidget(self.st_min, 0, VC)
         lay.addSpacing(6)
         lay.addWidget(small("分钟"), 0, VC)
-        card.add(ui.text(card.body, "都不勾就只能手动点「停止」。时间从有人出场算起。", muted=True, size=9), top=4)
+        card.add(ui.text(card.body, "都不勾就只能手动点击「停止」。时间从有人出场算起。", muted=True, size=9), top=4)
 
         lay = self._line(card, None, 14)
         self.btn_start = ui.Button(None, "开始", self.start, kind="primary", padx=26, pady=6, font=ui.f_zh(11, True))
@@ -623,7 +602,6 @@ class QuickPage(Page):
         self.app.say(T('AI 脚本列表重新找了一遍：{0} 个（ai\\hellbox_scripts 和带 hellbox-script 标记的脚本）', len(self.scripts)), "ok")
 
     def _rebuild_scripts(self):
-        """从磁盘重新找 AI 脚本（ds.list_scripts），重画列表。选中的那个不在了就退回第一个能用的。"""
         self.scripts = ds.list_scripts()
         ui.clear_layout(self.script_box)
         self.script_vars = {}
@@ -675,14 +653,14 @@ class QuickPage(Page):
         self.st_square = ui.Square(color=ui.DISABLED, size=22)
         self.st_word = ui.Label("未开始", font=ui.f_zh(16, True))
         card.add(ui.line(self.st_square, 10, self.st_word))
-        self.st_msg = card.add(ui.text(card.body, "选好设置，点「开始」。", size=10), top=6)
+        self.st_msg = card.add(ui.text(card.body, "选好设置，点击「开始」。", size=10), top=6)
         self.st_nums = card.add(ui.Label("", font=ui.f_mono(11, True)), top=8)
         self.st_types = card.add(ui.text(card.body, "", muted=True, size=9), top=4)
 
         card.add(ui.Label("这次的设置", font=ui.f_zh(10, True), fg=ui.MUTED), top=10)
         self.st_cfg = card.add(ui.text(card.body, "", size=9))
         card.add(ui.Label("记录文件夹", font=ui.f_zh(10, True), fg=ui.MUTED), top=8)
-        self.st_dir = card.add(ui.Label("（还没开始）", font=ui.f_mono(9), wrap=True, breakable=True))
+        self.st_dir = card.add(ui.Label("（尚未开始）", font=ui.f_mono(9), wrap=True, breakable=True))
         self.btn_open = card.add(ui.Button(None, "打开记录文件夹", self.open_dir, padx=10, pady=3), top=8, align=ui.LEFT)
         return card
 
@@ -728,13 +706,13 @@ class QuickPage(Page):
             self.app.warn("\n".join(bad))
             return
         if self.app.state.get("script") != "on":
-            self.app.warn("脚本 mod 不是最新版（或没开），出怪设置不会生效。\n先打开「关于」页的「核心」开关（要先关游戏）。")
+            self.app.warn("游戏内的 MOD 不是最新版（或未开启），出怪设置不会生效。\n请先在「关于」页开启「核心」开关（需先关闭游戏）。")
             return
         if not os.path.exists(PYTHON):
             self.app.error(T('找不到 Python：{0}', PYTHON))
             return
         if self.app.state.get("running") and not self.app.ask(
-                "游戏现在开着。开始会先把它关掉（没存的进度会丢），再按这里的设置重新开。\n确定吗？"):
+                "游戏正在运行。开始后会先关闭游戏（未保存的进度会丢失），再按这里的设置重新启动。\n确定继续吗？"):
             return
         ds.save_last(cfg)
         run = os.path.join(ds.RUNS, "manual_" + datetime.now().strftime("%Y%m%d_%H%M%S"))
@@ -762,8 +740,8 @@ class QuickPage(Page):
 
     def start_public(self):
         from pages import training
-        cfg = copy.deepcopy(self._collect())  # 上面现在的地图（选中存档格时就是那一格）
-        cfg["spawn"]["mode"] = "vanilla"  # 发行版训练不带出怪方式（2026-11-14）；要改出怪用「数据修改」页
+        cfg = copy.deepcopy(self._collect())
+        cfg["spawn"]["mode"] = "vanilla"
         cfg["run"] = {"script": ds.GAME_ONLY}
         cfg["stop"] = {"kills": 0, "first_death": False, "minutes": 0}
         bad = ds.problems(cfg)
@@ -773,10 +751,8 @@ class QuickPage(Page):
 
         def action():
             if build.game_running():
-                # 2026-11-16 V0.95：人在飞船上就直接进，不重开游戏（mod/src/hellbox_start.lua）
                 if build.status() != "on" or build.out_is_stale():
-                    raise RuntimeError("游戏里的 MOD 不是最新版，不能在飞船上开。"
-                                       "请先在游戏中正常退出，再点「开始」（会先更新 MOD 再开游戏）。")
+                    raise RuntimeError("游戏里的 MOD 不是最新版，不能在飞船上开。请先在游戏中正常退出，再点击「开始」（会先更新 MOD 再开游戏）。")
                 ds.save_last(cfg)
                 return training.start_in_game(cfg, self._drop_play_trial)
             if build.status() not in ("on", "old"):
@@ -787,17 +763,16 @@ class QuickPage(Page):
             training.launch(cfg, None)
             return "游戏已启动：进关前先选战略配备，再落地。"
 
-        self.app.run(action, working="正在开图…")
+        self.app.run(action, working="正在进入关卡…")
 
     def _drop_play_trial(self):
-        """2026-11-19 选图设为下一局前：「玩法」页真训练场也设了下一局的话先取消它（两个都占游戏同一个位置）。返回取消了没有。"""
         from pages import play_modes as pm
         cfg = pm.load()
         if not cfg.get("trial"):
             return False
         cfg["trial"] = ""
         pm.save(cfg)
-        for page in self.app.pages:  # 玩法页开着的那份也改掉，免得它下次保存又写回去
+        for page in self.app.pages:
             if page.key == "play" and isinstance(getattr(page, "cfg", None), dict):
                 page.cfg["trial"] = ""
         return True
@@ -816,7 +791,6 @@ class QuickPage(Page):
             os.startfile(self.run_dir)
 
     def _attach_current(self):
-        """HellBox 重开时，接上还在跑的那一次。"""
         try:
             with open(ds.CURRENT, encoding="utf-8") as f:
                 cur = json.load(f)
@@ -825,7 +799,7 @@ class QuickPage(Page):
         if cur and pid_alive(cur.get("runner_pid")) and os.path.isdir(cur.get("run", "")):
             self.runner_pid = cur["runner_pid"]
             self.run_dir = cur["run"]
-            try:  # 「这次的设置」显示那一次的（不是页面上现在选的）
+            try:
                 with open(os.path.join(self.run_dir, "drill_settings.json"), encoding="utf-8") as f:
                     run_cfg = json.load(f)
                 self.st_cfg.config(text=self._cfg_text(ds.normalize(run_cfg)))
@@ -835,7 +809,7 @@ class QuickPage(Page):
         self._show()
 
     def _poll_later(self):
-        ui.cancel(self._poll_timer)  # 只留一个轮询
+        ui.cancel(self._poll_timer)
         self._poll_timer = self.app.after(POLL_MS, self._poll)
 
     def _poll(self):
@@ -863,7 +837,6 @@ class QuickPage(Page):
             self.sync()
 
     def _cleanup_orphans(self):
-        """运行程序没收尾就没了（被杀、出错）：放 STOP 让陪玩程序自己退出，5 秒后关游戏，别让游戏一直挂着。"""
         try:
             open(os.path.join(self.run_dir, "STOP"), "w").close()
         except OSError:
@@ -882,7 +855,7 @@ class QuickPage(Page):
     def _mon_names(self):
         if getattr(self, "_mons", None) is None:
             mons = {m["name"]: ds.label(m) for ms in ds.load_monsters().values() for m in ms}
-            mons["cyborg_dog"] = mons.get("cyborg_dog_01", "cyborg_dog")  # mod 报的真名不带 _01
+            mons["cyborg_dog"] = mons.get("cyborg_dog_01", "cyborg_dog")
             self._mons = mons
         return self._mons
 
@@ -895,7 +868,7 @@ class QuickPage(Page):
         msg = st.get("msg") or ""
         if state == "done" and st.get("reason"):
             msg = tr("停的原因：") + tr(st["reason"])
-        self.st_msg.config(text=msg or "选好设置，点「开始」。")
+        self.st_msg.config(text=msg or "选好设置，点击「开始」。")
         if self.run_dir:
             el = st.get("elapsed", 0) or 0
             cl = st.get("cleared") or 0
@@ -922,16 +895,16 @@ class QuickPage(Page):
         self.btn_stop.set_enabled(running)
         warn = False
         if running:
-            hint = "正在跑。点「停止」= 让她收尾、关游戏（几秒到半分钟）。"
+            hint = "正在运行。点击「停止」= 让它收尾并关闭游戏（几秒到半分钟）。"
         elif self.app.busy:
             hint = "别的页正在改游戏文件，等它做完。"
         elif script not in (None, "on"):
-            hint, warn = "脚本 mod 不是最新版：先打开「关于」页的「核心」开关，出怪设置才会生效。", True
+            hint, warn = "游戏内的 MOD 不是最新版：请先在「关于」页开启「核心」开关，出怪设置才会生效。", True
         else:
-            hint = "点「开始」会先关掉正在运行的游戏，再按这里的设置开游戏、直接进训练关（不碰战役进度）。"
+            hint = "点击「开始」会先关掉正在运行的游戏，再按这里的设置开游戏、直接进训练关（不碰战役进度）。"
         self.start_hint.config(text=hint, fg=ui.WARN if warn else ui.MUTED)
 
     def on_show(self):
         if not build.is_public() and not self.running():
-            self._rebuild_scripts()  # AI 脚本有新加 / 改动：每次切到这一页都重新找
+            self._rebuild_scripts()
         self.sync()

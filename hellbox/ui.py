@@ -1,8 +1,5 @@
-"""HellBox 外观：复古方块风（米黄底、粗黑边、右下硬阴影、像素标题字、等宽数字、彩色块）。
-
-Qt（PySide6）版（2026-11-07 从 tkinter 换过来：tk 每个控件都是一个系统小窗口，600 多个拖窗口会卡；
-Qt 整个界面只有一个系统窗口，控件都是自己画的）。所有颜色、字体都从这里取，页面里不写颜色值。
-尺寸都按"设计稿像素"写，屏幕缩放（125% 等）由 Qt 自己放大。
+"""
+HellBox 外观：复古方块风
 
 控件：
     Box         带黑边和硬阴影的盒子（卡片、主面板的底子），里面放布局
@@ -56,19 +53,17 @@ WARN = "#9a6b00"
 
 
 def px(n):
-    """设计稿像素。Qt 自己按屏幕缩放放大，这里原样返回（留着是为了页面代码和以前一样写）。"""
     return int(n)
 
 
 # ---------------------------------------------------------------- 字体
-PIXEL = "Silkscreen"           # 英文像素字（OFL），打包在 fonts/
+PIXEL = "Silkscreen"
 ZH = "Microsoft YaHei UI"
 MONO = "Consolas"
 _FONTS = {}
 
 
 def load_fonts(folder):
-    """把像素字体注册给本程序（不装进系统）。要在建 QApplication 之后调用。"""
     ok = False
     if os.path.isdir(folder):
         for name in os.listdir(folder):
@@ -86,7 +81,7 @@ def _font(families, size, bold, pixel=False):
         f.setPointSizeF(size)
         f.setBold(bold)
         if pixel:
-            f.setStyleStrategy(QFont.StyleStrategy.NoAntialias)  # 像素字不要糊边
+            f.setStyleStrategy(QFont.StyleStrategy.NoAntialias)
         _FONTS[key] = f
     return QFont(f)
 
@@ -100,7 +95,7 @@ def f_zh(size=10, bold=False):
 
 
 def f_mono(size=10, bold=False):
-    return _font([MONO, ZH], size, bold)  # 中文落到雅黑上
+    return _font([MONO, ZH], size, bold)
 
 
 def _fm(font):
@@ -121,7 +116,6 @@ def qc(c):
 
 # ---------------------------------------------------------------- 变量、定时、跨线程
 class Var:
-    """代替 tk 的 StringVar / BooleanVar：get()、set(v)、trace(回调)。set 之后通知所有 trace。"""
 
     def __init__(self, value=None):
         self._v = value
@@ -136,7 +130,6 @@ class Var:
             try:
                 f()
             except RuntimeError as e:
-                # 控件被重画删掉了、但还挂在这里（2026-11-16 潜兵块第二次打开报错）：摘掉它，别的照常通知
                 if "already deleted" not in str(e):
                     raise
                 if f in self._subs:
@@ -150,7 +143,6 @@ _TIMERS = set()
 
 
 def after(ms, fn):
-    """ms 毫秒后在界面线程调 fn。返回定时器（.stop() 取消）。"""
     t = QTimer()
     t.setSingleShot(True)
     t.timeout.connect(fn)
@@ -167,7 +159,6 @@ def cancel(t):
 
 
 class Bridge(QObject):
-    """后台线程把"回到界面线程要做的事"发过来（信号跨线程自动排队到界面线程）。"""
     call = Signal(object)
 
     def __init__(self):
@@ -177,7 +168,6 @@ class Bridge(QObject):
 
 # ---------------------------------------------------------------- 画盒子
 def paint_box(p, w, h, fill, border=2, shadow=4, pressed=False):
-    """黑边 + 右下硬阴影。整块大小 w×h（含阴影）。按下：盒子挪到阴影的位置、阴影没了。返回里面的区域。"""
     bw, bh = w - shadow, h - shadow
     if pressed:
         x0 = y0 = shadow
@@ -191,7 +181,6 @@ def paint_box(p, w, h, fill, border=2, shadow=4, pressed=False):
 
 
 class Box(QWidget):
-    """黑边 + 右下硬阴影的盒子，里面是一个布局（.lay）。pad = 盒子里面的留白 (左, 上, 右, 下)。"""
 
     def __init__(self, parent=None, fill=CARD, border=2, shadow=4, pad=(0, 0, 0, 0), vertical=True):
         super().__init__(parent)
@@ -227,7 +216,6 @@ def ink_line(height=2):
 
 
 def hbox(parent=None, spacing=0, margins=(0, 0, 0, 0)):
-    """一个横排的空容器（透明），返回 (容器, 布局)。"""
     w = QWidget(parent)
     lay = QHBoxLayout(w)
     lay.setContentsMargins(*margins)
@@ -245,8 +233,6 @@ def vbox(parent=None, spacing=0, margins=(0, 0, 0, 0)):
 
 # ---------------------------------------------------------------- 文字
 class Label(QLabel):
-    """一段文字。wrap=True：跟着所在框的宽度自动折行（中文也能断）。改：.config(text=..., fg=...)。
-    breakable=True：路径之类，在 \\ / _ 后面也允许折行。"""
 
     def __init__(self, text="", font=None, fg=INK, wrap=False, parent=None, breakable=False):
         super().__init__(parent)
@@ -254,14 +240,14 @@ class Label(QLabel):
         self._raw = None
         self.setFont(font or f_zh(10))
         self.setTextFormat(Qt.TextFormat.PlainText)
-        self.setContentsMargins(2, 2, 2, 2)  # tk 的 Label 自带 3 个真实像素的边（125% 缩放下约 2 个设计稿像素）
+        self.setContentsMargins(2, 2, 2, 2)
         self.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         self._fg = None
         self.config(text=text, fg=fg)
         if wrap:
             self.setWordWrap(True)
             sp = QSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
-            sp.setHeightForWidth(True)  # 高度跟着宽度算（折行）
+            sp.setHeightForWidth(True)
             self.setSizePolicy(sp)
             self.setMinimumWidth(40)
 
@@ -288,8 +274,6 @@ def text(parent, s, size=10, muted=False, bold=False, wrap=True, **_kw):
 
 
 class ElideLabel(QWidget):
-    """一行字，放不下就截掉（不会把窗口撑大）；截掉了的话鼠标停上去显示全文（2026-11-14 用户要求）。
-    set_tip(说明)：另给一段鼠标提示（比如处理办法），显示在全文下面。"""
 
     def __init__(self, text="", font=None, fg=INK, align_right=False, parent=None):
         super().__init__(parent)
@@ -346,7 +330,6 @@ KINDS = {
 
 
 class Clickable(QWidget):
-    """自己画的控件的底子：鼠标悬停、可不可用（.enabled，不用 Qt 自己的 setEnabled）。"""
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -372,7 +355,6 @@ class Clickable(QWidget):
 
 
 class Button(Clickable):
-    """方块按钮。.widget 就是它自己（和 tk 版一样写 btn.widget 放进布局）；.set_enabled(bool)。"""
 
     def __init__(self, parent, text, command, kind="plain", under=None, font=None, padx=16, pady=5, shadow=3):
         super().__init__(parent)
@@ -421,7 +403,6 @@ class Button(Clickable):
 
 # ---------------------------------------------------------------- 开关
 class Toggle(Clickable):
-    """ON / OFF 方块开关。variable 是 Var(bool)；点了以后先改变量再调 command。"""
 
     def __init__(self, parent, variable, command=None, under=None):
         super().__init__(parent)
@@ -452,7 +433,7 @@ class Toggle(Clickable):
         if e.button() != Qt.MouseButton.LeftButton:
             return
         if not self.enabled:
-            if getattr(self, "blocked", None):  # 灰着被点：告诉人为什么点不了（2026-11-15，原来写在开关下面）
+            if getattr(self, "blocked", None):
                 self.blocked()
             return
         self.var.set(not bool(self.var.get()))
@@ -462,7 +443,6 @@ class Toggle(Clickable):
 
 # ---------------------------------------------------------------- 「?」说明
 def tip_html(text):
-    """鼠标提示：转成能自动折行的富文本（纯文本提示不折行，长说明会拉成一长条）。"""
     import html
     body = html.escape(_tr(text) or "").replace("\n", "<br>")
     return f"<table width=300><tr><td>{body}</td></tr></table>"
@@ -472,7 +452,6 @@ TIP_STYLE = (f"QToolTip{{background:{CARD};color:{INK};border:2px solid {INK};pa
 
 
 class Help(Clickable):
-    """「?」小方块（2026-11-15 用户要求）：鼠标停上去马上弹出这项的说明，同风格的提示框。"""
 
     def __init__(self, text, parent=None, size=18):
         super().__init__(parent)
@@ -511,7 +490,6 @@ class Help(Clickable):
 
 # ---------------------------------------------------------------- 左侧页面导航
 class SideTabs(Clickable):
-    """竖排的页面标签（2026-11-15 用户要求：页面切换放左边，像正常 App）。options = [(值, 文字)]，variable 是 Var。"""
 
     def __init__(self, parent, options, variable, command=None, font=None, width=None, pady=8, color=MINT):
         super().__init__(parent)
@@ -520,7 +498,7 @@ class SideTabs(Clickable):
         self.setMouseTracking(True)
         self._hover = None
         f = self.font()
-        self._cells = []  # (值, 文字, y0, y1)
+        self._cells = []
         y = 2
         ch = _lh(f) + 2 * pady
         for i, (value, txt) in enumerate(options):
@@ -550,7 +528,7 @@ class SideTabs(Clickable):
             r = QRect(2, y0, x1 - 2, y1 - y0)
             p.fillRect(r, qc(bg))
             if sel:
-                p.fillRect(2, y0, 5, y1 - y0, qc(INK))  # 选中的那格左边一条黑
+                p.fillRect(2, y0, 5, y1 - y0, qc(INK))
             p.setPen(qc(INK))
             p.drawText(r.adjusted(16, 0, 0, 0), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, txt)
 
@@ -576,10 +554,6 @@ class SideTabs(Clickable):
 
 # ---------------------------------------------------------------- 档位滑条
 class StepSlider(Clickable):
-    """按档位吸附的滑条（2026-11-15 用户要求：下拉选择都换成能拖的滑条，更直观）。
-    options = [(值, 文字), ...] 从小到大排；variable 是 Var（当前值）。拖的时候右边的文字跟着变，松手才调 command(值)。
-    .current：不拖的时候右边显示这段字（None = 显示当前档的文字）；.changed：改过（右边的字底下垫黄色）。
-    tail=True（2026-11-18 场上上限的「破限」）：最后一档不在滑条上，隔开一段单独画成红色小格，选中时右边的字也是红的。"""
 
     TAIL_GAP, TAIL_W = 14, 26
 
@@ -629,7 +603,6 @@ class StepSlider(Clickable):
         return self.options[self._index()][1] if self.options else ""
 
     def _end(self):
-        """滑条（含「破限」小格）右边到哪。"""
         return self.bw + (self.TAIL_GAP + self.TAIL_W if self.tail else 0)
 
     def _main_n(self):
@@ -650,18 +623,18 @@ class StepSlider(Clickable):
         p.fillRect(0, y0, self.bw, y1 - y0, qc(INK))
         p.fillRect(b, y0 + b, self.bw - 2 * b, y1 - y0 - 2 * b, qc(WHITE if self.enabled else DISABLED))
         n = self._main_n()
-        for i in range(n if n <= 24 else 0):  # 档位刻度
+        for i in range(n if n <= 24 else 0):
             tx = int(round(self._x(i)))
             p.fillRect(tx, y1 + 1, 2, 3, qc(MUTED))
         i = self._index()
         on_tail = self._is_tail(i)
         x = int(round(self._x(i)))
-        if self.tail:  # 「破限」小格：隔开一段，红色
+        if self.tail:
             tx0 = self.bw + self.TAIL_GAP
             p.fillRect(tx0, y0, self.TAIL_W, y1 - y0, qc(INK))
             p.fillRect(tx0 + b, y0 + b, self.TAIL_W - 2 * b, y1 - y0 - 2 * b,
                        qc(BAD if self.enabled and on_tail else (SALMON_HOVER if self.enabled else DISABLED)))
-            for k in range(3):  # 断开处一串小点，表示「隔开」
+            for k in range(3):
                 p.fillRect(self.bw + 2 + k * 4, (y0 + y1) // 2 - 1, 2, 2, qc(MUTED))
         if self.enabled:
             fx = self.bw - b if on_tail else x
@@ -709,12 +682,11 @@ class StepSlider(Clickable):
         self.update()
 
     def wheelEvent(self, e):
-        e.ignore()  # 滚轮留给页面滚动，不误改数
+        e.ignore()
 
 
 # ---------------------------------------------------------------- 滑条
 class Slider(Clickable):
-    """方块滑条：凹槽 + 橙色进度 + 黑色滑块。variable 是 Var(int)。command(final=bool)。"""
 
     def __init__(self, parent, variable, lo, hi, command=None, width=260, under=None, fill=SALMON):
         super().__init__(parent)
@@ -758,8 +730,6 @@ class Slider(Clickable):
 
 # ---------------------------------------------------------------- 一排互斥方块
 class Segmented(Clickable):
-    """一排方块，选中的那格是彩色。options = [(值, 文字), ...]，variable 是 Var(str)。
-    allowed = 可以点的值（None = 全都能点）；不在里面的格子画成灰的、点了没反应。"""
 
     def __init__(self, parent, options, variable, command=None, under=None, font=None, color=MINT,
                  padx=18, pady=6, shadow=4, allowed=None):
@@ -770,12 +740,12 @@ class Segmented(Clickable):
         self.setMouseTracking(True)
         self._hover = None
         f = self.font()
-        self._cells = []  # (值, 文字, x0, x1)
+        self._cells = []
         x = 2
         for i, (value, txt) in enumerate(options):
             txt = _tr(txt)
             if i:
-                x += 2  # 黑色分隔线
+                x += 2
             w = _tw(f, txt) + 2 * padx + 4
             self._cells.append((value, txt, x, x + w))
             x += w
@@ -833,9 +803,6 @@ class Segmented(Clickable):
 
 # ---------------------------------------------------------------- 下拉框
 class Dropdown(Clickable):
-    """方块下拉框：白底黑边硬阴影，右边一格放小三角；点开是同样风格的菜单（2026-11-13，替换系统自带的下拉框）。
-    options = [(值, 文字), ...]，variable 是 Var；选了先改变量再调 command(值)。
-    width = 大约几个字宽（None = 按最长的选项）；allowed = 能选的值（None = 全都能选）。"""
 
     ARROW = 22
 
@@ -872,7 +839,7 @@ class Dropdown(Clickable):
         p.fillRect(ax - 2, r.top(), 2, r.height(), qc(INK))
         color = INK if self.enabled else MUTED
         cx, cy = ax + self.ARROW // 2, r.center().y()
-        for i in range(4):  # 像素小三角
+        for i in range(4):
             p.fillRect(cx - 4 + i, cy - 2 + i, 8 - 2 * i, 1, qc(color))
         p.setFont(self.font())
         p.setPen(qc(color))
@@ -910,8 +877,6 @@ class Dropdown(Clickable):
 
 # ---------------------------------------------------------------- 勾选框
 class CheckBox(Clickable):
-    """方块勾选框 + 文字（+ 灰色小注）。variable 是 Var(bool)；点方块或文字都算，先改变量再调 command。
-    radio=True：圆点单选样子，点了只会变成选中（取消别的由 command 负责）。"""
 
     S = 18
 
@@ -921,7 +886,7 @@ class CheckBox(Clickable):
         self._text, self._note = _tr(text), _tr(note)
         self.setFont(font or f_zh(10, True))
         self._nfont = f_zh(8)
-        self.label = self  # 页面里写 cb.label.config(text=...)
+        self.label = self
         variable.trace(self.update)
         self._resize()
 
@@ -950,7 +915,7 @@ class CheckBox(Clickable):
             p.setRenderHint(QPainter.RenderHint.Antialiasing, True)
             p.setPen(Qt.PenStyle.NoPen)
             p.setBrush(qc(INK))
-            p.drawEllipse(2, y + 2, s, s)  # 阴影
+            p.drawEllipse(2, y + 2, s, s)
             p.drawEllipse(0, y, s, s)
             p.setBrush(qc(fill))
             p.drawEllipse(b, y + b, s - 2 * b, s - 2 * b)
@@ -977,7 +942,7 @@ class CheckBox(Clickable):
     def mousePressEvent(self, e):
         if e.button() != Qt.MouseButton.LeftButton or not self.enabled:
             return
-        if e.position().x() > self.S + 2 + 6 + self._lw:  # 点在灰色小注上不算
+        if e.position().x() > self.S + 2 + 6 + self._lw:
             return
         self.var.set(True if self.radio else not bool(self.var.get()))
         if self.command:
@@ -986,8 +951,6 @@ class CheckBox(Clickable):
 
 # ---------------------------------------------------------------- 输入框
 class Entry(Box):
-    """白底黑边输入框（带硬阴影），和 Var 双向绑定。.edit 是里面的 QLineEdit。
-    width = 大约几个字宽；expand=True 时跟着横向拉长。"""
 
     def __init__(self, parent, variable, width=28, font=None, shadow=3, pad=(8, 5), center=False, expand=False):
         super().__init__(parent, fill=WHITE, shadow=shadow, pad=(pad[0], pad[1], pad[0], pad[1]))
@@ -1037,9 +1000,6 @@ class Entry(Box):
 
 # ---------------------------------------------------------------- 数字框
 class Stepper(QWidget):
-    """[-] 数字 [+]：一个能直接打字的数字框，两边加减。variable 是 Var(str)（打字时可能是半截数字）。
-
-    .value() 读成数（不合法时夹到范围里）；改了（按钮，或打字后离开 / 回车）调 command。"""
 
     def __init__(self, parent, variable, lo, hi, step=1, width=4, under=None, command=None, is_float=False):
         super().__init__(parent)
@@ -1055,7 +1015,7 @@ class Stepper(QWidget):
         for w in (self.minus, self.box, self.plus):
             lay.addWidget(w, 0, Qt.AlignmentFlag.AlignVCenter)
         self.entry = self.box.edit
-        self.entry.editingFinished.connect(self.commit)  # 回车或离开输入框
+        self.entry.editingFinished.connect(self.commit)
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
     def _fmt(self, v):
@@ -1091,7 +1051,6 @@ class Stepper(QWidget):
 
 # ---------------------------------------------------------------- 小部件
 class Tag(QWidget):
-    """像素字的小牌子（卡片标题前那块）。"""
 
     def __init__(self, parent, text, fill=YELLOW, font=None):
         super().__init__(parent)
@@ -1109,7 +1068,6 @@ class Tag(QWidget):
 
 
 class Square(QWidget):
-    """带 2 像素黑边的色块（状态灯）。"""
 
     def __init__(self, parent=None, color=DISABLED, size=22):
         super().__init__(parent)
@@ -1126,7 +1084,6 @@ class Square(QWidget):
 
 
 class Chip(QWidget):
-    """状态牌：■ 标题 值。set(值, 颜色)。"""
 
     def __init__(self, parent, title, under=None):
         super().__init__(parent)
@@ -1165,17 +1122,12 @@ class Chip(QWidget):
 
 
 class Card(Box):
-    """带标签牌的卡片。.widget 放进 DotPage.row，内容用 .add(控件, top=上间距) 一行一行往下加。"""
 
     def __init__(self, parent, tag_text, title, fill=YELLOW, under=None, note=None):
         super().__init__(parent, fill=CARD, border=2, shadow=5)
         self.widget = self
-        # 2026-11-15 新界面：标题前的英文小牌子（tag_text）不再显示，换成一个色块（颜色 = fill）
         head, hl = hbox(self)
         hl.setContentsMargins(16, 13, 16, 0)
-        self.square = Square(head, fill, 12)
-        hl.addWidget(self.square, 0, Qt.AlignmentFlag.AlignVCenter)
-        hl.addSpacing(9)
         self.title_lab = Label(title, font=f_zh(12, True), parent=head)
         hl.addWidget(self.title_lab, 0, Qt.AlignmentFlag.AlignVCenter)
         hl.addStretch(1)
@@ -1194,7 +1146,6 @@ class Card(Box):
         self.lay.addStretch(1)
 
     def add(self, widget, top=0, align=None):
-        """往卡片里加一行。top = 和上一行的间距；align=None 时横向铺满，否则按 align 靠边。"""
         if top:
             self.blay.addSpacing(top)
         if align is None:
@@ -1204,9 +1155,7 @@ class Card(Box):
         return widget
 
     def row(self, name, *controls, help=None, sub=None, name_w=None, credit=None):
-        """加一行设置（2026-11-15 新界面）：名字（+ 灰色小注）……控件。行之间细线隔开；
-        鼠标停在这一行上，底栏显示 help。controls 里的整数 = 那么宽的空隙。返回这一行（.lay、.sub、.name_lab）。
-        credit = 这个功能来自谁（2026-11-19 用户要求在对应功能下面写来源），名字下面一行灰色小字，比如「借鉴 QoL Mod」。"""
+        sep = None
         if self.n_rows:
             sep = QWidget()
             sep.setFixedHeight(1)
@@ -1214,12 +1163,12 @@ class Card(Box):
             self.blay.addWidget(sep)
         self.n_rows += 1
         r = HoverRow(name, help)
+        r.sep = sep
         lab = Label(name, font=f_zh(11, True))
         if name_w:
             lab.setFixedWidth(name_w)
         r.name_lab = lab
         if credit:
-            # 名字和来源上下叠着，行高只多一点；来源用小字灰色，不抢名字
             col = QWidget()
             cl = QVBoxLayout(col)
             cl.setContentsMargins(0, 0, 0, 0)
@@ -1244,12 +1193,11 @@ class Card(Box):
         return r
 
 
-# ---------------------------------------------------------------- 底栏说明（2026-11-15 新界面：去掉「?」）
+# ---------------------------------------------------------------- 底栏说明
 _HINT = {"show": None, "hide": None}
 
 
 def set_hint_target(show, hide):
-    """主窗口登记底栏：show(标题, 说明)、hide()。"""
     _HINT["show"], _HINT["hide"] = show, hide
 
 
@@ -1280,13 +1228,11 @@ class _HoverHelp(QObject):
 
 
 def hover_help(widget, title, text):
-    """鼠标停在 widget 上：底栏显示 标题 + 说明（都可以是函数，停上去时才取）。"""
     widget.installEventFilter(_HoverHelp(widget, title, text))
     return widget
 
 
 class HoverRow(QWidget):
-    """卡片里的一行：鼠标停上去整行变浅、左边一条黄，底栏显示说明（没有说明就不变色）。"""
 
     def __init__(self, title="", help_text=None, parent=None):
         super().__init__(parent)
@@ -1318,10 +1264,8 @@ class HoverRow(QWidget):
             p.fillRect(0, 0, 3, self.height(), qc(YELLOW))
 
 
-# ---------------------------------------------------------------- 左侧导航（2026-11-15 新界面：嵌在背景里）
+# ---------------------------------------------------------------- 左侧导航
 class NavList(QWidget):
-    """平的一列字，分组；选中那项铺页面底色、右边不封口，和右边页面连成一块（像文件夹标签）。
-    groups = [(组名, [(值, 文字), ...]), ...]；bottom = 贴在最下面的 [(值, 文字)]。点了调 command(值)。"""
 
     IH, GH, W = 35, 27, 150
 
@@ -1333,7 +1277,6 @@ class NavList(QWidget):
         self.setFixedWidth(self.W)
         self.f_item, self.f_sel, self.f_group = f_zh(11), f_zh(11, True), f_zh(8, True)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        # 2026-11-18 V0.97 整理：窗口矮时导航能上下滚（「关于」始终点得到）。V0.98：滚动条不显示，只用滚轮
         self.off, self.ch = 0, 0
         self.bar = QScrollBar(Qt.Orientation.Vertical, self)
         self.bar.setStyleSheet(
@@ -1352,7 +1295,7 @@ class NavList(QWidget):
 
     def select(self, key):
         self.cur = key
-        for kind, k, _t, r in self._cells():  # 选中的那项在可见范围外就滚过去
+        for kind, k, _t, r in self._cells():
             if kind == "i" and k == key:
                 if r.top() < self.off:
                     self.bar.setValue(max(0, r.top() - 8))
@@ -1365,7 +1308,6 @@ class NavList(QWidget):
         self.update()
 
     def _sync(self):
-        """内容总高 vs 窗口高：超出就出滚动条。"""
         self.ch = max((r.bottom() + 1 for _k, _key, _t, r in self._cells()), default=0) + 14
         room = max(0, self.ch - self.height())
         self.bar.setRange(0, room)
@@ -1373,7 +1315,6 @@ class NavList(QWidget):
         self.bar.setSingleStep(self.IH)
         self.off = min(self.off, room)
         self.bar.setValue(self.off)
-        # 2026-11-18 V0.98 用户定：滚动条太突兀，藏起来，只用滚轮滚（滚动条对象留着管范围和位置）
 
     def resizeEvent(self, e):
         super().resizeEvent(e)
@@ -1399,7 +1340,7 @@ class NavList(QWidget):
                 y += self.IH
             y += 6
         vis_b = [it for it in self.bottom if it[0] not in self.hidden]
-        yb = max(self.height() - 14, y + 8 + self.IH * len(vis_b))  # 窗口太矮时接在后面，不重叠
+        yb = max(self.height() - 14, y + 8 + self.IH * len(vis_b))
         for key, text in reversed(vis_b):
             yb -= self.IH
             out.append(("i", key, _tr(text), QRect(12, yb, w - 12, self.IH)))
@@ -1410,7 +1351,7 @@ class NavList(QWidget):
         w, h = self.width(), self.height()
         p.fillRect(0, 0, w, h, qc(HEADER))
         p.translate(0, -self.off)
-        h = h + self.off  # 竖线等画到可见范围底
+        h = h + self.off
         sel = None
         for kind, key, text, r in self._cells():
             if kind == "g":
@@ -1426,7 +1367,7 @@ class NavList(QWidget):
             p.setFont(self.f_item)
             p.setPen(qc(INK))
             p.drawText(r.adjusted(26, 0, 0, 0), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, text)
-        if sel:  # 右边的分隔线在选中那格断开，选中那格和页面连成一块
+        if sel:
             r = sel[0]
             p.fillRect(w - 2, 0, 2, r.top(), qc(INK))
             p.fillRect(w - 2, r.bottom() + 1, 2, h - r.bottom() - 1, qc(INK))
@@ -1468,18 +1409,17 @@ class NavList(QWidget):
             self.command(k)
 
 
-# ---------------------------------------------------------------- 底栏（2026-11-15 新界面：两行）
+# ---------------------------------------------------------------- 底栏
 class Footer(QWidget):
-    """两行：粗体一行，下面一行灰字说明。say(...) = 最近一条消息；鼠标停在某一行设置上时临时换成它的说明。"""
 
     COLORS = {"ok": MINT, "err": SALMON, "warn": YELLOW, "info": SKY}
     WORD = {"ok": "完成", "err": "没有完成", "warn": "注意", "info": "提示"}
-    IDLE = ("就绪", "鼠标停在任何一项上，这里会显示它是干什么的。")
+    IDLE = ("就绪", "鼠标停留于选项上，获得更多详细信息")
 
     def __init__(self):
         super().__init__()
         filled(self, HEADER)
-        self.setFixedHeight(72)  # 2026-11-15：说明最多两行，原来 64 高第二行被切掉一半
+        self.setFixedHeight(72)
         lay = QHBoxLayout(self)
         lay.setContentsMargins(16, 8, 16, 6)
         lay.setSpacing(10)
@@ -1497,7 +1437,6 @@ class Footer(QWidget):
         cl.addWidget(self.body)
         cl.addStretch(1)
         lay.addWidget(col, 1)
-        # 一直挂着的小牌子（2026-11-16 V0.95：「玩法」页 HellBox 版开着时提醒，消息怎么换它都在）
         self.badge = Chip(None, "MODE")
         self.badge.hide()
         lay.addWidget(self.badge, 0, Qt.AlignmentFlag.AlignVCenter)
@@ -1512,7 +1451,6 @@ class Footer(QWidget):
         self.sq.set_color(color)
 
     def _fit(self, text):
-        """超过两行的说明结尾换成「…」（不再切掉半行字）。"""
         fm = QFontMetrics(self.body.font())
         w = max(200, self.body.width() or self.width() - 60)
         return fm.elidedText(text, Qt.TextElideMode.ElideRight, int(w * 2 - fm.averageCharWidth() * 6))
@@ -1530,13 +1468,11 @@ class Footer(QWidget):
         self._show(*self.status)
 
     def set_badge(self, text, color=YELLOW):
-        """右边的小牌子：text 为空就藏起来。"""
         if text:
             self.badge.set(text, color)
         self.badge.setVisible(bool(text))
 
     def say(self, text, kind="info"):
-        """一条消息：短的整句放第一行；长的第一行写「完成 / 注意…」，整句放第二行（最多两行）。"""
         text = (_tr(text) or "").replace("\n", " ")
         fg = {"err": BAD, "warn": WARN}.get(kind, INK)
         color = self.COLORS.get(kind, SKY)
@@ -1549,8 +1485,6 @@ class Footer(QWidget):
 
 
 class MessageDialog(QDialog):
-    """和整个界面一个样子的弹窗（2026-11-15 用户要：别用 Windows 自带的蓝问号框）。
-    黑边硬阴影的卡片，左上色块 + 粗体标题，下面是正文，右下按钮。Enter = 第一个按钮，Esc = 取消。"""
 
     TITLES = {"ask": "确认一下", "warn": "注意", "error": "没有完成", "info": "提示"}
     COLORS = {"ask": YELLOW, "warn": YELLOW, "error": SALMON, "info": SKY}
@@ -1561,14 +1495,12 @@ class MessageDialog(QDialog):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setModal(True)
         self.result_ok = False
-        self.choice = None  # choose() 用："ok" / "second" / None（取消）
+        self.choice = None
         outer = QVBoxLayout(self)
         outer.setContentsMargins(0, 0, 0, 0)
         box = Box(self, fill=CARD, border=2, shadow=6, pad=(20, 16, 20, 16))
         outer.addWidget(box)
         head, hl = hbox()
-        hl.addWidget(Square(None, self.COLORS.get(kind, SKY), 12), 0, Qt.AlignmentFlag.AlignVCenter)
-        hl.addSpacing(9)
         hl.addWidget(Label(self.TITLES.get(kind, "提示"), font=f_zh(12, True)), 0, Qt.AlignmentFlag.AlignVCenter)
         hl.addStretch(1)
         box.lay.addWidget(head)
@@ -1601,7 +1533,7 @@ class MessageDialog(QDialog):
         if e.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
             self._ok()
         else:
-            super().keyPressEvent(e)  # Esc = reject
+            super().keyPressEvent(e)
 
     def showEvent(self, e):
         super().showEvent(e)
@@ -1614,14 +1546,12 @@ class MessageDialog(QDialog):
 
 
 def message(parent, text, kind="info", ok="确定", cancel=None):
-    """弹一个和界面同风格的框。有 cancel 时返回 True = 点了 ok。"""
     d = MessageDialog(parent, text, kind, ok, cancel)
     d.exec()
     return d.result_ok
 
 
 def choose(parent, text, first, second, cancel="取消", kind="ask"):
-    """三个按钮的框（2026-11-19：装核心时选备不备份地图）。返回 "first" / "second" / None（取消或 Esc）。"""
     d = MessageDialog(parent, text, kind, first, cancel, second=second)
     d.exec()
     return {"ok": "first", "second": "second"}.get(d.choice)
@@ -1634,13 +1564,10 @@ RIGHT = Qt.AlignmentFlag.AlignRight
 
 
 def chars(font, n):
-    """n 个字符宽（tk 里 width=n 的意思：按 "0" 的宽度算）+ Label 自带的边。"""
     return _tw(font, "0") * n + 6
 
 
 def line(*items, stretch=True):
-    """横排几个控件，靠左。items 里的整数 = 那么宽的空隙；字符串 "<>" = 弹簧（把后面的推到右边）。
-    stretch=True 时最后补一个弹簧。返回容器（.lay 是它的布局）。"""
     w, lay = hbox()
     w.lay = lay
     for x in items:
@@ -1687,8 +1614,6 @@ class _DotCanvas(QWidget):
 
 
 class DotPage(QScrollArea):
-    """点阵背景的页面。卡片一行一行往下排：row(卡片1, 卡片2, weights=(2, 1))，同一行的卡片一样高。
-    内容比窗口高时：右边出现黑色滚动条（可拖），鼠标在页面任何地方（包括卡片上）滚轮都能滚。"""
 
     PAD, GAP = 22, 20
 
@@ -1708,7 +1633,6 @@ class DotPage(QScrollArea):
         filled(self.viewport(), PANEL)
         sb = self.verticalScrollBar()
         sb.setSingleStep(40)
-        # 滚动条浮在内容上面（和 tk 版一样不占地方）：自带的那条藏起来，另放一条细黑的跟它同步
         self.bar = QScrollBar(Qt.Orientation.Vertical, self)
         self.bar.setStyleSheet(
             f"QScrollBar:vertical{{background:transparent;width:7px;margin:0px;border:none}}"
@@ -1739,9 +1663,8 @@ class DotPage(QScrollArea):
         self._place_pin()
         self._place_bar()
 
-    # ---- 顶上固定区（2026-11-15 用户要求：数据页的「当前对局数据」、编辑时的名字 / 确定一栏，往下滚也一直看得见）
+    # ---- 顶上固定区
     def pin(self, *widgets):
-        """在页面顶上放一块不随滚动的区域（只能调一次），返回它；里面的东西用 .pin_lay 加。"""
         holder = QWidget(self)
         filled(holder, PANEL)
         lay = QVBoxLayout(holder)
@@ -1787,7 +1710,7 @@ class DotPage(QScrollArea):
         for child, wt in zip(widgets, weights):
             child.setParent(w)
             sp = child.sizePolicy()
-            sp.setHorizontalPolicy(QSizePolicy.Policy.Ignored)  # 按比例分宽度，不看内容多宽
+            sp.setHorizontalPolicy(QSizePolicy.Policy.Ignored)
             sp.setHorizontalStretch(int(wt))
             child.setSizePolicy(sp)
             lay.addWidget(child, int(wt))
@@ -1800,7 +1723,6 @@ class DotPage(QScrollArea):
 
 
 def clear_layout(lay):
-    """删掉布局里所有东西（重建清单用）。"""
     while lay.count():
         it = lay.takeAt(0)
         w = it.widget()

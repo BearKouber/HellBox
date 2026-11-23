@@ -1,4 +1,5 @@
-"""日志本（2026-11-14 用户要求：记录 HellBox 和游戏的报错 / 警告，出问题时好查、好发给别人看）。
+"""
+日志本
 
 三个来源，「日志」页合在一起按时间倒序显示：
 - HellBox：hellbox/logs/hellbox.log。底部状态栏的报错 / 警告、后台任务失败（带出错位置）、没接住的异常、Qt 的警告。
@@ -21,7 +22,7 @@ GAME_LOG = os.path.join(DIR, "game.log")
 CRASH_DIR = os.path.join(ROOT, "crash")
 MAX_BYTES = 512 * 1024
 PROBE = os.path.join(DIR, "game-probe.txt")
-CLEARED = os.path.join(DIR, "cleared-before.txt")  # 「清空」时记下时间，早于它的崩溃报告不再显示（不删游戏的文件）
+CLEARED = os.path.join(DIR, "cleared-before.txt")
 
 _lock = threading.Lock()
 
@@ -31,7 +32,6 @@ def _clean(text):
 
 
 def write(level, source, text):
-    """追加一行。写不进去就算了，不能因为记日志把 HellBox 弄崩。"""
     try:
         with _lock:
             os.makedirs(DIR, exist_ok=True)
@@ -52,13 +52,11 @@ def warn(source, text):
 
 
 def exception(source, exc):
-    """异常带上出错位置（最后几层调用），方便定位。"""
     tb = "".join(traceback.format_exception(type(exc), exc, exc.__traceback__)[-4:])
     write("ERROR", source, f"{exc}  ||  {tb}")
 
 
 def install():
-    """接住没人处理的异常和 Qt 警告，都记进日志（原来的处理照旧）。"""
     os.makedirs(DIR, exist_ok=True)
     old_hook = sys.excepthook
 
@@ -126,7 +124,6 @@ def _crashes(limit=20):
                 body = f.read(4000)
         except OSError:
             continue
-        # 第一行是错误本身，后面 stack traceback 的 [n] 行是出错时在哪（游戏的崩溃报告格式，2026-11-07 那批看过）
         keep = [ln.strip() for ln in body.splitlines() if ln.strip()]
         frames = [ln.split("]", 1)[1].strip() for ln in keep if ln.startswith("[")][:4]
         summary = (keep[0] if keep else "") + ("  ←  " + "  ←  ".join(frames) if frames else "")
@@ -136,8 +133,6 @@ def _crashes(limit=20):
 
 
 def check_probe():
-    """游戏不在运行时调：上次游戏没有正常退出、还没报过 → 写一条 ERROR（最后心跳、当时在干什么、最后几步），
-    在探针文件末尾补 reported=1（同一次只报一次），返回一句给底栏的话；没事返回 None。"""
     try:
         with open(PROBE, encoding="utf-8", errors="replace") as f:
             text = f.read()
@@ -160,14 +155,12 @@ def check_probe():
 
 
 def entries():
-    """全部记录，新的在前。"""
     rows = _read_lines(HELLBOX_LOG, "HellBox") + _read_lines(GAME_LOG, "游戏脚本") + _crashes()
     rows.sort(key=lambda r: r["time"], reverse=True)
     return rows
 
 
 def clear():
-    """清空 HellBox 和游戏脚本的日志；游戏崩溃报告不删（是游戏的文件），只是以后不再显示现在这些。"""
     with _lock:
         for p in (HELLBOX_LOG, HELLBOX_LOG + ".1", GAME_LOG, GAME_LOG + ".1"):
             try:

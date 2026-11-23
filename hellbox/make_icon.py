@@ -1,6 +1,6 @@
-"""画 HellBox 图标：像素箱子（黑边、黄黑警示条盖子、三个小灯、硬阴影）。生成 icon.png 和 icon.ico。
+"""
+画 HellBox 图标：像素箱子
 
-不依赖任何第三方库：PNG 自己编码，ICO 里直接塞 PNG（Vista 以后的 Windows 都认）。
 运行：python hellbox/make_icon.py
 """
 import os
@@ -9,7 +9,6 @@ import zlib
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# 16x16，'.' 透明。阴影（右下错开一格的 K）在下面单独加。
 ART = [
     "................",
     ".KKKKKKKKKKKKK..",
@@ -43,7 +42,6 @@ def pixels():
         for x, ch in enumerate(row):
             if ch in COLORS:
                 grid[y][x] = COLORS[ch]
-    # 硬阴影：盒子（列 1~13、行 1~13）往右下错一格
     for y in range(2, 15):
         if grid[y][14][3] == 0:
             grid[y][14] = COLORS["K"]

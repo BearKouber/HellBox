@@ -1,10 +1,11 @@
-"""中英文切换（2026-11-14 用户要求：右上角点 CN / EN 切换）。
+"""
+中英文切换（2026-11-14 用户要求：右上角点 CN / EN 切换）。
 
 - 界面上的字照旧用中文写在代码里；英文版时 tr(中文) 查 lang_en.json 换成英文，查不到就原样显示中文。
 - 控件（ui.Label、Button、Segmented……）显示文字时自动调 tr，页面代码不用改。
 - 带数字的句子写成模板：T("本周还剩 {0} 次。", n)，模板本身是查表的键。
-- 语言存在 %APPDATA%/Arrowhead/Helldivers/hellbox/language.txt（zh / en）；切换后 HellBox 自己重开一次。
-- 没选过语言时按电脑语言：中文系统用中文，其它用英文（2026-11-19）。
+- 语言优先存 %LOCALAPPDATA%/HellBox/language.txt；旧位置 %APPDATA%/Arrowhead/Helldivers/hellbox/language.txt 仍读；都写不进去时再试程序目录。切换后 HellBox 自己重开一次。
+- 没选过语言时默认中文（2026-11-23）。
 """
 import json
 import os
@@ -14,6 +15,27 @@ FILE = os.path.join(os.environ.get("APPDATA", ""), "Arrowhead", "Helldivers", "h
 LANGS = ("zh", "en")
 
 
+def _lang_files():
+    """语言文件按优先级：自己的 LocalAppData → 旧位置 → 程序目录；读的时候取修改时间最新的一个。"""
+    out = []
+    base = os.environ.get("LOCALAPPDATA") or os.environ.get("APPDATA")
+    if base:
+        out.append(os.path.join(base, "HellBox", "language.txt"))
+    out.append(FILE)
+    if getattr(sys, "frozen", False):
+        out.append(os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "language.txt"))
+    else:
+        out.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "language.txt"))
+    seen = set()
+    files = []
+    for p in out:
+        key = os.path.normcase(os.path.abspath(p))
+        if key not in seen:
+            seen.add(key)
+            files.append(p)
+    return files
+
+
 def _res_dir():
     if getattr(sys, "frozen", False):
         return getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(sys.executable)))
@@ -21,24 +43,24 @@ def _res_dir():
 
 
 def _system_lang():
-    """2026-11-19 用户要求：没选过语言时按电脑语言来，中文系统（简体 / 繁体）用中文，其它和认不出的都用英文。"""
-    try:
-        import ctypes
-        langid = ctypes.windll.kernel32.GetUserDefaultUILanguage()
-        return "zh" if langid & 0x3FF == 0x04 else "en"  # 主语言 0x04 = 中文
-    except (AttributeError, OSError, ValueError):
-        return "en"
+    """没选过语言时默认中文；保留函数名给旧调用。"""
+    return "zh"
 
 
 def _load_lang():
-    """点过右上角 CN / EN 的（language.txt）照用；没选过 / 文件坏了就按电脑语言。"""
-    try:
-        with open(FILE, encoding="ascii") as f:
-            lang = f.read().strip()
-        if lang in LANGS:
-            return lang
-    except (OSError, ValueError):
-        pass
+    """点过右上角 CN / EN 的（language.txt）照用；没选过 / 文件坏了默认中文。"""
+    best = None
+    for path in _lang_files():
+        try:
+            stamp = os.stat(path).st_mtime
+            with open(path, encoding="ascii") as f:
+                lang = f.read().strip()
+            if lang in LANGS and (best is None or stamp > best[0]):
+                best = (stamp, lang)
+        except (OSError, ValueError):
+            pass
+    if best is not None:
+        return best[1]
     return _system_lang()
 
 
@@ -150,6 +172,13 @@ def T(template, *args, **kw):
 
 
 def set_lang(lang):
-    os.makedirs(os.path.dirname(FILE), exist_ok=True)
-    with open(FILE, "w", encoding="ascii") as f:
-        f.write(lang)
+    last = None
+    for path in _lang_files():
+        try:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "w", encoding="ascii") as f:
+                f.write(lang)
+            return
+        except OSError as e:
+            last = e
+    raise last or OSError("no writable language file")

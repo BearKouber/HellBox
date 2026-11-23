@@ -1,17 +1,5 @@
-"""战备属性块的编辑器（2026-11-14 V0.91，数据修改页「战备 · 蓝 / 红 / 绿 / 车辆 / 黄」的编辑卡片）。
-
-一类一个编辑器：StratEditor(app, view, cat)，cat = blue / red / green / vehicle / yellow。接口同怪物属性编辑器
-（load / dump / set_visible / dirty），手感也一样：数值格平时是小方块，点到才变下拉框。
-
-每个战备列哪些参数、书面名称、原版值、选项方式来自 ai/strat_fields.json（tools/strat_fields.py 生成；
-HD1-033 战备属性清单：只列游戏代码实际会读的参数）。
-选项方式：
-  倍率 mult      ×0～×100（原版值为 0 的给具体数值档）
-  秒数 time      0～300 秒的常用档；也可输入 ×2 表示 2 倍
-  数量 count     0～10、15、20、30、50、100；也可输入 ×2
-  是否 bool；text = 只显示（按键序列）
-块的数据：{"common": {路径: 倍数}, "ov": {战备名: {路径: 值}}}；值 '*2' = 按原值乘，其它 = 绝对值（所有升级等级都用它）。
-路径：战备表里的项直接写（cooldown_time）；投下来的东西写 @单位路径@设置路径（格式见 mod/src/strat_params.lua）。
+"""
+战备属性块的编辑器：蓝 / 红 / 绿 / 车辆 / 黄各一个编辑器；参数与选项方式来自 ai/strat_fields.json（tools/strat_fields.py 生成）。
 """
 import copy
 import math
@@ -73,10 +61,8 @@ def _num(text):
     return v if math.isfinite(v) else None
 
 
-# ---------------------------------------------------------------- 块 -> 命令（data_blocks.live_text 调）
+# ---------------------------------------------------------------- 块 -> 命令
 def strat_command(data, cat):
-    """战备属性块 -> strat_params.lua 的命令（只带这一类的战备）。
-    data = {"common": {路径: 倍数}, "ov": {战备名: {路径: 值}}}；值 '*2' = 按原值乘，其它 = 绝对值。"""
     data = data or {}
     names = set((fields().get("cats") or {}).get(cat, {}).get("strats") or [])
     common = ",".join(f"{p}*{float(m):g}" for p, m in sorted((data.get("common") or {}).items())
@@ -94,7 +80,6 @@ def strat_command(data, cat):
 
 
 def summary(data):
-    """方块上的一句话。"""
     data = data or {}
     n_common = len([m for m in (data.get("common") or {}).values() if abs(float(m) - 1.0) > 1e-9])
     n_strats = len([f for f in (data.get("ov") or {}).values() if f])
@@ -120,18 +105,16 @@ class StratEditor:
         self.common = {}
         self.ov = {}
         self.dirty = False
-        self._open = None  # 正在下拉的那一格 (combo, chip, choose, typed)
+        self._open = None
 
-        # 2026-11-15 新界面：选战备 = 平的等宽格子（绿方块 = 改过），参数 = 一行一项、说明进底栏
-        pick = ui.Card(view, "PICK", T("选战略配备 · {0}", tr(self.info.get("zh", ""))), fill=ui.YELLOW,
-                       note="绿色方块 = 改过")
+        pick = ui.Card(view, "PICK", T("选战略配备 · {0}", tr(self.info.get("zh", ""))), fill=ui.YELLOW)
         if self.info.get("desc"):
             pick.add(ui.text(pick.body, self.info["desc"], muted=True, size=9))
         self.picker = PickGrid(self._select)
         pick.add(self.picker, top=8)
 
-        self.card = ui.Card(view, "EDIT", "", fill=ui.SALMON, note=" ")
-        self.btn_reset = small_button("全部还原", self._reset_sel)
+        self.card = ui.Card(view, "EDIT", "", fill=ui.SALMON)
+        self.btn_reset = small_button("还原", self._reset_sel)
         self.card.head_lay.addSpacing(10)
         self.card.head_lay.addWidget(self.btn_reset, 0, VC)
         self.notes = self.card.add(ui.text(self.card.body, "", muted=True, size=9))
@@ -141,7 +124,6 @@ class StratEditor:
         self.rows = [view.row(pick), view.row(self.card)]
         self._refresh()
 
-    # ================================================================ 块的读写
     def load(self, data, race=None):
         data = data or {}
         self.common = {p: float(m) for p, m in (data.get("common") or {}).items() if p in self.common_paths}
@@ -158,7 +140,6 @@ class StratEditor:
         for r in self.rows:
             r.setVisible(on)
 
-    # ================================================================ 选战备
     def _select(self, name):
         self.sel = name
         self._refresh()
@@ -170,7 +151,7 @@ class StratEditor:
         items = [(ALL, "本类全部", bool(self.common),
                   "本类全部：按每个战略配备自己的原版数值乘（升级后的数值也按各自原值乘）；单个战略配备设了的那一项以单个为准。")]
         items += [(n, self._zh(n), bool(self.ov.get(n)),
-                   "\n".join((self.strats.get(n) or {}).get("notes") or []) or "点开改这个战略配备的参数。")
+                   "\n".join((self.strats.get(n) or {}).get("notes") or []) or "点击展开以修改这个战略配备的参数。")
                   for n in self.names]
         return items
 
@@ -186,21 +167,18 @@ class StratEditor:
         self._mark_buttons()
 
     def _mark_buttons(self):
-        """选战备格子上的绿方块、「全部还原」能不能点。"""
         self.picker.set_items(self._items(), self.sel)
         self.btn_reset.set_enabled(bool(self.common) if self.sel == ALL else bool(self.ov.get(self.sel)))
 
-    # ================================================================ 本类全部
     def _build_common(self):
         self.card.title_lab.config(text=T("{0} · 本类全部", tr(self.info.get("zh", ""))))
-        self.card.note_lab.config(text="按每个战略配备自己的原版数值乘")
         self.notes.config(text="冷却、呼叫时间下次扔信标起生效；已经放下的炮台只有伤害、射程这类开火时读的项马上变。"
                                "联机时只对自己（和本机 2P）的战略配备确定生效，建议全队用同一份设置。")
         for row in self.common_rows:
             path = row["path"]
             m = self.common.get(path, 1.0)
             chip = ValueSlider(self._mult_text(m), abs(m - 1) > 1e-9)
-            self._setup_common(chip, path)  # 2026-11-15 下拉换成滑条
+            self._setup_common(chip, path)
             self.plist.row(row["label"], chip,
                            help=" ".join(t for t in (tr(row.get("tip", "")), tr(KIND_TIP["mult"])) if t))
 
@@ -226,14 +204,12 @@ class StratEditor:
 
         chip.setup(opts, choose, typed, key=lambda v: 1.0 if v is None else float(v), cur=self.common.get(path, 1.0))
 
-    # ================================================================ 单个战备
     def _build_strat(self, name):
         info = self.strats.get(name) or {}
         title = self._zh(name)
         if info.get("en") and info.get("en") != title:
             title += f"（{info['en']}）"
         self.card.title_lab.config(text=title)
-        self.card.note_lab.config(text=tr(self.info.get("zh", "")))
         self.notes.config(text="\n".join(info.get("notes") or []))
         for block in info.get("blocks") or []:
             self.plist.section(block["title"])
@@ -297,15 +273,14 @@ class StratEditor:
             if row["path"] == "num_uses":
                 v = math.floor(v + 0.5)
             return T("跟本类 ×{0:g} = {1}", m, self._show(row, v)), True
-        return tr("原版"), False  # 2026-11-15 新界面：原版的数在这一行最右边
+        return tr("原版"), False
 
     # ---------------------------------------------------------------- 下拉的选项
     def _options(self, row, base, kind):
-        """[(文字, 存的值 / None = 原版)]，和「打字怎么解析」。"""
         orig = (T("原版（{0}）", self._show(row, base)), None)
 
         def mult_or_abs(text, integer=False):
-            text = text.strip().replace("秒", "").strip().rstrip("sS").strip()  # 英文版显示「5s」
+            text = text.strip().replace("秒", "").strip().rstrip("sS").strip()
             if text[:1] in "×xX*":
                 v = _num(text[1:])
                 return None if v is None else f"*{min(100.0, max(0.0, v)):g}"
@@ -337,7 +312,6 @@ class StratEditor:
 
     # ---------------------------------------------------------------- 点开 / 选好
     def _value_widget(self, name, row, base, kind, text, changed, grid, r):
-        """数值类：滑条（2026-11-15 用户要求）；是否这种：点了变下拉框的小方块。"""
         if kind in NUMERIC_KINDS and is_num(base):
             w = ValueSlider(text, changed)
             opts, choose, typed = self._row_handlers(w, name, row, base)
@@ -422,7 +396,6 @@ class StratEditor:
         except RuntimeError:
             pass
 
-    # ================================================================ 改动
     def _reset_sel(self):
         if self.sel == ALL:
             self.common = {}

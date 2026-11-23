@@ -1,8 +1,5 @@
-"""战绩：任务结算时 mod 自动记一行（src/hellbox_results.lua），这一页列出来，点一局看那局的战绩卡片。
-
-2026-11-13 用户要求：列表和卡片都用 HellBox 自己的方块风格；列表一行 = 日期 阵营 难度 结果 星级 用时；
-点开一局在 HellBox 里面换成战绩卡片：这局的概况 + 所有玩家（名字、杀敌、死亡……），能看到队友是谁。
-每行：编号|16 个数|玩家1|玩家2…；玩家格内 Tab 分：名字 杀敌 死亡 误杀 开枪 命中 样本 撤离 自己。旧记录没有玩家格。
+"""
+战绩页：任务结算时由 mod/src/hellbox_results.lua 记一行，这里列出每局并可查看战绩卡片。
 """
 import json
 import os
@@ -15,7 +12,7 @@ from PySide6.QtGui import QPainter
 import ui
 from pages.base import Page
 try:
-    from i18n import T, tr  # HellBox 里跑时有中英文切换
+    from i18n import T, tr
 except ImportError:
     def tr(s):
         return s
@@ -29,8 +26,8 @@ FEED = Path(os.getenv("APPDATA") or Path.home()) / "Arrowhead" / "Helldivers" / 
 FIELDS = ("epoch", "seed", "race", "difficulty", "mode", "won", "extracted", "stars", "seconds",
           "done", "total", "kills", "deaths", "samples", "teamkills", "players")
 PFIELDS = ("kills", "deaths", "teamkills", "shots", "hits", "samples", "extracted", "me")
-RACES = ("虫族", "生化人", "光能者")  # 2026-11-14 按游戏百科全书
-MODES = ("普通任务", "原版选图", "自定义选图", "自定义任务")  # 2026-11-19「训练」改名「选图」（玩法页真训练场也归这两类）
+RACES = ("虫族", "生化人", "光能者")
+MODES = ("普通任务", "原版选图", "自定义选图", "自定义任务")
 FILTERS = [(-1, "全部")] + list(enumerate(MODES))
 COLS = [("日期", 3), ("阵营", 2), ("难度", 1), ("结果", 3), ("星级", 2), ("用时", 2)]
 SHOW_MAX = 60
@@ -49,7 +46,7 @@ def parse_line(line):
     row = dict(zip(FIELDS, values))
     players = []
     for cell in parts[1 + len(FIELDS):]:
-        if cell.startswith("#M"):  # 2026-11-16：这局改了什么（hellbox_results.lua mod_items）
+        if cell.startswith("#M"):
             row["mods"] = [m for m in cell[2:].split(";") if m]
             continue
         bits = cell.split("\t")
@@ -80,7 +77,7 @@ def ingest(text):
         tmp.write_text(json.dumps(current, ensure_ascii=False), encoding="utf-8")
         os.replace(tmp, FILE)
     for row in current.values():
-        row.setdefault("list", [])  # 旧版记的没有玩家列表
+        row.setdefault("list", [])
     return current
 
 
@@ -97,7 +94,7 @@ def read():
     return ingest(text + "\n" + live)
 
 
-# ---------------------------------------------------------------- 这局改了什么（2026-11-16）
+# ---------------------------------------------------------------- 这局改了什么
 SRC_ZH = {"g": "报复关", "a": "警报", "p": "巡逻"}
 SPREAD_ZH = {1: "小", 2: "中", 3: "大"}
 ENEMY_ZH = {"health_info.health": "血量", "health_info.armor_max": "装甲", "health_info.armor_min": "装甲",
@@ -106,7 +103,6 @@ STRAT_ZH = {"cooldown_time": "冷却时间", "activation_time": "呼叫时间", 
 
 
 def _mult(e):
-    """「路径*倍数」/「路径=值」-> (路径, 「×2」或「改过」)。"""
     if "*" in e:
         path, m = e.rsplit("*", 1)
         try:
@@ -117,7 +113,6 @@ def _mult(e):
 
 
 def mods_text(items):
-    """战绩卡片上「这局改了」那一行（已翻译）。同一样东西（比如装甲上下限）只写一次。"""
     out = []
 
     def add(text):
@@ -172,9 +167,9 @@ def mods_text(items):
             key, _, val = e.partition("=")
             if key == "spread":
                 add(T("出生散开 {0}", tr(SPREAD_ZH.get(int(val or 0), val))))
-            elif key == "vn":  # 2026-11-18 V0.96 步兵战车每次放几只
+            elif key == "vn":
                 add(T("战车每次放 {0} 只", val))
-            elif key == "cap":  # 2026-11-18 V0.96
+            elif key == "cap":
                 add(tr("场上上限 破限") if val.strip() == "-1" else T("场上上限 {0}", val))
             elif key == "v":
                 add(tr("载具不放兵") if val == "none" else tr("载具放兵换怪"))
@@ -239,7 +234,6 @@ class HeaderRow(ui.QWidget):
 
 
 class ResultRow(ui.Clickable):
-    """列表的一行：悬停变亮，点了打开那局的战绩卡片。"""
 
     def __init__(self, row, stripe, command):
         super().__init__()
@@ -263,7 +257,6 @@ class ResultRow(ui.Clickable):
 
 
 class Stat(ui.QWidget):
-    """战绩卡片上的一块大数字：上面小字标题，下面大数字。"""
 
     def __init__(self, title, value, fill=ui.WHITE, font=None):
         super().__init__()
@@ -286,7 +279,7 @@ class Stat(ui.QWidget):
 class ResultsPage(Page):
     key = "results"
     tab = "战绩"
-    when = "装了 HellBox 的游戏每打完一局自动记一行，点一行看这局所有人的战绩"
+    when = ""
 
     def build(self):
         self.rows = {}
@@ -309,7 +302,7 @@ class ResultsPage(Page):
         self.list_card.add(frame, top=8)
         self.list_row = self.view.row(self.list_card)
 
-        # ---- 战绩卡片（点开一局时替换列表）
+        # ---- 战绩卡片
         self.card = ui.Card(self.view, "REPORT", "战绩卡片", fill=ui.YELLOW)
         self.btn_back = ui.Button(None, "‹ 返回列表", self.close_detail, padx=10, pady=3)
         self.card.add(self.btn_back, align=ui.LEFT)

@@ -1,8 +1,5 @@
-"""决策显示（HD1-030，2026-11-11）：游戏画面左边那个半透明框显示哪几行、多透明、放哪。
-
-用户："给你说的设定直接写到hellbox里面吧,可以开关这些显示"。
-设置写进 ai\\overlay_settings.json（陪玩程序 ai\\overlay.py 读，开着的局 2 秒内生效），改了马上保存，不用关游戏。
-框是 mod（mod\\src\\ai_overlay.lua）画的：mod 要装着（「关于」页的「核心」）；字是陪玩程序写的：她没在跑时框里显示等待提示。
+"""
+决策显示：设置游戏画面左边半透明框显示哪几行、透明度和位置；设置写进 ai/overlay_settings.json，框由 mod/src/ai_overlay.lua 绘制。
 """
 import json
 import os
@@ -14,11 +11,11 @@ from pages.base import Page
 SETTINGS = os.path.join(paths.ROOT, "ai", "overlay_settings.json")
 DEFAULTS = {"on": 1, "block": 1, "hand": 1, "detail": 0, "history": 0, "goal": 1, "target": 1,
             "alpha": 140, "x": 12, "y": 170}
-MARKS = [  # 地上标记（不受"整个框"开关管）
+MARKS = [
     ("goal", "她要去的点（绿）", "地上一个绿点，从她脚下排一串小绿点过去"),
     ("target", "她要打的那只（橙）", "那只虫中心一个橙点"),
 ]
-LINES = [  # (键, 名字, 例子)
+LINES = [
     ("block", "被谁拦了（红字）", "想做的被别的规矩拦下时才出现，例：底线破了：站在冲锋虫正面踩踏圈"),
     ("hand", "手在干什么（青字）", "例：手：开火 11 号 / 手：放下枪（放下枪快走让冲锋）"),
     ("detail", "腿和打分细节（灰字）", "腿怎么走、打分第一第二名和加减分、站位层、局势。行多，查问题时再开"),
@@ -57,7 +54,7 @@ class OverlayPage(Page):
 
         # ---- 左：显示哪几行
         card = ui.Card(self.view, "OVERLAY", "显示哪几行", fill=ui.MINT)
-        card.add(self._row("整个框", "关了左边的字就不画（地上标记单独开关），其他设置保留", self.v["on"]))
+        card.add(self._row("整个框", "关闭后左侧文字不再绘制（地面标记有单独开关），其余设置保留", self.v["on"]))
         card.add(ui.text(card.body, "第一行（她在干什么，例：战斗·冲锋虫 › 引它冲（15 号，7.8 米））总是显示。",
                          muted=True, size=9), top=12)
         for k, name, eg in LINES:
@@ -136,7 +133,7 @@ class OverlayPage(Page):
     def sync(self):
         st = self.app.state.get("script")
         if st == "off":
-            self.hint.config(text="「核心」没开：框画不出来。先到「关于」页打开「核心」。", fg=ui.WARN)
+            self.hint.config(text="「核心」未开启：无法绘制显示框。请先在「关于」页开启「核心」。", fg=ui.WARN)
         elif st == "old":
             self.hint.config(text="游戏里是旧版 MOD（可能还没有决策框）：关游戏后在「关于」页关开一次「核心」。", fg=ui.WARN)
         elif self._pending is None:

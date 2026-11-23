@@ -1,4 +1,6 @@
-"""日志：HellBox 和游戏的报错 / 警告 / 崩溃，新的在上（2026-11-14 用户要求）。数据见 logbook.py。"""
+"""
+日志页：HellBox 和游戏的报错、警告、崩溃记录，新的在上；数据来自 logbook.py。
+"""
 import os
 
 from PySide6.QtGui import QGuiApplication
@@ -8,7 +10,7 @@ import logbook
 import ui
 from pages.base import Page
 try:
-    from i18n import T, tr  # HellBox 里跑时有中英文切换
+    from i18n import T, tr
 except ImportError:
     def tr(s):
         return s
@@ -39,8 +41,8 @@ def line(row):
 class LogsPage(Page):
     key = "logs"
     tab = "日志"
-    when = "排查问题用　出问题时点「复制」发给作者"
-    when_color = ui.SALMON
+    when = ""
+    when_color = ui.YELLOW
 
     def build(self):
         self.mode = ui.Var("all")
@@ -62,8 +64,7 @@ class LogsPage(Page):
         self.box.setStyleSheet(f"QPlainTextEdit {{ background: {ui.INSET}; color: {ui.INK}; "
                                f"border: 2px solid {ui.INK}; padding: 6px; }}")
         card.add(self.box, top=6)
-        card.add(ui.text(card.body, "出问题时点「复制」，把内容发给作者。游戏崩溃报告是游戏自己写的，「清空」只是不再显示，不删除。",
-                         muted=True, size=9), top=8)
+
         self.view.row(card)
         self.app.after(POLL_MS, self._tick)
 

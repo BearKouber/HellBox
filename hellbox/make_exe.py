@@ -1,4 +1,5 @@
-"""把 HellBox 打包成 bin\\HellBox\\HellBox.exe（文件夹版），根目录放快捷方式 HellBox.lnk。
+"""
+把 HellBox 打包成 bin\\HellBox\\HellBox.exe（文件夹版），不自动创建或更新快捷方式。
 
 运行：.venv\\Scripts\\python hellbox\\make_exe.py
      .venv\\Scripts\\python hellbox\\make_exe.py --dist .work\\hb_test   先打一份测试用的（不碰 bin\\、不改快捷方式；
@@ -6,15 +7,6 @@
      --public 会打独立发行目录，可用 --luajit 指定现有 LuaJIT 工具目录。
      2026-11-21 HD1-037：--public --portable 是另一种打法（Python 官方便携版 + .pyc，make_portable.py）；
      用户同日定发行版还是用 PyInstaller（界面看着舒服），--portable 留着备用。
-注意：bin\\HellBox\\HellBox.exe 开着的时候打包会失败（文件被占用），先关掉 HellBox。
-
-为什么不打成单个 exe：单文件版每次启动要先解压到临时目录，实测 2.5～3.8 秒才出窗口；文件夹版约 1 秒。
-为什么放 bin\\ 下：ROOT\\HellBox 和源码目录 ROOT\\hellbox 在 Windows 上是同一个文件夹。
-
-exe 里只有界面（hellbox/）、Python 运行时、Qt（只带 QtCore / QtGui / QtWidgets）、字体、图标。
-界面是 Qt（PySide6，2026-11-07 从 tkinter 换过来）；打完会删掉用不到的 Qt 插件和翻译，见 PRUNE。
-mod 的功能代码（mod\\build.py、cursor_mod.py……、ai\\bridge.py）不打进去，运行时从磁盘读：
-改 mod 不用重新打包。所以要把它们会用到的标准库模块列进 HIDDEN，否则 exe 里没有。
 """
 import os
 import shutil
@@ -26,7 +18,7 @@ ROOT = os.path.dirname(HERE)
 WORK = os.path.join(ROOT, ".work", "hellbox-build")
 DIST = os.path.join(ROOT, "bin")
 
-# mod 代码在磁盘上，不许打进 exe（否则 exe 里的旧副本会盖过磁盘上的新版本）
+# mod 代码在磁盘上，不打进 exe
 FROM_DISK = ["build", "bundle", "cursor_mod", "cursor_patch", "texture", "room_name_live", "hellbox_options", "hellbox_hop", "bridge", "drill_spec", "ghost_maps", "patch_files", "obsidian_compat", "camera_stack"]
 
 # mod 代码用到、界面本身没用到的模块
@@ -34,13 +26,13 @@ HIDDEN = ["hashlib", "functools", "copy", "random", "re", "shutil", "struct", "s
           "ctypes", "ctypes.wintypes", "dataclasses", "pymem", "pymem.process", "pymem.memory",
           "pymem.exception", "pymem.ressources", "pymem.pattern", "pymem.ptypes", "pymem.thread"]
 
-# 界面只用到 QtCore / QtGui / QtWidgets；别的 Qt 模块、tkinter 都不要
+# 界面只用到 QtCore / QtGui / QtWidgets
 EXCLUDE = ["PIL", "customtkinter", "numpy", "tkinter", "_tkinter",
            "PySide6.QtNetwork", "PySide6.QtQml", "PySide6.QtQuick", "PySide6.QtSvg", "PySide6.QtOpenGL",
            "PySide6.QtDBus", "PySide6.QtPrintSupport", "PySide6.QtSql", "PySide6.QtTest", "PySide6.QtXml",
            "PySide6.QtConcurrent", "PySide6.QtUiTools", "PySide6.QtHelp", "PySide6.QtDesigner"]
 
-# 打完从 _internal\PySide6 里删掉的（相对路径）：用不到的插件、翻译、软件 OpenGL
+# 打完从 _internal\PySide6 里删掉的（相对路径）
 PRUNE = ["translations", "opengl32sw.dll", "Qt6Network.dll", "Qt6Svg.dll", "plugins/platforms/qdirect2d.dll", "plugins/platforms/qminimal.dll",
          "plugins/platforms/qoffscreen.dll", "plugins/generic", "plugins/networkinformation", "plugins/tls",
          "plugins/platforminputcontexts", "plugins/iconengines", "plugins/imageformats/qgif.dll",
@@ -50,29 +42,25 @@ PRUNE = ["translations", "opengl32sw.dll", "Qt6Network.dll", "Qt6Svg.dll", "plug
 
 
 PUBLIC_MOD_FILES = ("build.py", "bundle.py", "cursor_mod.py", "cursor_patch.py", "texture.py",
-                    "room_name_live.py", "hellbox_options.py", "hellbox_hop.py",  # 2026-11-20 HD1-035 收进来的 QoL
+                    "room_name_live.py", "hellbox_options.py", "hellbox_hop.py",
                     "ghost_maps.py", "ghost_shading.bin",
-                    "patch_files.py", "obsidian_compat.py",  # 2026-11-20 HD1-036 补丁装法、认出 Obsidian
-                    "camera_stack.py")  # 2026-11-21 HD1-037 分屏用 Python 叠进启动脚本（不再带分屏 exe）
+                    "patch_files.py", "obsidian_compat.py",
+                    "camera_stack.py")
 PUBLIC_DATA = ("drill_spec.py", "drill_monsters.json", "loadout_items.json", "room_words.json", "enemy_settings.json", "enemy_fields.json", "weapon_fields.json", "strat_fields.json", "spawn_tables.json")
 
 
 def copy_public_support(target, compiler, app=None):
-    """说明文件放 target；mod / ai / tools 放 app（发行版是 target\\app，自用 PyInstaller 版就是 target）。"""
     sys.path.insert(0, os.path.join(ROOT, "mod"))
     import build
 
     app = app or target
     mod = os.path.join(app, "mod")
     os.makedirs(mod, exist_ok=True)
-    # 2026-11-21 HD1-037：开源，MIT 授权（含第三方部分说明）
     shutil.copy2(os.path.join(ROOT, "LICENSE"), os.path.join(target, "LICENSE.txt"))
     for name in PUBLIC_MOD_FILES:
         shutil.copy2(os.path.join(ROOT, "mod", name), mod)
     with open(os.path.join(mod, "public_release"), "w", encoding="ascii") as f:
         f.write("HellBox public build\n")
-    # HD1-034：发行版也带录制接口（ai_bridge、ai_mech + 前后两个休眠开关），和 build.patches() 的发行版清单一致
-    # 原版脚本（vanilla:）不拷：装的时候从玩家自己的游戏里取（build.vanilla_source）
     sources = {file for files in build.PATCHES.values() for file in files
                if not file.startswith(build.VANILLA)
                and (os.path.basename(file) not in build.PRIVATE_SCRIPTS or os.path.basename(file) in build.REC_SCRIPTS)}
@@ -81,7 +69,6 @@ def copy_public_support(target, compiler, app=None):
         dst = os.path.join(mod, file)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         shutil.copy2(os.path.join(ROOT, "mod", file), dst)
-    # 分屏（HalfSugar 的 CameraCTRL，作者同意收进 HellBox）：装 MOD 时把分屏模块（runtime.luac）叠进脚本文件
     shutil.copytree(os.path.join(ROOT, "mod", "camera"), os.path.join(mod, "camera"), dirs_exist_ok=True)
     data = os.path.join(app, "ai")
     os.makedirs(data, exist_ok=True)
@@ -110,8 +97,6 @@ def main():
         dist = os.path.abspath(sys.argv[sys.argv.index("--dist") + 1])
     subprocess.run([sys.executable, os.path.join(HERE, "make_icon.py")], check=True)
     if public and "--portable" in sys.argv:
-        # 2026-11-21 HD1-037：备用打法，Python 官方便携版 + 编译好的代码（见 make_portable.py）；发行版用的是下面的 PyInstaller
-        # 本体都在 app\\ 里，根目录只留 HellBox.exe、运行库、说明、runtime\\
         import make_portable
         target = os.path.join(dist, "HellBox")
         app = os.path.join(target, "app")
@@ -120,7 +105,7 @@ def main():
             shutil.rmtree(target)
         make_portable.build_runtime(target, app)
         copy_public_support(target, compiler_dir(), app)
-        if "--full" in sys.argv:  # 2026-11-19 用户要自用全数据版：数据页潜兵 / 武器 / 战备全部打开（data_blocks.FULL）
+        if "--full" in sys.argv:
             with open(os.path.join(app, "mod", "data_full"), "w", encoding="ascii") as f:
                 f.write("")
         make_portable.compile_app(target, app)
@@ -134,7 +119,7 @@ def main():
            "--add-data", f"{os.path.join(HERE, 'fonts')}{sep}fonts",
            "--add-data", f"{os.path.join(HERE, 'icon.png')}{sep}.",
            "--add-data", f"{os.path.join(HERE, 'icon.ico')}{sep}.",
-           "--add-data", f"{os.path.join(HERE, 'lang_en.json')}{sep}.",  # 英文版界面文字（i18n.py）
+           "--add-data", f"{os.path.join(HERE, 'lang_en.json')}{sep}.",
            "--paths", HERE,
            "--distpath", dist,
            "--workpath", os.path.join(WORK, "work"),
@@ -150,15 +135,13 @@ def main():
     exe = os.path.join(dist, "HellBox", "HellBox.exe")
     internal = os.path.join(dist, "HellBox", "_internal")
     prune(os.path.join(internal, "PySide6"))
-    # Qt links to the Windows ICU API. PyInstaller can pick up an incompatible
-    # ICU from another installed application on PATH.
     for name in os.listdir(internal):
         if name.casefold().startswith(("icuuc", "icudt", "icuin")) and name.lower().endswith(".dll"):
             os.remove(os.path.join(internal, name))
     if public:
         target = os.path.dirname(exe)
         copy_public_support(target, compiler_dir())
-        if "--full" in sys.argv:  # 2026-11-19 用户要自用全数据版：数据页潜兵 / 武器 / 战备全部打开（data_blocks.FULL）
+        if "--full" in sys.argv:
             with open(os.path.join(target, "mod", "data_full"), "w", encoding="ascii") as f:
                 f.write("")
         print(f"发行测试包：{target}" + ("（全数据版）" if "--full" in sys.argv else ""))
@@ -166,13 +149,8 @@ def main():
     if dist != DIST:
         print(f"测试版：{exe}（没改 bin 和快捷方式）")
         return
-    old = os.path.join(ROOT, "HellBox.exe")  # 以前的单文件版
-    if os.path.exists(old):
-        os.remove(old)
-    link = os.path.join(ROOT, "HellBox.lnk")
-    make_shortcut(exe, link)
     size = sum(os.path.getsize(os.path.join(d, f)) for d, _, fs in os.walk(os.path.dirname(exe)) for f in fs)
-    print(f"已生成 {exe}（整个文件夹 {size / 1e6:.1f} MB），快捷方式 {link}")
+    print(f"已生成 {exe}（整个文件夹 {size / 1e6:.1f} MB）")
 
 
 def prune(qt):
@@ -184,13 +162,6 @@ def prune(qt):
         elif os.path.isfile(p):
             os.remove(p)
 
-
-def make_shortcut(target, link):
-    ps = (f"$s = (New-Object -ComObject WScript.Shell).CreateShortcut('{link}'); "
-          f"$s.TargetPath = '{target}'; $s.WorkingDirectory = '{os.path.dirname(target)}'; "
-          f"$s.IconLocation = '{target},0'; $s.Description = 'HellBox'; $s.Save()")
-    subprocess.run(["powershell", "-NoProfile", "-Command", ps], check=True,
-                   creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 if __name__ == "__main__":
