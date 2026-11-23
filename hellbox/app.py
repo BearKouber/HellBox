@@ -580,6 +580,14 @@ def main():
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("HellBox.HD1")
         except (AttributeError, OSError):
             pass
+        if "--check-ui" not in sys.argv:
+            # 游戏以管理员（High）开着时，Medium 的 HellBox 连它的写句柄都打不开（热改名会失败），
+            # 所以默认以管理员身份运行；判据是实测一次写句柄，不看 IsUserAnAdmin（关 UAC 时它会说谎）
+            try:
+                import elevate
+                elevate.ensure_admin()
+            except OSError as e:
+                logbook.warn("HellBox", T("没法以管理员身份启动：{0}", e))
     logbook.install()
     qapp = QApplication(sys.argv[:1])
     qapp.setWheelScrollLines(1)

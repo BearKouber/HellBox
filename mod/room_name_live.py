@@ -156,9 +156,9 @@ def _open(pid, write):
     access = PROCESS_VM_READ | PROCESS_QUERY_INFORMATION | (PROCESS_VM_WRITE | PROCESS_VM_OPERATION if write else 0)
     h = k32.OpenProcess(access, False, pid)
     if not h:
-        # ERROR_ACCESS_DENIED：HellBox 是 Medium（托盘/资源管理器启动）、游戏是 High（Steam 以管理员运行）时必然如此
-        if ctypes.get_last_error() == 5 and not write:
-            return pid, k32.OpenProcess(PROCESS_VM_READ | PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
+        # ERROR_ACCESS_DENIED：HellBox 是 Medium（托盘 / 资源管理器启动）、游戏是 High（Steam 以管理员运行）。
+        # 实测：MEDIUM 令牌连 PROCESS_VM_WRITE 的句柄都打不开（连 PROCESS_VM_OPERATION 也拒绝），
+        # 所以没有"降级读一读"这一步 —— 直接交给中等级别的 helper（见 hellbox/pages/room_helper.py）。
         raise _Helper(5, "打不开游戏进程")
     return pid, h
 

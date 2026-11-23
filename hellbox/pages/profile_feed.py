@@ -51,11 +51,10 @@ def send(cmd):
     before = read()
     if not before["ok"]:
         raise RuntimeError(before["why"] or "现在拿不到游戏状态。")
-    from pages import room_helper
     try:
         room_name_live.live_set(cmd, magic=room_name_live.MAGIC_PROFILE)
     except room_name_live._Helper:
-        room_helper.live_set(cmd, room_name_live.MAGIC_PROFILE)
+        raise RuntimeError("HellBox 的权限比游戏低（游戏是管理员启动的）。关掉 HellBox 用管理员身份重新打开。")
     end = time.monotonic() + 3
     while time.monotonic() < end:
         st = read()

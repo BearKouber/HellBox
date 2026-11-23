@@ -87,13 +87,13 @@ class NamesPage(Page):
 
     @staticmethod
     def _live_set(value, table):
-        """先自己写；HellBox 比游戏权限低（游戏由管理员启动）时找中级 helper 代写。"""
+        """写进游戏内存；HellBox 默认以管理员身份运行（见 hellbox/elevate.py），权限不够时给明确的提示。"""
         import room_name_live
-        from pages import room_helper
         try:
             room_name_live.live_set(value, magic=table)
         except room_name_live._Helper:
-            room_helper.live_set(value, table)
+            raise RuntimeError("HellBox 的权限比游戏低（游戏是管理员启动的）。"
+                               "关掉 HellBox 用管理员身份重新打开，或者关掉游戏再改，下次开游戏生效。")
 
     def _run(self, save, live_text, magic, live_hint):
         def action():

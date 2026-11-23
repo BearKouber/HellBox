@@ -70,10 +70,10 @@ def load():
 
 
 def save(changes):
+    # 直接写：先写 .tmp 再 os.replace 在游戏目录被保护 / 杀毒盯着时会 WinError 5（2026-11-23 用户日志里的那次）
     data = load() | changes
-    tmp = FILE.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    os.replace(tmp, FILE)
+    with open(FILE, "w", encoding="utf-8", newline="") as f:
+        f.write(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
 
 
 def lua_options(quote):
