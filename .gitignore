@@ -13,4 +13,5 @@ tools/luajit-2.0/
 
 # 个人设置（HellBox 运行时写在 mod 目录里）
 mod/*.txt
-mod/cursor_settings.json
+mod/*.json
+!mod/package.json
