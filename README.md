@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-HellBox is created by **07**. **Current version: 1.08.**
+HellBox is created by **07**. **Current version: 1.09.**
 
 A free, open-source (MIT) toolbox for **HELLDIVERS™ 1** on Steam / Windows: quality-of-life fixes, extra play modes, enemy and spawn tuning, and more — all switched on and off from one window.
 

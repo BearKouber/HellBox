@@ -25,7 +25,7 @@ def _fit(s, limit):
 class NamesPage(Page):
     key = "names"
     tab = "昵称"
-    when = "游戏运行时：几秒内生效；游戏未运行：下次启动游戏后生效"
+    when = "游戏运行时可修改"
 
     def build(self):
         lim = build.PLAYER_NAME_BYTES

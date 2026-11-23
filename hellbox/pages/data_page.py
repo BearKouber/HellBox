@@ -506,7 +506,7 @@ class DataPage(Page):
         except ValueError:
             seq = -1
         if seq != self.data["seq"]:
-            self.set_when(tr("等游戏读取…（一直等不到：可能在加载，或游戏里是旧版 MOD，关游戏后关开一次「核心」）"), ui.YELLOW)
+            self.set_when(tr("等游戏读取…"), ui.YELLOW)
             return
         where = tr(WHERE_ZH.get(ack.get("where"), ack.get("where") or ""))
         race = tr(RACE_ZH.get(ack.get("race"), ""))

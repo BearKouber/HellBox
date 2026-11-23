@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-HellBox 作者：**07**。**当前版本：1.08。**
+HellBox 作者：**07**。**当前版本：1.09。**
 
 **HELLDIVERS™ 1**（Steam / Windows）的免费开源（MIT）MOD 工具箱：功能修正、额外玩法、怪物与出怪调整等，都在一个窗口里开关。
 

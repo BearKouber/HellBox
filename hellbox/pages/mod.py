@@ -82,23 +82,23 @@ class ModPage(Page):
         mission = ui.Card(self.view, "MISSION", "任务中", fill=ui.SALMON)
         self.carry_on = ui.Var(build.get_carry_vehicle())
         self.carry_toggle = self._ctl(ui.Toggle(None, self.carry_on, command=self.apply_carry))
-        self._row(mission, "带箱子上车", "搬箱子时对着载具按 E，能带着箱子上车。下车后箱子会卡在手上，到传送带前可交互放下。当客机时：房主也装了 HellBox（或开着分屏）才生效。",
+        self._row(mission, "带箱子上车", "搬箱子时对着载具按 E，能带着箱子上车。下车后箱子会卡在手上，到传送带前可交互放下。",
                   toggle=self.carry_toggle)
         self.drop_key = ui.Var(cfg["drop_key"] if cfg["drop_key"] in options.DROP_KEYS else "x")
         self.seg_drop = self._ctl(ui.Segmented(None, DROP_KEYS, self.drop_key, command=self.set_drop_key,
                                                font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(mission, "丢支援装备", "丢下支援武器或背包：键盘按右边选的键，手柄按住交互键（A）0.6 秒。丢下的东西队友也能捡。当客机时：房主也装了 HellBox（或开着分屏）才生效。",
+        self._row(mission, "丢支援装备", "丢下支援武器或背包：键盘按右边选的键，手柄按住交互键（A）0.6 秒。丢下的东西队友也能捡。",
                   extras=(self.seg_drop,), flag="drop")
         self.drop_first = ui.Var(cfg["drop_first"] if cfg["drop_first"] in options.DROP_FIRST else "")
         self.seg_drop_first = self._ctl(ui.Segmented(None, DROP_FIRST, self.drop_first, command=self.set_drop_first,
                                                      font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(mission, "先丢哪个", "看手上：拿着支援武器就丢武器，不然丢背包；先丢武器 / 先丢背包：有就先丢它。",
+        self._row(mission, "先丢哪个", "看手上：优先丢手持装备。",
                   extras=(self.seg_drop_first,))
         self.supply_key = ui.Var(cfg["supply_key"] if cfg["supply_key"] in options.SUPPLY_KEYS else "5")
         self.seg_supply = self._ctl(ui.Segmented(None, SUPPLY_KEYS, self.supply_key, command=self.set_supply_key,
                                                  font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
         self._row(mission, "补给背包自己用", "背着补给背包时随时给自己补一次弹药，背包少一格。键盘按右边选的数字键，"
-                                       "手柄按住换弹键（RB）0.6 秒。当客机时：房主也装了 HellBox（或开着分屏）才生效。",
+                                       "手柄按住换弹键（RB）0.6 秒。",
                   extras=(self.seg_supply,), flag="supply", credit=LHGRZR)
         self._row(mission, "隐藏样本描边", "样本发光轮廓不显示。",
                   flag="hide_samples", credit=LHGRZR)
@@ -134,7 +134,7 @@ class ModPage(Page):
         self.speed = ui.Var(cfg["speed_factor"] if cfg["speed_factor"] in options.SPEEDS else 3)
         self.seg_speed = self._ctl(ui.Segmented(None, SPEED_OPTIONS, self.speed, command=self.set_speed,
                                                 font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(ship, "过场加速", "加速结算、进图、星球扫描等过场动画速度，跳过游戏片头",
+        self._row(ship, "过场加速", "加速结算、进图、星球扫描等过场动画速度，跳过游戏片头。",
                   extras=(self.seg_speed,), flag="speed", credit=QOL_BASED)
         # 2026-11-22 用户定：解锁其他战线发布版也有（以前只有自用版）
         mode = build.get_front_mode()
@@ -152,7 +152,7 @@ class ModPage(Page):
         self.cf_on = ui.Var(build.get_commend_friends())
         self.cf_toggle = self._ctl(ui.Toggle(None, self.cf_on, command=self.apply_commend))
         self.cf_left = ui.Label("", font=ui.f_zh(9), fg=ui.MUTED)
-        self._row(coop, "给好友点赞", "游戏里右键 Steam 好友也能点赞。每周 10 次",
+        self._row(coop, "给好友点赞", "游戏里右键 Steam 好友也能点赞。每周 10 次。",
                   note=self.cf_left, toggle=self.cf_toggle)
         self._dh_row(coop, "好友列表自动刷新", "多人界面切到「好友」马上刷新一次。", "dh_friends", OCT)
         self.view.row(coop)

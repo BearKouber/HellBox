@@ -30,7 +30,7 @@ except ImportError:
 POLL_MS = 1000
 COLS = 4
 
-TAG_TEXT = {"team": "全队", "self": "装了就有", None: "只有试炼场"}
+TAG_TEXT = {"team": "共享", "self": "客机需装", None: "只有试炼场"}
 
 
 def two_lines(text, font, width):
@@ -138,7 +138,7 @@ def grid(cells):
 class PlayPage(Page):
     key = "play"
     tab = "玩法"
-    when = "HellBox 版：游戏运行时可修改，下一关生效；试炼场：设置好后在飞船上照常出发"
+    when = "游戏运行时可修改"
 
     def build(self):
         self.cfg = pm.load()
@@ -165,7 +165,7 @@ class PlayPage(Page):
         self.seg_follow = ui.Segmented(None, [("1", "跟随房主"), ("0", "照原版")], self.follow_var, command=self._follow_picked,
                                        font=ui.f_zh(9, True), padx=9, pady=2, shadow=2)
         self.follow_row = top.row("进别人房间时", self.seg_follow,
-                                  help="当客机时：跟随房主 = 武装配置、换弹惊喜、修正参数、鬼城都照房主的（你这页的设置回自己房间才用）；"
+                                  help="跟随房主 = 武装配置、换弹惊喜、修正参数、鬼城都照房主的（你这页的设置回自己房间才用）。"
                                        "照原版 = 这些都不开，不用退房。出怪、怪物属性、随机掉落、电磁干扰由房主那边做，开不开都有。")
         self.view_note = top.add(ui.text(top.body, "", muted=True, size=9), top=8)
         self.view.row(top)
