@@ -47,11 +47,21 @@ def _copy_internal():
 
 
 def needs_admin():
-    """游戏开着、又打不开它的写句柄 -> 需要提权。游戏没开就不需要。"""
+    """游戏开着、又打不开它的写句柄 -> 需要提权。游戏没开就不需要。
+
+    注意：打包后 room_name_live 被 --exclude-module 排在 exe 外，只存在于 <ROOT>/mod，
+    而 main() 此刻还没跑 paths.setup()，sys.path 里没有 mod —— 所以这里自己补一次。
+    """
     try:
         import room_name_live
     except ImportError:
-        return False
+        import paths
+        if paths.MOD not in sys.path:
+            sys.path.insert(0, paths.MOD)
+        try:
+            import room_name_live
+        except ImportError:
+            return False
     try:
         pid = room_name_live.find_pid()
         if not pid:
@@ -113,5 +123,9 @@ def ensure_admin():
         return
     if relaunch(sys.argv[1:]):
         sys.exit(0)
-    import logbook
-    logbook.warn("HellBox", "没有以管理员身份运行：游戏开着时热改名字 / 角色设置会失败。")
+    # logbook.install() 还没跑，这里只往文件里记一笔，不弹窗
+    try:
+        import logbook
+        logbook.warn("HellBox", "没有以管理员身份运行：游戏开着时热改名字 / 角色设置会失败。")
+    except OSError:
+        pass
