@@ -51,7 +51,11 @@ def send(cmd):
     before = read()
     if not before["ok"]:
         raise RuntimeError(before["why"] or "现在拿不到游戏状态。")
-    room_name_live.live_set(cmd, magic=room_name_live.MAGIC_PROFILE)
+    from pages import room_helper
+    try:
+        room_name_live.live_set(cmd, magic=room_name_live.MAGIC_PROFILE)
+    except room_name_live._Helper:
+        room_helper.live_set(cmd, room_name_live.MAGIC_PROFILE)
     end = time.monotonic() + 3
     while time.monotonic() < end:
         st = read()

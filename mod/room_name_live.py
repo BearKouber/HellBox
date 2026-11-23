@@ -42,6 +42,7 @@ PROCESS_VM_READ = 0x0010
 PROCESS_VM_WRITE = 0x0020
 PROCESS_VM_OPERATION = 0x0008
 PROCESS_QUERY_INFORMATION = 0x0400
+PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
 
 MEM_COMMIT = 0x1000
 PAGE_GUARD = 0x100
@@ -98,8 +99,8 @@ def _write(h, addr, values):
     ok = k32.WriteProcessMemory(h, addr, data, len(data), ctypes.byref(got))
     if not ok or got.value != len(data):
         err = ctypes.get_last_error()
-        if err in (5, 87, 299):  # ERROR_ACCESS_DENIED / 参数错 / 只读（游戏以自己的保护级别运行）
-            raise OSError(err, "写不进游戏内存：HellBox 的权限比游戏低。关掉游戏再点一次（关着的时候改，下次开游戏生效）。")
+        if err in (5, 299):  # ERROR_ACCESS_DENIED / ERROR_PARTIAL_COPY：权限比游戏低
+            raise _Helper(err, "写不进游戏内存")
         raise OSError(err, "写不进游戏内存")
 
 
@@ -144,6 +145,10 @@ def _table(h, pid, magic):
     return None, None
 
 
+class _Helper(OSError):
+    """权限不够、要靠 helper 代写：照普通报错往上抛，但 HellBox 收到会自己重试（见 pages/room_helper.py）。"""
+
+
 def _open(pid, write):
     pid = pid or find_pid()
     if not pid:
@@ -151,7 +156,10 @@ def _open(pid, write):
     access = PROCESS_VM_READ | PROCESS_QUERY_INFORMATION | (PROCESS_VM_WRITE | PROCESS_VM_OPERATION if write else 0)
     h = k32.OpenProcess(access, False, pid)
     if not h:
-        raise OSError(ctypes.get_last_error(), "打不开游戏进程")
+        # ERROR_ACCESS_DENIED：HellBox 是 Medium（托盘/资源管理器启动）、游戏是 High（Steam 以管理员运行）时必然如此
+        if ctypes.get_last_error() == 5 and not write:
+            return pid, k32.OpenProcess(PROCESS_VM_READ | PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
+        raise _Helper(5, "打不开游戏进程")
     return pid, h
 
 
@@ -197,7 +205,7 @@ def live_set(name, timeout=3.0, pid=None, magic=MAGIC):
     if not h:
         err = ctypes.get_last_error()
         if err == 5:
-            raise OSError(err, "打不开游戏进程：HellBox 的权限比游戏低。关掉游戏再点一次（关着的时候改，下次开游戏生效）。")
+            raise _Helper(err, "打不开游戏进程")
         raise OSError(err, "打不开游戏进程")
     try:
         addr, v = _table(h, pid, magic)
