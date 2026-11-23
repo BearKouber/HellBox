@@ -70,7 +70,7 @@ def start_in_game(cfg, drop_play_trial=None):
                 pass
     if result is None:
         raise RuntimeError("游戏无响应。可能游戏里还是旧版 MOD，或者正卡在加载。退出游戏后再点击「开始」也能进。")
-    extra = "（「玩法」页设的试验场下一局已取消。）" if dropped else ""
+    extra = "（「玩法」页设的试炼场下一局已取消。）" if dropped else ""
     if result == "armed":
         return ("已设为下一局：房间里有队友，照常走进出发舱出发就是这张图，队友无需安装 HellBox，大家照常获得经验。打完回飞船，原来的星球自动放回去；想换回原来的任务，在星图上选别的星球就行。" + extra)
     if result != "ok":

@@ -291,7 +291,7 @@ def set_commend_friends(on):
 
 
 # 2026-11-23 用户定（V1.06）：解锁战线三选一。front_unlock.txt 存："" 关 / "1" 普通星区 / "home" 进攻母星 /
-#   "se1"～"se3" 保卫超级地球（虫族 / 赛博人 / 光能族）。后两种也带普通解锁（被攻破、没出场的战线照样能进）。
+#   "se1"～"se3" 保卫超级地球（虫族 / 生化人 / 光能者）。后两种也带普通解锁（被攻破、没出场的战线照样能进）。
 FRONT_MODES = ("", "1", "home", "se1", "se2", "se3")
 
 
@@ -481,17 +481,12 @@ def read(path):
 
 
 def write(path, data):
-    """先写到旁边的临时文件再一步换上（2026-11-14）：写到一半 HellBox 被关 / 断电，原文件还是完整的。"""
-    tmp = path + ".hellbox-tmp"
-    try:
-        with open(tmp, "wb") as f:
-            f.write(data)
-            f.flush()
-            os.fsync(f.fileno())
-        os.replace(tmp, path)
-    finally:
-        if os.path.exists(tmp):
-            os.remove(tmp)
+    """2026-11-23：直接写。之前先写 .hellbox-tmp 再替换，但某些安全策略不让这个 exe 新建临时文件，
+    会报 Permission denied（hop.tmp / ghost-maps.txt.hbtmp）。"""
+    with open(path, "wb") as f:
+        f.write(data)
+        f.flush()
+        os.fsync(f.fileno())
 
 
 def safe_copy(src, dst, to_game=False):

@@ -190,10 +190,8 @@ def installed(contents, bundle):
 
 
 def _write(path, data):
-    tmp = path + ".hellbox-tmp"
-    with open(tmp, "wb") as f:
+    with open(path, "wb") as f:
         f.write(data)
-    os.replace(tmp, path)
 
 
 def put(contents, bundle, data, what, still_ok=lambda: True, extra=None):

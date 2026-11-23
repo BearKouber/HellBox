@@ -17,7 +17,7 @@
 -- 二、自定义（HellBox 版）：任何关卡都带，不改关卡本身。
 --   场上事件（红色轰炸 / 蓝色支援 / EMP）：房主这边用游戏自己的 ProvingGroundsModifiersManager 再开一份，每帧 update，
 --     落下来的东西是房主生成的，全队同步。原版每次只盯一个人（传进去的列表里最后一个）；这里每帧随机给一个活着的队友，
---     轮到谁炸谁。EMP 的那个球只在虫族、赛博人的资源包里（race_bugs / race_cyborgs），光能族关卡不开 EMP。
+--     轮到谁炸谁。EMP 的那个球只在虫族、生化人的资源包里（race_bugs / race_cyborgs），光能者关卡不开 EMP。
 --     真训练场关卡自己有一份，这里不再叠。
 --   装备规则：现在只接了「换弹随机换枪」（reload_surprise）：给自己控制的潜兵的 character 状态设 reload_surprise，
 --     换弹时游戏自己的那段（character_state_reload.lua 153 行）换枪。只对装了 HellBox 并开着的人有效。
@@ -29,7 +29,7 @@
 --     （SpatialSpawnUtlity.generate_points_in_donut，同原版）。落法同原版 spawn_stratagem：生一个 flare_01，带 stratagem_id、
 --     has_been_thrown。没有扔它的人（owner_unit = nil）。增援、求救信标不落（DROP_BAN）：增援要发复活消息带扔的人，
 --     求救信标会把房间改成公开。旧的 event=orbital_bombardments / orbital_support 当成掉全部打击类 / 支援类。
---   - EMP 照旧用游戏的 ProvingGroundsModifiersManager（只在虫族、赛博人关卡）。
+--   - EMP 照旧用游戏的 ProvingGroundsModifiersManager（只在虫族、生化人关卡）。
 --   - 装了才有的四个（打中回弹药、神射手、超级靴子、以牙还牙）：游戏的写法是 generated_level.provinggrounds_params.sub_modifier
 --     == 某个名字（只能等于一个），所以不去改关卡，而是在游戏判断它的那几个函数调用期间临时给 provinggrounds_params 一个
 --     { sub_modifier = 名字 }，调用完马上拿掉（只在本来没有 provinggrounds_params、也就是不是真训练场的时候）：
@@ -1159,7 +1159,7 @@ do
 	end
 
 	-- 这一关能不能用真鬼城配色：HellBox 装核心时换好的地图包写在 ghost-maps.txt（mod/ghost_maps.py，一行「包名=文件名=大小」）；
-	-- 这一关的地图包在里面、配色在 GHOST_SE 里、不改的教程 / 试验场包都没加载（同名配色先加载的那份算数）才行
+	-- 这一关的地图包在里面、配色在 GHOST_SE 里、不改的教程 / 试炼场包都没加载（同名配色先加载的那份算数）才行
 	local NO_GHOST_PKGS = { "resource_packages/tutorial", "env_provinggrounds/provinggrounds_bugs", "env_provinggrounds/provinggrounds_cyborgs",
 		"env_provinggrounds/provinggrounds_illuminates", "env_provinggrounds/provinggrounds_genocide_map_bugs",
 		"env_provinggrounds/provinggrounds_genocide_map_cyborgs", "env_provinggrounds/provinggrounds_genocide_map_illuminates" }
@@ -1371,10 +1371,10 @@ do
 				return orig(self, ...)
 			end
 
-			-- 天空 / 雾的配色名：真试验场鬼城用 "ghost_town"，但那一套原版只在试验场的配色（env_provinggrounds/）里有；
+			-- 天空 / 雾的配色名：真试炼场鬼城用 "ghost_town"，但那一套原版只在试炼场的配色（env_provinggrounds/）里有；
 			-- 普通关卡的配色（env_desert/、env_forest/……）没有，设了引擎找不到直接闪退（2026-11-18 V0.98 实测）。
 			-- 现在装核心时把 45 个地图包里的普通配色换成带 ghost_town 的（mod/ghost_maps.py、tools/ghost_shading.py）；
-			-- 这一关对不上（包没换好、配色不在名单、教程 / 试验场包开着）就退回 "night"，不冒闪退的险。
+			-- 这一关对不上（包没换好、配色不在名单、教程 / 试炼场包开着）就退回 "night"，不冒闪退的险。
 			local env = type(self.environment) == "table" and self.environment.path
 			local se_name = type(env) == "string" and type(self.shading_environment) == "string" and (env .. self.shading_environment)
 			local ok_real, real = pcall(real_ghost_ok, self, se_name)
