@@ -111,9 +111,8 @@ def live_text(carry=True):
 
 
 def write_live(carry=True):
-    """写游戏每秒读的开关文件（先写临时文件再换名）。"""
+    """写游戏每秒读的开关文件。直接覆盖写，不走"临时文件再换名"（游戏目录被保护 / 杀毒盯着时 os.replace 会 WinError 5）。"""
     LIVE.parent.mkdir(parents=True, exist_ok=True)
-    tmp = LIVE.with_suffix(".tmp")
-    tmp.write_text(live_text(carry), encoding="utf-8")
-    os.replace(tmp, LIVE)
+    with open(LIVE, "w", encoding="utf-8", newline="") as f:
+        f.write(live_text(carry))
     return LIVE
