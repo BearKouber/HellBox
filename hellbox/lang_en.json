@@ -3638,5 +3638,8 @@
 "在选择星球界面刷新星球": "Refresh planets on the planet-select screen",
 "提供任意战线选择": "Lets you choose any front",
 "原版冲刺中换弹会锁着方向往前冲一段。启用后换弹时松开摇杆 / 方向键就停。": "Vanilla keeps you sprinting forward while reloading. With this on, release the stick / movement keys while reloading to stop.",
-"启用后修复原版中文输入法可能导致游戏闪退的bug": "Fixes a crash caused by the vanilla Chinese IME once enabled"
+"启用后修复原版中文输入法可能导致游戏闪退的bug": "Fixes a crash caused by the vanilla Chinese IME once enabled",
+"存档": "Saves",
+"确认": "Confirm",
+"点此选择地形（需游戏运行中）": "Click here to choose terrain (the game must be running)"
 }

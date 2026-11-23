@@ -225,7 +225,7 @@ class QuickPage(Page):
 
     # ------------------------------------------------------------ 训练存档
     def _build_train(self):
-        card = ui.Card(self.view, "TRAIN", "开始", fill=ui.MINT)
+        card = ui.Card(self.view, "TRAIN", "存档", fill=ui.MINT)
         self.slots = slots.load()
         self.slot_sel = None
         grid_w = QWidget()
@@ -242,8 +242,6 @@ class QuickPage(Page):
         self.btn_slot_save = ui.Button(None, "存进选中的格子", self._slot_save, kind="accent", padx=10, pady=3)
         self.btn_slot_clear = ui.Button(None, "清空这一格", self._slot_clear, padx=10, pady=3)
         card.add(ui.line(self.btn_slot_save, 10, self.btn_slot_clear), top=12)
-        self.btn_start = ui.Button(None, "开始", self.start, kind="primary", padx=26, pady=6, font=ui.f_zh(11, True))
-        card.add(self.btn_start, top=14, align=ui.LEFT)
         self._paint_slots()
         return card
 
@@ -352,11 +350,13 @@ class QuickPage(Page):
         rl.setSpacing(6)
         self.map_thumb = map_picker.ClickMap(200, self._pick_terrain)
         rl.addSpacing(4)
-        self.map_hint = ui.text(None, tr("点击地图挑选地形（需游戏正在运行）"), muted=True, size=9)
+        self.map_hint = ui.text(None, tr("点此选择地形（需游戏运行中）"), bold=True, size=10)
         rl.addWidget(self.map_hint)
         rl.addStretch(1)
         w = _MapBody(left, _MapRight(self.map_thumb, text_col))
         card.add(w, top=4)
+        self.btn_start = ui.Button(None, "开始", self.start, kind="primary", padx=26, pady=6, font=ui.f_zh(11, True))
+        card.add(self.btn_start, top=12, align=ui.LEFT)
         self._map_requested = None
         self.app.after(1000, self._map_tick)
         return card
@@ -410,7 +410,7 @@ class QuickPage(Page):
         self._set_seed(ds.DEFAULT["seed"])
 
     def _refresh_map_text(self):
-        self.map_hint.config(text=ds.describe(self.cfg["seed"]) + "\n" + tr("点击地图挑选地形（需游戏正在运行）"))
+        self.map_hint.config(text=tr("点此选择地形（需游戏运行中）"))
         if hasattr(self, "map_thumb"):
             self.map_thumb.set_cells(mt.load(self.cfg["seed"]))
 
@@ -580,9 +580,6 @@ class QuickPage(Page):
         card.add(ui.text(card.body, "都不勾就只能手动点击「停止」。时间从有人出场算起。", muted=True, size=9), top=4)
 
         lay = self._line(card, None, 14)
-        self.btn_start = ui.Button(None, "开始", self.start, kind="primary", padx=26, pady=6, font=ui.f_zh(11, True))
-        lay.addWidget(self.btn_start, 0, VC)
-        lay.addSpacing(14)
         self.btn_stop = ui.Button(None, "停止", self.stop, kind="danger", padx=26, pady=6, font=ui.f_zh(11, True))
         lay.addWidget(self.btn_stop, 0, VC)
         self.start_hint = card.add(ui.text(card.body, "", muted=True, size=9), top=10)

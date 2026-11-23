@@ -21,7 +21,7 @@ HellBox 外观：复古方块风
 """
 import os
 
-from i18n import tr as _tr  # 英文版：控件显示文字时自动换成英文（i18n.py）
+from i18n import LANG, tr as _tr  # 英文版：控件显示文字时自动换成英文（i18n.py）
 from PySide6.QtCore import QObject, QPoint, QRect, Qt, QTimer, Signal
 from PySide6.QtGui import QColor, QFont, QFontDatabase, QFontMetrics, QPainter, QPalette, QPixmap
 from PySide6.QtWidgets import (QDialog, QHBoxLayout, QLabel, QLineEdit, QScrollArea, QScrollBar, QSizePolicy,
@@ -1205,7 +1205,10 @@ def show_hint(title, text):
     title = title() if callable(title) else title
     text = text() if callable(text) else text
     if _HINT["show"] and text:
-        _HINT["show"](_tr(title), _tr(text))
+        text = _tr(text).rstrip()
+        if text and text[-1] not in "。！？.!?":
+            text += "。" if LANG == "zh" else "."
+        _HINT["show"](_tr(title), text)
 
 
 def hide_hint():
@@ -1483,7 +1486,7 @@ class Footer(QWidget):
 
 class MessageDialog(QDialog):
 
-    TITLES = {"ask": "确认一下", "warn": "注意", "error": "没有完成", "info": "提示"}
+    TITLES = {"ask": "确认", "warn": "注意", "error": "没有完成", "info": "提示"}
     COLORS = {"ask": YELLOW, "warn": YELLOW, "error": SALMON, "info": SKY}
 
     def __init__(self, parent, text, kind="info", ok="确定", cancel=None, second=None):
