@@ -3641,5 +3641,6 @@
 "启用后修复原版中文输入法可能导致游戏闪退的bug": "Fixes a crash caused by the vanilla Chinese IME once enabled",
 "存档": "Saves",
 "确认": "Confirm",
-"点此选择地形（需游戏运行中）": "Click here to choose terrain (the game must be running)"
+"点此选择地形（需游戏运行中）": "Click here to choose terrain (the game must be running)",
+"地形选择": "Choose terrain"
 }
