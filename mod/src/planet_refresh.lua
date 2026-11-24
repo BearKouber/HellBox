@@ -23,6 +23,33 @@ do
 
 	PlanetRefreshMod = G
 
+	-- 2026-11-23 用户报：英文模式下确认框里的中文全变成「???」——对话框用的是游戏的字体，英文模式没有中文字形。
+	-- 判断游戏语言照 hellbox_room_filter.lua 的老办法：拿一个一定存在的语言键，看返回的是不是中文（UTF-8 汉字的头字节 0xE4-0xE9）；
+	-- 拿不到就当中文（中文用户居多，宁可按中文写）。
+	local function is_zh_ui()
+		local lm = rawget(_G, "LocalizationManager")
+
+		if type(lm) ~= "table" or type(lm.string) ~= "function" then
+			return true
+		end
+
+		local ok, sample = pcall(lm.string, lm, "filter_hide_full_games")
+
+		if not ok or type(sample) ~= "string" or sample == "" or sample == "filter_hide_full_games" then
+			return true
+		end
+
+		return sample:find("[\228-\233]") ~= nil
+	end
+
+	local function dlg(zh, en)
+		if is_zh_ui() then
+			return zh
+		end
+
+		return en
+	end
+
 	if not G.t or G.t[5] ~= VERSION or #G.t < N then
 		local t = {}
 
@@ -190,7 +217,8 @@ do
 		screen.confirmation_dialog:on_enter({
 			background_alpha = 0.9,
 			selected_option = 2,
-			confirmation_text = "刷新这个阵营的普通星球？这个阵营未完成的星球进度会清除，另外两个阵营不变。",
+			confirmation_text = dlg("刷新这个阵营的普通星球？这个阵营未完成的星球进度会清除，另外两个阵营不变。",
+				"Refresh this faction's regular planets? Unfinished progress for this faction is cleared; the other two factions are unchanged."),
 			callback_object = {on_dialog_confirmation = function(_, yes)
 				if yes then
 					G.pending = "key"
@@ -330,7 +358,8 @@ do
 		ms.confirmation_dialog:on_enter({
 			background_alpha = 0.9,
 			selected_option = 2,
-			confirmation_text = "重新生成这颗星球的任务？这颗星球的任务进度会清除。",
+			confirmation_text = dlg("重新生成这颗星球的任务？这颗星球的任务进度会清除。",
+				"Regenerate this planet's missions? Mission progress on this planet is cleared."),
 			callback_object = {on_dialog_confirmation = function(_, yes)
 				if yes then
 					G.reroll = ms
