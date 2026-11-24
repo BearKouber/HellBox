@@ -31,6 +31,7 @@ THANKS = [
     ("增强数据来源", "吃大份"),
     ("分屏", "HalfSugar"),
     ("输入法防闪退", "HalfSugar"),
+    ("经验倍率修改", "Oct0pu5"),
     ("QoL Mod", "SomeDoggo"),
     ("Dive Harder", "Oct0pu5"),
     ("文本", "Oct0pu5"),

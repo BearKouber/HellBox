@@ -835,7 +835,7 @@ class PlayPage(Page):
         "emp": "电磁脉冲轮着来：开 15 秒，关 40 秒。",
         "get_ammo_from_hits_double_reload_time": "弹匣容量减半（向上取整），每打中敌人一发，弹匣里补回一发子弹。",
         "marksman": "只有打中弱点才有伤害，打中弱点时伤害翻倍。",
-        "super_boots": "你的跑速加快 40%，但怪物打你的伤害翻倍。",
+        "super_boots": "自带心肺加速器（体力不消耗），但怪物打你的伤害 +50%。",
         "what_goes_around": "你打到队友：队友照样受伤，同样大小的伤害也会打回你自己身上。",
         "reload_surprise": "每次换弹，手里的枪随机换成另一把。",
         "sidearm_saber": "每次出生把手枪换成试炼场「只有近战」里的那把军刀。",

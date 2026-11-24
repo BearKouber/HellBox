@@ -52,7 +52,7 @@ MODIFIERS = [
     ("emp", "电磁干扰", "每55秒遭到15秒电磁干扰。", "team"),
     ("get_ammo_from_hits_double_reload_time", "命中补给", "打中敌人回子弹，但弹匣只有一半。", None),
     ("marksman", "精确打击", "只有打中弱点才有伤害，打中加倍。", None),
-    ("super_boots", "侦察兵", "跑得快 40%，挨怪打伤害翻倍。", None),
+    ("super_boots", "侦察兵", "自带心肺加速器，但受到伤害+50%。", None),
     ("what_goes_around", "以牙还牙", "你打到队友的伤害，同样打回你自己。", None),
     ("sidearm_saber", "军刀", "把副武器替换为军刀。", None),
 ]
@@ -63,12 +63,12 @@ CUSTOM_EVENTS = [
     ("emp", "电磁干扰", "每55秒遭到15秒电磁干扰。", "team"),
     ("get_ammo_from_hits_double_reload_time", "命中补给", "打中敌人回子弹，但弹匣只有一半。", "self"),
     ("marksman", "精确打击", "只有打中弱点才有伤害，打中加倍。", "self"),
-    ("super_boots", "侦察兵", "跑得快 40%，挨怪打伤害翻倍。", "self"),
+    ("super_boots", "侦察兵", "自带心肺加速器，但受到伤害+50%。", "self"),
     ("what_goes_around", "以牙还牙", "你打到队友的伤害，同样打回你自己。", "self"),
     ("sidearm_saber", "军刀", "把副武器替换为军刀。", "self"),
 ]
 CUSTOM_KEYS = [e[0] for e in CUSTOM_EVENTS]
-CONFLICTS = {"super_boots": "what_goes_around", "what_goes_around": "super_boots"}
+CONFLICTS = {}  # 2026-11-23：侦察兵改走 HellBox 自己的 boots_update，不再和以牙还牙抢 command_master，可以一起开
 
 # ---------------------------------------------------------------- HellBox 版的环境
 ENVS = [

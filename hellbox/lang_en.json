@@ -3697,5 +3697,10 @@
 "场上同时最多几只敌人（活的和没消失的尸体一起算）。16 是原版。最右边红格「破限」= 按每一波自动放开，最多 1000 只，几百只可能会卡。": "Max enemies on the field at once (living ones plus corpses not yet gone). 16 is vanilla. The red \"Uncapped\" cell on the far right raises it per wave, up to 1000; hundreds may lag.",
 "步兵战车放的兵、首领召唤的兵单独算：原版固定放某种怪，这里可以换成你勾选的。": "Troops from infantry carriers and boss summons are separate: vanilla always uses a fixed unit, here you can swap in the ones you tick.",
 "镜头不再框住全队，只跟着你。队友也装了 HellBox 并开了分屏，才能各自走开。当客机时：房主也装了 HellBox（或开着分屏）才生效，进没装 MOD 的房间不生效。": "The camera stops framing the whole squad and follows only you. Teammates need HellBox with split screen on to walk apart. As a guest it only works when the host also runs HellBox (or has split screen on); not in rooms without the mod.",
-"离开主屏幕的人周围单独刷一份怪，分开几个人就是几倍（测试中，太多可能卡）。只在你当房主时生效。": "Players who leave the main screen get their own spawns, so splitting up multiplies enemies (testing; too many may lag). Only when you are host."
+"离开主屏幕的人周围单独刷一份怪，分开几个人就是几倍（测试中，太多可能卡）。只在你当房主时生效。": "Players who leave the main screen get their own spawns, so splitting up multiplies enemies (testing; too many may lag). Only when you are host.",
+"自带心肺加速器，但受到伤害+50%。": "Comes with a cardiac accelerator (no stamina drain), but takes 50% more damage.",
+"自带心肺加速器（体力不消耗），但怪物打你的伤害 +50%。": "Comes with a cardiac accelerator (no stamina drain), but enemies deal 50% more damage.",
+"打开后，打一局拿到的经验只有原来的 1/10000，升级变慢一万倍；等级、研究点和其它功能照常。": "When on, a match grants only 1/10000 of the usual XP, so levelling takes 10000 times longer; level, research points and everything else work as usual.",
+"经验倍率": "XP rate",
+"经验倍率修改": "XP rate tweak"
 }

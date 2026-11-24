@@ -41,6 +41,7 @@ DEFAULT = {
     "ime_fix": True,  # 2026-11-19 聊天输入法防闪退（HalfSugar），修闪退的默认开
     # 2026-11-23 用户要回来：过场加速（借鉴 QoL Mod，照 V1.02 那版写；能和 QoL 一起装）
     "speed": False, "speed_factor": 3,
+    "xprate": False,  # 2026-11-23 经验倍率 1/10000（Oct0pu5）：打一局只拿 1/10000 经验，src/profile_tool.lua 的 user_set 钩子
 }
 
 

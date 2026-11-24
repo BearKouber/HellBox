@@ -71,6 +71,51 @@ do
 	local t = G.t
 	local timer = 0
 
+	-- 经验倍率 1/10000（2026-11-23 用户要，Oct0pu5）：勾上后打一局只拿 1/10000 经验。
+	-- 游戏把经验写回存档走 SaveManager:user_set("player_xp", 新值, 用户)；这里只缩"涨的那部分"：
+	-- 差值小于等于 0 的不动；HellBox 自己改等级（set_level）期间用 HellBoxXpSelf 放过。
+	local XP_RATE = 10000
+
+	local function install_xp_rate()
+		local sm = rawget(_G, "SaveManager")
+
+		if type(sm) ~= "table" or rawget(sm, "_hb_xp_rate") then
+			return
+		end
+
+		local orig = rawget(sm, "user_set")
+
+		if type(orig) ~= "function" then
+			return
+		end
+
+		sm.user_set = function(self, key, value, uid)
+			local cfg = rawget(_G, "HellBoxOptions")
+
+			if key == "player_xp" and type(value) == "number" and type(cfg) == "table"
+				and cfg.xprate == true and not rawget(_G, "HellBoxXpSelf") then
+				local ok, old = pcall(function()
+					return self:user_get(key, uid)
+				end)
+				old = ok and tonumber(old) or nil
+
+				if old then
+					local delta = value - old
+
+					if delta > 0 then
+						value = old + math.floor(delta / XP_RATE)
+					end
+				end
+			end
+
+			return orig(self, key, value, uid)
+		end
+
+		sm._hb_xp_rate = true
+	end
+
+	install_xp_rate()
+
 	local function main_pad()
 		return GameSettings.get_main_pad_number()
 	end
@@ -649,7 +694,15 @@ do
 		local uid = user_id()
 		local xp = r.required_xp
 
-		SaveManager:user_set("player_xp", xp, uid)
+		rawset(_G, "HellBoxXpSelf", true)
+
+		local ok_set, err_set = pcall(SaveManager.user_set, SaveManager, "player_xp", xp, uid)
+
+		rawset(_G, "HellBoxXpSelf", nil)
+
+		if not ok_set then
+			error(err_set, 0)
+		end
 
 		local p = my_player(current_state())
 

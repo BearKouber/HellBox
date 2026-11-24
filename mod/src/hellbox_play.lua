@@ -35,12 +35,12 @@
 --     { sub_modifier = 名字 }，调用完马上拿掉（只在本来没有 provinggrounds_params、也就是不是真训练场的时候）：
 --       神射手 marksman：FirearmComponent.reload_slave / remake_raycast、FlameweaponComponent.reload_slave、
 --         BeamweaponComponent.reload_slave
---       超级靴子 super_boots：CharacterComponent.update_masters（跑快 40%）、HealthComponent.command_master（挨怪打翻倍）
+--       超级靴子 super_boots（2026-11-23 用户改）：不再用游戏那套，改成 HellBox 自己在 boots_update 里做：
+--         自带心肺加速器（体力不消耗）+ 受到伤害 +50%
 --       以牙还牙 what_goes_around：HealthComponent.command_master、HealthComponent.filter_slave_command
 --       打中回弹药 get_ammo_from_hits_double_reload_time：游戏在 Firearm / Flameweapon 的 init 按关卡种子设
 --         get_ammo_from_hits_half_magazine；这里记下每个实例，开关时直接改这个标记。
---     超级靴子和以牙还牙都在 HealthComponent.command_master 里判断，一次只能装一个名字 → 两个不能一起开（HellBox 灰掉；
---     真一起开了这里按超级靴子）。
+--     以牙还牙在 HealthComponent.command_master / filter_slave_command 里判断（超级靴子改走 boots_update 以后，两边不再抢）。
 --   - 副武器换成军刀 sidearm_saber（2026-11-21 用户要，装了才有）：见 saber_update。游戏「只能近战」把军刀放主武器格；
 --     军刀自己的设置标着 sidearm = true、sword = true（倒地时游戏也认「手枪格里是刀」），模型和手枪在同一个包 mission_common，
 --     每关都在。办法和填弹惊喜换枪一样，给自己控制的潜兵发 inventory 的 set_weapon，只换手枪格（旧手枪没有掉落物，直接没了）。
@@ -1018,12 +1018,8 @@ do
 		return self_on("marksman") and "marksman" or nil
 	end
 
-	local function pick_boots()
-		return self_on("super_boots") and "super_boots" or nil
-	end
-
 	local function pick_health()
-		return self_on("super_boots") and "super_boots" or self_on("what_goes_around") and "what_goes_around" or nil
+		return self_on("what_goes_around") and "what_goes_around" or nil
 	end
 
 	local function pick_wga()
@@ -1123,6 +1119,65 @@ do
 		end
 	end
 
+	-- 侦察兵（super_boots，2026-11-23 用户改）：自带心肺加速器（体力不消耗），但受到伤害 +50%。
+	--   体力：每帧把 sprint_stamina 填回这一关见过的最大值（第一次看到的就是满体力）。
+	--   伤害：把 max_hitpoints 压到原来的 2/3 —— 同一份伤害打掉的比例正好变成 1.5 倍。
+	local function boots_update(state)
+		if not self_on("super_boots") then
+			return
+		end
+
+		local gl = state.generated_level
+
+		if type(gl) == "table" and gl.provinggrounds_params ~= nil then
+			return
+		end
+
+		for _, p in pairs(state.players or {}) do
+			local ok, unit = pcall(function()
+				return p.player_go and p.player_go:exists() and p.player_go:get("avatar_unit")
+			end)
+
+			if ok and unit and Unit.alive(unit) then
+				local st = EntityAux.state_master(unit, "character")
+
+				if st and type(st.sprint_stamina) == "number" then
+					local top = st.hellbox_sta_top
+
+					if type(top) ~= "number" or st.sprint_stamina > top then
+						top = st.sprint_stamina
+						st.hellbox_sta_top = top
+					end
+
+					if st.sprint_stamina < top then
+						st.sprint_stamina = top
+					end
+				end
+
+				local hs = EntityAux.state(unit, "health")
+
+				if hs and type(hs.max_hitpoints) == "number" and hs.max_hitpoints > 0 then
+					local base = hs.hellbox_hp_base
+
+					if type(base) ~= "number" or hs.max_hitpoints > base then
+						base = hs.max_hitpoints
+						hs.hellbox_hp_base = base
+					end
+
+					local want = math.max(1, math.floor(base * 2 / 3))
+
+					if hs.max_hitpoints ~= want then
+						hs.max_hitpoints = want
+
+						if type(hs.hitpoints) == "number" and hs.hitpoints > want then
+							hs.hitpoints = want
+						end
+					end
+				end
+			end
+		end
+	end
+
 	local function install_self_events()
 		local fa, fl, bw = rawget(_G, "FirearmComponent"), rawget(_G, "FlameweaponComponent"), rawget(_G, "BeamweaponComponent")
 		local ch, hc = rawget(_G, "CharacterComponent"), rawget(_G, "HealthComponent")
@@ -1131,7 +1186,6 @@ do
 		wrap(fa, "remake_raycast", pick_marksman, ctx_level)
 		wrap(fl, "reload_slave", pick_marksman, ctx_level)
 		wrap(bw, "reload_slave", pick_marksman, ctx_level)
-		wrap(ch, "update_masters", pick_boots, char_level)
 		wrap(hc, "command_master", pick_health, ctx_level)
 		wrap(hc, "filter_slave_command", pick_wga, ctx_level)
 		wrap_ammo_init(fa)
@@ -1521,6 +1575,7 @@ do
 		if name == "game" then
 			surprise_update(state)
 			pcall(saber_update, state)
+			pcall(boots_update, state)
 
 			local running = {}
 

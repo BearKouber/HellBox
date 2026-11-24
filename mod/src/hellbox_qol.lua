@@ -13,7 +13,9 @@ do
     local BOOL_KEYS = {refresh = true, voice = true, drop = true, noslide = true,
                        dh_ping = true, dh_hidden = true, dh_friends = true, dh_qol_fix = true,  -- 2026-11-21 Dive Harder 四项（hellbox_dh.lua）
                        supply = true, hide_samples = true, ime_fix = true,
-                       speed = true}  -- 2026-11-23 过场加速回来（借鉴 QoL Mod）  -- 2026-11-19 补给热键 / 样本描边（Lhgrzr）、输入法防闪退（HalfSugar）
+                       speed = true,  -- 2026-11-23 过场加速回来（借鉴 QoL Mod）
+                       xprate = true}  -- 2026-11-23 经验倍率 1/10000（Oct0pu5）
+    -- 2026-11-19 补给热键 / 样本描边（Lhgrzr）、输入法防闪退（HalfSugar）
     local ACTION_OK = {reload = true, switch_weapon = true, [""] = true}
     local DROP_KEY_OK = {x = true, z = true, c = true, b = true, h = true, t = true}
     -- 补给热键可选的键：主键盘 4～9（原版键盘只用了 1～3；小键盘是另外的键名，不受影响）

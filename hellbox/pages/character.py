@@ -3,10 +3,12 @@
 """
 from PySide6.QtCore import Qt
 
+import hellbox_options as options
 import ui
 from pages import profile_feed
 from pages.base import Page
 from pages.edit_util import ParamList, small_button
+from pages.options_widgets import apply
 try:
     from i18n import T, tr
 except ImportError:
@@ -85,6 +87,11 @@ class CharacterPage(Page):
         self.btn_rp = small_button("应用", self.apply_rp, kind="accent")
         self.btn_max = small_button("加满", self.apply_max)
         self.rp_sub = ui.Label("", font=ui.f_zh(9), fg=ui.MUTED)
+        self.xprate = ui.Var(bool(options.load().get("xprate")))
+        self.tg_xprate = ui.Toggle(None, self.xprate, command=self.set_xprate)
+        me.row("经验倍率", self.tg_xprate,
+               help="打开后，打一局拿到的经验只有原来的 1/10000，升级变慢一万倍；等级、研究点和其它功能照常。",
+               name_w=90)
         me.row("研究点", box, 10, self.btn_rp, 8, self.btn_max, sub=self.rp_sub,
                help="军械库里升级用的点数（10 个样本 = 1 点）。修改时不要开着军械库：退出军械库时会把旧数写回去。")
 
@@ -246,6 +253,9 @@ class CharacterPage(Page):
             self.app.warn(T("等级要在 1 到 {0} 之间。", top))
             return
         self._send(f"level={n}")
+
+    def set_xprate(self):
+        apply(self.app, {"xprate": bool(self.xprate.get())})
 
     def apply_rp(self):
         try:
