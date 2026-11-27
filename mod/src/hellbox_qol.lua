@@ -13,7 +13,11 @@ do
     local BOOL_KEYS = {refresh = true, voice = true, drop = true, noslide = true,
                        dh_ping = true, dh_hidden = true, dh_friends = true, dh_qol_fix = true,  -- 2026-11-21 Dive Harder 四项（hellbox_dh.lua）
                        supply = true, hide_samples = true, ime_fix = true,
-                       speed = true}  -- 2026-11-23 过场加速回来（借鉴 QoL Mod）  -- 2026-11-19 补给热键 / 样本描边（Lhgrzr）、输入法防闪退（HalfSugar）
+                       speed = true,  -- 2026-11-23 过场加速回来（借鉴 QoL Mod）
+                       strat_nostep = true,  -- 2026-11-26 战备输入优化
+                       spawn_inside = true,  -- 2026-11-26 出生地优化（刷怪和复活不出图）
+                       xp_freeze = true}  -- 2026-11-25 经验冻结（profile_tool.lua）
+    -- 2026-11-19 补给热键 / 样本描边（Lhgrzr）、输入法防闪退（HalfSugar）
     local ACTION_OK = {reload = true, switch_weapon = true, [""] = true}
     local DROP_KEY_OK = {x = true, z = true, c = true, b = true, h = true, t = true}
     -- 补给热键可选的键：主键盘 4～9（原版键盘只用了 1～3；小键盘是另外的键名，不受影响）
@@ -163,7 +167,7 @@ do
 
     -- 2026-11-13：没有「QoL 增强」总开关了，MOD 装着就按各自的开关
     -- 2026-11-23 V1.07 联机限制：这两项当客机时只在有 MOD 的房间生效（hellbox_room_gate.lua）
-    local GATED = {drop = true, supply = true}
+    local GATED = {drop = true, supply = true, spawn_inside = true}  -- 2026-11-26 出生地优化也一样
     local function enabled(key)
         if GATED[key] and cfg[key] then
             local gate = rawget(_G, "HellBoxRoomGate")
@@ -801,6 +805,262 @@ do
                     end)
                 end
                 return original(unit, data, new_state, sm)
+            end)
+        end
+
+        -- 2026-11-26 战备输入优化（用户要：「每次按战备输入指令，在最后一下操作之后比如是右，则会朝右走一下……希望这个可以关闭，
+        --   就跟游戏里面的输入任务指令一样，输入到最后一个之后不会再触发一次走动，而是需要重新按」，默认关 = 原版）。
+        -- 原因：键盘的战备方向和走路是同一组 W/A/S/D（controller_settings.lua）。输完最后一下，CharacterStateStratagems 马上换成
+        --   CharacterStateStratagemsThrow（拿着信标能走），这时最后那个键还按着，就被当成走路走了一下。手柄战备在十字键上，没有这事。
+        -- 做法（照原版输任务指令 character_state_interact_objective.lua 的写法：键盘时 change_controls set_static move = 0）：
+        --   进战备输入就把走路定成 0（原版这时本来也不走）；没输完就退出（松开 Ctrl、倒地等）马上放开；输完了，
+        --   记下这时按着的方向键，那几个键先拦一小会儿（HOLD_SECS，到点就放开照走；中途松开也放开），
+        --   别的方向照常走（每帧把没被拦的方向算成 move 定进去），全松开就放开。
+        --   只动自己键盘控制的人；关掉开关时立刻放开。
+        do
+            local pending = setmetatable({}, {__mode = "k"}) -- unit -> {held = {方向 = true}, sent = "x,y"}
+            local DIRS = {up = "move_forward", down = "move_back", left = "move_left", right = "move_right"}
+            -- 2026-11-26 晚 用户：原版输任务指令最后一下按着不放，「不会立刻动而是等一下就开始动了」，
+            --   以前这里是不松开就一直锁着，不对。改成最多拦 HOLD_SECS 秒，到点照常走（原版任务那边是 aborted_timer 0.2 秒再切回待机）。
+            local HOLD_SECS = 0.2 -- 用户定：和原版任务一样 0.2 秒
+            local function keyboard_owned(unit, data)
+                local st = data.state
+                return st and st.input_state and st.input_state.pad_number == _G.KEYBOARD_MOUSE_PAD_NUMBER
+                    and EntityAux.owned(unit) and EntityAux.has_component(unit, "input")
+            end
+            local function set_move(unit, x, y)
+                EntityAux.queue_command_master(unit, "input", "change_controls", {set_static = {move = {x, y, 0}}})
+            end
+            local function release(unit)
+                pending[unit] = nil
+                EntityAux.queue_command_master(unit, "input", "change_controls", {remove_static = {"move"}})
+            end
+            local function pressed(input, dir)
+                local v = input and input[DIRS[dir]]
+                return v == true or (type(v) == "number" and v > 0.5)
+            end
+            wrap("CharacterStateStratagems", "on_enter", function(original, unit, data, ...)
+                local res = {original(unit, data, ...)}
+                if enabled("strat_nostep") then
+                    pcall(function()
+                        if keyboard_owned(unit, data) then
+                            pending[unit] = {held = nil, sent = "0,0"}
+                            set_move(unit, 0, 0)
+                        end
+                    end)
+                end
+                return unpack(res)
+            end)
+            wrap("CharacterStateStratagems", "on_exit", function(original, unit, data, new_state, ...)
+                pcall(function()
+                    local p = pending[unit]
+                    if not p then return end
+                    if new_state ~= CharacterStateStratagemsThrow or not enabled("strat_nostep") then
+                        release(unit)
+                        return
+                    end
+                    local held, any = {}, false
+                    for dir in pairs(DIRS) do
+                        if pressed(data.state.input, dir) then held[dir], any = true, true end
+                    end
+                    if any then
+                        p.held = held
+                        p.until_t = Application.time_since_launch() + HOLD_SECS
+                    else
+                        release(unit)
+                    end
+                end)
+                return original(unit, data, new_state, ...)
+            end)
+            wrap("CharacterStateMachine", "update", function(original, unit, data, ...)
+                local p = pending[unit]
+                if p and p.held then
+                    pcall(function()
+                        if not enabled("strat_nostep") or not Unit.alive(unit)
+                            or Application.time_since_launch() >= (p.until_t or 0) then
+                            release(unit)
+                            return
+                        end
+                        local input = data.state.input
+                        local any = false
+                        for dir in pairs(p.held) do
+                            if pressed(input, dir) then any = true else p.held[dir] = nil end
+                        end
+                        if not any then
+                            release(unit)
+                            return
+                        end
+                        local function free(dir) return not p.held[dir] and pressed(input, dir) and 1 or 0 end
+                        local x, y = free("right") - free("left"), free("up") - free("down")
+                        local key = x .. "," .. y
+                        if key ~= p.sent then
+                            p.sent = key
+                            set_move(unit, x, y)
+                        end
+                    end)
+                end
+                return original(unit, data, ...)
+            end)
+        end
+
+        -- 2026-11-26 出生地优化（用户要：「圈外的不要吧,贴边的保留看看效果.然后这个因为原版也会出现,所以给加到功能里面吧」；
+        --   「复活也会复活到报复图外面一般报复图是一个包围圈…叫作出生地优化吧…跟刷怪在图里面一个控件」），
+        --   开关 spawn_inside，默认关 = 原版；当客机时只在有 MOD 的房间生效。
+        -- 原因：原版刷一捆怪 = 中心周围一圈点从天上往下射线，只要打到的是地面（高度 -0.2～1）就算合格，不看在不在图里
+        --   （spawn_manager.lua queue_group_spawn / get_spawn_points）；图外那圈平地、墙后面的平地也合格。复活 = 信标落点
+        --   或者死的地方随机挪 8 米（state_game.lua on_player_death / on_stratagem_pre_activated），也不看。
+        -- 做法（只去掉不合格的点，原版怎么摆点、什么时候刷、刷几只都不动）：
+        --   刷怪：点落在地图格子外面（collision_map 和 edge_map 都没有这一格），或者从这一捆原来的中心到这个点中间
+        --     隔着墙（水平射线 mover_blocker，原版 objective_fortify_object_component 判断隔没隔墙也这么射），这个点不要；
+        --     贴着墙但在墙这边的照留。点不够原版自己会挪中心再找（最多 10 次）。中心本身就在格子外时，拿离它最近的图里位置当参照。
+        --   复活：落点在格子外，先拉回最近的图里再往里推 5 米；再看从扔信标的人（自动复活 = 死的地方）到落点隔没隔墙、
+        --     或者离墙不到 5 米，是就拉到墙这边 5 米（11-26 晚从 1.5 米改大，贴边会卡墙）；
+        --     放人时原版再随机挪 1～5 米，挪过了墙或挪完离墙不到 2 米就不挪（报复关围墙）。
+        do
+            local stats = {groups = 0, dropped = 0, respawn = 0}
+            local WALL_GAP = 5 -- 复活落点离墙 / 图边至少留几米（2026-11-26 晚，原来 1.5 米贴边会卡墙）
+            HellBoxSpawnInside = stats
+            local function note(text)
+                if rawget(_G, "HellBoxLog") then HellBoxLog("spawn_inside", text) end
+            end
+            local function level()
+                local sm = rawget(_G, "Boot") and Boot.state_machine
+                local s = sm and sm:get_current_state_name() == "game" and sm:get_current_state()
+                local lv = type(s) == "table" and s.generated_level
+                return type(lv) == "table" and type(lv.collision_map) == "table" and lv or nil
+            end
+            local function no_tile(lv, x, y) -- 地图格子外面（generated_level.lua var_0_3 的格子编号）
+                local key = math.floor(x / 24) + 1000 + (math.floor(y / 24) + 1000) * 2000
+                return lv.collision_map[key] == nil and not (type(lv.edge_map) == "table" and lv.edge_map[key])
+            end
+            local function inward(lv, pos)
+                if lv and no_tile(lv, pos.x, pos.y) then
+                    local ok, q = pcall(lv.get_closest_position_on_level, lv, Vector3(pos.x, pos.y, 0))
+                    if ok and q then return Vector3(q.x, q.y, pos.z) end
+                end
+                return pos
+            end
+            -- from / to 同一高度；中间有墙就返回墙的位置和方向。打到的是人 / 怪（有血量）不算墙，从它后面接着射（最多 4 次）。
+            local function wall(pw, from, to)
+                local d = to - from
+                local len = Vector3.length(d)
+                if len < 0.5 then return nil end
+                local dir = Vector3.normalize(d)
+                for _ = 1, 4 do
+                    local hit, pos, _, _, actor = PhysicsWorld.immediate_raycast(pw, from, dir, len, "closest", "collision_filter", "mover_blocker")
+                    if not hit then return nil end
+                    local u = actor and Actor.unit(actor)
+                    if not (u and Unit.alive(u) and EntityAux.has_component(u, "health")) then return pos, dir end
+                    from = pos + dir * 0.5
+                    len = Vector3.length(to - from)
+                    if Vector3.length(to - pos) <= 0.5 then return nil end
+                end
+                return nil
+            end
+
+            wrap("SpawnManager", "queue_group_spawn", function(original, self, pos, ...)
+                local res = {original(self, pos, ...)}
+                pcall(function()
+                    local g = self.queued_groups and self.queued_groups[#self.queued_groups]
+                    if type(g) == "table" and not g._hb_ref and pos then
+                        local ref = inward(level(), Vector3(pos.x, pos.y, pos.z))
+                        g._hb_ref = {x = ref.x, y = ref.y}
+                        g._hb_checked = 0
+                    end
+                end)
+                return unpack(res)
+            end)
+            wrap("SpawnManager", "update", function(original, self, ...)
+                if enabled("spawn_inside") then
+                    local ok, err = pcall(function()
+                        local g = self.queued_groups and self.queued_groups[1]
+                        local pts = type(g) == "table" and g._hb_ref and g.spawn_points
+                        if type(pts) ~= "table" or #pts <= g._hb_checked then return end
+                        local lv, pw = level(), self.physics_world
+                        local removed = 0
+                        -- 只看新来的点；从后往前删，前面已经分给成员的点位置不变（原版第 i 只用第 i 个点）
+                        for i = #pts, g._hb_checked + 1, -1 do
+                            local p = pts[i]
+                            local bad = lv and no_tile(lv, p.x, p.y)
+                            if not bad and pw then
+                                local h = (tonumber(p.z) or 0) + 1.2
+                                bad = wall(pw, Vector3(g._hb_ref.x, g._hb_ref.y, h), Vector3(p.x, p.y, h)) ~= nil
+                            end
+                            if bad then
+                                table.remove(pts, i)
+                                removed = removed + 1
+                            end
+                        end
+                        g._hb_checked = #pts
+                        if removed > 0 then
+                            if not g._hb_noted then stats.groups = stats.groups + 1 end
+                            g._hb_noted = true
+                            stats.dropped = stats.dropped + removed
+                            note(string.format("group: dropped %d outside points (total %d in %d groups)", removed, stats.dropped, stats.groups))
+                        end
+                    end)
+                    if not ok then note(tostring(err)) end
+                end
+                return original(self, ...)
+            end)
+            wrap("StateGame", "rpc_on_respawn", function(original, self, sender, pos, owner, ...)
+                if enabled("spawn_inside") and pos then
+                    local ok, err = pcall(function()
+                        local lv = level()
+                        local q = inward(lv, pos)
+                        -- 2026-11-26 晚 用户：「落地不能是边界还是需要有一段距离」。拉回图里的点是格子边上，再往里推 WALL_GAP 米
+                        local pulled = Vector3(q.x - pos.x, q.y - pos.y, 0)
+                        if Vector3.length(pulled) > 0.1 then
+                            local deeper = q + Vector3.normalize(pulled) * WALL_GAP
+                            if lv and not no_tile(lv, deeper.x, deeper.y) then q = Vector3(deeper.x, deeper.y, q.z) end
+                        end
+                        local wp = WorldManager:get_world_proxy("game_world") -- 和 spawn_manager.lua init 一样取
+                        local pw = wp and wp:get_physics_world()
+                        if pw and owner and Unit.alive(owner) then
+                            local o = Unit.world_position(owner, 0)
+                            local h = math.max(o.z, q.z) + 1.2
+                            -- 射线多射 WALL_GAP 米：隔着墙、或者落点离墙不到 WALL_GAP 米，都拉到墙这边 WALL_GAP 米（不超过扔信标的人身后）
+                            local flat = Vector3(q.x - o.x, q.y - o.y, 0)
+                            local far = Vector3.length(flat) > 0.1 and (q + Vector3.normalize(flat) * WALL_GAP) or q
+                            local hit, dir = wall(pw, Vector3(o.x, o.y, h), Vector3(far.x, far.y, h))
+                            if hit then
+                                local room = Vector3.length(Vector3(hit.x - o.x, hit.y - o.y, 0))
+                                local back = Vector3(hit.x, hit.y, o.z) - dir * math.min(WALL_GAP, math.max(room - 0.5, 0))
+                                q = Vector3(back.x, back.y, o.z)
+                            end
+                        end
+                        local moved = Vector3.length(Vector3(q.x - pos.x, q.y - pos.y, 0))
+                        if moved > 0.1 then
+                            stats.respawn = stats.respawn + 1
+                            note(string.format("respawn: pulled %.1f m back inside", moved))
+                            pos = q
+                        end
+                    end)
+                    if not ok then note(tostring(err)) end
+                end
+                return original(self, sender, pos, owner, ...)
+            end)
+            -- 原版真正放人时还会在复活点上随机挪 1～5 米（state_game.lua update 里 spawn_local_player 之前，按第几个人挪），
+            --   复活点贴着报复关的围墙时这一下可能挪到墙外：隔着墙就不挪，直接用复活点。
+            wrap("StateGame", "spawn_local_player", function(original, self, pos, ...)
+                if enabled("spawn_inside") and pos and self.respawn_position then
+                    local ok, err = pcall(function()
+                        local r = Vector3Aux.unbox(self.respawn_position)
+                        local wp = WorldManager:get_world_proxy("game_world")
+                        local pw = wp and wp:get_physics_world()
+                        local h = math.max(r.z, pos.z) + 1.2
+                        -- 挪完离墙不到 2 米也算（2026-11-26 晚：落地要和墙留距离）
+                        local flat = Vector3(pos.x - r.x, pos.y - r.y, 0)
+                        local far = Vector3.length(flat) > 0.1 and (pos + Vector3.normalize(flat) * 2) or pos
+                        if pw and wall(pw, Vector3(r.x, r.y, h), Vector3(far.x, far.y, h)) then
+                            stats.respawn = stats.respawn + 1
+                            note(string.format("respawn: offset crossed a wall, using the respawn point"))
+                            pos = Vector3(r.x, r.y, pos.z)
+                        end
+                    end)
+                    if not ok then note(tostring(err)) end
+                end
+                return original(self, pos, ...)
             end)
         end
 

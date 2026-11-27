@@ -1,12 +1,14 @@
 """
-潜兵页：修改等级、研究点、武器、战略配备和披风，只改自己（主手柄）的存档；游戏运行时热改，游戏里由 mod/src/profile_tool.lua 生效。
+潜兵页：修改等级、研究点、武器、战略配备和外观（披风、帽子、衣服），只改自己（主手柄）的存档；游戏运行时热改，游戏里由 mod/src/profile_tool.lua 生效。
 """
 from PySide6.QtCore import Qt
 
+import hellbox_options as options
 import ui
 from pages import profile_feed
 from pages.base import Page
 from pages.edit_util import ParamList, small_button
+from pages.options_widgets import apply
 try:
     from i18n import T, tr
 except ImportError:
@@ -20,14 +22,19 @@ POLL_MS = 1500
 MAX_LV = 50
 VC = Qt.AlignmentFlag.AlignVCenter
 UNLOCKABLE = ("lv", "rw", "free")
-EMPTY = {"ok": False, "why": "", "capes": [], "weapons": [], "strats": [], "mates": []}
+EMPTY = {"ok": False, "why": "", "capes": [], "helmets": [], "bodies": [], "weapons": [], "strats": [], "mates": []}
+# 外观三类（帽子、衣服 2026-11-26 加，和披风一样：付费 DLC 没买不能解锁，其他都能）：
+#   (状态里的清单, 当前穿着的键, 命令词, 全部解锁命令, 卡片标签, 标题, 颜色名)
+LOOKS = (("capes", "cape", "cape", "unlockcapes=all", "CAPE", "披风", "SALMON"),
+         ("helmets", "helmet", "helmet", "unlockhelmets=all", "HELMET", "帽子", "MINT"),
+         ("bodies", "body", "body", "unlockbodies=all", "ARMOR", "衣服", "YELLOW"))
 STRAT_KIND = {"supply": "补给", "defensive": "防御", "offensive": "进攻", "special": "特殊"}
 
 FREE_WHY = {
     "ENT015": "社区披风：官方发给社区贡献者的，从来没卖过，不是付费 DLC，所以可以直接解锁。",
-    "ENT016": "开发者披风：发给开发组成员的，从来没卖过，不是付费 DLC，所以可以直接解锁。",
+    "ENT016": "开发者专用：发给开发组成员的，从来没卖过，不是付费 DLC，所以可以直接解锁。",
 }
-PG_WHY = ("试验场披风：官方在「试验场」(Proving Grounds) 活动里发给排行榜第一名的奖励，游戏按 DLC 的方式发放，"
+PG_WHY = ("试炼场披风：官方在「试炼场」(Proving Grounds) 活动里发给排行榜第一名的奖励，游戏按 DLC 的方式发放，"
           "但不是付费 DLC。排行榜第一名常年被作弊占着，正常玩家几乎拿不到，所以可以直接解锁。")
 
 
@@ -35,7 +42,7 @@ def why(item):
     s, need = item["status"], item["need"]
     if s == "on":
         return tr({"default": "默认就有。", "lv": "升级解锁的。", "dlc": "DLC，已拥有。",
-                   "free": "社区 / 开发者 / 试验场的，已解锁。"}.get(need, "已解锁（奖励拿到的，或在这里解锁的）。"))
+                   "free": "社区 / 开发者 / 试炼场的，已解锁。"}.get(need, "已解锁（奖励拿到的，或在这里解锁的）。"))
     if s == "lv":
         return T("要 {0} 级。可以直接解锁，只是提前拿到，不影响别的。", need)
     if s == "rw":
@@ -85,6 +92,11 @@ class CharacterPage(Page):
         self.btn_rp = small_button("应用", self.apply_rp, kind="accent")
         self.btn_max = small_button("加满", self.apply_max)
         self.rp_sub = ui.Label("", font=ui.f_zh(9), fg=ui.MUTED)
+        self.xp_freeze = ui.Var(bool(options.load().get("xp_freeze")))
+        self.tg_xp_freeze = ui.Toggle(None, self.xp_freeze, command=self.set_xp_freeze)
+        me.row("经验冻结", self.tg_xp_freeze,
+               help="打开后，打完一局不加经验：等级不动，也不会因为升级多出研究点、解锁新装备。任务里捡的样本照常算。只影响自己。",
+               name_w=90)
         me.row("研究点", box, 10, self.btn_rp, 8, self.btn_max, sub=self.rp_sub,
                help="军械库里升级用的点数（10 个样本 = 1 点）。修改时不要开着军械库：退出军械库时会把旧数写回去。")
 
@@ -106,19 +118,24 @@ class CharacterPage(Page):
         self.s_body, self.s_lay = ui.vbox(spacing=0)
         self.s_card.add(self.s_body, top=4)
 
-        # ---------------- 披风
-        self.c_card = ui.Card(self.view, "CAPE", "披风", fill=ui.SALMON)
-        self.btn_all_c = small_button("解锁", lambda: self._send("unlockcapes=all"))
-        self.btn_all_c.can = False
-        self.c_card.head_lay.addSpacing(10)
-        self.c_card.head_lay.addWidget(self.btn_all_c, 0, VC)
-        self.c_body, self.c_lay = ui.vbox(spacing=0)
-        self.c_card.add(self.c_body, top=4)
+        # ---------------- 披风、帽子、衣服（同一套：能解锁 / 已解锁可穿上 / 付费 DLC 没买）
+        self.looks = []
+        for key, cur, cmd, all_cmd, tag, title, color in LOOKS:
+            card = ui.Card(self.view, tag, title, fill=getattr(ui, color))
+            btn = small_button("解锁", lambda c=all_cmd: self._send(c))
+            btn.can = False
+            card.head_lay.addSpacing(10)
+            card.head_lay.addWidget(btn, 0, VC)
+            body, lay = ui.vbox(spacing=0)
+            card.add(body, top=4)
+            self.looks.append({"key": key, "cur": cur, "cmd": cmd, "card": card, "btn": btn, "lay": lay,
+                               "color": getattr(ui, color)})
 
         self.view.row(me)
         self.view.row(self.w_card)
         self.view.row(self.s_card)
-        self.view.row(self.c_card)
+        for look in self.looks:
+            self.view.row(look["card"])
         self._show_empty()
         self.app.after(300, self._tick)
 
@@ -163,7 +180,9 @@ class CharacterPage(Page):
             self.rp_var.set(str(st["rp"] // per))
         if first:
             self.v_lv.set(str(max(1, st["lv"])))
-        sig = (st["cape"], tuple((c["index"], c["name"], c["status"], c["need"]) for c in st["capes"]),
+        sig = (tuple(st.get(look["cur"], 1) for look in self.looks),
+               tuple((look["key"], c["index"], c["name"], c["status"], c["need"])
+                     for look in self.looks for c in st.get(look["key"], [])),
                tuple((w["index"], w["name"], w["status"], w["need"]) for w in st["weapons"]),
                tuple((w["index"], w["name"], w["status"], w["need"]) for w in st.get("strats", [])))
         if sig != self.sig:
@@ -173,7 +192,7 @@ class CharacterPage(Page):
 
     # ------------------------------------------------------------ 清单
     def _show_empty(self):
-        for lay in (self.w_lay, self.s_lay, self.c_lay):
+        for lay in [self.w_lay, self.s_lay] + [look["lay"] for look in self.looks]:
             ui.clear_layout(lay)
             lab = ui.Label("需要游戏正在运行才能查看和解锁", font=ui.f_zh(10), fg=ui.MUTED)
             lab.setContentsMargins(4, 8, 4, 8)
@@ -183,7 +202,7 @@ class CharacterPage(Page):
     def _build_lists(self, st):
         self.empty_shown = False
         self.buttons = []
-        for lay in (self.w_lay, self.s_lay, self.c_lay):
+        for lay in [self.w_lay, self.s_lay] + [look["lay"] for look in self.looks]:
             ui.clear_layout(lay)
 
         self._unlock_list(self.w_lay, ui.YELLOW, st["weapons"], "unlockweapon")
@@ -192,23 +211,29 @@ class CharacterPage(Page):
         self._unlock_list(self.s_lay, ui.SKY, strats, "unlockstrat")
         self.btn_all_s.can = any(w["status"] in UNLOCKABLE for w in strats)
 
-        cl = ParamList(self.c_lay, ui.SALMON)
+        for look in self.looks:
+            self._look_list(look, st)
+
+    def _look_list(self, look, st):
+        cl = ParamList(look["lay"], look["color"])
+        items_all = st.get(look["key"], [])
+        cmd = look["cmd"]
         for title, keep in (("能直接解锁", UNLOCKABLE), ("已解锁", ("on", "tut")), ("付费 DLC，没买", ("dlc",))):
-            items = [c for c in st["capes"] if c["status"] in keep]
+            items = [c for c in items_all if c["status"] in keep]
             if not items:
                 continue
             cl.section(T("{0}（{1}）", tr(title), len(items)))
             for c in items:
                 if c["status"] in ("on", "tut"):
-                    worn = c["index"] == st["cape"]
-                    ctl = self._button("穿着" if worn else "穿上", lambda i=c["index"]: self._send(f"wearcape={i}"),
+                    worn = c["index"] == st.get(look["cur"], 1)
+                    ctl = self._button("穿着" if worn else "穿上", lambda i=c["index"]: self._send(f"wear{cmd}={i}"),
                                        not worn, kind="plain" if worn else "accent")
                 elif c["status"] == "dlc":
                     ctl = self._button("要购买", None, False)
                 else:
-                    ctl = self._button("解锁", lambda i=c["index"]: self._send(f"unlockcape={i}"), True)
+                    ctl = self._button("解锁", lambda i=c["index"]: self._send(f"unlock{cmd}={i}"), True)
                 cl.row(c["name"], ctl, short(c), help=why(c))
-        self.btn_all_c.can = any(c["status"] in UNLOCKABLE for c in st["capes"])
+        look["btn"].can = any(c["status"] in UNLOCKABLE for c in items_all)
 
     def _unlock_list(self, lay, color, items_all, cmd):
         pl = ParamList(lay, color)
@@ -247,6 +272,9 @@ class CharacterPage(Page):
             return
         self._send(f"level={n}")
 
+    def set_xp_freeze(self):
+        apply(self.app, {"xp_freeze": bool(self.xp_freeze.get())})
+
     def apply_rp(self):
         try:
             n = int(self.rp_var.get().strip())
@@ -269,7 +297,7 @@ class CharacterPage(Page):
         for b in (self.btn_rp, self.btn_max, self.btn_lv):
             b.set_enabled(live)
         self.lv_step.set_enabled(live)
-        for b in (self.btn_all_w, self.btn_all_s, self.btn_all_c):
+        for b in [self.btn_all_w, self.btn_all_s] + [look["btn"] for look in self.looks]:
             b.set_enabled(live and b.can)
         for b in self.buttons:
             b.set_enabled(live and b.can)

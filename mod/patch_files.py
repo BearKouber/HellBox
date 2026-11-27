@@ -20,6 +20,7 @@ import re
 import struct
 
 from bundle import compress, decompress
+import safe_write
 
 GAME_DIR = os.path.join(os.environ.get("APPDATA", os.path.expanduser("~")), "Arrowhead", "Helldivers", "hellbox")
 RECORD = os.path.join(GAME_DIR, "patches.json")
@@ -190,10 +191,7 @@ def installed(contents, bundle):
 
 
 def _write(path, data):
-    tmp = path + ".hellbox-tmp"
-    with open(tmp, "wb") as f:
-        f.write(data)
-    os.replace(tmp, path)
+    safe_write.write_bytes(path, data)
 
 
 def put(contents, bundle, data, what, still_ok=lambda: True, extra=None):

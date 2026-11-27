@@ -14,6 +14,7 @@ import hashlib
 import os
 import struct
 
+import safe_write
 from bundle import compress, decompress, murmur64a
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -107,10 +108,7 @@ def patch(data, ses):
 
 
 def _write(path, data):
-    tmp = path + ".hbtmp"
-    with open(tmp, "wb") as f:
-        f.write(data)
-    os.replace(tmp, path)
+    safe_write.write_bytes(path, data)
 
 
 def _is_vanilla_backup(bak, size, sha):

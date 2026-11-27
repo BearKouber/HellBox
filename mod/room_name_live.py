@@ -42,6 +42,7 @@ PROCESS_VM_READ = 0x0010
 PROCESS_VM_WRITE = 0x0020
 PROCESS_VM_OPERATION = 0x0008
 PROCESS_QUERY_INFORMATION = 0x0400
+PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
 
 MEM_COMMIT = 0x1000
 PAGE_GUARD = 0x100
@@ -65,7 +66,7 @@ k32.ReadProcessMemory.argtypes = [wintypes.HANDLE, ctypes.c_void_p, ctypes.c_voi
                                   ctypes.c_size_t, ctypes.POINTER(ctypes.c_size_t)]
 k32.CloseHandle.argtypes = [wintypes.HANDLE]
 k32.WriteProcessMemory.restype = ctypes.c_int
-k32.WriteProcessMemory.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_size_t,
+k32.WriteProcessMemory.argtypes = [wintypes.HANDLE, ctypes.c_void_p, ctypes.c_char_p, ctypes.c_size_t,
                                    ctypes.POINTER(ctypes.c_size_t)]
 
 _cache = {}  # (pid, 魔数) -> 表地址（同一次游戏里不用每次都扫一遍内存）
@@ -93,8 +94,12 @@ def _read(h, addr, n):
 def _write(h, addr, values):
     data = struct.pack(f"<{len(values)}d", *values)
     got = ctypes.c_size_t()
-    if not k32.WriteProcessMemory(h, addr, data, len(data), ctypes.byref(got)) or got.value != len(data):
-        raise OSError(ctypes.get_last_error(), "写不进游戏内存")
+    ok = k32.WriteProcessMemory(h, addr, data, len(data), ctypes.byref(got))
+    if not ok or got.value != len(data):
+        err = ctypes.get_last_error()
+        if err == ERROR_ACCESS_DENIED:
+            raise NeedAdmin(err, "写不进游戏内存")
+        raise OSError(err, "写不进游戏内存")
 
 
 def _scan(handle, magic):
@@ -138,6 +143,14 @@ def _table(h, pid, magic):
     return None, None
 
 
+ERROR_ACCESS_DENIED = 5
+
+
+class NeedAdmin(OSError):
+    """被拒绝（错误 5）：游戏是管理员身份运行的、HellBox 不是（2026-11-23 Oct0pu5 实测）。
+    界面收到它就提示以管理员身份重开 HellBox（见 hellbox/elevate.py）。"""
+
+
 def _open(pid, write):
     pid = pid or find_pid()
     if not pid:
@@ -145,7 +158,11 @@ def _open(pid, write):
     access = PROCESS_VM_READ | PROCESS_QUERY_INFORMATION | (PROCESS_VM_WRITE | PROCESS_VM_OPERATION if write else 0)
     h = k32.OpenProcess(access, False, pid)
     if not h:
-        raise OSError(ctypes.get_last_error(), "打不开游戏进程")
+        # 错误 5：HellBox 是普通权限、游戏是管理员身份（实测连只读句柄也会被拒）
+        err = ctypes.get_last_error()
+        if err == ERROR_ACCESS_DENIED:
+            raise NeedAdmin(err, "打不开游戏进程")
+        raise OSError(err, "打不开游戏进程")
     return pid, h
 
 
@@ -189,7 +206,10 @@ def live_set(name, timeout=3.0, pid=None, magic=MAGIC):
     h = k32.OpenProcess(PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_VM_OPERATION | PROCESS_QUERY_INFORMATION,
                         False, pid)
     if not h:
-        raise OSError(ctypes.get_last_error(), "打不开游戏进程")
+        err = ctypes.get_last_error()
+        if err == ERROR_ACCESS_DENIED:
+            raise NeedAdmin(err, "打不开游戏进程")
+        raise OSError(err, "打不开游戏进程")
     try:
         addr, v = _table(h, pid, magic)
         if addr is None:

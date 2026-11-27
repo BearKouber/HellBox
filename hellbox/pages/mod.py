@@ -35,7 +35,6 @@ REFRESH_KEYS = [(k, v) for k, v in options.ACTIONS.items() if k]
 DROP_KEYS = list(options.DROP_KEYS.items())
 DROP_FIRST = list(options.DROP_FIRST.items())
 SUPPLY_KEYS = list(options.SUPPLY_KEYS.items())
-PING_WINDOWS = [(n, f"{n} 次") for n in options.PING_WINDOWS]
 
 
 def _strike_value():
@@ -82,34 +81,28 @@ class ModPage(Page):
         mission = ui.Card(self.view, "MISSION", "任务中", fill=ui.SALMON)
         self.carry_on = ui.Var(build.get_carry_vehicle())
         self.carry_toggle = self._ctl(ui.Toggle(None, self.carry_on, command=self.apply_carry))
-        self._row(mission, "带箱子上车", "搬箱子时对着载具按 E，能带着箱子上车。下车后箱子会卡在手上，到传送带前可交互放下。当客机时：房主也装了 HellBox（或开着分屏）才生效。",
+        self._row(mission, "带箱子上车", "搬箱子时对着载具按 E，能带着箱子上车。下车后箱子会卡在手上，到传送带前可交互放下。",
                   toggle=self.carry_toggle)
         self.drop_key = ui.Var(cfg["drop_key"] if cfg["drop_key"] in options.DROP_KEYS else "x")
         self.seg_drop = self._ctl(ui.Segmented(None, DROP_KEYS, self.drop_key, command=self.set_drop_key,
                                                font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(mission, "丢支援装备", "丢下支援武器或背包：键盘按右边选的键，手柄按住交互键（A）0.6 秒。丢下的东西队友也能捡。当客机时：房主也装了 HellBox（或开着分屏）才生效。",
+        self._row(mission, "丢支援装备", "丢下支援武器或背包：键盘按右边选的键，手柄按住交互键（A）0.6 秒。丢下的东西队友也能捡。",
                   extras=(self.seg_drop,), flag="drop")
         self.drop_first = ui.Var(cfg["drop_first"] if cfg["drop_first"] in options.DROP_FIRST else "")
         self.seg_drop_first = self._ctl(ui.Segmented(None, DROP_FIRST, self.drop_first, command=self.set_drop_first,
                                                      font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(mission, "先丢哪个", "看手上：拿着支援武器就丢武器，不然丢背包；先丢武器 / 先丢背包：有就先丢它。",
+        self._row(mission, "先丢哪个", "看手上：优先丢手持装备。",
                   extras=(self.seg_drop_first,))
         self.supply_key = ui.Var(cfg["supply_key"] if cfg["supply_key"] in options.SUPPLY_KEYS else "5")
         self.seg_supply = self._ctl(ui.Segmented(None, SUPPLY_KEYS, self.supply_key, command=self.set_supply_key,
                                                  font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
         self._row(mission, "补给背包自己用", "背着补给背包时随时给自己补一次弹药，背包少一格。键盘按右边选的数字键，"
-                                       "手柄按住换弹键（RB）0.6 秒。当客机时：房主也装了 HellBox（或开着分屏）才生效。",
+                                       "手柄按住换弹键（RB）0.6 秒。",
                   extras=(self.seg_supply,), flag="supply", credit=LHGRZR)
-        self._row(mission, "隐藏样本描边", "样本发光轮廓不显示。",
-                  flag="hide_samples", credit=LHGRZR)
+        # 「隐藏样本描边」「HUD 显示延迟」2026-11-26 用户要求挪到「显示」页
         h = self.hop = HopRows(self)
         h.toggle(mission, "bolt_reload", "建构连续装填", "M2016 “建构” 按一下 R 就一发接一发换弹直到装满，"
                  "中途开枪就停。", credit=HALFSUGAR)
-        self.ping_window = ui.Var(cfg["ping_window"] if cfg["ping_window"] in options.PING_WINDOWS else 5)
-        self.seg_ping = self._ctl(ui.Segmented(None, PING_WINDOWS, self.ping_window, command=self.set_ping_window,
-                                               font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._dh_row(mission, "HUD 显示延迟", "在队友的状态卡片下标注延迟。",
-                     "dh_ping", OCT, extras=(self.seg_ping,))
         self._dh_row(mission, "自动定位任务位置", "黄色问号表示的未定位目标一开局就显示在地图上。当客机时：房主也装了 HellBox（或开着分屏）才生效。", "dh_hidden", OCT)
         mission.add(ui.text(mission.body, "带箱子上车、丢支援装备、补给背包自己用、自动定位任务位置、分屏：当客机时，"
                                           "只在房主也装了 HellBox（或开着分屏）的房间生效；自己当房主、单机、本机多人照常用。",
@@ -124,17 +117,17 @@ class ModPage(Page):
         self.btn_refresh = self._ctl(ui.Button(None, "全部刷新", self.refresh_now, font=ui.f_zh(9, True),
                                                padx=7, pady=2, shadow=2))
         self.key_hint = ui.Label("", font=ui.f_zh(9), fg=ui.BAD)
-        self._row(ship, "刷新星球", "在选择星球界面按选好的键换一批星球（要当房主，刷掉的星球没打完的进度会清掉）。「全部刷新」三个阵营一起刷。",
+        self._row(ship, "刷新星球", "在选择星球界面按选好的键换一批星球（要当房主，刷掉的星球没打完的进度会清掉）；光标在母星 / 超级地球这种事件星上时，只重抽这颗星的任务。「全部刷新」三个阵营一起刷，事件星也重抽。",
                   note=self.key_hint, extras=(self.seg_key, self.btn_refresh), flag="refresh")
         self.strike = ui.Var(_strike_value())
         self.seg_strike = self._ctl(ui.Segmented(None, STRIKE_OPTIONS, self.strike, command=self.set_strike,
                                                  font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(ship, "报复关数量", "每颗星球固定带几个报复关，只影响之后新出的星球。原版：难度 4 以上每颗 33% 带 1 个。",
+        self._row(ship, "报复关数量", "每颗星球固定带几个报复关（母星 / 超级地球这种事件星的 5 关也算，难度 3 那关不会是报复关）。只影响之后新出的星球，想马上生效就刷新星球。原版：难度 4 以上每颗 33% 带 1 个。",
                   extras=(self.seg_strike,))
         self.speed = ui.Var(cfg["speed_factor"] if cfg["speed_factor"] in options.SPEEDS else 3)
         self.seg_speed = self._ctl(ui.Segmented(None, SPEED_OPTIONS, self.speed, command=self.set_speed,
                                                 font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(ship, "过场加速", "加速结算、进图、星球扫描等过场动画速度，跳过游戏片头",
+        self._row(ship, "过场加速", "加速结算、进图、星球扫描等过场动画速度，跳过游戏片头。",
                   extras=(self.seg_speed,), flag="speed", credit=QOL_BASED)
         # 2026-11-22 用户定：解锁其他战线发布版也有（以前只有自用版）
         mode = build.get_front_mode()
@@ -144,7 +137,7 @@ class ModPage(Page):
                                                 font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
         self.seg_se = self._ctl(ui.Segmented(None, SE_RACES, self.se_race, command=self.set_front,
                                              font=ui.f_zh(9, True), padx=7, pady=2, shadow=2))
-        self._row(ship, "解锁其他战线", "未开放的战线也能选。进攻母星 / 保卫超级地球是本机任务，不算进银河战争。退出战役地图再进一次生效。",
+        self._row(ship, "解锁其他战线", "未开放的战线也能选，等级不够的难度也能打。进攻母星 / 保卫超级地球是本机任务，不算进银河战争。退出战役地图再进一次生效。",
                   extras=(self.seg_front, self.seg_se))
         self.view.row(ship)
 
@@ -152,14 +145,24 @@ class ModPage(Page):
         self.cf_on = ui.Var(build.get_commend_friends())
         self.cf_toggle = self._ctl(ui.Toggle(None, self.cf_on, command=self.apply_commend))
         self.cf_left = ui.Label("", font=ui.f_zh(9), fg=ui.MUTED)
-        self._row(coop, "给好友点赞", "游戏里右键 Steam 好友也能点赞。每周 10 次",
+        self._row(coop, "给好友点赞", "游戏里右键 Steam 好友也能点赞。每周 10 次。",
                   note=self.cf_left, toggle=self.cf_toggle)
+        # 2026-11-26 用户要：战备输入优化，默认关（原版）
+        self._row(coop, "战备输入优化", "键盘输完战备指令后，最后按的那个方向键不会再让潜兵走一步，要松开再按才走（和输任务指令一样）。"
+                                    "手柄的战备指令在十字键上，本来就没有这个问题。",
+                  flag="strat_nostep")
         self._dh_row(coop, "好友列表自动刷新", "多人界面切到「好友」马上刷新一次。", "dh_friends", OCT)
         self.view.row(coop)
 
         fix = ui.Card(self.view, "FIX", "Bug 修复", fill=ui.MINT)
         self._row(fix, "冲刺时换弹不往前滑", "原版冲刺中换弹会锁着方向往前冲一段。启用后换弹时松开摇杆 / 方向键就停。",
                   flag="noslide")
+        # 2026-11-26 用户要：出生地优化（刷怪和复活不出图，一个开关），默认关（原版）
+        # 2026-11-27 用户：说明去掉「贴着墙的照留」，写复活离墙 5 米（11-26 深夜改的 WALL_GAP）
+        self._row(fix, "出生地优化", "原版刷怪和复活都不看在不在地图里：怪偶尔刷到图外、卡进边上的墙里，复活偶尔落到地图外面（比如报复关围墙外）。"
+                                 "启用后刷怪不用图外和墙后面的位置；复活落点和墙、地图边至少隔 5 米，落到外面或太贴边就往里拉。"
+                                 "怎么刷、刷几只照原版。刷怪由房主决定；当客机时只在有 MOD 的房间管自己的复活。",
+                  flag="spawn_inside")
         self._row(fix, "聊天输入法防闪退", "修复原版用中文输入法在聊天框打字可能闪退的问题。",
                   flag="ime_fix", credit=HALFSUGAR)
         self._dh_row(fix, "配合 QoL 的两处修正", "只在游戏里装了 QoL Mod 时有用：结算、星球奖励界面的名字照 QoL「名字用聊天字体」的设置；"
@@ -208,9 +211,6 @@ class ModPage(Page):
 
     def set_supply_key(self, value):
         apply(self.app, {"supply_key": value})
-
-    def set_ping_window(self, value):
-        apply(self.app, {"ping_window": int(value)})
 
     def set_speed(self, value):
         apply(self.app, {"speed_factor": int(value)})
@@ -371,7 +371,6 @@ class ModPage(Page):
                 var.set(cfg[key])
         for var, val in ((self.carry_on, build.get_carry_vehicle()), (self.cf_on, build.get_commend_friends()),
                          (self.strike, _strike_value()),
-                         (self.ping_window, cfg["ping_window"] if cfg["ping_window"] in options.PING_WINDOWS else 5),
                          (self.speed, cfg["speed_factor"] if cfg["speed_factor"] in options.SPEEDS else 3)):
             if var.get() != val:
                 var.set(val)
@@ -407,7 +406,6 @@ class ModPage(Page):
             if note.text() != text:
                 note.config(text=text)
                 note.setVisible(bool(text))
-        self.seg_ping.set_enabled(live and cfg["dh_ping"] and not dh)
         self.seg_speed.set_enabled(live and cfg["speed"])
         if self.live_actions is None:
             hint = ""

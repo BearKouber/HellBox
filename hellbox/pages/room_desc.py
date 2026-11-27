@@ -32,7 +32,7 @@ OWN = {
 TAG_BOX, TAG_HEX = "HellBox", "Hex"
 ENEMY_FIELDS = os.path.join(paths.ROOT, "ai", "enemy_fields.json")
 GAME_FALLBACK = {
-    "pg": ("试验场", "Proving Grounds"),
+    "pg": ("试炼场", "Proving Grounds"),
     "ghost_town": ("鬼城", "Ghost Town"),
     "emp": ("电磁脉冲", "EMP"),
     "reload": ("填弹惊喜", "Reload Surprise"),

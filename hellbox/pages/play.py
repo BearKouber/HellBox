@@ -30,7 +30,7 @@ except ImportError:
 POLL_MS = 1000
 COLS = 4
 
-TAG_TEXT = {"team": "全队", "self": "装了才有", None: "只有试验场"}
+TAG_TEXT = {"team": "共享", "self": "客机需装", None: "只有试炼场"}
 
 
 def two_lines(text, font, width):
@@ -138,7 +138,7 @@ def grid(cells):
 class PlayPage(Page):
     key = "play"
     tab = "玩法"
-    when = "HellBox 版：游戏运行时可修改，下一关生效；试验场：设置好后在飞船上照常出发"
+    when = "游戏运行时可修改"
 
     def build(self):
         self.cfg = pm.load()
@@ -147,7 +147,7 @@ class PlayPage(Page):
 
         top = ui.Card(self.view, "MODE", "模式", fill=ui.YELLOW)
         self.view_var = ui.Var("custom")
-        self.seg_view = ui.Segmented(None, [("custom", "HellBox 版"), ("trial", "试验场")],
+        self.seg_view = ui.Segmented(None, [("custom", "HellBox 版"), ("trial", "试炼场")],
                                      self.view_var, command=self._switch, font=ui.f_zh(10, True), padx=12, pady=4, shadow=3)
         self.custom_on = ui.Var(self.cfg["custom"] == "1")
         self.custom_toggle = ui.Toggle(None, self.custom_on, command=self._custom_toggled)
@@ -165,7 +165,7 @@ class PlayPage(Page):
         self.seg_follow = ui.Segmented(None, [("1", "跟随房主"), ("0", "照原版")], self.follow_var, command=self._follow_picked,
                                        font=ui.f_zh(9, True), padx=9, pady=2, shadow=2)
         self.follow_row = top.row("进别人房间时", self.seg_follow,
-                                  help="当客机时：跟随房主 = 武装配置、换弹惊喜、修正参数、鬼城都照房主的（你这页的设置回自己房间才用）；"
+                                  help="跟随房主 = 武装配置、换弹惊喜、修正参数、鬼城都照房主的（你这页的设置回自己房间才用）。"
                                        "照原版 = 这些都不开，不用退房。出怪、怪物属性、随机掉落、电磁干扰由房主那边做，开不开都有。")
         self.view_note = top.add(ui.text(top.body, "", muted=True, size=9), top=8)
         self.view.row(top)
@@ -188,7 +188,7 @@ class PlayPage(Page):
         c2 = ui.Card(self.view, "EVENT", "修正参数", fill=ui.SKY)
         c2.add(grid(self.c_cond + self.c_mod))
         self._build_drop(c2)
-        self.c_env = [ModeCell(k, name, desc, self._pick_env, self._hint_env, big=True, show_desc=False)
+        self.c_env = [ModeCell(k, name, desc, self._pick_env, self._hint_env, big=True, show_desc=True)
                       for k, name, desc, _s in pm.ENVS]
         c3 = ui.Card(self.view, "ENV", "环境", fill=ui.MINT)
         c3.add(grid(self.c_env))
@@ -835,10 +835,10 @@ class PlayPage(Page):
         "emp": "电磁脉冲轮着来：开 15 秒，关 40 秒。",
         "get_ammo_from_hits_double_reload_time": "弹匣容量减半（向上取整），每打中敌人一发，弹匣里补回一发子弹。",
         "marksman": "只有打中弱点才有伤害，打中弱点时伤害翻倍。",
-        "super_boots": "你的跑速加快 40%，但怪物打你的伤害翻倍。",
+        "super_boots": "自带心肺加速器（体力不消耗），但怪物打你的伤害 +50%。",
         "what_goes_around": "你打到队友：队友照样受伤，同样大小的伤害也会打回你自己身上。",
         "reload_surprise": "每次换弹，手里的枪随机换成另一把。",
-        "sidearm_saber": "每次出生把手枪换成试验场「只能近战」里的那把军刀。",
+        "sidearm_saber": "每次出生把手枪换成试炼场「只有近战」里的那把军刀。",
     }
 
     def _hint_custom(self, cell):
@@ -857,8 +857,7 @@ class PlayPage(Page):
 
     def _hint_env(self, cell):
         if cell.key == "ghost_town":
-            return tr("深夜作战，只能用手电筒和无人机探照。") + "\n" + tr(
-                "只对安装了 HellBox 的玩家有效，房主说了算；没装的人看到正常光照，也能一起玩。")
+            return tr("只对安装了 HellBox 的玩家有效，房主说了算；没装的人看到正常光照，也能一起玩。")
         return ""
 
     def _pick_env(self, key):
@@ -901,20 +900,18 @@ class PlayPage(Page):
         self.seg_diff = ui.Segmented(None, pm.DIFFS, self.v_diff, command=lambda v: self._set("diff", v), **seg)
         m.row("种族", self.seg_race, help="打哪个种族。")
         m.row("时间", self.seg_tod, help="黎明 / 白天 / 黄昏 / 夜晚。")
-        m.row("难度", self.seg_diff, help="试验场只有三档：简单（难度 5）、中等（难度 9）、困难（难度 15）。有的规则在某些难度不能选。")
+        m.row("难度", self.seg_diff, help="试炼场只有三档：简单（难度 5）、中等（难度 9）、困难（难度 15）。有的规则在某些难度不能选。")
         self.t_thumb = map_picker.ClickMap(120, self._pick_terrain)
         m.row("地形", self.t_thumb, help="点击地图挑选地形（需游戏正在运行）。")
         self._t_requested = None
-        self.t_chal = [ModeCell(k, name, desc, self._pick_t_chal, self._hint_trial) for k, name, desc in pm.CHALLENGES]
+        self.t_chal = [ModeCell(k, name, desc, self._pick_t_chal, self._hint_trial)
+                       for k, name, desc in pm.CHALLENGES]
         self.t_cond = [ModeCell(k, name, desc, self._pick_t_cond, self._hint_trial) for k, _g, name, desc, _s in pm.CONDITIONS]
         self.t_mod = [ModeCell(k, name, desc, self._pick_t_mod, self._hint_trial) for k, name, desc, _s in pm.MODIFIERS]
         c0 = ui.Card(self.view, "GOAL", "目标", fill=ui.TAN)
         c0.add(grid(self.t_chal))
         c1 = ui.Card(self.view, "RULE", "条件", fill=ui.SALMON)
         c1.add(grid(self.t_cond))
-        c1.add(ui.text(c1.body, "试验场的装备是游戏按规则发的，选装备界面不能改。规则没换到的部分用游戏默认武装配置"
-                                "（AR19 解放者 + P2 和平制造者，默认天赋和战略配备），不是你自己的武装配置。",
-                       muted=True, size=9), top=8)
         c2 = ui.Card(self.view, "EVENT", "修正参数", fill=ui.SKY)
         c2.add(grid(self.t_mod))
 
@@ -923,15 +920,14 @@ class PlayPage(Page):
         self.btn_cancel = ui.Button(None, "取消", self._cancel, font=ui.f_zh(10, True), padx=12, pady=4)
         go.add(ui.line(self.btn_arm, 10, self.btn_cancel), align=ui.Qt.AlignmentFlag.AlignLeft)
         self.trial_status = go.add(ui.text(go.body, "", size=10, bold=True), top=10)
-        go.add(ui.text(go.body, "你当房主，在飞船上照常进出发舱：简报会写试验场的名字和两条规则，选装备时按规则发装备，队友无需安装 HellBox。打完回飞船自动恢复原来的星球。", muted=True, size=9), top=6)
         self.t_rows = [self.view.row(c) for c in (m, c0, c1, c2, go)]
 
     def _hint_trial(self, cell):
         why = self._why_blocked(cell)
-        if why:
-            item, who = why
-            return tr(cell.desc) + "\n" + T("现在不能选：游戏规定「{0}」不能和「{1}」一起开。", tr(pm.NAMES.get(item, item)), tr(who))
-        return tr(self.FULL[cell.key]) if cell.key in self.FULL and cell.key != "drop" else tr(cell.desc)
+        if not why:
+            return ""
+        item, who = why
+        return T("不能开：游戏规定「{0}」不能和「{1}」一起开。", tr(pm.NAMES.get(item, item)), tr(who))
 
     def _why_blocked(self, cell):
         c = self.cfg
@@ -973,7 +969,7 @@ class PlayPage(Page):
         c = self.cfg
         cands = [self._trial_key(t) for t in range(pm.TERRAINS)]
         names = dict(pm.RACES), dict(pm.TIMES), dict(pm.DIFFS), {k: n for k, n, _d in pm.CHALLENGES}
-        title = " · ".join(tr(x) for x in (T("试验场"), names[0].get(c["race"], ""), names[1].get(c["tod"], ""),
+        title = " · ".join(tr(x) for x in (T("试炼场"), names[0].get(c["race"], ""), names[1].get(c["tod"], ""),
                                            names[2].get(c["diff"], ""), names[3].get(c["chal"], "")) if x)
 
         def picked(key):
@@ -1011,7 +1007,7 @@ class PlayPage(Page):
         self.view_note.config(text=tr(
             "任何关卡都能用；修正参数你当房主全队都有，其余只对安装了 HellBox 的玩家有效，房主说了算。"
             if value == "custom" else
-            "开一局真正的试验场：全队完整生效，队友无需安装 HellBox，外观固定是试验场。"))
+            "开一局真正的试炼场：全队完整生效，队友无需安装 HellBox，外观固定是试炼场。"))
         self.sync()
 
     def _save(self, msg=None):
@@ -1034,7 +1030,7 @@ class PlayPage(Page):
         if self.cfg["trial"] and st.get("state") == "done" and st.get("trial") == self.cfg["trial"]:
             self.cfg["trial"] = ""
             self.finished = True
-            self._save("试验场这一局打完了，飞船已恢复正常。想再来就再点击「设为下一局」。")
+            self._save("试炼场这一局打完了，飞船已恢复正常。想再来就再点击「设为下一局」。")
         self._badge()
         room_desc.refresh()
         if self.app.current is self:
@@ -1052,7 +1048,7 @@ class PlayPage(Page):
             if self.lo["on"] == "1" and hl.locked_count(self.lo):
                 parts.append(tr("武装配置已开启"))
         if c["trial"] and self.status.get("state") != "done":
-            parts.append(tr("下一局：试验场"))
+            parts.append(tr("下一局：试炼场"))
         footer = getattr(self.app, "footer", None)
         if footer is not None and hasattr(footer, "set_badge"):
             footer.set_badge(" · ".join(parts))
@@ -1129,8 +1125,8 @@ class PlayPage(Page):
             return T("这个组合游戏不让开：「{0}」不能和「{1}」一起。", tr(pm.NAMES.get(item, item)), tr(who)), ui.BAD
         if not c["trial"]:
             if self.finished:
-                return tr("上一局试验场打完了，已恢复正常。想再来就再点击「设为下一局」。"), ui.MUTED
-            return tr("尚未设置。选好后点击「设为下一局」。"), ui.MUTED
+                return tr("上一局试炼场打完了，已恢复正常。想再来就再点击「设为下一局」。"), ui.MUTED
+            return "", ui.MUTED
         if not self.app.state.get("running"):
             return tr("已设好，等待游戏启动。"), ui.WARN
         if st.get("trial") != c["trial"]:

@@ -282,25 +282,75 @@ else
 		if type(cls) ~= "table" or type(cls.update) ~= "function" then
 			return false
 		end
+		-- 2026-11-26 用户：「好友列表自动刷新的会让点开房间列表的时候卡一下」。
+		--   原版进房间列表（on_enter 把 refresh_timer 置 0）本来就马上刷一次；以前这里在列表停在「好友」时又强刷一次，
+		--   每次刷都要把所有 Steam 好友挨个查一遍，进来就卡两下。改成：只有在列表里从别的页切到「好友」才补刷，进来那一下不管。
+		local orig_enter = cls.on_enter
+		if type(orig_enter) == "function" then
+			cls.on_enter = function(self, ...)
+				self.hb_friends_last = nil   -- nil = 刚进来，第一帧只记下现在是哪一页
+				return orig_enter(self, ...)
+			end
+		end
 		local orig = cls.update
 		cls.update = function(self, ...)
 			local result = orig(self, ...)
-			if on("dh_friends") then
-				pcall(function()
-					local filter = self.filter
-					if type(filter) == "table" and filter.name == "friends" then
-						if not self.hb_friends_refreshed then
-							self.hb_friends_refreshed = true
-							if type(self.refresh_timer) == "number" then
-								self.refresh_timer = -1
-							end
-						end
-					else
-						self.hb_friends_refreshed = nil
-					end
-				end)
-			end
+			pcall(function()
+				local filter = self.filter
+				local name = type(filter) == "table" and filter.name or ""
+				local last = self.hb_friends_last
+				self.hb_friends_last = name
+				if on("dh_friends") and last ~= nil and last ~= name and name == "friends"
+						and type(self.refresh_timer) == "number" then
+					self.refresh_timer = -1
+				end
+			end)
 			return result
+		end
+		return true
+	end
+
+	-- 查好友更快（2026-11-26，同上）：原版 SteamManager.get_friends 每个好友都要读两项 Steam 状态（status / ext_status），
+	--   可房间列表只用正在玩 HD1 的好友的（update_rooms：in_same_game 才看 ext_status）。这里照原版抄一遍，只给在玩 HD1 的读状态，
+	--   其余字段一样。出错就照原版。
+	local function hook_friend_scan()
+		local cls = rawget(_G, "SteamManager")
+		if type(cls) ~= "table" or type(cls.get_friends) ~= "function" then
+			return false
+		end
+		local orig = cls.get_friends
+		local function fast(self)
+			if not IS_STEAM then
+				return orig(self)
+			end
+			local app = Steam.app_id()
+			local n = Friends.num_friends()
+			table.clear(self.friends)
+			for i = 1, n do
+				local id = Friends.id(i)
+				if id then
+					local name = Friends.name(id)
+					local info = {id = id, online_name = name, is_online = Friends.status(id) ~= Friends.OFFLINE}
+					local game = Friends.playing_game(id)
+					if game then
+						info.app_id = game.app_id
+						info.in_same_game = info.app_id == app
+					end
+					if info.in_same_game then
+						info.status = Presence.presence(id, "status")
+						info.ext_status = Presence.presence(id, "ext_status")
+					end
+					self.friends[name] = info
+				end
+			end
+			return self.friends
+		end
+		cls.get_friends = function(self, ...)
+			local ok, res = pcall(fast, self)
+			if ok then
+				return res
+			end
+			return orig(self, ...)
 		end
 		return true
 	end
@@ -373,7 +423,7 @@ else
 
 	-- ---------------------------------------------------------------- 挂上（类还没加载的下一帧再试，每个只挂一次）
 	local HOOKS = {
-		{"ping", hook_ping}, {"hud", hook_hud}, {"level", hook_level}, {"friends", hook_friends},
+		{"ping", hook_ping}, {"hud", hook_hud}, {"level", hook_level}, {"friends", hook_friends}, {"friend_scan", hook_friend_scan},
 		{"loc", hook_loc}, {"gui", hook_guimanager},
 	}
 	G.hooked = G.hooked or {}

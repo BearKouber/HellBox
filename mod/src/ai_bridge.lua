@@ -51,9 +51,17 @@
 --   表 VERSION 15（2026-11-04，HD1-023 冲锋虫"冲不冲"）：
 --     M19 冲锋虫射线区 TR0：2 + 8 × 10 格（每只冲锋虫：它自己冲锋前那几条射线的结果），见 write_tankrays。
 --     只读 bug_tank_states.lua 228 行冲锋判断用到的 state 字段，不自己打射线；接在 M18 后面，之前的格子一格没动。
+--   表 VERSION 16（2026-11-26，HD1-039 HellBox 8 人房间）：
+--     玩家从 4 个加到 8 个（MAX_PLAYERS 4 → 8）：凡是"每个玩家一块"的区（玩家、武器、M1、M2、M4、M3、M9、M10、M15、
+--     M5、M17、M18）都变成 8 块，所以玩家区之后各区的起点全往后挪了，每块里的格子一格没动。
+--     任务区、飞船区是定长的，里面"每个人几格"的那几段只放得下 4 个人，前 4 个人照旧写在原处；第 5～8 个人的写进
+--     表尾新加的 M20 区 X0：+0 区版本（1 = 有这一区），之后第 5～8 个人每人 XF = 7 格：
+--       +0 +1 名单（mission_manager.players）手柄编号、已上机（同任务区 +43 起那段）
+--       +2 +3 +4 在碰什么、x、y（同任务区 +51 起那段）
+--       +5 +6 互动对着不对着舱、第几个舱（同飞船区 +68 起那段）
 do
-	local VERSION = 15
-	local MAX_PLAYERS, PF = 4, 24
+	local VERSION = 16
+	local MAX_PLAYERS, PF = 8, 24   -- 第 16 版起 8 个（HellBox 8 人房间）；第 15 版以前 4 个
 	local MAX_ENEMIES, EF = 96, 16
 	local WF = 40
 	local MAX_STRINGS, SL = 512, 40
@@ -120,7 +128,10 @@ do
 	local N14 = SD0 + 1 + MAX_PLAYERS * SDF   -- 第 14 版到这里为止
 	local TR0 = N14 + 1                       -- M19 冲锋虫射线区：+0 区版本 +1 出错次数，之后 MAX_TR × TRF 格
 	local MAX_TR, TRF = 8, 10
-	local N = TR0 + 1 + MAX_TR * TRF
+	local N15 = TR0 + 1 + MAX_TR * TRF          -- M19 到这里为止
+	local X0 = N15 + 1                          -- M20 第 5～8 个人的定长区补充（第 16 版）：+0 区版本，之后 4 人 × XF 格
+	local XF, FIX_PLAYERS = 7, 4                -- 任务区、飞船区里原来那几段只放 FIX_PLAYERS 个人
+	local N = X0 + 1 + (MAX_PLAYERS - FIX_PLAYERS) * XF
 	local MAX_ERRORS = 50
 	local EMPTY = {}
 
@@ -149,6 +160,10 @@ do
 		t[3] = tonumber("7340.0078125")
 		t[4] = tonumber("1099511627776.25")
 		t[5] = VERSION
+		t[X0] = 1
+		for i = X0 + 1, N do
+			t[i] = -1
+		end
 		B.t = t
 		B.strings = {}
 		B.nstrings = 0
@@ -677,13 +692,14 @@ do
 	end
 
 	local function write_roster(mm)
-		for i = 1, 4 do
+		for i = 1, MAX_PLAYERS do
 			local p = (mm.players or EMPTY)[i]
 			local go = p and p.player_go
+			local b = i <= FIX_PLAYERS and M0 + 41 + 2 * i or X0 + 1 + (i - FIX_PLAYERS - 1) * XF
 
 			if go and go:exists() then
-				t[M0 + 41 + 2 * i] = num(p.pad_number, -1)
-				t[M0 + 42 + 2 * i] = flag(go:has("has_extracted") and go:get("has_extracted"))
+				t[b] = num(p.pad_number, -1)
+				t[b + 1] = flag(go:has("has_extracted") and go:get("has_extracted"))
 			end
 		end
 	end
@@ -706,7 +722,7 @@ do
 		for i = 1, MAX_PLAYERS do
 			local u = plist[i]
 			local o = u and (chars[u].state or EMPTY).current_interact_objective_unit
-			local b = M0 + 51 + (i - 1) * 3
+			local b = i <= FIX_PLAYERS and M0 + 51 + (i - 1) * 3 or X0 + 3 + (i - FIX_PLAYERS - 1) * XF
 
 			if o and Unit.alive(o) then
 				local q = Unit.world_position(o, 0)
@@ -839,6 +855,12 @@ do
 			t[M0 + i] = 0
 		end
 
+		for i = 1, MAX_PLAYERS - FIX_PLAYERS do
+			local b = X0 + 1 + (i - 1) * XF
+
+			t[b], t[b + 1], t[b + 2], t[b + 3], t[b + 4] = -2, -1, 0, -1, -1
+		end
+
 		t[M0 + 15], t[M0 + 31], t[M0 + 63] = 0, 0, 0
 		t[M0 + 136] = B.mission_errors
 
@@ -904,6 +926,12 @@ do
 	local function write_ship(em)
 		for i = 1, SHF - 1 do
 			t[SH0 + i] = -1
+		end
+
+		for i = 1, MAX_PLAYERS - FIX_PLAYERS do
+			local b = X0 + 6 + (i - 1) * XF
+
+			t[b], t[b + 1] = -1, -1
 		end
 
 		t[SH0 + 1] = 0
@@ -975,7 +1003,7 @@ do
 		t[SH0 + 3] = np
 
 		for i = 1, MAX_PLAYERS do
-			local b = SH0 + 4 + MAX_SEATS * SF + (i - 1) * 2
+			local b = i <= FIX_PLAYERS and SH0 + 4 + MAX_SEATS * SF + (i - 1) * 2 or X0 + 6 + (i - FIX_PLAYERS - 1) * XF
 			local u = plist[i]
 
 			if u then
@@ -2971,7 +2999,7 @@ do
 	--   +9 这只虫是不是本机算的（1 / 0；不是本机算的，上面几格是旧的或没有）
 	B.write_tankrays = function(enemies, nw)
 		t[TR0] = 0
-		for k = TR0 + 2, N do
+		for k = TR0 + 2, N15 do
 			t[k] = -1
 		end
 
@@ -3064,7 +3092,7 @@ do
 
 		table.sort(plist, by_uid)
 
-		-- 超过 4 个（多出来的是尸体）：从最老的尸体开始去掉，活人不被挤掉；不超过时顺序照旧按 uid 不变
+		-- 超过 MAX_PLAYERS 个（多出来的是尸体）：从最老的尸体开始去掉，活人不被挤掉；不超过时顺序照旧按 uid 不变
 		-- （2026-10-18：她死过几次以后尸体可能占满 4 格，后进来的 P3 排在最后被挤掉、她看不到 P3）
 		local i = 1
 

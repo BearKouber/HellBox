@@ -25,7 +25,7 @@ def _fit(s, limit):
 class NamesPage(Page):
     key = "names"
     tab = "昵称"
-    when = "游戏运行时：几秒内生效；游戏未运行：下次启动游戏后生效"
+    when = "游戏运行时可修改"
 
     def build(self):
         lim = build.PLAYER_NAME_BYTES
@@ -34,6 +34,7 @@ class NamesPage(Page):
         me = ui.Card(self.view, "ME", "我", fill=ui.MINT)
         self._name_row(me, "我的名字", "me", build.get_self_name(), lim,
                        T("留空 = Steam 昵称。头顶、结算、联机的人看到的都是它；房间名留空时也用它。"
+                         "联机时每个人改自己的：客机也要装 HellBox 才改得了，改完全队看到的是新名字。"
                          "游戏只存 {0} 字节：汉字算 3，最多 17 个汉字或 {0} 个字母。", lim),
                        lambda: self.apply_player(0))
         self._name_row(me, "房间名", "room", build.get_room_name(), None,
@@ -84,12 +85,22 @@ class NamesPage(Page):
             box.edit.textEdited.connect(typed)
             show()
 
+    @staticmethod
+    def _live_set(value, table):
+        """写进游戏内存；游戏是管理员身份、HellBox 不是时给明确的提示（见 hellbox/elevate.py）。"""
+        import room_name_live
+        try:
+            room_name_live.live_set(value, magic=table)
+        except room_name_live.NeedAdmin:
+            raise RuntimeError("HellBox 的权限比游戏低（游戏是管理员身份运行的）。"
+                               "关掉 HellBox 用管理员身份重新打开，或者关掉游戏再改，下次开游戏生效。")
+
     def _run(self, save, live_text, magic, live_hint):
         def action():
             save()
             if build.game_running():
                 import room_name_live
-                room_name_live.live_set(live_text(), magic=getattr(room_name_live, magic))
+                self._live_set(live_text(), getattr(room_name_live, magic))
                 self.app.pending_install = True
                 return live_hint + "关游戏时 HellBox 别关，会自动记住。"
             build.install()

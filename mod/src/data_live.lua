@@ -11,7 +11,7 @@
 --     spawn.illuminates=...
 --     player=god=heal;common=...   潜兵（格式见 player_params.lua；2026-11-15）
 --   出怪按当前地图的阵营挑那一份；不知道阵营（菜单里）时先不动，进了地图知道阵营再套。
---   所以 HellBox 开着改 = 下一秒生效；HellBox 关着 = 文件还在，开游戏 / 进地图照样套上。
+--   所以 HellBox 开着改 = 下一秒生效；HellBox 关着 = 全部按原版（2026-11-25 用户定，以前是照样套上），再打开就套回去。
 -- 处理结果写回 data-live-ack.txt（HellBox 用来显示「游戏已收到」）：
 --     seq=收到的数字 \n where=game|menu|boot \n race=... \n params=结果 \n spawn=结果
 do
@@ -78,6 +78,7 @@ do
 			-- 2026-11-18 V0.96：在别人房间里（客机）出怪和怪物属性不生效，HellBox 拿它提示
 			--   2026-11-19：武器 / 战备 / 潜兵也一样（上面 is_guest）
 			"guest=" .. ((G.guest or (type(rawget(_G, "EnemyParamsMod")) == "table" and EnemyParamsMod.guest)) and "1" or "0"),
+			"off=" .. (G.off and "1" or "0"),
 			"params=" .. clean(G.params_res),
 			"spawn=" .. clean(G.spawn_res),
 			"weapon=" .. clean(G.weapon_res),
@@ -167,6 +168,15 @@ do
 			if rawget(_G, "HellBoxLog") then
 				HellBoxLog("data_live", guest and "进了别人的房间：武器 / 战备 / 潜兵数据先按原版" or "回到自己当房主：数据重新套上", "INFO")
 			end
+		end
+
+		-- 2026-11-25 用户定：HellBox 关了（hellbox_alive.lua 心跳过期）= 这一页全部按原版，下面每一项都走 reset；再打开就套回去
+		local alive = rawget(_G, "HellBoxAlive")
+
+		G.off = type(alive) == "table" and type(alive.off) == "function" and alive.off() or false
+
+		if G.off then
+			data = { seq = data.seq }
 		end
 
 		if guest then

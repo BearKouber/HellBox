@@ -12,14 +12,15 @@ import json
 import os
 from pathlib import Path
 
+import safe_write
+
 FILE = Path(__file__).with_name("hellbox_hop.json")
 LIVE = Path(os.environ.get("APPDATA", "")) / "Arrowhead" / "Helldivers" / "hellbox" / "hop.txt"
 
 # (键, 类型, 默认, 附加)：类型 toggle / number（附加 = (最小, 最大, 步长)）/ choice（附加 = 可选键）
 SPEC = [
     # ── 名字与画面 ──
-    ("name_background", "toggle", False, None),
-    ("long_text", "toggle", True, None),
+    ("long_text", "toggle", True, None),  # 2026-11-26「名字不乱码」：长名字截断 + 字体缺字改用聊天字体（src/hellbox_name_font.lua）；「名字加深色底」用户删了
     # ── 操作 ──
     ("bolt_reload", "toggle", False, None),
     # ── 玩法：鬼城蜜蜂光圈、信标更亮（src/hellbox_drone_light.lua 读；2026-11-20 用户删了探照灯和「在哪里亮」）──
@@ -27,6 +28,9 @@ SPEC = [
     ("drone_light_percent", "number", 60, (10, 100, 10)),
     ("beacon_light", "toggle", False, None),                   # 2026-11-20 用户：「更亮的信标」
     ("beacon_light_percent", "number", 60, (10, 100, 10)),
+    # ── 显示：本机潜兵调亮（src/hellbox_self_bright.lua 读；2026-11-26 用户要：只调亮不发光、拖动条、热修改）──
+    ("self_bright", "toggle", False, None),
+    ("self_bright_percent", "number", 30, (5, 200, 5)),  # 2026-11-27 上限 200%
 ]
 KIND = {key: kind for key, kind, _, _ in SPEC}
 DEFAULT = {key: default for key, _, default, _ in SPEC}
@@ -65,9 +69,8 @@ def save(changes):
     for key, value in changes.items():
         if key in DEFAULT:
             data[key] = _clean(key, value)
-    tmp = FILE.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    os.replace(tmp, FILE)
+    FILE.parent.mkdir(parents=True, exist_ok=True)
+    safe_write.write_text(FILE, json.dumps(data, ensure_ascii=False, indent=2) + "\n", crlf=True)
     return data
 
 
@@ -119,7 +122,5 @@ def lua_defaults(quote, dev=False, lang=None):
 def write_live(dev=False, lang=None):
     LIVE.parent.mkdir(parents=True, exist_ok=True)
     lines = ["HBHOP1"] + [f"{key}={value}" for key, value in values(dev, lang).items()]
-    tmp = LIVE.with_suffix(".tmp")
-    tmp.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    os.replace(tmp, LIVE)
+    safe_write.write_text(LIVE, "\n".join(lines) + "\n", crlf=True)
     return LIVE

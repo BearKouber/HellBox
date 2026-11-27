@@ -16,7 +16,7 @@ import struct
 HERE = os.path.dirname(os.path.abspath(__file__))
 CAMERA_LUAC = os.path.join(HERE, "camera", "runtime.luac")
 # 分屏模块字节码的 sha256（半糖 runtime.sha256 第二行；换了新版分屏要一起改）
-CAMERA_LUAC_SHA = "2dff93e508cebed478938b2d4d91560f070479ac6be5a70ddab8aae9d5299e68"
+CAMERA_LUAC_SHA = "be848eb050278f350cae8074e55bdf847a85a5719bd52cfe00b290ff326cca5a"  # 2026-11-26 下车动作期间不收自己的镜头
 # 原版启动脚本的 sha256（boot.rs VANILLA_SCRIPT_SHA）：不是这个版本就不接，免得接坏
 VANILLA_SCRIPT_SHA = "8274d9e67af56be5f07bbff994ba4e7366599e439014d665c092c02a9f6ec624"
 BOOT_ID = bytes([0xe2, 0x17, 0xd1, 0x2c, 0xfa, 0x8d, 0x4e, 0xa1, 0x81, 0xdc, 0xbd, 0x8a, 0x61, 0x8a, 0x04, 0x37])

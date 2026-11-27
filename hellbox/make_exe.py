@@ -19,11 +19,11 @@ WORK = os.path.join(ROOT, ".work", "hellbox-build")
 DIST = os.path.join(ROOT, "bin")
 
 # mod 代码在磁盘上，不打进 exe
-FROM_DISK = ["build", "bundle", "cursor_mod", "cursor_patch", "texture", "room_name_live", "hellbox_options", "hellbox_hop", "bridge", "drill_spec", "ghost_maps", "patch_files", "obsidian_compat", "camera_stack"]
+FROM_DISK = ["build", "bundle", "cursor_mod", "cursor_patch", "texture", "room_name_live", "hellbox_options", "hellbox_hop", "bridge", "drill_spec", "ghost_maps", "patch_files", "obsidian_compat", "camera_stack", "safe_write", "eight_players", "glyphs", "ljbc", "mech_feed", "blackbox", "recorder", "rec_score"]
 
 # mod 代码用到、界面本身没用到的模块
-HIDDEN = ["hashlib", "functools", "copy", "random", "re", "shutil", "struct", "subprocess", "zlib", "winreg", "json", "time", "math", "base64",
-          "ctypes", "ctypes.wintypes", "dataclasses", "pymem", "pymem.process", "pymem.memory",
+HIDDEN = ["hashlib", "functools", "copy", "random", "re", "shutil", "struct", "subprocess", "zlib", "winreg", "json", "time", "math", "base64", "bisect",
+          "ctypes", "ctypes.wintypes", "dataclasses", "concurrent", "concurrent.futures", "concurrent.futures.thread", "gzip", "queue", "collections", "argparse", "datetime", "winsound", "webbrowser", "pymem", "pymem.process", "pymem.memory",
           "pymem.exception", "pymem.ressources", "pymem.pattern", "pymem.ptypes", "pymem.thread"]
 
 # 界面只用到 QtCore / QtGui / QtWidgets
@@ -44,9 +44,11 @@ PRUNE = ["translations", "opengl32sw.dll", "Qt6Network.dll", "Qt6Svg.dll", "plug
 PUBLIC_MOD_FILES = ("build.py", "bundle.py", "cursor_mod.py", "cursor_patch.py", "texture.py",
                     "room_name_live.py", "hellbox_options.py", "hellbox_hop.py",
                     "ghost_maps.py", "ghost_shading.bin",
-                    "patch_files.py", "obsidian_compat.py",
-                    "camera_stack.py")
-PUBLIC_DATA = ("drill_spec.py", "drill_monsters.json", "loadout_items.json", "room_words.json", "enemy_settings.json", "enemy_fields.json", "weapon_fields.json", "strat_fields.json", "spawn_tables.json")
+                    "patch_files.py", "obsidian_compat.py", "safe_write.py",
+                    "camera_stack.py", "eight_players.py", "ljbc.py",
+                    "glyphs.py")  # 2026-11-26 名字不乱码：build.py 装 MOD 时 import glyphs，公开包漏了会装不上
+PUBLIC_DATA = ("drill_spec.py", "drill_monsters.json", "loadout_items.json", "room_words.json", "enemy_settings.json", "enemy_fields.json", "weapon_fields.json", "strat_fields.json", "spawn_tables.json",
+               "bridge.py", "mech_feed.py", "blackbox.py", "recorder.py", "rec_score.py")  # 录制页（pages/record.py）
 
 
 def copy_public_support(target, compiler, app=None):

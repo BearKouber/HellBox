@@ -80,7 +80,7 @@ do
 		return table.concat(lines, "\n") .. "\n"
 	end
 
-	-- 2026-11-22 玩法页「试验场」也点地图挑地形：请求行还可以是「t 种族 时间 难度档 目标 地形号」，
+	-- 2026-11-22 玩法页「试炼场」也点地图挑地形：请求行还可以是「t 种族 时间 难度档 目标 地形号」，
 	--   结果写 maps2/t_种族_时间_难度档_目标_地形号.txt。地图编号照 hellbox_play.lua 的 build_trial 算；
 	--   第二个编号只带目标（条件、修正参数填第一个）：拼图只看目标（GeneratedLevel 按 sub_challenge 筛地块）。
 	local function index_of(list, name)
@@ -112,7 +112,7 @@ do
 		return seed, P.modulate_seed_flat_indicies(ci - 1, 0, 0)
 	end
 
-	-- 返回 文件名（不带 .txt）, 地图编号, 第二个编号（试验场才有）
+	-- 返回 文件名（不带 .txt）, 地图编号, 第二个编号（试炼场才有）
 	local function next_request(dir)
 		local f = io.open(dir .. "map-requests.txt", "rb")
 

@@ -23,6 +23,33 @@ do
 
 	PlanetRefreshMod = G
 
+	-- 2026-11-23 用户报：英文模式下确认框里的中文全变成「???」——对话框用的是游戏的字体，英文模式没有中文字形。
+	-- 判断游戏语言照 hellbox_room_filter.lua 的老办法：拿一个一定存在的语言键，看返回的是不是中文（UTF-8 汉字的头字节 0xE4-0xE9）；
+	-- 拿不到就当中文（中文用户居多，宁可按中文写）。
+	local function is_zh_ui()
+		local lm = rawget(_G, "LocalizationManager")
+
+		if type(lm) ~= "table" or type(lm.string) ~= "function" then
+			return true
+		end
+
+		local ok, sample = pcall(lm.string, lm, "filter_hide_full_games")
+
+		if not ok or type(sample) ~= "string" or sample == "" or sample == "filter_hide_full_games" then
+			return true
+		end
+
+		return sample:find("[\228-\233]") ~= nil
+	end
+
+	local function dlg(zh, en)
+		if is_zh_ui() then
+			return zh
+		end
+
+		return en
+	end
+
 	if not G.t or G.t[5] ~= VERSION or #G.t < N then
 		local t = {}
 
@@ -93,6 +120,38 @@ do
 		return true
 	end
 
+	-- 2026-11-25 用户报（V1.07）：事件星（服务器发的母星 / 保卫超级地球）按刷新键弹的是「刷新这个阵营的普通星球」，事件那 5 关不变；
+	--   报复关数量改了，事件星的报复关也不变。改成真事件星也能重抽 5 关：服务器只收事件编号和难度（campaign_manager
+	--   complete_*_event_mission），5 关的地图种子是本机随机的，原版每次重开游戏 / 打完一局回飞船也会重新生成，所以重抽不影响银河战争。
+	local function event_planet(planet)
+		local fu = rawget(_G, "FrontUnlockMod")
+
+		return type(planet) == "table" and (planet.defend_event ~= nil or planet.attack_event ~= nil)
+			and type(fu) == "table" and type(fu.reroll_event) == "function", fu
+	end
+
+	-- 「全部刷新」：事件星也重抽（报复关数量改了马上生效）。front_unlock.lua 记着星球界面（planet_screen）
+	local function reroll_all_events(camp)
+		local fu = rawget(_G, "FrontUnlockMod")
+		local ps = type(fu) == "table" and fu.planet_screen
+
+		-- 打完一局回飞船，游戏会新建一套战役地图界面；记着的旧界面不是这张地图的就不动
+		if type(ps) ~= "table" or ps.parent ~= camp or type(ps.event_planets) ~= "table"
+				or type(fu.reroll_event) ~= "function" then
+			return 0
+		end
+
+		local n = 0
+
+		for _, p in ipairs(ps.event_planets) do
+			if event_planet(p) and fu.reroll_event(p) then
+				n = n + 1
+			end
+		end
+
+		return n
+	end
+
 	-- 地图开着时当场刷新；当前界面不适合就返回 false，请求留着
 	local function refresh_now(screen)
 		local from_key = G.pending == "key"
@@ -133,6 +192,7 @@ do
 		screen.current_planet = nil
 		screen.selected_planet = nil
 		screen:generate_planets()
+		pcall(reroll_all_events, screen) -- 2026-11-25：事件星也重抽（报复关数量马上生效）
 
 		if (name == "planet" or name == "mission") and type(race) == "number" and race >= 1 then
 			screen:show_state("planet", {
@@ -187,10 +247,27 @@ do
 		if not (cfg.refresh_pressed and cfg.refresh_pressed(action)) then
 			return false
 		end
+		-- 2026-11-25：光标停在事件星（母星 / 超级地球）上 = 只重抽这颗星的 5 关（在母星 / 超级地球那一格，列表里只有它）
+		local sel = type(screen.planets) == "table" and screen.planets[screen.selected_planet]
+		if event_planet(sel) then
+			screen.confirmation_dialog:on_enter({
+				background_alpha = 0.9,
+				selected_option = 2,
+				confirmation_text = dlg("重新生成这颗星球的任务？这颗星球的任务进度会清除。",
+					"Regenerate this planet's missions? Mission progress on this planet is cleared."),
+				callback_object = {on_dialog_confirmation = function(_, yes)
+					if yes then
+						G.event_reroll = {screen = screen, planet = sel}
+					end
+				end},
+			})
+			return true
+		end
 		screen.confirmation_dialog:on_enter({
 			background_alpha = 0.9,
 			selected_option = 2,
-			confirmation_text = "刷新这个阵营的普通星球？这个阵营未完成的星球进度会清除，另外两个阵营不变。",
+			confirmation_text = dlg("刷新这个阵营的普通星球？这个阵营未完成的星球进度会清除，另外两个阵营不变。",
+				"Refresh this faction's regular planets? Unfinished progress for this faction is cleared; the other two factions are unchanged."),
 			callback_object = {on_dialog_confirmation = function(_, yes)
 				if yes then
 					G.pending = "key"
@@ -205,18 +282,11 @@ do
 	-- 星球本身（名字、环境、难度、奖励）不变；存回存档的 available_planets，房主发给客机，再把选任务界面重进一次。
 	-- 2026-11-23 用户（V1.06）：「希望刷新同样使用于这个特殊事件」——解锁战线造出来的母星 / 超级地球（front_unlock.lua 的假事件）也能刷。
 	--   真的事件星（服务器发的）照旧不刷。
-	local function fake_event_planet(planet)
-		local fu = rawget(_G, "FrontUnlockMod")
-
-		return type(planet) == "table" and type(fu) == "table" and type(fu.is_fake) == "function"
-			and (fu.is_fake(planet.defend_event) or fu.is_fake(planet.attack_event)), fu
-	end
-
 	local function reroll_planet(camp, ms)
 		local planet = ms.selected_planet
-		local fake, fu = fake_event_planet(planet)
+		local is_event, fu = event_planet(planet)
 
-		if fake then
+		if is_event then
 			if not fu.reroll_event(planet) then
 				return false
 			end
@@ -318,7 +388,7 @@ do
 
 		local planet = ms.selected_planet
 
-		if type(planet) ~= "table" or planet.boss or (planet.defend_event or planet.attack_event) and not fake_event_planet(planet) then
+		if type(planet) ~= "table" or planet.boss or (planet.defend_event or planet.attack_event) and not event_planet(planet) then
 			return false
 		end
 
@@ -330,7 +400,8 @@ do
 		ms.confirmation_dialog:on_enter({
 			background_alpha = 0.9,
 			selected_option = 2,
-			confirmation_text = "重新生成这颗星球的任务？这颗星球的任务进度会清除。",
+			confirmation_text = dlg("重新生成这颗星球的任务？这颗星球的任务进度会清除。",
+				"Regenerate this planet's missions? Mission progress on this planet is cleared."),
 			callback_object = {on_dialog_confirmation = function(_, yes)
 				if yes then
 					G.reroll = ms
@@ -404,6 +475,30 @@ do
 					end
 				end
 
+				if G.event_reroll and not self.do_exit then
+					local job = G.event_reroll
+
+					G.event_reroll = nil
+
+					if self.active_state == job.screen then
+						local ok, err = pcall(function()
+							local fu = rawget(_G, "FrontUnlockMod")
+							local p = job.planet
+
+							if fu.reroll_event(p) then
+								G.rerolls = (G.rerolls or 0) + 1
+								self:show_state("planet", {selected_race = p.enemy + 1})
+							end
+						end)
+
+						if not ok then
+							G.errors = (G.errors or 0) + 1
+							G.last_error = err
+							if rawget(_G, "HellBoxLog") then HellBoxLog("planet_refresh", tostring(err)) end
+						end
+					end
+				end
+
 				if G.pending and not self.do_exit then
 					local ok, err = pcall(refresh_now, self)
 
@@ -429,9 +524,18 @@ do
 					SaveManager:set("available_planets", nil)
 					SaveManager:set("current_planet", nil)
 					G.refreshes = (G.refreshes or 0) + 1
+					G.events_after_enter = true
 				end
 
-				return orig(...)
+				local res = {orig(...)}
+
+				-- 地图没开时点的「全部刷新」：进地图以后把这次飞船里已经生成过的事件星也重抽
+				if G.events_after_enter then
+					G.events_after_enter = nil
+					pcall(reroll_all_events, self)
+				end
+
+				return unpack(res, 1, table.maxn(res))
 			end
 			cls.on_enter = G.on_enter
 		end

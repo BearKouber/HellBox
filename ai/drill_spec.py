@@ -71,6 +71,8 @@ DEFAULT = {
               "max": 1, "seq": [1, 2], "gap": 3, "start_wave": 5},
     "run": {"script": DEFAULT_SCRIPT, "primary_only": True},
     "stop": {"kills": 20, "first_death": True, "minutes": 0},
+    # 2026-11-25 用户定「变强」（选图存档下面一格，只在一个人打报复关时生效）：从第几波开始（1 = 原版）、复活币开关
+    "strong": {"wave": 1, "revive": False},
 }
 
 
@@ -281,9 +283,15 @@ def normalize(cfg):
     cfg = cfg or {}
     if valid_seed(cfg.get("seed")):
         out["seed"] = int(cfg["seed"])
-    for k in ("spawn", "run", "stop"):
+    for k in ("spawn", "run", "stop", "strong"):
         if isinstance(cfg.get(k), dict):
             out[k].update(cfg[k])
+    sg = out["strong"]
+    try:
+        sg["wave"] = max(1, min(99, int(sg.get("wave") or 1)))
+    except (TypeError, ValueError):
+        sg["wave"] = 1
+    sg["revive"] = bool(sg.get("revive"))
     rn = out["run"]
     if "what" in rn:  # 旧设置（只有 只开游戏 / 陪玩单人测试 两种）
         old = rn.pop("what")

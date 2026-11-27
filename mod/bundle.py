@@ -52,10 +52,15 @@ def compress(raw: bytes, size: int, level: int = 9, parallel: bool = False) -> b
     """parallel=True：每块 64KB 各自压缩，用多个 CPU 核一起压（zlib 压缩时放开 GIL，线程就够），结果和单线程逐字节一样。
     2026-11-19 发行抢先版：第一次装核心鬼城要重压 45 个地图包（1.3GB），单线程玩家机器要好几分钟。"""
     blocks = [raw[i:i + CHUNK].ljust(CHUNK, b"\0") for i in range(0, len(raw), CHUNK)]
+    pool_cls = None
     if parallel and len(blocks) > 1:
+        try:  # 2026-11-26 用户截图：发行版没带 concurrent，选图「开始」报 No module named 'concurrent'；缺了就单线程压
+            from concurrent.futures import ThreadPoolExecutor as pool_cls
+        except ImportError:
+            pool_cls = None
+    if pool_cls is not None:
         import os
-        from concurrent.futures import ThreadPoolExecutor
-        with ThreadPoolExecutor(max_workers=max(1, min(16, os.cpu_count() or 1))) as pool:
+        with pool_cls(max_workers=max(1, min(16, os.cpu_count() or 1))) as pool:
             zs = list(pool.map(lambda b: _pack_block(b, level), blocks))
     else:
         zs = [_pack_block(b, level) for b in blocks]

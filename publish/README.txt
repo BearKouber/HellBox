@@ -1,4 +1,4 @@
-HellBox V1.07
+HellBox V1.10
 =============
 
 作者：07
@@ -6,8 +6,54 @@ HellBox V1.07
 也可以在 GitHub 下载：https://github.com/BearKouber/HellBox/releases
 
 HELLDIVERS（1 代）MOD 工具：带箱子上车、给好友点赞、刷新星球、报复关数量、
-选图（报复关 / 大图 / 首领战）、玩法（试验场联机版、修正参数、武装配置、鬼城）、
+选图（报复关 / 大图 / 首领战）、玩法（试炼场联机版、修正参数、武装配置、鬼城）、
 数据修改（怪物属性 / 出怪逻辑）、各种显示、指针颜色、快捷语音、战绩等（选图、分屏在开发者模式里）。
+
+【V1.10 改了什么】（和 V1.09 比）
+- 关掉 HellBox 后，影响平衡的设置马上全部按原版：数据页（怪物属性、出怪、场上上限 / 破限、武器、战备、潜兵）、
+  玩法页的修正参数 / 随机掉落 / 武装配置、选图「我独自升级」。再打开 HellBox 就恢复。已经生成的鬼城地图这一关不变。
+  （以前关掉 HellBox 这些照样生效。）
+- 选图新增「我独自升级」（只在单人报复地图生效，其他地图不生效）：
+  · 从第几波开始：第一波直接就是第 N 波，杀怪数还是从 0 开始数。
+  · 复活币：最后一条命也死了不算失败。场上的怪、地上的东西（枪、背包、弹药、补给舱）、放下的炮塔、地雷、载具等全部清掉，
+    还没落下来的信标取消；杀怪数归 0、战备补满、原地复活，怪停 15 秒后从选的那一波重新开始。
+  · 这一局只要出现第二个人，或者呼叫了救援信标，这一局就不再生效。
+- 「功能」页：
+  · 新增「战备输入优化」（默认关）：键盘输完战备后，最后按的方向键不会马上让潜兵走，按着不放先停 0.2 秒再走（和输任务指令一样）。
+  · 新增「出生地优化」（默认关）：刷怪不用地图外和墙后面的位置；复活落点和墙、地图边至少隔 5 米，落到外面或太贴边就往里拉。
+    怎么刷、刷几只照原版。
+  · 解锁战线开着时，等级不够的难度也能打；修了选「进攻母星 / 保卫超级地球」报「开关太长了」。
+  · 刷新星球：光标停在母星 / 保卫超级地球这类事件星上按刷新，只重抽这颗星；「全部刷新」也会重抽事件星。
+- 「显示」页：
+  · 新增「潜兵调亮」：加强本机潜兵盔甲的边缘反光，拖动条 5%～200%，游戏开着也能调，只影响自己的画面。
+  · 「长名字不乱码」改名「名字不乱码」：名字里有游戏字体没有的字（生僻字、韩文等）时，头顶、状态栏、消息里这段改用聊天字体显示。
+    删掉「名字加深色底」。
+  · 撤离后名字不再留在屏幕上。
+- 潜兵页：「等级」下面新增「经验冻结」：开着打完一局不加经验。帽子、衣服也能解锁（付费 DLC 不给）。
+- 玩法页：试炼场「侦察兵」改成自带心肺加速器（体力不消耗），但自己受到的伤害 +50%；「超级地球支援」掉下来的战备带房主自己的升级。
+- 「关于」页：新增「检查更新」，GitHub 上有新版时点「更新」自动下载、换上新版再打开，设置保留；鸣谢改版。
+- K-ON!增强UI定制版：开着时自动关掉开发者模式，左边「数据」改叫「增强」，增强页多了「敌人可更密集」（三族都管）、
+  「坦克出兵增强」+ 出兵频率、「增加坦克基数」、「班长和军团增强」（只管生化人）。都默认原版，关掉 HellBox 也回原版。
+- 开发者模式：
+  · 新增「多人」页：「8 人房间」开关（第 5～8 人也要开；有没开的人在时最多 4 人；装了 QoL 或 Dive Harder 时开不了）。
+  · 新增「录制」页：自愿帮作者录对局训练潜兵 AI，只录游戏里的数字（位置、血量、按键），不录画面、声音、聊天和名字，不会自己上传。
+  · 「出怪逻辑」的「载具 / 首领放兵」只在生化人显示、生效。
+- 分屏：上下车时镜头不再被拉到队友那边。
+- 指针页「黑边」开关位置修正。
+
+【V1.09 改了什么】（和 V1.08 比）
+- 修复游戏开着时改名、改角色设置报「打不开游戏进程」：写游戏内存漏传了进程句柄。
+- 修复 HellBox 自己被打成 Medium 完整性级别、拿不到游戏写权限（目录被加了强制标签）。
+- 设置文件改成直接写入，不再走临时文件换名。
+- 文案：玩法页、昵称页描述改为「游戏运行时可修改」；「全队」改「共享」，「装了就有」改「客机需装」；
+  「带箱子上车」「丢支援装备」「补给背包自己用」去掉「当客机时」那句；「先丢哪个」改「看手上：优先丢手持装备。」；
+  数据页等待提示去掉括号说明。
+
+【V1.08 改了什么】（和 V1.07 比）
+- 玩法页：试炼场目标描述移进框里，hover 只留不能开的原因；修正参数补回军刀、鬼城排第一；条件文案按用户给的改。
+- 用词：试验场改试炼场，赛博人改生化人，光能族改光能者。
+- 修复保存设置时的权限问题：hop.txt、ghost-maps.txt、play.txt 等改成直接写入，失败时走 PowerShell 兜底。
+- 修复窗口被强制置顶 / 抢焦点。
 
 【V1.07 改了什么】（和 V1.06 比）
 - 界面文字整体整理（感谢 Oct0pu5）：用词更统一、说明更短，卡片标题更简洁；「关于」鸣谢加「文本 Oct0pu5」。
@@ -47,7 +93,7 @@ HELLDIVERS（1 代）MOD 工具：带箱子上车、给好友点赞、刷新星�
     例：[Hex · 鬼城 +3 · 炼狱] 小明的房间。「隐藏 HellBox 房间」筛选也认 [Hex]。
 - 选地形改成点地图挑：点小地图，这一组所有不同的图一次列出来，点哪张换哪张。
   · 选图（开发者模式）：编号和「换一张图」去掉（报复关每个种族 + 环境只有两块场地，就只有两张）。
-  · 玩法页「试验场」：地形编号和「换一张」去掉，换成小地图。
+  · 玩法页「试炼场」：地形编号和「换一张」去掉，换成小地图。
   · 要开着游戏才能把图拼出来。
 - 来自 Dive Harder 的两项改名「HUD 显示延迟」「自动定位任务位置」；装了 Dive Harder 时那几行写「此项已由 DH 提供」。
 - 「关于」鸣谢里 Dive Harder 后面的括号说明、「Bug 修复」标题旁的说明去掉了。
@@ -124,7 +170,7 @@ HELLDIVERS（1 代）MOD 工具：带箱子上车、给好友点赞、刷新星�
   · 在飞船上当房主点「开始」：一个人（或本机分屏）照旧直接进关。
   · 房间里有联机队友时变成「设为下一局」：照常走进出发舱出发就是这张图，队友不用装 HellBox，
     大家照常记经验和银河战争；打完回到飞船，原来的星球自动放回去，不会把这一关算成那颗星球的任务。
-    想取消就在星图上选别的星球。和「玩法」页的试验场「设为下一局」只能二选一，设选图时会自动取消那边的。
+    想取消就在星图上选别的星球。和「玩法」页的试炼场「设为下一局」只能二选一，设选图时会自动取消那边的。
   · 战绩里的「原版训练 / 自定义训练」改叫「原版选图 / 自定义选图」。
 - 「关于」页鸣谢：单开一行写 HalfSugar 的功能贡献（分屏、聊天输入法防闪退）；协助测试加 Kent、QiQi。
 
@@ -196,8 +242,8 @@ HELLDIVERS（1 代）MOD 工具：带箱子上车、给好友点赞、刷新星�
 【鸣谢】
 - 外层 UI 设计：91
 - 高难增强数据指导：吃大份
-- 分屏、聊天输入法防闪退：HalfSugar
-- 协助测试：91、HalfSugar、吃大份、K-ON!、Kent、QiQi
+- 分屏：HalfSugar
+- 协助测试：91、HalfSugar、吃大份、K-ON!、Kent、QiQi、Lhgrzr、Six、海之星
 - 总体 UI 规划、代码设计：Claude
 - QoL Mod：SomeDoggo
 - Dive Harder：Oct0pu5
@@ -219,7 +265,7 @@ HELLDIVERS（1 代）MOD 工具：带箱子上车、给好友点赞、刷新星�
 
 --------------------------------------------------------------
 
-HellBox V1.07
+HellBox V1.10
 
 Author: 07
 Home page (new versions, changelog, feedback): https://www.nexusmods.com/helldivers/mods/63
@@ -228,6 +274,32 @@ A mod tool for HELLDIVERS (the first game): carry boxes into vehicles, commend f
 retaliation mission count, Map Select (retaliation / big maps / boss fights), game modes (online Proving
 Grounds, modifiers, loadout rules, Ghost Town), data edits (enemies / spawn logic), more displays, cursor color, quick
 voice, mission stats and more (Map Select and split screen are in developer mode).
+
+WHAT'S NEW IN V1.10 (since V1.07)
+- Closing HellBox now turns balance-affecting settings back to vanilla right away: the Data page (enemies, spawns,
+  enemy cap / no limit, weapons, stratagems, helldivers), modifiers / random drops / loadout rules on the Modes page,
+  and Solo Leveling in Map Select. Opening HellBox again restores them. An already generated Ghost Town map stays.
+- Map Select: new "Solo Leveling" card (only in solo Retaliation missions, no effect on other maps):
+  * Start wave: the first wave is wave N; the kill count still starts at 0.
+  * Revive coin: losing your last life doesn't fail the mission. Enemies, dropped items, placed turrets, mines,
+    vehicles etc. are cleared, beacons still in the air are cancelled, the kill count resets, stratagems refill, you
+    respawn in place, and enemies return from the chosen wave after 15 seconds.
+  * Stops for the mission once a second player joins or a rescue beacon is called.
+- Features page: "Better stratagem input" (off by default: the last arrow key of a keyboard stratagem waits 0.2 s
+  before walking); "Better spawn spots" (off by default: no enemy spawns outside the map or behind walls, respawns land
+  at least 5 m from walls and the map edge); unlocked fronts also lift the level requirement per difficulty; refresh
+  works on event planets.
+- Display page: "Brighter helldiver" (rim light on your own armor, 5% to 200%, live); "Names don't garble" draws
+  characters the game font lacks with the chat font; names no longer stay on screen after extraction.
+- Helldiver page: "Freeze XP"; hats and outfits can be unlocked (paid DLC excluded).
+- Modes page: Scout gets a cardiac accelerator but takes 50% more damage; Super Earth Support drops carry the host's
+  stratagem upgrades.
+- About page: "Check for updates" downloads and installs a new GitHub release, keeping settings; credits reworked.
+- K-ON! enhanced UI edition: extra options on the Enhance page (denser enemies, tank troop drops + frequency, more
+  tanks, stronger squad leaders and legionnaires; cyborgs only). All vanilla by default.
+- Developer mode: "Multiplayer" page with 8-player rooms; "Recording" page (opt-in, numbers only, nothing uploaded
+  automatically); vehicle / boss troops in Spawn Logic only show for cyborgs.
+- Split screen: the camera no longer jumps to a teammate when getting in or out of vehicles.
 
 WHAT'S NEW IN V1.07 (since V1.06)
 - Interface text cleaned up throughout (thanks to Oct0pu5): more consistent wording, shorter descriptions,
@@ -459,8 +531,8 @@ On the About page click "Copy diagnostics" and paste it with your report.
 CREDITS
 Outer UI design: 91
 Hard-mode data guidance: 吃大份
-Split screen, chat IME crash fix: HalfSugar
-Testing: 91, HalfSugar, 吃大份, K-ON!, Kent, QiQi
+Split screen: HalfSugar
+Testing: 91, HalfSugar, 吃大份, K-ON!, Kent, QiQi, Lhgrzr, Six, 海之星
 Overall UI planning, code design: Claude
 QoL Mod: SomeDoggo
 Dive Harder: Oct0pu5

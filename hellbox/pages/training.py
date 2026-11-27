@@ -34,6 +34,17 @@ START_RESULTS = {
 }
 
 
+def strong_lines(cfg):
+    """2026-11-25「变强」：报复关才带 wave= / revive=（游戏里 hellbox_strong.lua 只在一个人直接进关时用）。"""
+    sg = cfg.get("strong") or {}
+    if drill_spec.decode(int(cfg["seed"]))["mission"] != drill_spec.GENOCIDE:
+        return ""
+    wave, revive = int(sg.get("wave") or 1), bool(sg.get("revive"))
+    if wave <= 1 and not revive:
+        return ""
+    return f"wave={wave}\nrevive={1 if revive else 0}\n"
+
+
 def start_in_game(cfg, drop_play_trial=None):
     import uuid
     dropped = bool(drop_play_trial and drop_play_trial())
@@ -48,7 +59,7 @@ def start_in_game(cfg, drop_play_trial=None):
     mark_loadout()
     tmp = START_REQ + ".tmp"
     with open(tmp, "w", encoding="ascii") as f:
-        f.write(f"HBSTART1\nid={rid}\ntime={int(time.time())}\nseed={int(cfg['seed'])}\nmode=auto\n")
+        f.write(f"HBSTART1\nid={rid}\ntime={int(time.time())}\nseed={int(cfg['seed'])}\nmode=auto\n" + strong_lines(cfg))
     os.replace(tmp, START_REQ)
     end = time.monotonic() + START_WAIT
     result = None
@@ -70,7 +81,7 @@ def start_in_game(cfg, drop_play_trial=None):
                 pass
     if result is None:
         raise RuntimeError("游戏无响应。可能游戏里还是旧版 MOD，或者正卡在加载。退出游戏后再点击「开始」也能进。")
-    extra = "（「玩法」页设的试验场下一局已取消。）" if dropped else ""
+    extra = "（「玩法」页设的试炼场下一局已取消。）" if dropped else ""
     if result == "armed":
         return ("已设为下一局：房间里有队友，照常走进出发舱出发就是这张图，队友无需安装 HellBox，大家照常获得经验。打完回飞船，原来的星球自动放回去；想换回原来的任务，在星图上选别的星球就行。" + extra)
     if result != "ok":
@@ -101,7 +112,7 @@ def launch_online(cfg, drop_play_trial=None):
     mark_loadout()
     tmp = START_REQ + ".tmp"
     with open(tmp, "w", encoding="ascii") as f:
-        f.write(f"HBSTART1\nid={uuid.uuid4().hex[:12]}\ntime={int(time.time())}\nseed={int(cfg['seed'])}\nmode=auto\nwait=1\n")
+        f.write(f"HBSTART1\nid={uuid.uuid4().hex[:12]}\ntime={int(time.time())}\nseed={int(cfg['seed'])}\nmode=auto\nwait=1\n" + strong_lines(cfg))
     os.replace(tmp, START_REQ)
     subprocess.Popen([str(steam), "-applaunch", build.STEAM_APP_ID],
                      creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),

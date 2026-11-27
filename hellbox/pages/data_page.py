@@ -96,6 +96,7 @@ class DataPage(Page):
         self.waiting_since = None
         self.kind = "enemy"
         self.dev = None
+        self.kon = None
 
         self.btn_reset_all = _small("全部恢复原版", self.reset_simple)
         self.head_lay.addWidget(self.btn_reset_all, 0, VC)
@@ -122,14 +123,28 @@ class DataPage(Page):
         # ---------------- 普通模式：一页滑条
         self.sliders = {}
         self.simple_rows = []
+        self.kon_data = db.clean_kon(self.data.get("kon"))
+        self.kon_dense_row = None
+        self.veh_row = None
+        self.kon_rows = []
         veh_after = "spawn" if any(g[0] == "spawn" for g in db.SIMPLE_SHOWN) else "enemy"
         for group, title, color, note, rows in db.SIMPLE_SHOWN:
             card = ui.Card(self.view, "", title, fill=color)
             for row in rows:
                 self._slider_row(title, card, row)
+            if group == veh_after:
+                self.v_kon_dense = ui.Var(self.kon_data["dense"])
+                self.kon_dense_row = card.row(
+                    "敌人可更密集",
+                    ui.Toggle(None, self.v_kon_dense, command=self._kon_dense_flip),
+                    help="缩小全阵营敌人的排斥散开半径（cohesion=0、separation_radius=1、separation_factor=999、刷新间隔=0），让敌人能更密集扎堆。",
+                    name_w=120,
+                )
             self.simple_rows.append(self.view.row(card))
             if group == veh_after:
-                self.simple_rows.append(self.view.row(self._veh_card()))
+                self.veh_row = self.view.row(self._veh_card())
+                self.kon_rows.append(self.view.row(self._kon_tank_card()))
+                self.kon_rows.append(self.view.row(self._kon_patrol_card()))
 
         # ---------------- 开发者模式：左边分类，右边这一类的块
         left = ui.Card(self.view, "", "分类", fill=ui.INK)
@@ -140,7 +155,9 @@ class DataPage(Page):
         self.list_card.add(self.list_body)
         self.dev_row = self.view.row(left, self.list_card, weights=(2, 5))
 
+        self.kon = bool(getattr(self.app, "kon", False))
         self.set_dev(self.app.dev)
+        self.set_kon(self.kon)
         self.app.after(500, self._tick)
 
     def _slider_row(self, card_title, card, row):
@@ -259,8 +276,113 @@ class DataPage(Page):
         self.v_veh_count.set(str(VEH_ORIG_COUNT))
         self._veh_count()
 
+    # ---------------- K-ON! 增强定制版：坦克出兵增强 / 班长和军团增强
+    def _kon_tank_card(self):
+        k = self.kon_data
+        card = ui.Card(self.view, "", "坦克出兵增强", fill=db.TYPE_COLOR["spawn"])
+        self.v_kon_tank = ui.Var(k["tank"])
+        card.row(
+            "坦克增强",
+            ui.Toggle(None, self.v_kon_tank, command=self._kon_tank_flip),
+            help="步兵战车移速 2.5→4、冲锋 4.5→5.5、转向 0.5→0.8、炮塔转速 0.2→0.5、警戒 15→40、射程 0~80（首选 40），并瞬间放出 35 只畸变人（吐兵间隔 0.01 秒）。",
+            name_w=120,
+        )
+        self.v_kon_tank_cd = ui.Var(k["tank_cd"])
+        cd_opts = [(v, db.kon_tank_cd_label(v)) for v in db.KON_TANK_CD_VALUES]
+        self.sl_kon_tank_cd = ui.StepSlider(None, cd_opts, self.v_kon_tank_cd, width=270, text_width=92)
+        self.sl_kon_tank_cd.changed = k["tank_cd"] != db.KON_TANK_CD_DEFAULT
+        self.btn_kon_tank_cd = _small("默认", self._kon_tank_cd_reset)
+        sp = self.btn_kon_tank_cd.sizePolicy()
+        sp.setRetainSizeWhenHidden(True)
+        self.btn_kon_tank_cd.setSizePolicy(sp)
+        self.btn_kon_tank_cd.setVisible(self.sl_kon_tank_cd.changed)
+        self.sl_kon_tank_cd.command = self._kon_tank_cd_change
+        card.row(
+            "出兵频率",
+            self.sl_kon_tank_cd, 6, self.btn_kon_tank_cd,
+            help="调整步兵战车释放 35 只畸变人的冷却间隔，默认 16 秒 CD；可拖动调为无间隔、4~60 秒、仅一次或不释放。拖动时若未开「坦克增强」会自动开启。",
+            name_w=120,
+        )
+        self.v_kon_tank_base = ui.Var(k["tank_base"])
+        card.row(
+            "增加坦克基数",
+            ui.Toggle(None, self.v_kon_tank_base, command=self._kon_tank_base_flip),
+            help="生化人巡逻坦克同时存在上限从 1 提到 12，且 1 难度起即可刷出（建议配合上方「场上上限」拉大使用）。",
+            name_w=120,
+        )
+        return card
+
+    def _kon_patrol_card(self):
+        k = self.kon_data
+        card = ui.Card(self.view, "", "班长和军团增强", fill=db.TYPE_COLOR["enemy"])
+        self.v_kon_patrol = ui.Var(k["patrol"])
+        self.dd_kon_patrol = ui.Dropdown(None, db.KON_PATROL_MODES, self.v_kon_patrol, command=self._kon_patrol_change)
+        self.btn_kon_patrol = _small("原版", self._kon_patrol_reset)
+        sp = self.btn_kon_patrol.sizePolicy()
+        sp.setRetainSizeWhenHidden(True)
+        self.btn_kon_patrol.setSizePolicy(sp)
+        self.btn_kon_patrol.setVisible(k["patrol"] != "vanilla")
+        card.row(
+            "增强模式",
+            self.dd_kon_patrol, 8, self.btn_kon_patrol,
+            help="选择班长（榴弹兵）与军团士兵的增强方案，默认原版。非原版自动附带：发现距离 12→24、0 秒立即拉警报、敌人更密集（仅近战仅改军团士兵）。",
+            name_w=120,
+        )
+        card.add(ui.text(None, "非原版自动附带：巡逻发现距离 12→24、0 秒立即拉警报、允许更密集扎堆（仅近战只改军团士兵）。",
+                         muted=True, size=9), top=4)
+        return card
+
+    def _kon_save(self, what):
+        self.data["kon"] = db.clean_kon(self.kon_data)
+        self._write(what)
+
+    def _kon_dense_flip(self):
+        on = bool(self.v_kon_dense.get())
+        self.kon_data["dense"] = on
+        self._kon_save(tr("敌人可更密集：已开启") if on else tr("敌人可更密集：已恢复原版"))
+
+    def _kon_tank_flip(self):
+        on = bool(self.v_kon_tank.get())
+        self.kon_data["tank"] = on
+        if on:
+            self._kon_save(T("坦克出兵增强：已开启（{0}）", db.kon_tank_cd_label(self.kon_data["tank_cd"], "")))
+        else:
+            self._kon_save(tr("坦克出兵增强：已恢复原版"))
+
+    def _kon_tank_cd_change(self, val):
+        self.kon_data["tank_cd"] = int(val)
+        self.sl_kon_tank_cd.changed = int(val) != db.KON_TANK_CD_DEFAULT
+        self.sl_kon_tank_cd.update()
+        self.btn_kon_tank_cd.setVisible(self.sl_kon_tank_cd.changed)
+        if not self.kon_data["tank"]:
+            self.kon_data["tank"] = True
+            self.v_kon_tank.set(True)
+        self._kon_save(T("坦克出兵频率：{0}", db.kon_tank_cd_label(val, "")))
+
+    def _kon_tank_cd_reset(self):
+        self.v_kon_tank_cd.set(db.KON_TANK_CD_DEFAULT)
+        self.kon_data["tank_cd"] = db.KON_TANK_CD_DEFAULT
+        self.sl_kon_tank_cd.changed = False
+        self.sl_kon_tank_cd.update()
+        self.btn_kon_tank_cd.setVisible(False)
+        self._kon_save(T("坦克出兵频率：{0}", db.kon_tank_cd_label(db.KON_TANK_CD_DEFAULT, "")))
+
+    def _kon_tank_base_flip(self):
+        on = bool(self.v_kon_tank_base.get())
+        self.kon_data["tank_base"] = on
+        self._kon_save(tr("增加坦克基数：已开启（巡逻坦克上限 12）") if on else tr("增加坦克基数：已恢复原版"))
+
+    def _kon_patrol_change(self, val):
+        self.kon_data["patrol"] = val
+        self.btn_kon_patrol.setVisible(val != "vanilla")
+        self._kon_save(T("班长和军团增强：{0}", tr(db.KON_PATROL_LABEL.get(val, val))))
+
+    def _kon_patrol_reset(self):
+        self.v_kon_patrol.set("vanilla")
+        self._kon_patrol_change("vanilla")
+
     def reset_simple(self):
-        if not db.shown_simple(self.data) and not db.simple_veh(self.data):
+        if not db.shown_simple(self.data) and not db.simple_veh(self.data) and not db.has_kon(self.data):
             self.app.say("已经全是原版了。", "info")
             return
         self.data["simple"] = {k: v for k, v in self.data["simple"].items() if k not in db.SHOWN_ROWS}
@@ -268,12 +390,23 @@ class DataPage(Page):
         self.data["veh"] = dict(self.veh)
         self.v_veh_mode.set("vanilla")
         self._veh_refresh()
+        self.kon_data = db.clean_kon(None)
+        self.data["kon"] = dict(self.kon_data)
+        self.v_kon_dense.set(False)
+        self.v_kon_tank.set(False)
+        self.v_kon_tank_cd.set(db.KON_TANK_CD_DEFAULT)
+        self.sl_kon_tank_cd.changed = False
+        self.sl_kon_tank_cd.update()
+        self.btn_kon_tank_cd.setVisible(False)
+        self.v_kon_tank_base.set(False)
+        self.v_kon_patrol.set("vanilla")
+        self.btn_kon_patrol.setVisible(False)
         for var, default, s, rs in self.sliders.values():
             var.set(default)
             s.changed = False
             s.update()
             rs.setVisible(False)
-        self._write(tr("滑条全部恢复原版"))
+        self._write(tr("全部恢复原版"))
 
     def pick(self, kind):
         self.kind = kind
@@ -339,19 +472,38 @@ class DataPage(Page):
             rl.addStretch(1)
             self.list_lay.addWidget(rb)
 
+    def _sync_mode(self):
+        dev = bool(self.dev)
+        kon = bool(self.kon)
+        if self.editing and not dev:
+            self.close_editor(ask=False)
+        self.head_title.config(text=tr("增强" if kon else self.tab))
+        for r in self.simple_rows:
+            r.setVisible(not dev)
+        if self.kon_dense_row is not None:
+            self.kon_dense_row.setVisible(not dev and kon)
+        if self.veh_row is not None:
+            self.veh_row.setVisible(not dev and not kon)
+        for r in self.kon_rows:
+            r.setVisible(not dev and kon)
+        self.btn_reset_all.setVisible(not dev)
+        self.dev_row.setVisible(dev)
+        if dev:
+            self.refill()
+
     def set_dev(self, on):
         on = bool(on)
         if on == self.dev:
             return
         self.dev = on
-        if self.editing and not on:
-            self.close_editor(ask=False)
-        for r in self.simple_rows:
-            r.setVisible(not on)
-        self.btn_reset_all.setVisible(not on)
-        self.dev_row.setVisible(on)
-        if on:
-            self.refill()
+        self._sync_mode()
+
+    def set_kon(self, on):
+        on = bool(on)
+        if on == self.kon:
+            return
+        self.kon = on
+        self._sync_mode()
 
     def put(self, kind, idx):
         if kind not in db.READY or kind not in db.OPEN_KINDS or self.data["live"].get(kind) == idx:
@@ -506,7 +658,7 @@ class DataPage(Page):
         except ValueError:
             seq = -1
         if seq != self.data["seq"]:
-            self.set_when(tr("等游戏读取…（一直等不到：可能在加载，或游戏里是旧版 MOD，关游戏后关开一次「核心」）"), ui.YELLOW)
+            self.set_when(tr("等游戏读取…"), ui.YELLOW)
             return
         where = tr(WHERE_ZH.get(ack.get("where"), ack.get("where") or ""))
         race = tr(RACE_ZH.get(ack.get("race"), ""))

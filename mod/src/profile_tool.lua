@@ -21,6 +21,8 @@
 --     rp=样本数;max=上限;per=10
 --     lv=等级;cape=当前披风序号;cl=还能点赞几次
 --     res=上一条命令的结果（"ok:..." / "err:..."）;seq=命令请求号;cf=好友点赞开关 1/0
+--     H= / B= 帽子 / 衣服（2026-11-26 加，格式同 C=，lv 那行加 helmet= / body= 当前序号；命令 unlockhelmet= / unlockhelmets=all /
+--       wearhelmet=，衣服 unlockbody= / unlockbodies=all / wearbody=）
 --     C=序号|名字key|显示名|状态|要求   状态：on 已解锁（要求 = lv / dlc / reward / default / free）、lv 等级不够（要求 = 几级）、
 --                                    rw 奖励没拿到、free 能直接解锁的「DLC」（要求 = ENT 号）、dlc 付费 DLC 没买（要求 = ENT 号）、
 --                                    tut 新兵训练披风（军械库里永远选不了，只能这里直接穿）
@@ -70,6 +72,64 @@ do
 
 	local t = G.t
 	local timer = 0
+
+	-- 经验冻结（2026-11-25 用户定，需求来自 Oct0pu5：想装萌新）：开着时打完一局不加经验。
+	-- 在游戏算经验的源头给 0（mission_end_state_waiting_for_data.lua 204-260 行用这三个算 xp_gained 和星球奖励经验），
+	-- 后面的升级、升级送的研究点、解锁、结算画面的「+经验」都跟着是 0；任务里捡的样本照常算（那不是经验）。
+	-- 只看本机的设置（HellBoxOptions.xp_freeze），每台机器各算各的，队友不受影响。
+	-- 不在 SaveManager.user_set 上缩：那一步之前解锁和研究点已经按原经验算好了（2026-11-25 Codex 审查）。
+	local function xp_frozen()
+		local cfg = rawget(_G, "HellBoxOptions")
+
+		return type(cfg) == "table" and cfg.xp_freeze == true
+	end
+
+	local function install_xp_freeze()
+		local ps = rawget(_G, "ProgressionSettings")
+		local gain = type(ps) == "table" and rawget(ps, "get_mission_xp_gain")
+
+		if type(gain) == "function" and not rawget(ps, "_hb_xp_freeze") then
+			ps.get_mission_xp_gain = function(...)
+				if xp_frozen() then
+					return 0
+				end
+
+				return gain(...)
+			end
+			ps._hb_xp_freeze = true
+		end
+
+		local pr = rawget(_G, "PlanetRewardSettings")
+		local boost = type(pr) == "table" and rawget(pr, "get_xp_boost_amount")
+
+		if type(boost) == "function" and not rawget(pr, "_hb_xp_freeze") then
+			pr.get_xp_boost_amount = function(...)
+				if xp_frozen() then
+					return 0
+				end
+
+				return boost(...)
+			end
+			pr._hb_xp_freeze = true
+		end
+
+		-- 训练场的经验 = 得分 × ProvinggroundsSettings.max_xp[难度档]；换成一个查表时看开关的代理表（只有结算按下标读它）
+		local pg = rawget(_G, "ProvinggroundsSettings")
+		local max_xp = type(pg) == "table" and rawget(pg, "max_xp")
+
+		if type(max_xp) == "table" and not rawget(pg, "_hb_xp_freeze") then
+			pg.max_xp = setmetatable({}, { __index = function(_, k)
+				if xp_frozen() then
+					return 0
+				end
+
+				return max_xp[k]
+			end })
+			pg._hb_xp_freeze = true
+		end
+	end
+
+	pcall(install_xp_freeze)
 
 	local function main_pad()
 		return GameSettings.get_main_pad_number()
@@ -255,18 +315,21 @@ do
 		local custom = SaveManager:user_get("customization", uid) or {}
 		local st = standing()
 
-		lines[#lines + 1] = string.format("lv=%d;cape=%d;cl=%d;xp=%d;maxlv=%d", rank_level(xp), custom.cape or 1,
-			st.commends_left or 0, xp, #ProgressionSettings.ranks)
+		lines[#lines + 1] = string.format("lv=%d;cape=%d;cl=%d;xp=%d;maxlv=%d;helmet=%d;body=%d", rank_level(xp), custom.cape or 1,
+			st.commends_left or 0, xp, #ProgressionSettings.ranks, custom.helmet or 1, custom.body or 1)
 		lines[#lines + 1] = string.format("res=%s;seq=%d;cf=%d", clean(G.result), G.seq, G.commend_friends and 1 or 0)
 
 		local ents = DlcSettings.get_combined_entitlements(uid) or {}
 		local unlocks = SaveManager:user_get("item_unlocks", uid) or {}
 
-		for i, c in ipairs(CustomizationSettings.cape) do
-			local status, need = cape_status(c.name, xp, ents, unlocks)
-			local ok, shown = pcall(LocalizationManager.string, LocalizationManager, c.name)
+		-- C 披风 / H 帽子 / B 衣服（H、B 2026-11-26 加）
+		for _, kind in ipairs({ { "C", "cape" }, { "H", "helmet" }, { "B", "body" } }) do
+			for i, c in ipairs(CustomizationSettings[kind[2]] or {}) do
+				local status, need = cape_status(c.name, xp, ents, unlocks)
+				local ok, shown = pcall(LocalizationManager.string, LocalizationManager, c.name)
 
-			lines[#lines + 1] = string.format("C=%d|%s|%s|%s|%s", i, c.name, clean(ok and shown or c.name), status, need)
+				lines[#lines + 1] = string.format("%s=%d|%s|%s|%s|%s", kind[1], i, c.name, clean(ok and shown or c.name), status, need)
+			end
 		end
 
 		for _, item in ipairs(weapons()) do
@@ -502,17 +565,27 @@ do
 		end
 	end
 
-	local function unlock_cape(index)
-		local c = CustomizationSettings.cape[index]
+	-- 外观三类（2026-11-26 用户：「衣服和帽子跟披风的逻辑一样,付费DLC不能解锁需要检测,其他的都可以」）：
+	--   存档 customization.<类> = CustomizationSettings.<类> 的序号；能不能穿和军械库（menu_screen_armory_profile）一样看
+	--   等级 / DLC / item_unlocks。新兵训练披风只有披风有。
+	local LOOKS = {
+		cape = { word = "披风", count = "件" },
+		helmet = { word = "帽子", count = "顶" },
+		body = { word = "衣服", count = "件" },
+	}
+
+	local function unlock_look(kind, index)
+		local c = CustomizationSettings[kind][index]
+		local word = LOOKS[kind].word
 
 		if not c then
-			return "err:没有这个披风"
+			return "err:没有这个" .. word
 		end
 
 		local status = cape_status(c.name, statuses_now())
 
 		if status == "dlc" then
-			return "err:付费 DLC 披风要先在 Steam 买"
+			return "err:付费 DLC " .. word .. "要先在 Steam 买"
 		elseif status == "tut" then
 			return "err:新兵训练披风不用解锁，直接点「穿上」"
 		elseif status == "on" then
@@ -521,39 +594,40 @@ do
 
 		add_unlocks({ c.name })
 
-		return "ok:披风已解锁"
+		return "ok:" .. word .. "已解锁"
 	end
 
-	local function unlock_all_capes()
+	local function unlock_all_looks(kind)
 		local xp, ents, unlocks = statuses_now()
 		local names = {}
 
-		for _, c in ipairs(CustomizationSettings.cape) do
+		for _, c in ipairs(CustomizationSettings[kind]) do
 			if unlockable((cape_status(c.name, xp, ents, unlocks))) then
 				names[#names + 1] = c.name
 			end
 		end
 
-		return string.format("ok:解锁了 %d 件披风", add_unlocks(names))
+		return string.format("ok:解锁了 %d %s%s", add_unlocks(names), LOOKS[kind].count, LOOKS[kind].word)
 	end
 
-	local function wear_cape(index)
-		local c = CustomizationSettings.cape[index]
+	local function wear_look(kind, index)
+		local c = CustomizationSettings[kind][index]
+		local word = LOOKS[kind].word
 
 		if not c then
-			return "err:没有这个披风"
+			return "err:没有这个" .. word
 		end
 
 		local status = cape_status(c.name, statuses_now())
 
 		if status ~= "on" and status ~= "tut" then
-			return "err:先解锁这件披风"
+			return "err:先解锁这" .. LOOKS[kind].count .. word
 		end
 
 		local uid = user_id()
 		local custom = table.clone(SaveManager:user_get("customization", uid) or {})
 
-		custom.cape = index
+		custom[kind] = index
 
 		SaveManager:user_set("customization", custom, uid)
 		save_user(uid)
@@ -565,7 +639,7 @@ do
 			pcall(delegate.trigger, delegate, "on_customized_character", main_pad())
 		end
 
-		return "ok:披风已换上"
+		return "ok:" .. word .. "已换上"
 	end
 
 	local function unlock_weapon(index)
@@ -669,11 +743,23 @@ do
 		if key == "rp" and n then
 			return set_research(math.floor(n))
 		elseif (key == "unlockcape" or key == "cape") and n then
-			return unlock_cape(math.floor(n))
+			return unlock_look("cape", math.floor(n))
 		elseif key == "unlockcapes" then
-			return unlock_all_capes()
+			return unlock_all_looks("cape")
 		elseif key == "wearcape" and n then
-			return wear_cape(math.floor(n))
+			return wear_look("cape", math.floor(n))
+		elseif key == "unlockhelmet" and n then
+			return unlock_look("helmet", math.floor(n))
+		elseif key == "unlockhelmets" then
+			return unlock_all_looks("helmet")
+		elseif key == "wearhelmet" and n then
+			return wear_look("helmet", math.floor(n))
+		elseif key == "unlockbody" and n then
+			return unlock_look("body", math.floor(n))
+		elseif key == "unlockbodies" then
+			return unlock_all_looks("body")
+		elseif key == "wearbody" and n then
+			return wear_look("body", math.floor(n))
 		elseif key == "unlockweapon" and n then
 			return unlock_weapon(math.floor(n))
 		elseif key == "unlockweapons" then
@@ -954,6 +1040,7 @@ do
 
 		hook_friend()
 		hook_commend()
+		pcall(install_xp_freeze)
 
 		timer = timer - (dt or 0)
 

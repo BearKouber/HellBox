@@ -20,7 +20,7 @@
 --     就先记着，进飞船站稳 SHIP_SETTLE 秒后照常处理（一个人直接进、有队友设下一局）；WAIT_AGE 秒内没进飞船就作废。
 --     没走「直接进关」这条路时，把 training-loadout.txt（进关前弹选战备的标记）删掉，免得留给以后。
 --
--- 2026-11-19「选图」设为下一局（用户定：房间里有队友时像试验场那样把这张图注入下一局，队友不用装 HellBox；
+-- 2026-11-19「选图」设为下一局（用户定：房间里有队友时像试炼场那样把这张图注入下一局，队友不用装 HellBox；
 --   房主、队友都照常记经验和银河战争；一个人时照旧直接进关。docs/任务/HD1-033 2026-11-19 那几条）。
 --   请求里带 mode=auto（新版 HellBox 都带）时，有联机队友不再回 teammates，而是回 armed：
 --   - 原版飞船出发用的种子：有 selected_trial 就用它（state_menu.lua get_mission_seed 3113 行），出发舱也只有在
@@ -310,6 +310,7 @@ do
 		end
 
 		local why, ship, sm, players = check()
+		local strong = rawget(_G, "HellBoxStrong")
 
 		if waiting then
 			if why == "not_ship" or why == "busy" then
@@ -338,6 +339,11 @@ do
 			if why ~= nil then
 				drop_loadout_flag() -- 不是一个人直接进关（设下一局 / 不是房主…）：选战备标记用不上
 			end
+		end
+
+		-- 2026-11-25「变强」：新请求先把上一次的设置清掉，下面一个人直接进关成功才按这次的设（hellbox_strong.lua）
+		if strong and strong.arm then
+			strong.arm(nil)
 		end
 
 		if why == "teammates" and req.mode == "auto" then
@@ -385,6 +391,10 @@ do
 		if not ok then
 			answer(id, "error")
 			error(err, 0)
+		end
+
+		if strong and strong.arm and (req.wave or req.revive) then
+			strong.arm(seed, req.wave, req.revive == "1")
 		end
 
 		G.last = "ok"

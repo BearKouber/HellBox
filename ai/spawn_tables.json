@@ -850,6 +850,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 3,
      "min": 1,
      "name": "bug_wave_scouts_3",
@@ -859,7 +860,8 @@
        3,
        "侦查虫"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 1.5,
@@ -875,6 +877,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 4,
      "min": 1,
      "name": "bug_wave_warrior_1",
@@ -884,7 +887,8 @@
        1,
        "武斗虫"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 3,
@@ -900,6 +904,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 6,
      "min": 3,
      "name": "bug_wave_warriors",
@@ -909,7 +914,8 @@
        2,
        "武斗虫"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 3,
@@ -925,6 +931,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 12,
      "min": 3,
      "name": "bug_wave_stalker",
@@ -934,7 +941,8 @@
        1,
        "追踪虫"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 4,
@@ -950,6 +958,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 6,
      "min": 3,
      "name": "bug_wave_warriors_3",
@@ -959,7 +968,8 @@
        3,
        "武斗虫"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 3.5,
@@ -985,6 +995,7 @@
        ]
       }
      ],
+     "limit": 1,
      "max": 5,
      "min": 4,
      "name": "bug_wave_scouts_8",
@@ -999,7 +1010,8 @@
        2,
        "武斗虫"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 12,
@@ -1025,6 +1037,7 @@
        ]
       }
      ],
+     "limit": 2,
      "max": 12,
      "min": 5,
      "name": "bug_wave_impaler",
@@ -1039,7 +1052,8 @@
        5,
        "武斗虫"
       ]
-     ]
+     ],
+     "wave_start": 4
     },
     {
      "cost": 12,
@@ -1065,6 +1079,7 @@
        ]
       }
      ],
+     "limit": 2,
      "max": 7,
      "min": 5,
      "name": "bug_wave_tank",
@@ -1079,7 +1094,8 @@
        5,
        "武斗虫"
       ]
-     ]
+     ],
+     "wave_start": 5
     },
     {
      "cost": 6,
@@ -1095,6 +1111,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 7,
      "min": 4,
      "name": "bug_wave_warrior_onslaught",
@@ -1104,7 +1121,8 @@
        5,
        "武斗虫"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 5,
@@ -1120,6 +1138,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 12,
      "min": 6,
      "name": "bug_wave_warrior_elites",
@@ -1129,7 +1148,8 @@
        2,
        "精英部队"
       ]
-     ]
+     ],
+     "wave_start": 4
     },
     {
      "cost": 20,
@@ -1155,6 +1175,7 @@
        ]
       }
      ],
+     "limit": 1,
      "max": 10,
      "min": 8,
      "name": "bug_wave_heavy_tank",
@@ -1169,7 +1190,8 @@
        3,
        "精英部队"
       ]
-     ]
+     ],
+     "wave_start": 6
     },
     {
      "cost": 6,
@@ -1185,6 +1207,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 12,
      "min": 7,
      "name": "bug_wave_warrior_elites_3",
@@ -1194,7 +1217,8 @@
        3,
        "精英部队"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 8,
@@ -1210,6 +1234,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 12,
      "min": 7,
      "name": "bug_wave_warrior_elites",
@@ -1219,7 +1244,8 @@
        5,
        "精英部队"
       ]
-     ]
+     ],
+     "wave_start": 3
     },
     {
      "cost": 13,
@@ -1240,6 +1266,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 12,
      "min": 8,
      "name": "bug_wave_commander",
@@ -1254,7 +1281,8 @@
        2,
        "精英部队"
       ]
-     ]
+     ],
+     "wave_start": 6
     },
     {
      "cost": 25,
@@ -1290,6 +1318,7 @@
        ]
       }
      ],
+     "limit": 1,
      "max": 12,
      "min": 11,
      "name": "bug_wave_tank_heavy",
@@ -1309,7 +1338,8 @@
        5,
        "精英部队"
       ]
-     ]
+     ],
+     "wave_start": 8
     },
     {
      "cost": 18,
@@ -1345,6 +1375,7 @@
        ]
       }
      ],
+     "limit": 1,
      "max": 12,
      "min": 9,
      "name": "bug_wave_warrior_heavy_tank",
@@ -1364,7 +1395,8 @@
        1,
        "巨兽"
       ]
-     ]
+     ],
+     "wave_start": 8
     },
     {
      "cost": 30,
@@ -1380,6 +1412,7 @@
        ]
       }
      ],
+     "limit": 2,
      "max": 13,
      "min": 9,
      "name": "bug_wave_commandersx5",
@@ -1389,7 +1422,8 @@
        5,
        "虫族指挥官"
       ]
-     ]
+     ],
+     "wave_start": 10
     },
     {
      "cost": 3,
@@ -1405,6 +1439,7 @@
        ]
       }
      ],
+     "limit": 5,
      "max": 15,
      "min": 13,
      "name": "bug_wave_hls",
@@ -1414,7 +1449,8 @@
        1,
        "黑暗影者"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 5,
@@ -1430,6 +1466,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 15,
      "min": 13,
      "name": "bug_wave_warrior_elites_cheap",
@@ -1439,7 +1476,8 @@
        5,
        "精英部队"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 7,
@@ -1465,6 +1503,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 15,
      "min": 13,
      "name": "bug_wave_impaler_elite",
@@ -1479,7 +1518,8 @@
        2,
        "精英部队"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 10,
@@ -1505,6 +1545,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 13,
      "min": 12,
      "name": "bug_wave_commandersx10",
@@ -1519,7 +1560,8 @@
        5,
        "虫族指挥官"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 6,
@@ -1545,6 +1587,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 15,
      "min": 14,
      "name": "bug_wave_commandersx5_cheap",
@@ -1559,7 +1602,8 @@
        5,
        "虫族指挥官"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 13,
@@ -1605,6 +1649,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 15,
      "min": 13,
      "name": "bug_wave_tank_heavyx4",
@@ -1629,7 +1674,8 @@
        1,
        "巨兽"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 17,
@@ -1675,6 +1721,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 15,
      "min": 14,
      "name": "bug_wave_heavy_murder",
@@ -1699,7 +1746,8 @@
        1,
        "巨兽"
       ]
-     ]
+     ],
+     "wave_start": 1
     }
    ],
    "patrol": [
@@ -2782,6 +2830,7 @@
        ]
       }
      ],
+     "limit": 2,
      "max": 7,
      "min": 0,
      "name": "cyborg_wave_initiates",
@@ -2791,7 +2840,8 @@
        4,
        "初始者"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 3,
@@ -2807,6 +2857,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 5,
      "min": 0,
      "name": "cyborg_wave_soldiers",
@@ -2816,7 +2867,8 @@
        2,
        "生化兵"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 3,
@@ -2832,6 +2884,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 5,
      "min": 1,
      "name": "cyborg_wave_soldiers_cannon",
@@ -2841,7 +2894,8 @@
        1,
        "复合人"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 3,
@@ -2857,6 +2911,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 8,
      "min": 1,
      "name": "cyborg_wave_soldiers_cannon",
@@ -2866,7 +2921,8 @@
        2,
        "复合人"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 5,
@@ -2882,6 +2938,7 @@
        ]
       }
      ],
+     "limit": 4,
      "max": 8,
      "min": 4,
      "name": "cyborg_wave_berserkers",
@@ -2891,7 +2948,8 @@
        2,
        "狂暴者"
       ]
-     ]
+     ],
+     "wave_start": 2
     },
     {
      "cost": 5,
@@ -2917,6 +2975,7 @@
        ]
       }
      ],
+     "limit": 2,
      "max": 8,
      "min": 5,
      "name": "cybogrg_wave_hulk",
@@ -2931,7 +2990,8 @@
        2,
        "畸形人"
       ]
-     ]
+     ],
+     "wave_start": 3
     },
     {
      "cost": 10,
@@ -2967,6 +3027,7 @@
        ]
       }
      ],
+     "limit": 2,
      "max": 12,
      "min": 6,
      "name": "cybogrg_wave_hulks",
@@ -2986,7 +3047,8 @@
        5,
        "畸形人"
       ]
-     ]
+     ],
+     "wave_start": 4
     },
     {
      "cost": 6,
@@ -3002,6 +3064,7 @@
        ]
       }
      ],
+     "limit": 2,
      "max": 12,
      "min": 4,
      "name": "cyborg_wave_grotesques",
@@ -3011,7 +3074,8 @@
        5,
        "畸形人"
       ]
-     ]
+     ],
+     "wave_start": 4
     },
     {
      "cost": 5,
@@ -3027,6 +3091,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 12,
      "min": 9,
      "name": "cyborg_wave_soldiers_squad",
@@ -3036,7 +3101,8 @@
        2,
        "复合人"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 8,
@@ -3052,6 +3118,7 @@
        ]
       }
      ],
+     "limit": 1,
      "max": 10,
      "min": 8,
      "name": "cyborg_wave_berserker_elite",
@@ -3061,7 +3128,8 @@
        2,
        "屠夫"
       ]
-     ]
+     ],
+     "wave_start": 6
     },
     {
      "cost": 12,
@@ -3077,6 +3145,7 @@
        ]
       }
      ],
+     "limit": 4,
      "max": 12,
      "min": 10,
      "name": "cybogrg_wave_hulk_commander",
@@ -3086,7 +3155,8 @@
        1,
        "首领"
       ]
-     ]
+     ],
+     "wave_start": 4
     },
     {
      "cost": 20,
@@ -3112,6 +3182,7 @@
        ]
       }
      ],
+     "limit": 1,
      "max": 12,
      "min": 8,
      "name": "cyborg_wave_berserker_elites",
@@ -3126,7 +3197,8 @@
        2,
        "屠夫"
       ]
-     ]
+     ],
+     "wave_start": 7
     },
     {
      "cost": 25,
@@ -3172,6 +3244,7 @@
        ]
       }
      ],
+     "limit": 1,
      "max": 12,
      "min": 8,
      "name": "cybogrg_wave_hulk_commander_squad",
@@ -3196,7 +3269,8 @@
        1,
        "首领"
       ]
-     ]
+     ],
+     "wave_start": 8
     },
     {
      "cost": 25,
@@ -3212,6 +3286,7 @@
        ]
       }
      ],
+     "limit": 2,
      "max": 12,
      "min": 6,
      "name": "cyborg_ifv_wave",
@@ -3221,7 +3296,8 @@
        1,
        "步兵战车"
       ]
-     ]
+     ],
+     "wave_start": 6
     },
     {
      "cost": 25,
@@ -3237,6 +3313,7 @@
        ]
       }
      ],
+     "limit": 1,
      "max": 12,
      "min": 9,
      "name": "cyborg_ifv_wave_2",
@@ -3246,7 +3323,8 @@
        1,
        "步兵战车"
       ]
-     ]
+     ],
+     "wave_start": 7
     },
     {
      "cost": 6,
@@ -3262,6 +3340,7 @@
        ]
       }
      ],
+     "limit": 3,
      "max": 12,
      "min": 3,
      "name": "cyborg_dog_wave",
@@ -3271,7 +3350,8 @@
        3,
        "猎犬"
       ]
-     ]
+     ],
+     "wave_start": 3
     },
     {
      "cost": 6,
@@ -3297,6 +3377,7 @@
        ]
       }
      ],
+     "limit": 3,
      "max": 15,
      "min": 13,
      "name": "cyborg_dog_wave2",
@@ -3311,7 +3392,8 @@
        3,
        "猎犬"
       ]
-     ]
+     ],
+     "wave_start": 3
     },
     {
      "cost": 2,
@@ -3337,6 +3419,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 15,
      "min": 13,
      "name": "cyborg_wave_soldiers",
@@ -3351,7 +3434,8 @@
        2,
        "生化兵"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 9,
@@ -3407,6 +3491,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 15,
      "min": 13,
      "name": "cybogrg_wave_hulk_w_berserker_squad",
@@ -3436,7 +3521,8 @@
        1,
        "首领"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 7,
@@ -3492,6 +3578,7 @@
        ]
       }
      ],
+     "limit": 4,
      "max": 15,
      "min": 14,
      "name": "cybogrg_wave_hulk_monster_squad",
@@ -3521,7 +3608,8 @@
        1,
        "巨型者"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 10,
@@ -3567,6 +3655,7 @@
        ]
       }
      ],
+     "limit": 3,
      "max": 15,
      "min": 13,
      "name": "cybogrg_wave_hulk_mega_squad",
@@ -3591,7 +3680,8 @@
        1,
        "首领"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 10,
@@ -3647,6 +3737,7 @@
        ]
       }
      ],
+     "limit": 3,
      "max": 15,
      "min": 14,
      "name": "cyborg_wave_berserker_elites",
@@ -3676,7 +3767,8 @@
        2,
        "屠夫"
       ]
-     ]
+     ],
+     "wave_start": 1
     }
    ],
    "patrol": [
@@ -4675,6 +4767,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 3,
      "min": 1,
      "name": "tripod x1",
@@ -4684,7 +4777,8 @@
        1,
        "三脚电械"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 3,
@@ -4700,6 +4794,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 6,
      "min": 1,
      "name": "tripod x2",
@@ -4709,7 +4804,8 @@
        2,
        "三脚电械"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 5,
@@ -4735,6 +4831,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 12,
      "min": 1,
      "name": "Hunter",
@@ -4749,7 +4846,8 @@
        2,
        "三脚电械"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 5,
@@ -4765,6 +4863,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 8,
      "min": 1,
      "name": "tripod x3",
@@ -4774,7 +4873,8 @@
        3,
        "三脚电械"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 3,
@@ -4790,6 +4890,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 7,
      "min": 2,
      "name": "apprentice",
@@ -4799,7 +4900,8 @@
        1,
        "光能学徒"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 5,
@@ -4815,6 +4917,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 12,
      "min": 2,
      "name": "apprentices",
@@ -4824,7 +4927,8 @@
        2,
        "光能学徒"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 6,
@@ -4840,6 +4944,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 12,
      "min": 5,
      "name": "trickster",
@@ -4849,7 +4954,8 @@
        1,
        "光弃者"
       ]
-     ]
+     ],
+     "wave_start": 6
     },
     {
      "cost": 10,
@@ -4885,6 +4991,7 @@
        ]
       }
      ],
+     "limit": 1,
      "max": 12,
      "min": 4,
      "name": "obelisk",
@@ -4904,7 +5011,8 @@
        2,
        "三脚电械"
       ]
-     ]
+     ],
+     "wave_start": 7
     },
     {
      "cost": 15,
@@ -4940,6 +5048,7 @@
        ]
       }
      ],
+     "limit": 2,
      "max": 12,
      "min": 5,
      "name": "illusionist",
@@ -4959,7 +5068,8 @@
        2,
        "三脚电械"
       ]
-     ]
+     ],
+     "wave_start": 8
     },
     {
      "cost": 10,
@@ -4975,6 +5085,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 12,
      "min": 7,
      "name": "tripod_elite x3",
@@ -4984,7 +5095,8 @@
        3,
        "步行者"
       ]
-     ]
+     ],
+     "wave_start": 4
     },
     {
      "cost": 14,
@@ -5000,6 +5112,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 12,
      "min": 7,
      "name": "tripod_elite x5",
@@ -5009,7 +5122,8 @@
        5,
        "步行者"
       ]
-     ]
+     ],
+     "wave_start": 5
     },
     {
      "cost": 20,
@@ -5055,6 +5169,7 @@
        ]
       }
      ],
+     "limit": 1,
      "max": 12,
      "min": 9,
      "name": "illusionist_plus_plus",
@@ -5079,7 +5194,8 @@
        1,
        "光弃者"
       ]
-     ]
+     ],
+     "wave_start": 9
     },
     {
      "cost": 18,
@@ -5115,6 +5231,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 14,
      "min": 13,
      "name": "illusionist_plus_plus_final_02",
@@ -5134,7 +5251,8 @@
        1,
        "光能决策者"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 7,
@@ -5145,7 +5263,7 @@
         [
          "characters/illuminate_hunter/illuminate_hunter_elite",
          1,
-         "illuminate_hunter_elite"
+         "光猎者（护盾型）"
         ]
        ]
       },
@@ -5160,6 +5278,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 15,
      "min": 14,
      "name": "Hunter",
@@ -5167,14 +5286,15 @@
       [
        "characters/illuminate_hunter/illuminate_hunter_elite",
        1,
-       "illuminate_hunter_elite"
+       "光猎者（护盾型）"
       ],
       [
        "characters/illuminate_tripod/illuminate_tripod_elite",
        3,
        "步行者"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 10,
@@ -5210,6 +5330,7 @@
        ]
       }
      ],
+     "limit": 2,
      "max": 15,
      "min": 13,
      "name": "obelisk_trio",
@@ -5229,7 +5350,8 @@
        1,
        "奥贝利斯"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 15,
@@ -5295,6 +5417,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 15,
      "min": 14,
      "name": "trickster_horde",
@@ -5329,7 +5452,8 @@
        1,
        "光弃者"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 7,
@@ -5355,6 +5479,7 @@
        ]
       }
      ],
+     "limit": null,
      "max": 15,
      "min": 14,
      "name": "tripod_elite x6",
@@ -5369,7 +5494,8 @@
        3,
        "步行者"
       ]
-     ]
+     ],
+     "wave_start": 1
     },
     {
      "cost": 20,
@@ -5425,6 +5551,7 @@
        ]
       }
      ],
+     "limit": 1,
      "max": 15,
      "min": 15,
      "name": "illusionist_plus_plus_final_04",
@@ -5454,7 +5581,8 @@
        1,
        "光能决策者"
       ]
-     ]
+     ],
+     "wave_start": 1
     }
    ],
    "patrol": [
@@ -5559,7 +5687,7 @@
       [
        "characters/illuminate_hunter/illuminate_hunter_elite",
        1,
-       "illuminate_hunter_elite"
+       "光猎者（护盾型）"
       ]
      ]
     },
@@ -5574,7 +5702,7 @@
       [
        "characters/illuminate_hunter/illuminate_hunter_elite",
        1,
-       "illuminate_hunter_elite"
+       "光猎者（护盾型）"
       ]
      ]
     }

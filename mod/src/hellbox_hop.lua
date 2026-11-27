@@ -119,6 +119,7 @@ end)()
 local readability_factory = (function()
 return function(config,hooks)
     -- 2026-11-21 HD1-038：来自 QoL 的四项（玩家列表字体、名字字体、潜兵轮廓、HUD 透明度）删了，只留半糖自己的名字深色底和长文字不截断
+    -- 2026-11-26 用户：名字深色底删了（「这个删除了」）；长文字截断留着，开关改名「名字不乱码」，同一个开关还管字体缺字（src/hellbox_name_font.lua）
     local function trim(text,width,measure)
         if type(text)~="string" or not Utf8.valid(text) or width<=0 then return "" end
         if measure(text)<=width then return text end
@@ -137,49 +138,8 @@ return function(config,hooks)
         end
         return text:sub(1,best).."..."
     end
-    -- 颜色拆成（透明度, 红, 绿, 蓝）。2026-11-21 HellBox 修：
-    -- 游戏里 Color(...) 造出来的颜色不能用 color.w 读（读到空值，HUD 透明度一开进任务就闪退），
-    -- 原版读法是 Quaternion.to_elements，第一个数是透明度【源码 hud.lua:1742/1753】；
-    -- 存在表里的颜色（QuaternionAux.box_elements）才是 x=透明度、y/z/w=红绿蓝。
-    local function color_parts(color)
-        if color==nil then return nil end
-        if type(color)=="table" then return color.x,color.y,color.z,color.w end
-        local ok,a,r,g,b=pcall(Quaternion.to_elements,color)
-        if ok and type(a)=="number" then return a,r,g,b end
-    end
-    local function color_alpha(color)
-        return (color_parts(color))
-    end
     return function()
         local ready=true
-        if config.name_background=="1" then
-            ready=hooks.wrap("Hud","draw_player_name_in_world","name_background",function(native)
-                return function(self,...)
-                    local gui=self.hd_gui
-                    if not gui then return native(self,...) end
-                    local create,update=gui.create_text,gui.update_text
-                    local function background(text,position,color,font,size)
-                        if type(text)~="string" or text=="" or not position then return end
-                        local font_size=size or gui.current_font and gui.current_font.font_size
-                        if type(font_size)~="number" then return end
-                        local width,height=gui:get_text_extents(text,font,font_size,true)
-                        if type(width)~="number" or type(height)~="number" then return end
-                        gui:rect(Vector3(position.x-3,position.y-3,position.z-1),Vector2(width+6,height+6),
-                            Color((color_alpha(color) or 255)*0.6,0,0,0))
-                    end
-                    local args={n=select("#",...),...}
-                    return hooks.scoped(gui,"create_text",function(target,text,position,color,font,size,...)
-                        background(text,position,color,font,size)
-                        return create(target,text,position,color,font,size,...)
-                    end,function()
-                        return hooks.scoped(gui,"update_text",function(target,id,text,position,color,font,size,...)
-                            background(text,position,color,font,size)
-                            return update(target,id,text,position,color,font,size,...)
-                        end,function() return native(self,unpack(args,1,args.n)) end)
-                    end)
-                end
-            end) and ready
-        end
         if config.long_text=="1" then
             for _,spec in ipairs({{"draw_selection_scroll","get_text_bounds","draw_text"},
                 {"draw_selection_scroll_hd_gui","get_text_extents","text"}}) do
@@ -208,7 +168,7 @@ end)()
 --     （HBHOP1，一行一个 键=值），改了就生效。
 --   - 挂钩一直装着，每次被调用时看开关（gate），关着就照原版走；不需要重开游戏。
 --   - 2026-11-21 HD1-038（用户定）：来自 QoL Mod 的功能全部删掉（QoL 作者希望各自独立、能一起装；想用就装正版 QoL，HellBox 能和它共存）。
---     只留半糖自己的：建构连续装填、名字深色底、长文字不截断（2026-11-22 用户：军械库显示真实数值、显示身上的状态也是 QoL 的，删了）。
+--     只留半糖自己的：建构连续装填、长文字不截断（2026-11-26 名字深色底删了；2026-11-22 用户：军械库显示真实数值、显示身上的状态也是 QoL 的，删了）。
 --   - 没有 BridgeCore：host 是这里的一个小替身（claim 永远成功），每帧的驱动挂在 WorldManager.update 上。
 do
 	local live = {}

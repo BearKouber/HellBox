@@ -1023,10 +1023,18 @@ return function(host,modes,vehicles,focus_factory,view_factory)
         local want=mask>0 and not blocked and CameraManager and CameraManager.state=="follow"
         local exiting=false
         if record then
-            if record.seat and not seat and want then record.seat_exit_until=Application.time_since_launch()+0.25 end
+            local now=Application.time_since_launch()
+            if record.seat and not seat and want then record.seat_exit_until=now+0.25;record.seat_exit_cap=now+3 end
             record.seat=seat
             if record.original_active or seat or not want then record.seat_exit_until=nil end
-            exiting=record.seat_exit_until and Application.time_since_launch()<record.seat_exit_until
+            -- HellBox 2026-11-26（用户：上下车动作期间镜头会被拉到其他队友那边）：原版下车先清 current_seat_unit，
+            -- 下车动作（character.seat_info.exit_time，0.67～2.4 秒）播完、离开 CharacterStateSeated 时才把人物镜头 activate。
+            -- 作者只等 0.25 秒：动作没播完就收掉自己的镜头，这时自己的镜头目标还关着，原版镜头只框队友 = 拉到队友那边，
+            -- 位置限制也被提前还原。改成动作播着就一直算「正在下车」，最多 3 秒。
+            if record.seat_exit_until and character and not seat and character.state.seat_info~=nil then
+                record.seat_exit_until=math.max(record.seat_exit_until,math.min(now+0.25,record.seat_exit_cap or now))
+            end
+            exiting=record.seat_exit_until and now<record.seat_exit_until
         end
         if is_dead and record then record.original_active=false end
         if not seat and not exiting and ((record and not record.original_active) or (not record and target and not target.state.active)) then want=false end

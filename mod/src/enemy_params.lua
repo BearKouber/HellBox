@@ -192,6 +192,41 @@ do
 			end
 		end
 
+		-- 1.5) 全体绝对覆盖（all.路径=值，如敌人可更密集 flocking_info）：只改这张表原本就有的字段
+		local ov_all = G.ov["all"]
+
+		if ov_all then
+			for path, val in pairs(ov_all) do
+				local cur = get_path(tbl, path)
+
+				if cur ~= nil then
+					if saved[path] == nil then
+						saved[path] = { has = true, v = cur }
+					end
+
+					if type(val) == "table" then
+						local orig = csaved[path] and csaved[path].v
+
+						if orig == nil then
+							orig = saved[path].v
+						end
+
+						if type(orig) == "number" then
+							local v = orig * val.mult
+
+							if path == "health_info.health" then
+								v = math.max(1, v)
+							end
+
+							set_path(tbl, path, v)
+						end
+					else
+						set_path(tbl, path, val)
+					end
+				end
+			end
+		end
+
 		-- 2) 单只覆盖：绝对值，压在上面
 		local ov = G.ov[name]
 

@@ -147,7 +147,7 @@ class CursorPage(Page):
         self._label(card, "黑边")
         w, lay = ui.hbox()
         lay.addWidget(ui.Toggle(None, self.outline, command=self.refresh), 0, ui.Qt.AlignmentFlag.AlignVCenter)
-        lay.addSpacing(10)
+        lay.addStretch(1)
         card.add(w)
 
         self.btn_install = ui.Button(None, "装到游戏里", self.install, kind="primary")

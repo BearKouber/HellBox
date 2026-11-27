@@ -8,6 +8,8 @@ import json
 import os
 from pathlib import Path
 
+import safe_write
+
 FILE = Path(__file__).with_name("hellbox_options.json")
 VOICE = {
     "taunt": "战吼", "help_me_up_request": "求救", "reload_me_request": "请求协同装填",
@@ -41,6 +43,9 @@ DEFAULT = {
     "ime_fix": True,  # 2026-11-19 聊天输入法防闪退（HalfSugar），修闪退的默认开
     # 2026-11-23 用户要回来：过场加速（借鉴 QoL Mod，照 V1.02 那版写；能和 QoL 一起装）
     "speed": False, "speed_factor": 3,
+    "strat_nostep": False,  # 2026-11-26 战备输入优化：键盘输完战备最后一下不再走一步（src/hellbox_qol.lua），默认关 = 原版
+    "spawn_inside": False,  # 2026-11-26 出生地优化：刷怪点和复活不出图（src/hellbox_qol.lua），默认关 = 原版
+    "xp_freeze": False,  # 2026-11-25 经验冻结（需求来自 Oct0pu5）：打完一局不加经验，src/profile_tool.lua 的 install_xp_freeze
 }
 
 
@@ -64,6 +69,9 @@ def load():
         data = json.loads(FILE.read_text(encoding="utf-8"))
     except FileNotFoundError:
         data = {}
+    except ValueError:
+        # 文件坏了（比如写到一半断电）：当成默认设置，不让 HellBox 因此打不开
+        data = {}
     if not isinstance(data, dict):
         raise ValueError("HellBox 设置应为 JSON 对象。")
     return DEFAULT | {key: data[key] for key in DEFAULT if key in data}
@@ -71,9 +79,7 @@ def load():
 
 def save(changes):
     data = load() | changes
-    tmp = FILE.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    os.replace(tmp, FILE)
+    safe_write.write_text(FILE, json.dumps(data, ensure_ascii=False, indent=2) + "\n", crlf=True)
 
 
 def lua_options(quote):
@@ -111,9 +117,7 @@ def live_text(carry=True):
 
 
 def write_live(carry=True):
-    """写游戏每秒读的开关文件（先写临时文件再换名）。"""
+    """写游戏每秒读的开关文件（见 safe_write.py）。"""
     LIVE.parent.mkdir(parents=True, exist_ok=True)
-    tmp = LIVE.with_suffix(".tmp")
-    tmp.write_text(live_text(carry), encoding="utf-8")
-    os.replace(tmp, LIVE)
+    safe_write.write_text(LIVE, live_text(carry), crlf=True)
     return LIVE

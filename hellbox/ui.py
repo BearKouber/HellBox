@@ -1276,6 +1276,7 @@ class NavList(QWidget):
         super().__init__()
         self.groups, self.bottom, self.command = groups, bottom, command
         self.cur, self.hover, self.hidden = None, None, set()
+        self.group_renames, self.item_renames = {}, {}
         self.setMouseTracking(True)
         self.setFixedWidth(self.W)
         self.f_item, self.f_sel, self.f_group = f_zh(11), f_zh(11, True), f_zh(8, True)
@@ -1294,6 +1295,11 @@ class NavList(QWidget):
     def set_hidden(self, keys):
         self.hidden = set(keys)
         self._sync()
+        self.update()
+
+    def set_labels(self, group_renames=None, item_renames=None):
+        self.group_renames = dict(group_renames or {})
+        self.item_renames = dict(item_renames or {})
         self.update()
 
     def select(self, key):
@@ -1336,17 +1342,17 @@ class NavList(QWidget):
             vis = [it for it in items if it[0] not in self.hidden]
             if not vis:
                 continue
-            out.append(("g", None, _tr(title), QRect(0, y, w, self.GH)))
+            out.append(("g", None, _tr(self.group_renames.get(title, title)), QRect(0, y, w, self.GH)))
             y += self.GH
             for key, text in vis:
-                out.append(("i", key, _tr(text), QRect(12, y, w - 12, self.IH)))
+                out.append(("i", key, _tr(self.item_renames.get(key, text)), QRect(12, y, w - 12, self.IH)))
                 y += self.IH
             y += 6
         vis_b = [it for it in self.bottom if it[0] not in self.hidden]
         yb = max(self.height() - 14, y + 8 + self.IH * len(vis_b))
         for key, text in reversed(vis_b):
             yb -= self.IH
-            out.append(("i", key, _tr(text), QRect(12, yb, w - 12, self.IH)))
+            out.append(("i", key, _tr(self.item_renames.get(key, text)), QRect(12, yb, w - 12, self.IH)))
         return out
 
     def paintEvent(self, _e):

@@ -16,6 +16,7 @@ import sys
 
 from bundle import LUA, compress, decompress, murmur64a, parse
 import hellbox_options
+import safe_write
 import hellbox_hop
 try:
     from i18n import T, tr  # HellBox 里跑时有中英文切换
@@ -68,6 +69,8 @@ PATCHES = {
         "src/ai_mech.lua",  # HD1-012（2026-10-13）：机制表（输入、状态计时、发射器连发、出膛 / 爆炸 / 近战 / 挨打事件），录实机操作用
         "src/hb_log.lua",  # 2026-11-14：HellBox 日志本（HellBoxLog 写 hellbox/logs/game.log），要在用它的脚本前面
         "src/hb_probe.lua",  # 2026-11-19：闪退探针（一直写 hellbox/logs/game-probe.txt 现在在干什么；没正常退出 = 可能闪退），要在 hb_log 后面
+        "src/hellbox_alive.lua",  # 2026-11-25：HellBox 开没开着（心跳 hellbox-alive.txt）；关了数据 / 玩法 / 配装 / 变强按原版，要在用它的脚本前面
+        "src/hellbox_8p.lua",  # 2026-11-26 HD1-039：8 人房间的规则（「多人」页开关；关着时什么都不做），要在 hb_log 后面
         "src/hellbox_room_gate.lua",  # 2026-11-23 V1.07：联机限制（当客机时只在有 MOD 的房间开几项功能），要在用它的脚本前面
         "src/recap_guard.lua",  # 2026-10-18：开机战役回顾服务器回 0 张快照时不再闪退（parent:exit 为 nil）
         "src/room_name.lua",  # 2026-10-21：自定义房间名（名字在 room_name.txt）
@@ -78,6 +81,8 @@ PATCHES = {
         "src/hellbox_qol.lua",
         "src/hellbox_dh.lua",  # 2026-11-21 HD1-038：来自 Dive Harder（Oct0pu5）的四项，开关在 HellBoxOptions，要在 hellbox_qol 后面
         "src/hellbox_hop.lua",  # 2026-11-20 HD1-035：半糖 HelldiversOptimization + BetterHUD（tools/make_hop.py 生成，设置 hop.txt 热生效）
+        "src/hellbox_name_font.lua",  # 2026-11-26：「显示」页「名字不乱码」：字体里没有的字改用聊天字体画（字表 glyphs.py 装的时候从玩家游戏里读），要在 hellbox_hop 后面
+        "src/hud_name_guard.lua",  # 2026-11-26：人物没了（上撤离机等）头顶名字删掉，不再按最后的位置一直印在屏幕上（原版漏洞，常开）
         "src/hellbox_results.lua",
         "src/planet_refresh.lua",  # 2026-10-22：刷新星球（窗口按钮热发请求，下次打开战役地图重新生成）
         "src/profile_tool.lua",  # 2026-11-08：HellBox「角色」「队友」页：研究点、披风、游戏内右键给好友点赞（commend_friends.txt），状态每秒写回信箱表
@@ -97,8 +102,10 @@ PATCHES = {
         "src/camera_link.lua",  # 2026-11-14：分屏（CameraCTRL）在游戏里自己发控制信号，不用开着 HellBox；没装分屏模块时什么都不做
         "src/training_loadout.lua",  # 2026-11-14：HellBox 开的训练关，出发前先弹原版选战备界面（HellBox 写 training-loadout.txt 标记）
         "src/hellbox_start.lua",  # 2026-11-16 V0.95：游戏开着、人在飞船上时 HellBox 训练直接进关（start-training.txt），要在 training_loadout 后面
+        "src/hellbox_strong.lua",  # 2026-11-25 选图「变强」：一个人打报复关从第 N 波开始、复活币原地重来（hellbox_start 一个人直接进关时设）
         "src/hellbox_play.lua",
         "src/hellbox_drone_light.lua",  # 2026-11-20 HD1-035：鬼城里蜜蜂无人机带灯（借 hellbox_play 藏起来的灯，设置在 hop.txt），要在 hellbox_play 后面  # 2026-11-16 V0.95：「玩法」页（真训练场联机版 selected_trial + HellBox 版场上事件 / 换弹换枪，play.txt）
+        "src/hellbox_self_bright.lua",  # 2026-11-26：「显示」页本机潜兵调亮（盔甲边缘反光 fresnel，关掉让原版重建部件；设置在 hop.txt，热生效）
         "src/host_loadout.lua",  # 2026-11-18 V0.96：房主定配装（host-loadout.txt → 房间数据 hellbox_lo → 开 HellBox 的队友锁格子）
         "src/host_loadout_menu.lua",  # 2026-11-18 V0.97：选装备界面按格子画锁 / ???（照抄原版 draw_menu，要在 host_loadout 后面）
         "src/map_preview.lua",  # 2026-11-14：HellBox 训练模式的地图小方块图（按地图编号生成方块布局写到文件）
@@ -139,6 +146,16 @@ COMMEND_FRIENDS_FILE = os.path.join(HERE, "commend_friends.txt")
 CARRY_VEHICLE_FILE = os.path.join(HERE, "carry_vehicle.txt")
 CARRY_RES = "lua/character_states/character_state_carry"
 
+# 8 人房间（2026-11-26 HD1-039，「多人」页）："1" = 开，空 / 没有文件 = 关（原版 4 人）。
+#   开着时编译填 src/hellbox_8p.lua 的 "@HELLBOX_8P@"，并把原版几个脚本里玩家数的 4 改成 8（eight_players.py）。改了要在游戏关着时重装
+EIGHT_PLAYERS_FILE = os.path.join(HERE, "eight_players.txt")
+# 8 人房间的状态栏（用户 2026-11-26，「多人」页选）：摆法 rows 两排（默认）/ small 小一号排一排，二选一；
+# 另有开关 solo 只看自己（开地图才看别人），两种摆法都能配。文件里一行，如 "small+nosolo"；空 = 两排、只看自己开着。
+# 2026-11-26 用户：只看自己默认开。所以文件只记「关了」（nosolo）；以前写的 "solo" 照样认成开。
+# 编译时填 src/hellbox_8p.lua 的 "@HELLBOX_8P_HUD@"
+EIGHT_HUD_FILE = os.path.join(HERE, "eight_players_hud.txt")
+EIGHT_HUD_LAYOUTS = ("rows", "small")
+
 # 瞄准指针 mod 的设置（cursor_mod.py 读写），变了要重编 src/cursor_color.lua
 CURSOR_SETTINGS_FILE = os.path.join(HERE, "cursor_settings.json")
 
@@ -158,6 +175,32 @@ def _set_line(path, name, what, limit=NAME_MAX_BYTES):
     if name != _get_line(path):
         with open(path, "w", encoding="utf-8", newline="\n") as f:
             f.write(name + "\n")
+
+
+def get_eight_players():
+    return _get_line(EIGHT_PLAYERS_FILE) == "1"
+
+
+def set_eight_players(on):
+    _set_line(EIGHT_PLAYERS_FILE, "1" if on else "", "开关", 1)
+
+
+def get_eight_hud():
+    """(摆法 rows / small, 只看自己 True / False)"""
+    parts = _get_line(EIGHT_HUD_FILE).split("+")
+    return ("small" if "small" in parts else "rows"), "nosolo" not in parts
+
+
+def set_eight_hud(layout, solo):
+    if layout not in EIGHT_HUD_LAYOUTS:
+        raise ValueError(T("状态栏摆法只能是 {0}。", " / ".join(EIGHT_HUD_LAYOUTS)))
+    parts = ([] if layout == "rows" else [layout]) + ([] if solo else ["nosolo"])
+    _set_line(EIGHT_HUD_FILE, "+".join(parts), "状态栏设置", 16)
+
+
+def eight_hud_text():
+    layout, solo = get_eight_hud()
+    return layout + ("+solo" if solo else "")
 
 
 def get_carry_vehicle():
@@ -180,7 +223,7 @@ def is_public():
 
 def config_paths():
     names = (ROOM_NAME_FILE, SELF_NAME_FILE, *PN_NAME_FILES.values(), COMMEND_FRIENDS_FILE,
-             FRONT_UNLOCK_FILE, GENOCIDE_FILE, CURSOR_SETTINGS_FILE, CARRY_VEHICLE_FILE,
+             FRONT_UNLOCK_FILE, GENOCIDE_FILE, CURSOR_SETTINGS_FILE, CARRY_VEHICLE_FILE, EIGHT_PLAYERS_FILE, EIGHT_HUD_FILE,
              hellbox_options.FILE, __file__, hellbox_options.__file__, hellbox_hop.FILE, hellbox_hop.__file__)
     return [path for path in names if os.path.isfile(path)]
 
@@ -292,7 +335,7 @@ def set_commend_friends(on):
 
 
 # 2026-11-23 用户定（V1.06）：解锁战线三选一。front_unlock.txt 存："" 关 / "1" 普通星区 / "home" 进攻母星 /
-#   "se1"～"se3" 保卫超级地球（虫族 / 赛博人 / 光能族）。后两种也带普通解锁（被攻破、没出场的战线照样能进）。
+#   "se1"～"se3" 保卫超级地球（虫族 / 生化人 / 光能者）。后两种也带普通解锁（被攻破、没出场的战线照样能进）。
 FRONT_MODES = ("", "1", "home", "se1", "se2", "se3")
 
 
@@ -306,7 +349,8 @@ def set_front_mode(mode):
         mode = ""
     if not os.path.exists(GENOCIDE_FILE):
         set_genocide(get_genocide())  # 旧设置跟战线走，只迁移一次
-    _set_line(FRONT_UNLOCK_FILE, mode, "开关", 1)
+    # 值是 FRONT_MODES 里的一个（最长 "home" 4 个字符）；原来长度上限写的 1 是开 / 关时代留下的，选进攻母星、超级地球会报「开关太长了」
+    _set_line(FRONT_UNLOCK_FILE, mode, "开关", max(len(m) for m in FRONT_MODES))
 
 
 def front_event():
@@ -482,17 +526,8 @@ def read(path):
 
 
 def write(path, data):
-    """先写到旁边的临时文件再一步换上（2026-11-14）：写到一半 HellBox 被关 / 断电，原文件还是完整的。"""
-    tmp = path + ".hellbox-tmp"
-    try:
-        with open(tmp, "wb") as f:
-            f.write(data)
-            f.flush()
-            os.fsync(f.fileno())
-        os.replace(tmp, path)
-    finally:
-        if os.path.exists(tmp):
-            os.remove(tmp)
+    """先写临时文件再换上（写到一半被关 / 断电原文件还完整）；换不了才直接写，见 safe_write.py。"""
+    safe_write.write_bytes(path, data)
 
 
 def safe_copy(src, dst, to_game=False):
@@ -516,6 +551,8 @@ def compile_lua(res, sources):
     text = text.replace('"@SELF_NAME@"', lua_quote(get_self_name()))
     for n in (2, 3, 4):
         text = text.replace(f'"@P{n}_NAME@"', lua_quote(get_pn_name(n)))
+    text = text.replace('"@HELLBOX_8P@"', lua_quote("1" if eight_on() else ""))
+    text = text.replace('"@HELLBOX_8P_HUD@"', lua_quote(eight_hud_text()))
     text = text.replace('"@COMMEND_FRIENDS@"', lua_quote("1" if get_commend_friends() else ""))
     text = text.replace('"@FRONT_UNLOCK@"',lua_quote("1" if get_front_unlock() else ""))
     text = text.replace('"@FRONT_EVENT@"', lua_quote(front_event()))
@@ -525,6 +562,13 @@ def compile_lua(res, sources):
         text = text.replace('"@HELLBOX_OPTIONS@"', hellbox_options.lua_options(lua_quote))
     if '"@HELLBOX_HOP@"' in text:
         text = text.replace('"@HELLBOX_HOP@"', hellbox_hop.lua_defaults(lua_quote, dev=not is_public()))
+    if '"@HELLBOX_GLYPHS@"' in text:
+        import glyphs  # 2026-11-26 名字不乱码：游戏字体里有哪些字（读不到就是 nil，游戏里只做长名字截断）
+        try:
+            table = glyphs.lua_table(game_dir(), lua_quote)
+        except Exception:
+            table = "nil"
+        text = text.replace('"@HELLBOX_GLYPHS@"', table)
     if '"@CURSOR_COLOR@"' in text:
         import cursor_mod  # 放这里避免互相 import
         text = text.replace('"@CURSOR_COLOR@"', lua_quote(cursor_mod.lua_setting()))
@@ -565,6 +609,26 @@ def rebuild(raw, replace):
     assert done == set(replace), "有资源没找到"
     assert raw[off:].strip(b"\0") == b"", "资源之后的填充不是全 0"
     return b"".join(out)
+
+
+def eight_on():
+    """8 人房间这次要不要装（录制器单独装的核心不带）。"""
+    return get_eight_players() and not is_recorder_core()
+
+
+EIGHT_FILES = [os.path.join(HERE, "eight_players.py"), os.path.join(HERE, "ljbc.py")]
+
+
+def eight_replacements(raw):
+    """开了 8 人房间时：原版几个脚本改成 8 人版（eight_players.py），{资源名哈希: bytecode}；没开返回空。"""
+    if not eight_on():
+        return {}
+    import eight_players
+    try:
+        return eight_players.replacements(raw)
+    except eight_players.NotVanilla as e:
+        raise RuntimeError(T("8 人房间要改的游戏脚本 {0} 被别的 MOD 改过（比如 QoL、Dive Harder），现在开不了。"
+                             "请到「多人」页关掉 8 人房间再装。", e.args[0])) from e
 
 
 def camera_enabled():
@@ -720,7 +784,8 @@ def build():
     raw, size = decompress(base)
     assert size <= len(raw)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    replace = {murmur64a(res.encode()): compile_lua(res, srcs) for res, srcs in patches().items()}
+    replace = eight_replacements(raw[:size])
+    replace.update({murmur64a(res.encode()): compile_lua(res, srcs) for res, srcs in patches().items()})
     new_raw = rebuild(raw[:size], replace)
     if camera_enabled():
         new_raw = stack_camera(new_raw)
@@ -836,7 +901,7 @@ def code_is_stale():
     if not os.path.exists(OUT):
         return False
     t = os.path.getmtime(OUT)
-    srcs = [s for paths in patches().values() for s in source_files(paths)]
+    srcs = [s for paths in patches().values() for s in source_files(paths)] + EIGHT_FILES
     # 2026-11-19：分屏换了新的（作者新版 / 我们改镜头；2026-11-21 起看 runtime.luac 和 camera_stack.py）也算旧版，否则一直显示已装好、游戏里还是旧分屏
     if camera_enabled():
         srcs += [CAMERA_LUAC, camera_stack.__file__]
@@ -847,7 +912,7 @@ def out_is_stale():
     if not os.path.exists(OUT) or not os.path.exists(OUT_PATCH) or not base_matches():
         return True
     t = os.path.getmtime(OUT)
-    srcs = [s for paths in patches().values() for s in source_files(paths)] + [os.path.abspath(__file__)]
+    srcs = [s for paths in patches().values() for s in source_files(paths)] + [os.path.abspath(__file__)] + EIGHT_FILES
     if camera_enabled():
         srcs += [CAMERA_LUAC, camera_stack.__file__]
     srcs += config_paths()

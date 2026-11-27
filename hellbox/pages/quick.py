@@ -33,6 +33,7 @@ if AI_DIR not in sys.path:
     sys.path.insert(0, AI_DIR)
 import drill_spec as ds  # noqa: E402
 from pages import map_picker  # noqa: E402
+from pages.strong import StrongCard  # noqa: E402
 
 PYTHON = os.path.join(paths.ROOT, ".venv", "Scripts", "python.exe")
 RUNNER = os.path.join(AI_DIR, "drill_run.py")
@@ -213,6 +214,8 @@ class QuickPage(Page):
             spawn_card.hide()
             self.view.row(map_card)
             self.view.row(self._build_train())
+            self.strong = StrongCard(self.view, self.cfg, self._save)  # 2026-11-25「变强」，在存档下面
+            self.view.row(self.strong.card)
         else:
             self.view.row(map_card, spawn_card)
             self.view.row(self._build_run(), self._build_status())
@@ -293,6 +296,8 @@ class QuickPage(Page):
                 var.set(val)
         self._race_built = None
         self._mode_changed(save=False)
+        if hasattr(self, "strong"):
+            self.strong.load(self.cfg)  # 要在 _set_seed 前面：它会存设置，先把格子里的「变强」放上
         self._set_seed(self.cfg["seed"])
 
     # ------------------------------------------------------------ 小工具
@@ -394,6 +399,8 @@ class QuickPage(Page):
                 var.set(val)
         self._refresh_map_text()
         self._rebuild_units()
+        if hasattr(self, "strong"):
+            self.strong.refresh(seed)
         self._save()
 
     def _pick_terrain(self):
@@ -662,6 +669,8 @@ class QuickPage(Page):
             sp["seq"] = seq
         sp["gap"] = self.st_gap.value()
         sp["start_wave"] = self.st_wave.value()
+        if hasattr(self, "strong"):
+            self.cfg["strong"] = self.strong.value()
         if not build.is_public():
             self.cfg["run"] = {"script": self.v_script.get(), "primary_only": bool(self.v_primary.get())}
             self.cfg["stop"] = {"kills": self.st_kills.value() if self.v_kill_on.get() else 0,
@@ -739,7 +748,9 @@ class QuickPage(Page):
 
         def action():
             if build.game_running():
-                if build.status() != "on" or build.out_is_stale():
+                # 2026-11-25：只看代码新旧（status 里的 code_is_stale）。以前多加了 out_is_stale，
+                #   它连设置文件也算：游戏开着改过场加速 / 名字这类热生效设置后，选图就误报「不是最新版」
+                if build.status() != "on":
                     raise RuntimeError("游戏里的 MOD 不是最新版，不能在飞船上开。请先在游戏中正常退出，再点击「开始」（会先更新 MOD 再开游戏）。")
                 ds.save_last(cfg)
                 return training.start_in_game(cfg, self._drop_play_trial)

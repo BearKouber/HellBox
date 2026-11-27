@@ -36,7 +36,7 @@
 --     的存档都不会记下这个假事件，不会算进事件相关的成就。
 --   - 已经有真事件的种族不加假的（母星）；保卫超级地球时盖掉真的防守事件（只在本机显示上）。
 --   - 刷新：planet_refresh.lua 在这颗星里按刷新键 = G.reroll_event 重抽这 5 关。
---   - 开机值：build.py 填 FRONT_EVENT 占位（"" / "home" / "se1"～"se3"，1～3 = 虫族 / 赛博人 / 光能族）；热切换信箱 e=。
+--   - 开机值：build.py 填 FRONT_EVENT 占位（"" / "home" / "se1"～"se3"，1～3 = 虫族 / 生化人 / 光能者）；热切换信箱 e=。
 --
 -- 热切换：信箱表 G.t，布局和 room_name.lua 一样（只是魔数不同），窗口用 mod\room_name_live.py 写。
 --   1-4 魔数；5 VERSION；6 请求号；7 已应用的请求号；8 字节数；9 起：内容 "f=1;g=100"（f = 战线开关 1/0，g = 报复概率百分比，空 = 原版）。
@@ -558,8 +558,44 @@ do
 		return true
 	end
 
+	-- 2026-11-25 用户要：开着解锁战线（任何一种）时，等级不够的难度也能打。
+	--   原版 DifficultySettings.required_level_per_planet_difficulty = {1, 2, ..., 15}（难度 n 要 n 级），
+	--   战役星球页（menu_screen_campaign_planet 917 / 1240 / 2010 / 2168 行）、房主发给客机的星球列表（state_menu 3746 行）、
+	--   飞船 NPC 的台词都查它。原地改成全是 1（不换表：NPC 台词用 pairs 遍历它），关掉时改回原值。
+	local function level_unlock()
+		local ds = rawget(_G, "DifficultySettings")
+		local req = type(ds) == "table" and rawget(ds, "required_level_per_planet_difficulty")
+
+		if type(req) ~= "table" then
+			return
+		end
+
+		if G.req_tbl ~= req then
+			G.req_tbl = req
+			G.req_orig = {}
+			G.req_applied = nil
+
+			for k, v in pairs(req) do
+				G.req_orig[k] = v
+			end
+		end
+
+		local want = G.on == true
+
+		if G.req_applied == want then
+			return
+		end
+
+		for k, v in pairs(G.req_orig) do
+			req[k] = want and 1 or v
+		end
+
+		G.req_applied = want
+	end
+
 	local function tick()
 		poll_mailbox()
+		pcall(level_unlock)
 		genocide()
 		hook_events()
 

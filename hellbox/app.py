@@ -26,11 +26,12 @@ from PySide6.QtCore import Qt  # noqa: E402
 from PySide6.QtGui import QIcon  # noqa: E402
 from PySide6.QtWidgets import QApplication, QStackedWidget, QWidget  # noqa: E402
 
+import alive  # noqa: E402
 import i18n  # noqa: E402
 import logbook  # noqa: E402
 import ui  # noqa: E402
 
-VERSION = "V1.07"  # 2026-11-23 用户定：合并 Oct0pu5 的界面文字整理（PR #1）+ 联机限制，这一版叫 1.07； 2026-11-23 用户定：解锁战线三选一（普通星区 / 进攻母星 / 保卫超级地球，假事件不报服务器、能刷新）这一版叫 1.06； 2026-11-22 用户定：解锁其他战线进发布版、选图游戏关着时也在线、打包去掉套娃压缩包这一版叫 1.05； 2026-11-22 用户定：房间名新规矩（[Hex]、鬼城 +3、炼狱）、选图点小地图挑地形、Dive Harder 作者的几处措辞，这一版叫 1.04
+VERSION = "V1.10"  # 2026-11-23 版本号改为 1.10（侦察兵改成心肺+受伤50%、经验倍率 1/10000、指针页黑边开关位置）；1.09（权限问题修完：写内存句柄、目录完整性标签、设置直接写）；合并上游 1.07（PR #1 界面文字整理 + 联机限制）； 2026-11-23 用户定：解锁战线三选一（普通星区 / 进攻母星 / 保卫超级地球，假事件不报服务器、能刷新）这一版叫 1.06； 2026-11-22 用户定：解锁其他战线进发布版、选图游戏关着时也在线、打包去掉套娃压缩包这一版叫 1.05； 2026-11-22 用户定：房间名新规矩（[Hex]、鬼城 +3、炼狱）、选图点小地图挑地形、Dive Harder 作者的几处措辞，这一版叫 1.04
 VERSION_NOTE = ""
 POLL_MS = 2000
 MASTER_HELP = ("核心：HellBox 总开关\n打开 = 安装 HellBox；关闭 = 游戏换回原版文件"
@@ -128,6 +129,9 @@ class App(QWidget):
         lay = panel.lay
         self.dev = load_dev()
         self.kon = load_kon()
+        if self.kon and self.dev:
+            self.dev = False
+            save_dev(False)
         lay.addWidget(self._build_header())
         lay.addWidget(ui.ink_line(3))
 
@@ -182,7 +186,7 @@ class App(QWidget):
         hl.addWidget(self.dev_tag, 0, VC)
         hl.addSpacing(6)
         self.kon_tag = ui.Tag(head, "K-ON!", fill=ui.SKY, font=ui.f_pixel(8))
-        ui.hover_help(self.kon_tag, "K-ON!增强UI定制版", "开启：左边只有功能 / 玩法 / 数据 / 指针 / 关于")
+        ui.hover_help(self.kon_tag, "K-ON!增强UI定制版", "开启：关闭开发者模式，左边只有功能 / 玩法 / 增强 / 指针 / 关于")
         hl.addWidget(self.kon_tag, 0, VC)
         self.kon_tag.setVisible(self.kon)
         hl.addStretch(1)
@@ -208,7 +212,8 @@ class App(QWidget):
 
     # ------------------------------------------------------------ 开发者模式
     def set_dev(self, on, quiet=False):
-        self.dev = bool(on)
+        on = bool(on) and not getattr(self, "kon", False)
+        self.dev = on
         if not quiet:
             save_dev(self.dev)
         self.dev_tag.setVisible(self.dev)
@@ -220,6 +225,11 @@ class App(QWidget):
         self.kon = bool(on)
         save_kon(self.kon)
         self.kon_tag.setVisible(self.kon)
+        if self.kon and self.dev:
+            self.set_dev(False)
+        for p in self.pages:
+            if hasattr(p, "set_kon"):
+                p.set_kon(self.kon)
         self._apply_nav()
 
     def hidden_pages(self):
@@ -230,6 +240,10 @@ class App(QWidget):
     def _apply_nav(self):
         hidden = self.hidden_pages()
         if getattr(self, "nav", None) is not None:
+            if getattr(self, "kon", False):
+                self.nav.set_labels({"改数据": "数据"}, {"data": "增强"})
+            else:
+                self.nav.set_labels()
             self.nav.set_hidden(hidden)
         if self.current is not None and self.current.key in hidden:
             self.show_page("about")
@@ -372,6 +386,7 @@ class App(QWidget):
             QProcess.startDetached(sys.executable, extra)
         else:
             QProcess.startDetached(sys.executable, [os.path.abspath(__file__), *extra])
+        alive.keep_on_exit = True  # 换语言重开：新的接着写心跳，中间不算关
         QApplication.quit()
 
     def mod_on(self):
@@ -555,6 +570,34 @@ class App(QWidget):
 
         self.bg(work, done)
 
+    _admin_asked = False
+
+    def _check_admin(self):
+        """先开 HellBox、后开管理员身份的游戏：问一次要不要以管理员身份重启（见 elevate.py）。"""
+        import elevate
+        if self._admin_asked or not elevate.may_ask():
+            return
+
+        def done(ok, need):
+            if not (ok and need) or self._admin_asked:
+                return
+            if self.busy:
+                self.after(5000, self._check_admin)
+                return
+            self._admin_asked = True
+            if not self.ask(T("游戏是以管理员身份运行的，HellBox 的权限比它低：游戏开着时改名字、改潜兵页的设置会失败。\n"
+                              "现在以管理员身份重新打开 HellBox 吗？")):
+                return
+            extra = ["--page", self.current.key] if self.current else []
+            try:
+                if elevate.relaunch(extra):
+                    alive.keep_on_exit = True  # 以管理员身份重开：新的接着写心跳，中间不算关
+                    QApplication.quit()
+            except OSError as e:
+                self.say(T("没法以管理员身份启动：{0}", e), "err")
+
+        self.bg(elevate.needs_admin, done)
+
     def _on_game(self, running):
         changed = running != self.state["running"]
         self.state["running"] = running
@@ -562,6 +605,8 @@ class App(QWidget):
             self.sync()
             if not self.busy:
                 self.refresh_status()
+            if running:
+                self._check_admin()
         if running is False and changed:
             def told(ok, msg):
                 if ok and msg:
@@ -580,6 +625,14 @@ def main():
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("HellBox.HD1")
         except (AttributeError, OSError):
             pass
+        if "--check-ui" not in sys.argv:
+            # 游戏以管理员（High）开着时，Medium 的 HellBox 连它的写句柄都打不开（热改名会失败），
+            # 所以默认以管理员身份运行；判据是实测一次写句柄，不看 IsUserAnAdmin（关 UAC 时它会说谎）
+            try:
+                import elevate
+                elevate.ensure_admin()
+            except OSError as e:
+                logbook.warn("HellBox", T("没法以管理员身份启动：{0}", e))
     logbook.install()
     qapp = QApplication(sys.argv[:1])
     qapp.setWheelScrollLines(1)
@@ -600,7 +653,18 @@ def main():
             page.sync()
             qapp.processEvents()
         raise SystemExit(0 if app.pages else 1)
-    sys.exit(qapp.exec())
+    # 2026-11-25 用户定：HellBox 关了，游戏里影响平衡的东西马上按原版（心跳见 alive.py / mod/src/hellbox_alive.lua）
+    alive.start()
+    try:
+        code = qapp.exec()
+    finally:
+        try:
+            from pages import record  # 录着的先收好再走
+            record.shutdown()
+        except Exception as e:
+            logbook.exception("HellBox", e)
+        alive.stop()
+    sys.exit(code)
 
 
 if __name__ == "__main__":

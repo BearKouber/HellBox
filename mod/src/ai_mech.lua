@@ -7,7 +7,8 @@
 --   1-4 魔数；5 VERSION；6 已写完的帧号；7 正在写的帧号（和 6 相等说明这一帧完整）；8 本帧 dt；9 游戏时间（dt 累加）；
 --   10 写了几个玩家；11 每帧采集出错次数（到 50 次停采，不影响游戏）；12 事件钩子出错次数；13 字符串条数；
 --   14 最新事件序号；15 钩子装上了哪些（按位：1 出膛 do_fire，2 爆炸 do_explosion，4 近战 do_damage，
---   8 挨打 HealthComponent.command_master，16 炮弹登记 ExplosiveComponent.setup_master）；
+--   8 挨打 HealthComponent.command_master，16 炮弹登记 ExplosiveComponent.setup_master，
+--   32 击杀 HealthComponent.update_stats）；
 --   16 锁血（1 开 0 关）；17 锁血键找到没有（1/0，-1 = 还没找）；18 锁血键名字（字符串号）；19 镜头转角（弧度，-99 读不到）；
 --   20 键盘的手柄编号（KEYBOARD_MOUSE_PAD_NUMBER）；21 ai_bridge 的帧号（对表用）；22-32 保留
 --   玩家区 P0 = 33，4 个 × PF 格（按 ai_bridge 的编号从小到大，和它的玩家区同序），格子含义见 write_player 上面；
@@ -67,6 +68,9 @@ do
 		B.own_ids = {}
 		B.next_own_id = 1000000
 	end
+
+	B.killed = B.killed or {}
+	B.nkilled = B.nkilled or 0
 
 	local t = B.t
 	local call = pcall or function(f, ...)
@@ -217,6 +221,10 @@ do
 	--   4 玩家挨打：+3 挨打的人编号 +4 打人的编号 +5 打人的是谁（1/2/0）+6 打人的种类名 +7 威力（护甲前）
 	--     +8 挨打前血量 +9 伤害类型 +10 锁血补回了（1/0）+11 打人的 x +12 y +13 挨打前已倒地（1/0）+14 打人的单位（attacker，编号）
 	--   5 锁血开关：+3 现在开没开
+	--   6 击杀（HD1-040，游戏自己算的谁杀的；只有结算这个单位的那台机器看得到，敌人一般在房主那）：
+	--     +3 死的单位编号 +4 死的是谁（1/2/0）+5 死的种类名（敌人）+6 凶手编号（owner_unit，-1 = 没有）
+	--     +7 凶手是谁（1/2/0）+8 动手的单位编号（attacker_unit：子弹 / 炮弹 / 战备）+9 伤害类型 +10 死的 x +11 y
+	--     +12 凶手的种类名（敌人）+13 摔死（1/0）
 	local function push(kind, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15)
 		B.ev_seq = B.ev_seq + 1
 
@@ -342,6 +350,35 @@ do
 		push(4, uid(unit), owner and uid(owner) or -1, k, k == 2 and sid(enemy_type(owner)) or -1, num(arg.power, MISS),
 			num(s.hitpoints, MISS), sid(arg.damage_type), flag(healed), ox, oy, flag(s.is_downed),
 			arg.attacker_unit and uid(arg.attacker_unit) or -1)
+	end
+
+	-- 击杀：HealthComponent.update_stats 是游戏给"谁杀的"记账的地方（血掉到 constitution 以下才算死），
+	-- 同一个单位只记一次（B.killed 弱表）
+	local function on_kill(unit, ent, arg)
+		local s = (ent or EMPTY).state or EMPTY
+
+		local last = B.killed[unit]
+
+		if not (num(s.hitpoints_real, 1) <= num(s.constitution, 0)) or (last and B.time - last < 2) then
+			return
+		end
+
+		-- 单位指针会被新单位重用，所以只挡 2 秒内的重复；攒多了清空
+		if B.nkilled > 4000 then
+			B.killed, B.nkilled = {}, 0
+		end
+
+		B.killed[unit] = B.time
+		B.nkilled = B.nkilled + 1
+
+		local k = kind_of(unit)
+		local owner = arg and arg.owner_unit
+		local ok_ = kind_of(owner)
+		local x, y = unit_xy(unit)
+
+		push(6, uid(unit), k, k == 2 and sid(enemy_type(unit)) or -1, owner and uid(owner) or -1, ok_,
+			arg and arg.attacker_unit and uid(arg.attacker_unit) or -1, arg and sid(arg.damage_type) or -1, x, y,
+			ok_ == 2 and sid(enemy_type(owner)) or -1, arg == nil and 1 or 0)
 	end
 
 	-- ---------- 钩子（第一次采集时装，类都已经建好了） ----------
@@ -504,6 +541,28 @@ do
 
 		if hc and hc.command_master == B.wrapped.health then
 			bits = bits + 8
+		end
+
+		-- 击杀（HD1-040）：update_stats 只读不改，原函数照常跑
+		if hc and hc.update_stats and hc.update_stats ~= B.wrapped.stats then
+			local orig = hc.update_stats
+
+			B.wrapped.stats = function(self, unit, ent, arg, ...)
+				if B.errors < MAX_ERRORS then
+					local ok, err = call(on_kill, unit, ent, arg)
+
+					if not ok then
+						hook_error("kill", err)
+					end
+				end
+
+				return orig(self, unit, ent, arg, ...)
+			end
+			hc.update_stats = B.wrapped.stats
+		end
+
+		if hc and hc.update_stats == B.wrapped.stats then
+			bits = bits + 32
 		end
 
 		-- 炮弹登记：出膛时（do_fire 里面）生出来的炸药，记下是第几号炮弹，爆炸时就能对上

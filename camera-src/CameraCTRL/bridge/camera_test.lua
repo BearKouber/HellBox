@@ -405,6 +405,52 @@ for _,ending in ipairs({'activate','timeout','death','disable'}) do
 end
 print('PASS delayed dismount activation retains private camera without flicker; timeout, death and disable clean up')
 
+-- HellBox 2026-11-26：原版下车动作（seat_info 还在）播完才 activate；动作 1.2 秒也不能收掉自己的镜头（以前 0.25 秒就收，镜头拉到队友那边）
+local function seated_fixture()
+    local exiting=fixture(true)
+    local contexts=exiting.groups
+    contexts.camera_target.master[88]={state={active=true,look_ahead=0,is_reverse=false},go_id=88}
+    contexts.mover.master[88]={state={keep_inside_screen=true}}
+    contexts.vehicle={master={[88]={}}}
+    contexts.seat={master={[88]={state={seated_units={[1]=42}}}}}
+    exiting.character.state.current_seat_unit=88
+    exiting.target.state.active=false
+    assert(exiting.frame(3).applied==3)
+    return exiting,contexts
+end
+do
+    local exiting,contexts=seated_fixture()
+    local display=exiting.manager:camera()
+    exiting.character.state.current_seat_unit=nil
+    exiting.character.state.seat_info={exit_time=1.2}
+    contexts.seat.master[88].state.seated_units[1]=nil
+    assert(exiting.frame(3).applied==3)
+    for _,t in ipairs({1.2,1.5,2.0}) do
+        exiting.time(t)
+        assert(exiting.frame(3).applied==3,'exit animation at '..t)
+        assert(exiting.manager:camera()==display and exiting.destroy_count()==0,'camera kept at '..t)
+        assert(exiting.draws[#exiting.draws]==display and not exiting.target.state.active)
+        assert(not exiting.mover.state.keep_inside_screen,'limit kept during exit')
+    end
+    exiting.character.state.seat_info=nil
+    CameraTargetComponent.command_master({},42,exiting.target,'activate')
+    assert(exiting.frame(3).applied==3 and exiting.manager:camera()==display and exiting.destroy_count()==0)
+    print('PASS long dismount animation keeps private camera until native activation')
+end
+do
+    -- 动作卡住（seat_info 一直不清）：最多 3 秒后照原来收掉
+    local exiting,contexts=seated_fixture()
+    exiting.character.state.current_seat_unit=nil
+    exiting.character.state.seat_info={exit_time=9}
+    contexts.seat.master[88].state.seated_units[1]=nil
+    assert(exiting.frame(3).applied==3)
+    for t=1.5,3.9,0.2 do exiting.time(t);assert(exiting.frame(3).applied==3,'held at '..t) end
+    exiting.time(4.3)
+    assert(exiting.frame(3).owned==0)
+    assert(exiting.manager:camera()==100 and exiting.destroy_count()==1)
+    print('PASS stuck dismount animation gives up after 3 seconds')
+end
+
 local coverage=fixture()
 assert(coverage.camera.contains(coverage.game,vector(0,0,0))==nil)
 coverage.frame(3)

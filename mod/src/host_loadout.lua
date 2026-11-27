@@ -356,12 +356,21 @@ do
 		timer = 1
 		read_file()
 
+		-- 2026-11-25 用户定：HellBox 关了（hellbox_alive.lua）= 不锁格子，马上生效：这一关定下的规则也清掉（之后复活照自己的配装），
+		--   当房主时广播「没有规则」；HellBox 再打开，选装备界面马上照规则，这一关定下的等下一关
+		local alive = rawget(_G, "HellBoxAlive")
+		local off = type(alive) == "table" and type(alive.off) == "function" and alive.off() or false
+
+		if off and G.frozen and (G.frozen.rule or next(G.frozen.draws or {})) then
+			G.frozen.rule, G.frozen.draws = nil, {}
+		end
+
 		local lobby = lobby_now()
 
 		if lobby and lobby:is_host() then
 			G.role = "host"
 			G.host_rule = nil
-			G.rule = G.file_rule
+			G.rule = not off and G.file_rule or nil
 
 			-- 在一关里广播这一关用的（迟加入的客机和房主一致），回飞船才按最新的
 			local text = to_string(G.frozen and G.frozen.rule or (not G.frozen and G.rule) or nil)
@@ -375,13 +384,13 @@ do
 			G.role = "guest"
 			G.published = nil
 			G.host_rule = from_string(read_lobby(lobby))
-			G.rule = follow_on() and G.host_rule or nil
+			G.rule = not off and follow_on() and G.host_rule or nil
 		else
 			-- 没有房间（主菜单）：按自己的文件（之后开房就是房主）
 			G.role = "none"
 			G.published = nil
 			G.host_rule = nil
-			G.rule = G.file_rule
+			G.rule = not off and G.file_rule or nil
 		end
 
 		write_status()

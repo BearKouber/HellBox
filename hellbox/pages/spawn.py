@@ -31,6 +31,7 @@ CAP_MAX = 64
 SRCS = [("g", "报复关"), ("a", "警报"), ("p", "巡逻")]
 SRC_ZH = dict(SRCS)
 RACE_ZH = {"bugs": "虫族", "cyborgs": "生化人", "illuminates": "光能者"}
+VEH_RACE = "cyborgs"  # 2026-11-27 用户：「载具 / 首领放兵」只在生化人显示、生效（别的族没这个需求）
 MISSION_ZH = {"genocide": "报复关", "mission": "普通任务", "provinggrounds": "试炼场",
               "provinggrounds_genocide_map": "试炼场·报复图"}
 MODES = [("vanilla", "原版"), ("custom", "自己改"), ("mult", "倍数"), ("none", "不出")]
@@ -354,7 +355,9 @@ class SpawnEditor:
         veh.add(self.veh_box, top=6)
         self.veh_hint = veh.add(ui.text(veh.body, "", muted=True, size=9), top=8)
 
-        self.rows = [self.view.row(src), self.view.row(main), self.view.row(veh)]
+        self.veh_row = self.view.row(veh)
+        self.rows = [self.view.row(src), self.view.row(main), self.veh_row]
+        self.shown = True
 
         self._refresh_src()
         self._rebuild_veh()
@@ -409,6 +412,9 @@ class SpawnEditor:
 
     def dump(self):
         self._stash()
+        for r, d in self.per_race.items():
+            if r != VEH_RACE and isinstance(d, dict):
+                d.pop("veh", None)
         cap = 0 if self.limit == 16 else self.limit
         for r in RACE_ZH:
             if self.spread or cap or r in self.per_race:
@@ -428,8 +434,10 @@ class SpawnEditor:
         self._mark_pending()
 
     def set_visible(self, on):
+        self.shown = on
         for r in self.rows:
             r.setVisible(on)
+        self.veh_row.setVisible(on and self.race == VEH_RACE)
 
 
     def _refresh_src(self):
@@ -702,6 +710,7 @@ class SpawnEditor:
         self._mark_pending()
 
     def _rebuild_veh(self):
+        self.veh_row.setVisible(self.shown and self.race == VEH_RACE)  # 2026-11-27 用户：载具放兵只在生化人出现
         ui.clear_layout(self.veh_lay)
         self.veh_controls = []
         info = self._vehicle_units()
@@ -823,7 +832,7 @@ def race_command(rd, race):
         else:
             cmd = f"{k_mode}=vanilla;{k_logic}=off;{k_map}="
         parts.append(cmd + f";{k_cap}=0")
-    veh = rd.get("veh") or {}
+    veh = (rd.get("veh") or {}) if race == VEH_RACE else {}  # 2026-11-27 载具放兵只给生化人
     mode = veh.get("mode") if veh.get("mode") in ("vanilla", "only", "none") else "vanilla"
     units = ",".join(f"{p}*1" for p, n in (veh.get("sel") or {}).items() if int(n) >= 1)
     count = int(veh.get("count") or 0)
@@ -832,6 +841,8 @@ def race_command(rd, race):
     parts.append(f"spread={spread if 0 <= spread <= 3 else 0}")
     cap = int(rd.get("cap") or 0)
     parts.append(f"cap={cap if cap == -1 or 16 < cap <= 300 else 0}")
+    ifv_base = 1 if rd.get("ifv_base") else 0
+    parts.append(f"ifv_base={ifv_base}")
     return ";".join(parts)
 
 

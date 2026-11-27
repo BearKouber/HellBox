@@ -17,7 +17,7 @@
 -- 二、自定义（HellBox 版）：任何关卡都带，不改关卡本身。
 --   场上事件（红色轰炸 / 蓝色支援 / EMP）：房主这边用游戏自己的 ProvingGroundsModifiersManager 再开一份，每帧 update，
 --     落下来的东西是房主生成的，全队同步。原版每次只盯一个人（传进去的列表里最后一个）；这里每帧随机给一个活着的队友，
---     轮到谁炸谁。EMP 的那个球只在虫族、赛博人的资源包里（race_bugs / race_cyborgs），光能族关卡不开 EMP。
+--     轮到谁炸谁。EMP 的那个球只在虫族、生化人的资源包里（race_bugs / race_cyborgs），光能者关卡不开 EMP。
 --     真训练场关卡自己有一份，这里不再叠。
 --   装备规则：现在只接了「换弹随机换枪」（reload_surprise）：给自己控制的潜兵的 character 状态设 reload_surprise，
 --     换弹时游戏自己的那段（character_state_reload.lua 153 行）换枪。只对装了 HellBox 并开着的人有效。
@@ -29,18 +29,18 @@
 --     （SpatialSpawnUtlity.generate_points_in_donut，同原版）。落法同原版 spawn_stratagem：生一个 flare_01，带 stratagem_id、
 --     has_been_thrown。没有扔它的人（owner_unit = nil）。增援、求救信标不落（DROP_BAN）：增援要发复活消息带扔的人，
 --     求救信标会把房间改成公开。旧的 event=orbital_bombardments / orbital_support 当成掉全部打击类 / 支援类。
---   - EMP 照旧用游戏的 ProvingGroundsModifiersManager（只在虫族、赛博人关卡）。
+--   - EMP 照旧用游戏的 ProvingGroundsModifiersManager（只在虫族、生化人关卡）。
 --   - 装了才有的四个（打中回弹药、神射手、超级靴子、以牙还牙）：游戏的写法是 generated_level.provinggrounds_params.sub_modifier
 --     == 某个名字（只能等于一个），所以不去改关卡，而是在游戏判断它的那几个函数调用期间临时给 provinggrounds_params 一个
 --     { sub_modifier = 名字 }，调用完马上拿掉（只在本来没有 provinggrounds_params、也就是不是真训练场的时候）：
 --       神射手 marksman：FirearmComponent.reload_slave / remake_raycast、FlameweaponComponent.reload_slave、
 --         BeamweaponComponent.reload_slave
---       超级靴子 super_boots：CharacterComponent.update_masters（跑快 40%）、HealthComponent.command_master（挨怪打翻倍）
+--       超级靴子 super_boots（2026-11-23 用户改）：不再用游戏那套，改成 HellBox 自己在 boots_update 里做：
+--         自带心肺加速器（体力不消耗）+ 受到伤害 +50%
 --       以牙还牙 what_goes_around：HealthComponent.command_master、HealthComponent.filter_slave_command
 --       打中回弹药 get_ammo_from_hits_double_reload_time：游戏在 Firearm / Flameweapon 的 init 按关卡种子设
 --         get_ammo_from_hits_half_magazine；这里记下每个实例，开关时直接改这个标记。
---     超级靴子和以牙还牙都在 HealthComponent.command_master 里判断，一次只能装一个名字 → 两个不能一起开（HellBox 灰掉；
---     真一起开了这里按超级靴子）。
+--     以牙还牙在 HealthComponent.command_master / filter_slave_command 里判断（超级靴子改走 boots_update 以后，两边不再抢）。
 --   - 副武器换成军刀 sidearm_saber（2026-11-21 用户要，装了才有）：见 saber_update。游戏「只能近战」把军刀放主武器格；
 --     军刀自己的设置标着 sidearm = true、sword = true（倒地时游戏也认「手枪格里是刀」），模型和手枪在同一个包 mission_common，
 --     每关都在。办法和填弹惊喜换枪一样，给自己控制的潜兵发 inventory 的 set_weapon，只换手枪格（旧手枪没有掉落物，直接没了）。
@@ -501,7 +501,14 @@ do
 	local NOTHING = { custom = false, cond = "", events = {}, env = "", drop_list = {} }
 
 	-- 下一关打算用的设置：客机 = 房主房间数据里的（跟随开着时）或什么都没有；别的情况 = 自己的 play.txt
+	-- 2026-11-25 用户定：HellBox 关了（hellbox_alive.lua，tick 里记成 G.off）= 玩法全部按原版，马上生效（不等下一关）：
+	--   live() / eff() 都给 NOTHING，事件、随机掉落、EMP、换弹惊喜、装了才有的那几个都停，当房主时广播「没开」；
+	--   已经生成的鬼城地图、已经换上的军刀不倒回。HellBox 再打开就照原来的（这一关定下的 G.frozen 还在）。
 	local function live()
+		if G.off then
+			return NOTHING
+		end
+
 		return G.eff or G.cfg
 	end
 
@@ -528,6 +535,10 @@ do
 	end
 
 	local function eff()
+		if G.off then
+			return NOTHING
+		end
+
 		return G.frozen or live()
 	end
 
@@ -652,6 +663,10 @@ do
 					if G.frozen and G.frozen.gl == state.generated_level then
 						c = G.frozen
 					end
+				end
+
+				if G.off then
+					c = NOTHING
 				end
 
 				local text = play_string(c, env_now)
@@ -827,10 +842,26 @@ do
 		return out
 	end
 
+	-- 2026-11-26 用户：「随机掉落战备为什么默认按照一级而不是房主的算了呢」。原版试炼场的掉落（provinggrounds_modifiers_manager
+	--   spawn_stratagem，这里照它写的）不带升级，战略配备组件就当 0 级（没升级的基础版）。现在带上房主（掉落是房主生成的）
+	--   自己存档里这个战备的升级（item_upgrades，军械库升级写的那份，出发选装备也读它）；拿不到就 0 级，和以前一样。
+	--   客机那边照原版：激活时 rpc_activate_stratagem 带着升级值发过去。
+	local function host_upgrade(name)
+		local ok, value = pcall(function()
+			local uid = UserManager:get_user_id(GameSettings.get_main_pad_number())
+			local ups = SaveManager:user_get("item_upgrades", uid)
+
+			return type(ups) == "table" and ups[name] or 0
+		end)
+
+		return ok and type(value) == "number" and value or 0
+	end
+
 	local function spawn_drop(state, name, pos, extra)
 		local data = {
 			has_been_thrown = true,
 			stratagem_id = LoadoutSettings.get_item_id_by_name("stratagems", name),
+			upgrade_value = host_upgrade(name),
 			extra_activation_time = extra
 		}
 		local unit = state.entity_spawner:spawn_entity("gameobjects/flare_01", pos, Quaternion.identity(), nil, data)
@@ -1018,12 +1049,8 @@ do
 		return self_on("marksman") and "marksman" or nil
 	end
 
-	local function pick_boots()
-		return self_on("super_boots") and "super_boots" or nil
-	end
-
 	local function pick_health()
-		return self_on("super_boots") and "super_boots" or self_on("what_goes_around") and "what_goes_around" or nil
+		return self_on("what_goes_around") and "what_goes_around" or nil
 	end
 
 	local function pick_wga()
@@ -1123,6 +1150,105 @@ do
 		end
 	end
 
+	-- 侦察兵（super_boots，2026-11-25 用户定）：自带心肺加速器（体力不消耗），但受到怪物的伤害 +50%。只管本机自己的潜兵。
+	--   体力：照心肺加速器天赋（perk_settings perk_cardio）给 character 发 infinite_stamina = true；本来就有（带了天赋）就不动。
+	--   伤害：照游戏原版侦察兵（health_component command_master 479 行，原版是 ×2）的位置，
+	--     在本机潜兵挨怪打的那一下把 HealthComponent.calculate_damage 算出的伤害 ×1.5（见 wrap_boots_damage）。
+	--   真训练场里不管：那里是游戏自己的侦察兵（跑快 40%、挨怪打翻倍）。
+	local BOOTS_DAMAGE = 1.5
+
+	local function boots_update(state)
+		local on = self_on("super_boots") and not state.provinggrounds_seed
+
+		for _, p in pairs(state.players or {}) do
+			local go = p.player_go
+			local ok, unit = pcall(function()
+				return go and go:exists() and go:owned() and go:get("avatar_unit")
+			end)
+
+			if ok and unit and Unit.alive(unit) and EntityAux.has_component(unit, "character") then
+				local st = EntityAux.state_master(unit, "character")
+
+				if st then
+					if on and not st.infinite_stamina and not st.hellbox_cardio then
+						st.hellbox_cardio = true
+						EntityAux.queue_command_master(unit, "character", "infinite_stamina", true)
+					elseif not on and st.hellbox_cardio then
+						st.hellbox_cardio = nil
+						EntityAux.queue_command_master(unit, "character", "infinite_stamina", false)
+					end
+				end
+			end
+		end
+	end
+
+	-- 本机潜兵挨怪打：这一次 command_master 期间把 calculate_damage 换成乘 1.5 的（只乘打这个单位的那一下）
+	local function boots_hit(self, unit, data)
+		if not self_on("super_boots") or type(data) ~= "table" then
+			return false
+		end
+
+		local gl = ctx_level(self)
+		local pg = type(gl) == "table" and gl.provinggrounds_params
+
+		if pg and FAKE[pg.sub_modifier] ~= pg then
+			return false
+		end
+
+		local enemy = data.owner_unit
+
+		return Unit.alive(unit) and EntityAux.owned(unit) and EntityAux.has_component(unit, "character")
+			and enemy ~= nil and Unit.alive(enemy) and EntityAux.has_component(enemy, "enemy")
+	end
+
+	local function wrap_boots_damage(hc)
+		local orig = type(hc) == "table" and rawget(hc, "command_master")
+
+		if type(orig) ~= "function" or rawget(hc, "_hb_play_boots") then
+			return
+		end
+
+		hc.command_master = function(self, unit, ctx, cmd, data, ...)
+			if cmd ~= "do_damage" then
+				return orig(self, unit, ctx, cmd, data, ...)
+			end
+
+			local ok, hit = pcall(boots_hit, self, unit, data)
+			local calc = rawget(hc, "calculate_damage")
+
+			if not (ok and hit) or type(calc) ~= "function" then
+				return orig(self, unit, ctx, cmd, data, ...)
+			end
+
+			local function scaled(d, ...)
+				if type(d) == "number" then
+					d = d * BOOTS_DAMAGE
+				end
+
+				return d, ...
+			end
+
+			hc.calculate_damage = function(target, ...)
+				if target == unit then
+					return scaled(calc(target, ...))
+				end
+
+				return calc(target, ...)
+			end
+
+			local r = { pcall(orig, self, unit, ctx, cmd, data, ...) }
+
+			hc.calculate_damage = calc
+
+			if not r[1] then
+				error(r[2], 0)
+			end
+
+			return unpack(r, 2, table.maxn(r))
+		end
+		hc._hb_play_boots = true
+	end
+
 	local function install_self_events()
 		local fa, fl, bw = rawget(_G, "FirearmComponent"), rawget(_G, "FlameweaponComponent"), rawget(_G, "BeamweaponComponent")
 		local ch, hc = rawget(_G, "CharacterComponent"), rawget(_G, "HealthComponent")
@@ -1131,9 +1257,9 @@ do
 		wrap(fa, "remake_raycast", pick_marksman, ctx_level)
 		wrap(fl, "reload_slave", pick_marksman, ctx_level)
 		wrap(bw, "reload_slave", pick_marksman, ctx_level)
-		wrap(ch, "update_masters", pick_boots, char_level)
 		wrap(hc, "command_master", pick_health, ctx_level)
 		wrap(hc, "filter_slave_command", pick_wga, ctx_level)
+		wrap_boots_damage(hc)
 		wrap_ammo_init(fa)
 		wrap_ammo_init(fl)
 	end
@@ -1159,7 +1285,7 @@ do
 	end
 
 	-- 这一关能不能用真鬼城配色：HellBox 装核心时换好的地图包写在 ghost-maps.txt（mod/ghost_maps.py，一行「包名=文件名=大小」）；
-	-- 这一关的地图包在里面、配色在 GHOST_SE 里、不改的教程 / 试验场包都没加载（同名配色先加载的那份算数）才行
+	-- 这一关的地图包在里面、配色在 GHOST_SE 里、不改的教程 / 试炼场包都没加载（同名配色先加载的那份算数）才行
 	local NO_GHOST_PKGS = { "resource_packages/tutorial", "env_provinggrounds/provinggrounds_bugs", "env_provinggrounds/provinggrounds_cyborgs",
 		"env_provinggrounds/provinggrounds_illuminates", "env_provinggrounds/provinggrounds_genocide_map_bugs",
 		"env_provinggrounds/provinggrounds_genocide_map_cyborgs", "env_provinggrounds/provinggrounds_genocide_map_illuminates" }
@@ -1371,10 +1497,10 @@ do
 				return orig(self, ...)
 			end
 
-			-- 天空 / 雾的配色名：真试验场鬼城用 "ghost_town"，但那一套原版只在试验场的配色（env_provinggrounds/）里有；
+			-- 天空 / 雾的配色名：真试炼场鬼城用 "ghost_town"，但那一套原版只在试炼场的配色（env_provinggrounds/）里有；
 			-- 普通关卡的配色（env_desert/、env_forest/……）没有，设了引擎找不到直接闪退（2026-11-18 V0.98 实测）。
 			-- 现在装核心时把 45 个地图包里的普通配色换成带 ghost_town 的（mod/ghost_maps.py、tools/ghost_shading.py）；
-			-- 这一关对不上（包没换好、配色不在名单、教程 / 试验场包开着）就退回 "night"，不冒闪退的险。
+			-- 这一关对不上（包没换好、配色不在名单、教程 / 试炼场包开着）就退回 "night"，不冒闪退的险。
 			local env = type(self.environment) == "table" and self.environment.path
 			local se_name = type(env) == "string" and type(self.shading_environment) == "string" and (env .. self.shading_environment)
 			local ok_real, real = pcall(real_ghost_ok, self, se_name)
@@ -1489,6 +1615,11 @@ do
 		pcall(read_cfg)
 		pcall(install)
 
+		-- 2026-11-25：HellBox 开没开着（hellbox_alive.lua）；关了 live() / eff() 都按原版，见 live() 上面的说明
+		local alive = rawget(_G, "HellBoxAlive")
+
+		G.off = type(alive) == "table" and type(alive.off) == "function" and alive.off() or false
+
 		local boot = rawget(_G, "Boot")
 		local sm = type(boot) == "table" and boot.state_machine
 
@@ -1521,6 +1652,7 @@ do
 		if name == "game" then
 			surprise_update(state)
 			pcall(saber_update, state)
+			pcall(boots_update, state)
 
 			local running = {}
 

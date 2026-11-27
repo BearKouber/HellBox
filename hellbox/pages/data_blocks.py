@@ -111,6 +111,183 @@ SHOWN_ROWS = {r[0] for _g, _t, _c, _n, rows in SIMPLE_SHOWN for r in rows}
 VEH_RACE = "cyborgs"
 VEH_MODES = ("vanilla", "only", "none")
 
+# ---------------------------------------------------------------- K-ON! 增强定制版
+KON_TANK_CD_VALUES = (0, 4, 8, 12, 16, 24, 32, 60, 999, -1)
+KON_TANK_CD_DEFAULT = 16
+KON_PATROL_MODES = (
+    ("vanilla", "原版"),
+    ("alarm", "仅立即警报"),
+    ("mid", "中距离榴弹"),
+    ("far_flat", "远距离榴弹贴地"),
+    ("far_arc", "远距离榴弹抛物线"),
+    ("ultra_flat", "超远距离榴弹贴地"),
+    ("ultra_arc", "超远距离榴弹抛物线"),
+    ("melee", "仅近战（军团士兵）"),
+)
+KON_PATROL_KEYS = {k for k, _ in KON_PATROL_MODES}
+KON_PATROL_LABEL = dict(KON_PATROL_MODES)
+
+KON_DENSE_FIELDS = {
+    "flocking_info.cohesion_factor": 0,
+    "flocking_info.separation_radius": 1,
+    "flocking_info.separation_factor": 999,
+    "flocking_info.update_nearby_entities_interval": 0,
+}
+
+KON_TANK_BASE_FIELDS = {
+    "enemy_info.movement_speed": 4,
+    "enemy_info.rush_movement_speed": 5.5,
+    "enemy_info.turn_speed": 0.8,
+    "enemy_info.turret_turn_speed": 0.5,
+    "enemy_info.turret_turn_cooldown": 1,
+    "enemy_info.patrol_range": 40,
+    "enemy_info.attack_range_shoot_min": 0,
+    "enemy_info.attack_range_shoot_max": 80,
+    "enemy_info.attack_range_shoot_preferred": 40,
+    "enemy_info.spawn_amount": 35,
+    "enemy_info.spawn_interval": 0.01,
+}
+
+KON_PATROL_COMMON = {
+    "enemy_info.patrol_range": 24,
+    "enemy_info.encounter_countdown_time": 0,
+    **KON_DENSE_FIELDS,
+}
+
+KON_PATROL_PRESETS = {
+    "alarm": {
+        "enemy_info.movement_speed": 4.5,
+        "enemy_info.power": 1,
+        "enemy_info.attack_range_shoot_min": 6,
+        "enemy_info.attack_range_shoot_max": 10,
+        "enemy_info.z_direction": 0.87266,
+        "enemy_info.aim_time": 1.3,
+    },
+    "mid": {
+        "enemy_info.movement_speed": 5,
+        "enemy_info.power": 1.4,
+        "enemy_info.attack_range_shoot_min": 12,
+        "enemy_info.attack_range_shoot_max": 16,
+        "enemy_info.z_direction": 0.87266,
+        "enemy_info.aim_time": 1.3,
+    },
+    "far_flat": {
+        "enemy_info.movement_speed": 5,
+        "enemy_info.power": 2.4,
+        "enemy_info.attack_range_shoot_min": 18,
+        "enemy_info.attack_range_shoot_max": 22,
+        "enemy_info.z_direction": 0,
+        "enemy_info.aim_time": 1.3,
+    },
+    "far_arc": {
+        "enemy_info.movement_speed": 5,
+        "enemy_info.power": 1.5,
+        "enemy_info.attack_range_shoot_min": 18,
+        "enemy_info.attack_range_shoot_max": 22,
+        "enemy_info.z_direction": 0.87266,
+        "enemy_info.aim_time": 1.3,
+    },
+    "ultra_flat": {
+        "enemy_info.movement_speed": 5,
+        "enemy_info.power": 2.4,
+        "enemy_info.attack_range_shoot_min": 22,
+        "enemy_info.attack_range_shoot_max": 28,
+        "enemy_info.z_direction": 0,
+        "enemy_info.aim_time": 1.3,
+    },
+    "ultra_arc": {
+        "enemy_info.movement_speed": 5,
+        "enemy_info.power": 1.7,
+        "enemy_info.attack_range_shoot_min": 22,
+        "enemy_info.attack_range_shoot_max": 28,
+        "enemy_info.z_direction": 0.87266,
+        "enemy_info.aim_time": 1.3,
+    },
+    "melee": {
+        "enemy_info.movement_speed": 5,
+        "enemy_info.turn_speed": 0.02,
+        "enemy_info.attack_range_shoot_min": 0.85,
+        "enemy_info.attack_range_shoot_max": 0,
+        "melee_info.duration": 0.8,
+    },
+}
+
+
+def kon_tank_cd_label(val, mark=" 默认"):
+    v = int(val)
+    if v == -1:
+        return tr("不释放")
+    if v == 999:
+        return tr("仅一次")
+    if v == 0:
+        return tr("无间隔")
+    base = T("{0}秒", v)
+    return base + (tr(mark) if v == KON_TANK_CD_DEFAULT else "")
+
+
+def clean_kon(k):
+    k = k if isinstance(k, dict) else {}
+    try:
+        cd = int(k.get("tank_cd"))
+    except (TypeError, ValueError):
+        cd = KON_TANK_CD_DEFAULT
+    if cd not in KON_TANK_CD_VALUES:
+        cd = KON_TANK_CD_DEFAULT
+    patrol = k.get("patrol") if k.get("patrol") in KON_PATROL_KEYS else "vanilla"
+    return {
+        "tank": bool(k.get("tank")),
+        "tank_cd": cd,
+        "tank_base": bool(k.get("tank_base")),
+        "patrol": patrol,
+        "dense": bool(k.get("dense")),
+    }
+
+
+def has_kon(data):
+    k = clean_kon((data or {}).get("kon"))
+    return k["tank"] or k["tank_base"] or k["patrol"] != "vanilla" or k["dense"]
+
+
+def _with_kon_enemy(d, data):
+    d = copy.deepcopy(d or {})
+    k = clean_kon((data or {}).get("kon"))
+    if not (k["dense"] or k["tank"] or k["patrol"] != "vanilla"):
+        return d
+    ov = copy.deepcopy(d.get("ov") or {})
+    if k["dense"]:
+        all_f = ov.setdefault("all", {})
+        for path, val in KON_DENSE_FIELDS.items():
+            all_f.setdefault(path, val)
+    if k["tank"]:
+        ifv = ov.setdefault("cyborg_ifv", {})
+        for path, val in KON_TANK_BASE_FIELDS.items():
+            ifv[path] = val
+        cd = k["tank_cd"]
+        if cd == -1:
+            ifv["enemy_info.rush_distance"] = 4000
+        elif cd == 999:
+            ifv["enemy_info.spawn_group_cooldown"] = 999
+            ifv["enemy_info.rush_distance"] = 0
+        elif cd == 0:
+            ifv["enemy_info.spawn_group_cooldown"] = 0
+            ifv["enemy_info.rush_distance"] = 0
+        else:
+            ifv["enemy_info.spawn_group_cooldown"] = max(0, cd - 1)
+            ifv["enemy_info.rush_distance"] = 0
+    if k["patrol"] != "vanilla":
+        preset = KON_PATROL_PRESETS.get(k["patrol"]) or {}
+        units = ("cyborg_soldier_shield",) if k["patrol"] == "melee" else (
+            "cyborg_soldier_grenadelauncher", "cyborg_soldier_shield"
+        )
+        for u in units:
+            uf = ov.setdefault(u, {})
+            for path, val in KON_PATROL_COMMON.items():
+                uf[path] = val
+            for path, val in preset.items():
+                uf[path] = val
+    d["ov"] = ov
+    return d
+
 
 def clean_veh(v):
     v = v if isinstance(v, dict) else {}
@@ -143,12 +320,13 @@ def effective(data):
     out["live"] = {k: (v if k in OPEN_KINDS else None) for k, v in (data.get("live") or {}).items()}
     out["simple"] = shown_simple(data)
     out["veh"] = clean_veh(data.get("veh"))
+    out["kon"] = clean_kon(data.get("kon"))
     return out
 
 
 def blank():
     return {"version": 1, "seq": 0, "blocks": {t: [None] * COUNT for t, *_ in TYPES},
-            "live": {t: None for t, *_ in TYPES}, "simple": {}, "veh": clean_veh(None)}
+            "live": {t: None for t, *_ in TYPES}, "simple": {}, "veh": clean_veh(None), "kon": clean_kon(None)}
 
 
 def load():
@@ -173,6 +351,7 @@ def load():
         if row and isinstance(val, (int, float)) and val in row[2] and val != row[3]:
             out["simple"][key] = val
     out["veh"] = clean_veh(data.get("veh"))
+    out["kon"] = clean_kon(data.get("kon"))
     return out
 
 
@@ -204,7 +383,10 @@ def _with_spawn(rd, data, race=None):
     if limit != 16 and not rd.get("cap"):
         rd["cap"] = limit
     sv = simple_veh(data)
-    if race == VEH_RACE and sv:
+    kon = clean_kon(data.get("kon"))
+    if race == VEH_RACE and kon["tank_base"]:
+        rd["ifv_base"] = 1
+    if race == VEH_RACE and sv and not kon["tank"]:
         veh = rd.get("veh") or {}
         if (veh.get("mode") or "vanilla") == "vanilla" and not int(veh.get("count") or 0):
             rd["veh"] = copy.deepcopy(sv)
@@ -227,8 +409,17 @@ def simple_summary(data):
         if row:
             parts.append(T("{0} {1}", tr(row[1]), simple_label(row, val)))
     sv = simple_veh(data)
-    if sv:
+    kon = clean_kon(data.get("kon"))
+    if sv and not kon["tank"]:
         parts.append(tr("坦克屁股出兵改过"))
+    if kon["tank"]:
+        parts.append(T("坦克出兵增强（{0}）", kon_tank_cd_label(kon["tank_cd"], "")))
+    if kon["tank_base"]:
+        parts.append(tr("增加坦克基数"))
+    if kon["patrol"] != "vanilla":
+        parts.append(T("班长和军团：{0}", tr(KON_PATROL_LABEL.get(kon["patrol"], kon["patrol"]))))
+    if kon["dense"]:
+        parts.append(tr("敌人可更密集"))
     return tr("、").join(parts)
 
 
@@ -284,7 +475,7 @@ def live_text(data):
     if god != "off":
         pd["god"] = god
     lines.append("player=" + player_command(pd))
-    lines.append("params=" + enemy_command(_with_common(cell_data("enemy"), simple_adds(data, "enemy"))))
+    lines.append("params=" + enemy_command(_with_kon_enemy(_with_common(cell_data("enemy"), simple_adds(data, "enemy")), data)))
     sp = cell_data("spawn")
     for race in RACES:
         rd = _with_spawn(sp.get(race), data, race)

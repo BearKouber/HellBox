@@ -62,7 +62,7 @@ do
 	SpawnRulesMod = G
 
 	local function default_cfg()
-		return { a = "vanilla", p = "vanilla", g = "vanilla", v = "vanilla", mult = 2, multg = 2, multp = 2, gcap = 0, acap = 0, pcap = 0, cap = 0, vn = 0,
+		return { a = "vanilla", p = "vanilla", g = "vanilla", v = "vanilla", mult = 2, multg = 2, multp = 2, gcap = 0, acap = 0, pcap = 0, cap = 0, vn = 0, ifv_base = 0,
 			ua = {}, up = {}, ug = {}, uv = {} }
 	end
 
@@ -335,6 +335,49 @@ do
 		G.logic_ver = (G.logic_ver or 0) + 1
 	end
 
+	local function sync_ifv_base(cfg)
+		local ps = rawget(_G, "PatrolSettings")
+		local list = type(ps) == "table" and ps.cyborgs
+
+		if type(list) ~= "table" then
+			return false
+		end
+
+		local want = type(cfg) == "table" and (tonumber(cfg.ifv_base) or 0) == 1
+		local changed = false
+
+		G.ifv_base_saved = G.ifv_base_saved or {}
+
+		for _, entry in ipairs(list) do
+			if type(entry) == "table" and entry.group_info == "cyborg_ifv_scoutgroup" and type(entry.difficulty_range) == "table" then
+				local saved = G.ifv_base_saved[entry]
+
+				if want then
+					if not saved and entry.difficulty_range.min == 13 then
+						saved = { max_spawned = entry.max_spawned, min = entry.difficulty_range.min }
+						G.ifv_base_saved[entry] = saved
+					end
+
+					if saved and (entry.max_spawned ~= 12 or entry.difficulty_range.min ~= 1) then
+						entry.max_spawned = 12
+						entry.difficulty_range.min = 1
+						changed = true
+					end
+				elseif saved then
+					if entry.max_spawned ~= saved.max_spawned or entry.difficulty_range.min ~= saved.min then
+						entry.max_spawned = saved.max_spawned
+						entry.difficulty_range.min = saved.min
+						changed = true
+					end
+				end
+			end
+		end
+
+		return changed
+	end
+
+	local active
+
 	local function apply_command(text)
 		text = (text or ""):gsub("%s+$", "")
 
@@ -345,6 +388,7 @@ do
 			G.amap, G.pmap = {}, {}
 			set_logic("a", "off")
 			set_logic("p", "off")
+			sync_ifv_base(nil)
 			G.cfg_ver = (G.cfg_ver or 0) + 1
 
 			return "ok:reset"
@@ -423,6 +467,16 @@ do
 					else
 						return "err:散开要 0～3"
 					end
+				elseif k == "ifv_base" then
+					-- 增加坦克基数（K-ON! 增强定制版）：0 原版 / 1 巡逻坦克 max_spawned 1->12、difficulty_range.min 13->1
+					local n = tonumber(v)
+
+					if n and (n == 0 or n == 1) then
+						cfg.ifv_base = math.floor(n)
+						any = true
+					else
+						return "err:ifv_base 要 0 或 1"
+					end
 				elseif k == "glogic" then
 					glogic = v
 					has_glogic = true
@@ -457,6 +511,7 @@ do
 
 		G.cfg = cfg
 		G.cfg_ver = (G.cfg_ver or 0) + 1
+		sync_ifv_base(active())
 
 		if has_glogic then
 			apply_gdiff(glogic)
@@ -512,7 +567,7 @@ do
 		return type(st) == "table" and st.is_server == true
 	end
 
-	local function active()
+	active = function()
 		local _, st = game_state()
 
 		if type(st) ~= "table" then
@@ -580,7 +635,8 @@ do
 
 	local function any_mod(cfg)
 		return type(cfg) == "table" and (src_mod(cfg, "g") or src_mod(cfg, "a") or src_mod(cfg, "p")
-			or (cfg.v ~= nil and cfg.v ~= "vanilla") or (tonumber(cfg.vn) or 0) > 0 or drops_changed())
+			or (cfg.v ~= nil and cfg.v ~= "vanilla") or (tonumber(cfg.vn) or 0) > 0
+			or (tonumber(cfg.ifv_base) or 0) > 0 or drops_changed())
 	end
 
 	-- 这个来源改过、上限也放开了：返回放到多少；否则 nil（照原版）
@@ -1026,6 +1082,15 @@ do
 
 				if n_old > 0 and n_new > n_old and lim(cfg) then
 					cap = math.min(lim(cfg), math.max(n_new, math.ceil(self.max_num_patrol_units * n_new / n_old)))
+				end
+			end
+
+			if (tonumber(cfg.ifv_base) or 0) > 0 and type(self.max_num_patrol_units) == "number" then
+				local L = lim(cfg)
+				local want = L and math.min(L, 240) or 12
+
+				if want > self.max_num_patrol_units then
+					cap = math.max(cap, want)
 				end
 			end
 
@@ -1773,7 +1838,20 @@ do
 						G.plimit = self.max_num_patrol_units
 					end
 
-					sync_logic(self, "p", rebuild_patrol)
+					local cfg = active()
+					local want_ifv = cfg and (tonumber(cfg.ifv_base) or 0) == 1 and 1 or 0
+					local ifv_changed = sync_ifv_base(cfg)
+					local logic_changed = sync_logic(self, "p", rebuild_patrol)
+
+					if (ifv_changed or self._hb_ifv_base ~= want_ifv) and not logic_changed and self.mission_enemy == "cyborgs" then
+						local spec = G.plogic_want or ""
+						local r, d = parse_spec(spec)
+						local diff = (spec ~= "" and r == self.mission_enemy and d) or self.mission_difficulty
+
+						rebuild_patrol(self, diff)
+					end
+
+					self._hb_ifv_base = want_ifv
 				end
 			end)
 
@@ -2056,11 +2134,15 @@ do
 		-- 客机：全局上限是全局变量，当房主时抬过的要放回原版（客机算的步兵战车放兵也看它）
 		local _, gst = game_state()
 
-		if type(gst) == "table" and gst.is_server == false and G.cap_orig then
-			local gs = rawget(_G, "GameSettings")
+		if type(gst) == "table" and gst.is_server == false then
+			sync_ifv_base(nil)
 
-			if type(gs) == "table" and gs.MAX_NUM_ALLOWED_ENEMIES ~= G.cap_orig then
-				gs.MAX_NUM_ALLOWED_ENEMIES = G.cap_orig
+			if G.cap_orig then
+				local gs = rawget(_G, "GameSettings")
+
+				if type(gs) == "table" and gs.MAX_NUM_ALLOWED_ENEMIES ~= G.cap_orig then
+					gs.MAX_NUM_ALLOWED_ENEMIES = G.cap_orig
+				end
 			end
 		end
 
